@@ -45,7 +45,7 @@ public class MainFrame extends JFrame {
 		JTextField campoDiTesto = new JTextField( "Immetti qui una stringa...", 30 );
 		mainPanel.add( campoDiTesto );
 		
-		JTextArea areaDiTesto = new JTextArea( "Questa é un'area di testo di\n5 righe e 30 colonne" , 5, 30 );
+		JTextArea areaDiTesto = new JTextArea( "Questa ï¿½ un'area di testo di\n5 righe e 30 colonne" , 5, 30 );
 		mainPanel.add( areaDiTesto );
 		
 		campoDiTesto.setEditable(true);
