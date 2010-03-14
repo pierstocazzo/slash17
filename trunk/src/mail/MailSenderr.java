@@ -14,15 +14,15 @@ public class MailSenderr {
 	String fromserver;
 	String toserver;
 	
-	String server = "smtp.mail.yahoo.it";
+	String server = "smtp.tele2.it";
 	
 	public static void main(String[] args) {
-		new MailSenderr().sendmail("slash17@tele2.it", "slash17@tele2.it", "prova", "prova");
+		new MailSenderr().sendmail("slash17@tele2.it", "sasaloria@hotmail.com", "prova", "prova");
 	}
 	
 	public void sendmail( String mittente, String destinatario, String oggetto, String corpo ) {
 		try {
-			s = new Socket( server, 25 );
+			s = new Socket( server, 587 );
 			System.out.println("Connesso a " + s.getInetAddress() + " sulla porta " + s.getLocalPort() + " dalla porta " + s.getPort() );
 		} catch (Exception e) {
 			System.err.println("Errore connessione");
@@ -43,14 +43,16 @@ public class MailSenderr {
 		read();
 		write("HELO mailserver");
 		read();
-		write("MAIL FROM: <slash17@tele2.it>");
+		write("MAIL FROM: <" + mittente + ">");
 		read();
-		write("RCPT TO: <sasaloria@hotmail.com>");
+		write("RCPT TO: <" + destinatario + ">");
 		read();
 		write("DATA");
 		read();
+		write("subject: " + oggetto);
 		write(corpo);
 		write("\r\n.\r\n");
+		read();
 		
 		System.out.println("Email spedita");
 		
