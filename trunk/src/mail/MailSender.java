@@ -1,12 +1,6 @@
 package mail;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.Properties;
-
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -17,20 +11,25 @@ public class MailSender {
 	{
 		// Creazione di una mail session
 		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.tele2.it");
+		props.put("mail.smtp.host", "smtp.mail.yahoo.com");
 		props.put("mail.smtp.port", "587");
 		Session session = Session.getDefaultInstance(props);
-
+		
+		System.out.println("Connessione effettuata con " + session.getProperty("mail.smtp.host") + 
+				" sulla porta " + session.getProperty("mail.smtp.port"));
+		
 		// Creazione del messaggio da inviare
 		MimeMessage message = new MimeMessage(session);
 		try {
 			message.setSubject(oggetto);
+			System.out.println("oggetto ok");
 		} catch (MessagingException e) {
 			System.err.println("errore soggetto");
 			return;
 		}
 		try {
 			message.setText(testoEmail);
+			System.out.println("testo ok");
 		} catch (MessagingException e) {
 			System.err.println("errore setText");
 			return;
@@ -38,26 +37,36 @@ public class MailSender {
 
 		// Aggiunta degli indirizzi del mittente e del destinatario
 		InternetAddress fromAddress;
+		InternetAddress toAddress;
 		try {
 			fromAddress = new InternetAddress(mitt);
-			InternetAddress toAddress = new InternetAddress(dest);
 			message.setFrom(fromAddress);
-			message.setRecipient(Message.RecipientType.TO, toAddress);
+			System.out.println("indirizzo mittente ok");
 		} catch (Exception e) {
-			System.err.println("errore indirizzi");
+			System.err.println("errore indirizzo mittente");
+			return;
+		}
+		try {
+			toAddress = new InternetAddress(dest);
+			message.setRecipient(Message.RecipientType.TO, toAddress);
+			System.out.println("indirizzo destinatario ok");
+		} catch (Exception e) {
+			System.err.println("errore indirizzo destinatario");
 			return;
 		}
 
 		// Invio del messaggio
 		try {
+			System.out.println("provo ad inviare la mail..");
 			Transport.send(message);
+			System.err.println("mail inviata con successo");
 		} catch (MessagingException e) {
-			System.err.println("mail non inviata");
+			System.err.println("errore invio email");
 			return;
 		}
 	}
 	
 	public static void main(String[] args) {
-		MailSender.sendMail("abc@a.it", "sasaloria@hotmail.com", "ciao", "ciao");
+		MailSender.sendMail("deadlyomen17@yahoo.com", "sasaloria@hotmail.com", "ciao", "ciao");
 	}
 }
