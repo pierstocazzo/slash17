@@ -8,21 +8,30 @@ import java.net.Socket;
 
 public class MailSenderr {
 	
-	Socket s;
-	PrintWriter out;
-	BufferedReader in;
-	String fromserver;
-	String toserver;
+	static Socket s;
+	static PrintWriter out;
+	static BufferedReader in;
+	static String fromserver;
+	static String toserver;
 	
-	String server = "smtp.tele2.it";
+	static String username = "c2FzYWxvcmlh";
+	static String password = "ZmlhdHB1bnRvMS4z";
+	
+	static String server = "ml.mat.unical.it";
+	static int porta = 25;
 	
 	public static void main(String[] args) {
-		new MailSenderr().sendmail("slash17@tele2.it", "sasaloria@hotmail.com", "prova", "prova");
+		String body = "Salve prof. \n" +
+				"Non riesco ad inviare mail tramite ml.mat.unical.it " +
+				"ad indirizzi con dominio diverso da @mat.unical.it.\n" +
+				"E' una precauzione del server o sto sbagliando qualcosa?\n\n" +
+				"Grazie";
+		MailSenderr.sendmail("sasaloria@hotmail.com", "deadlyomen17@gmail.com", "server smtp ml.mat.unical.it", body);
 	}
 	
-	public void sendmail( String mittente, String destinatario, String oggetto, String corpo ) {
+	public static void sendmail( String mittente, String destinatario, String oggetto, String corpo ) {
 		try {
-			s = new Socket( server, 587 );
+			s = new Socket( server, porta );
 			System.out.println("Connesso a " + s.getInetAddress() + " sulla porta " + s.getLocalPort() + " dalla porta " + s.getPort() );
 		} catch (Exception e) {
 			System.err.println("Errore connessione");
@@ -41,7 +50,13 @@ public class MailSenderr {
 		System.out.println("Inizio conversazione \n");
 		
 		read();
-		write("HELO mailserver");
+		write("EHLO mailserver");
+		read();
+		write("AUTH LOGIN");
+		read();
+		write(username);
+		read();
+		write(password);
 		read();
 		write("MAIL FROM: <" + mittente + ">");
 		read();
@@ -54,12 +69,12 @@ public class MailSenderr {
 		write("\r\n.\r\n");
 		read();
 		
-		System.out.println("Email spedita");
+		System.out.println("\n*Email spedita*");
 		
 		close();
 	}
 	
-	private void close() {
+	private static void close() {
 		try {
 			System.out.println("\nFine conversazione");			
 			out.close();
@@ -73,7 +88,7 @@ public class MailSenderr {
 		}
 	}
 
-	private void write( String toserver ) {
+	private static void write( String toserver ) {
 		out.println( toserver );
 		out.flush();
 		System.out.println("To server: " + toserver);
@@ -83,7 +98,7 @@ public class MailSenderr {
 		}
 	}
 
-	private void read() {
+	private static void read() {
 		String fromserver;
 		try {
 			fromserver = in.readLine();

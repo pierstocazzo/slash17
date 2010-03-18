@@ -11,7 +11,7 @@ public class MailSender {
 	{
 		// Creazione di una mail session
 		Properties props = new Properties();
-		props.put("mail.smtp.host", "smtp.mail.yahoo.it");
+		props.put("mail.smtp.host", "ml.mat.unical.it");
 		props.put("mail.smtp.port", "25");
 		Session session = Session.getDefaultInstance(props);
 		
