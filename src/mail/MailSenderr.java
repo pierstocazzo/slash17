@@ -14,19 +14,15 @@ public class MailSenderr {
 	static String fromserver;
 	static String toserver;
 	
-	static String username = "c2FzYWxvcmlh";
-	static String password = "ZmlhdHB1bnRvMS4z";
+	static String username = "c2xhc2gxNw==";
+	static String password = "bWV0YWxsaWNh";
 	
-	static String server = "ml.mat.unical.it";
-	static int porta = 25;
+	static String server = "smtp.tele2.it";
+	static int porta = 587;
 	
 	public static void main(String[] args) {
-		String body = "Salve prof. \n" +
-				"Non riesco ad inviare mail tramite ml.mat.unical.it " +
-				"ad indirizzi con dominio diverso da @mat.unical.it.\n" +
-				"E' una precauzione del server o sto sbagliando qualcosa?\n\n" +
-				"Grazie";
-		MailSenderr.sendmail("sasaloria@hotmail.com", "deadlyomen17@gmail.com", "server smtp ml.mat.unical.it", body);
+		String body = "Prova invio email";
+		MailSenderr.sendmail("slash17@tele2.it", "sasaloria@hotmail.com", "prova", body);
 	}
 	
 	public static void sendmail( String mittente, String destinatario, String oggetto, String corpo ) {
@@ -50,7 +46,7 @@ public class MailSenderr {
 		System.out.println("Inizio conversazione \n");
 		
 		read();
-		write("EHLO mailserver");
+		write("HELO " + server);
 		read();
 		write("AUTH LOGIN");
 		read();
@@ -64,7 +60,9 @@ public class MailSenderr {
 		read();
 		write("DATA");
 		read();
-		write("subject: " + oggetto);
+		write("FROM: " + mittente);
+		write("TO: " + destinatario);
+		write("SUBJECT: " + oggetto);
 		write(corpo);
 		write("\r\n.\r\n");
 		read();
@@ -103,13 +101,17 @@ public class MailSenderr {
 		try {
 			fromserver = in.readLine();
 			
-			String res = fromserver.split(" ")[0];
-			
-			if( Integer.parseInt(res) > 500 ) {
-				System.err.println( "\nERROR: " + fromserver );
-				close();
-				System.exit(0);
-			} else {
+			try {
+				String res = fromserver.split(" ")[0];
+				if( Integer.parseInt(res) > 500 ) {
+					System.err.println( "\nERROR: " + fromserver );
+					close();
+					System.exit(0);
+				} else {
+					System.err.println( "From server: " + fromserver);
+					Thread.sleep(1000);
+				}
+			} catch (Exception e) {
 				System.err.println( "From server: " + fromserver);
 				Thread.sleep(1000);
 			}
