@@ -1,49 +1,92 @@
 package test;
 
-import java.awt.Image;
+import java.awt.event.InputEvent;
 
-import javax.swing.ImageIcon;
-
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
+import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
-import edu.umd.cs.piccolo.event.PInputEventListener;
-import edu.umd.cs.piccolo.nodes.PImage;
+import edu.umd.cs.piccolo.event.PInputEventFilter;
+import edu.umd.cs.piccolo.event.PZoomEventHandler;
 import edu.umd.cs.piccolo.nodes.PText;
+import edu.umd.cs.piccolo.util.PDimension;
 import edu.umd.cs.piccolox.PFrame;
 
 public class PiccoloTest extends PFrame {
 	private static final long serialVersionUID = 1L;
 	
-	PNode rootNode;
+	PLayer mainLayer;
+	PLayer secondLayer;
 	
 	public void initialize() {	
 		// getting the root node
-		rootNode = getCanvas().getLayer();
-		
+		mainLayer = getCanvas().getLayer();
+		secondLayer = new PLayer();
+		mainLayer.addChild(secondLayer);
+
 		// creating a text node
 		PText text = new PText("First Piccolo Test");
-		rootNode.addChild(text);
+		mainLayer.addChild(text);
 		
-		// adding an image
-		Image img = new ImageIcon("src/tux.png").getImage();
-		final PImage image = new PImage(img);
-		// set the image scale
-		image.setScale(0.3);
-		// set the image position
-		image.setX(500);
-		image.setY(500);
-		// 
-		PInputEventListener listener = new PInputEventListener() {
+		PBasicInputEventHandler listener = new PBasicInputEventHandler() {
+			@Override
+			public void mousePressed(PInputEvent event) {
+				super.mousePressed(event);
+				
+				event.getPickedNode().setTransparency(0.5f);
+				event.setHandled(true);
+			}
 			
 			@Override
-			public void processEvent(PInputEvent aEvent, int type) {
-				if( aEvent.isLeftMouseButton() ) {
-					System.out.println("FUck");
+			public void mouseEntered(PInputEvent event) {
+				super.mouseEntered(event);
+				
+				event.getPickedNode().setTransparency(0.5f);
+				event.setHandled(true);
+			}
+			
+			@Override
+			public void mouseDragged(PInputEvent event) {
+				super.mouseDragged(event);
+				
+				PNode node = event.getPickedNode();
+				
+				node.setTransparency(0.5f);
+				PDimension delta = event.getDeltaRelativeTo( node );
+				node.translate(delta.width, delta.height);
+				event.setHandled(true);
+				
+				for( GEdge e : ((GNode) node.getParent()).getEdges() ) {
+					e.update();
 				}
 			}
+			
+			@Override
+			public void mouseExited(PInputEvent event) {
+				super.mouseExited(event);
+				
+				event.getPickedNode().setTransparency(1);
+				event.setHandled(true);
+			}
+			
+			@Override
+			public void mouseReleased(PInputEvent event) {
+				super.mouseReleased(event);
+				
+				event.getPickedNode().setTransparency(1);
+				event.setHandled(true);
+			}
 		};
-		image.addInputEventListener(listener);
-		rootNode.addChild(image);
+		
+		GNode node1 = new GNode(100, 100);
+		GNode node2 = new GNode(200, 200);
+		node1.addInputEventListener(listener);
+		node2.addInputEventListener(listener);
+		GEdge edge = new GEdge(node1, node2);		
+		
+		mainLayer.addChild(node1);
+		mainLayer.addChild(node2);
+		secondLayer.addChild(edge);
 	}
 
 	public static void main(String[] args) {
