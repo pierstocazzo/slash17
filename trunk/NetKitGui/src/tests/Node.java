@@ -5,36 +5,36 @@ import java.util.ArrayList;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 
-public class Host extends PNode {
+public class Node extends PNode {
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<Link> edges;
+	private ArrayList<Edge> edges;
 	private PPath circle;
 	
-	public Host() {
-		this.edges = new ArrayList<Link>();
+	public Node() {
+		this.edges = new ArrayList<Edge>();
 		this.setCircle(PPath.createEllipse( 0, 0, 20, 20 ));
 	}
 	
-	public Host( ArrayList<Link> edges ) {
-		this.edges = new ArrayList<Link>( edges );
+	public Node( ArrayList<Edge> edges ) {
+		this.edges = new ArrayList<Edge>( edges );
 		this.setCircle(PPath.createEllipse( 0, 0, 20, 20 ));
 	}
 	
-	public Host( int x, int y ) {
-		this.edges = new ArrayList<Link>();
+	public Node( int x, int y ) {
+		this.edges = new ArrayList<Edge>();
 		this.setCircle(PPath.createEllipse( x, y, 20, 20 ));
 	}
 		
-	public Link getEdge( int index ) {
+	public Edge getEdge( int index ) {
 		return edges.get( index );
 	}
 	
-	public void addEdge( Link edge ) {
+	public void addEdge( Edge edge ) {
 		edges.add(edge);
 	}
 	
-	public ArrayList<Link> getEdges() {
+	public ArrayList<Edge> getEdges() {
 		return edges;
 	}
 

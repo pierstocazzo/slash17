@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 
-public class Link extends PNode {
+public class Edge extends PNode {
 	private static final long serialVersionUID = 1L;
 	
-	private ArrayList<Host> nodes;
+	private ArrayList<Node> nodes;
 	PPath edge;
 	
 	/** 
 	 * Create a graph edge
 	 */
-	public Link() {
-		nodes = new ArrayList<Host>();
+	public Edge() {
+		nodes = new ArrayList<Node>();
 		edge = PPath.createLine(0, 0, 0, 0);
 		this.addChild(edge);
 	}
@@ -27,8 +27,8 @@ public class Link extends PNode {
 	 * @param node1
 	 * @param node2
 	 */
-	public Link( Host node1, Host node2 ) {
-		nodes = new ArrayList<Host>();
+	public Edge( Node node1, Node node2 ) {
+		nodes = new ArrayList<Node>();
 		nodes.add( node1 );
 		nodes.add( node2 );
 		node1.addEdge(this);
@@ -50,23 +50,23 @@ public class Link extends PNode {
 		edge.lineTo((float) bound2.getX(), (float) bound2.getY());
 	}
 	
-	public Host getNode1() {
+	public Node getNode1() {
 		return nodes.get(0);
 	}
 	
-	public Host getNode2() {
+	public Node getNode2() {
 		return nodes.get(1);
 	}
 	
-	public ArrayList<Host> getNodes() {
+	public ArrayList<Node> getNodes() {
 		return nodes;
 	}
 	
-	public void setNodes( ArrayList<Host> nodes ) {
+	public void setNodes( ArrayList<Node> nodes ) {
 		this.nodes = nodes;
 	}
 	
-	public boolean addNode( Host node, int index ) {
+	public boolean addNode( Node node, int index ) {
 		if( index < 0 || index > 1 ) 
 			return false;
 		
