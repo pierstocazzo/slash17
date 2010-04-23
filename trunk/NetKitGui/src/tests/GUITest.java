@@ -86,7 +86,7 @@ public class GUITest extends PFrame {
 		Iterator<GCollisionDomain> it = collisionDomains.iterator();
 		while( it.hasNext() ) {
 			GCollisionDomain cd = it.next();
-			if( cd.getId().equals(cdName)) {
+			if( cd.getName().equals(cdName)) {
 				return cd;
 			}
 		}

@@ -9,34 +9,43 @@ public class DefaultInputHandler extends PDragEventHandler {
 	public void mouseClicked(PInputEvent event) {
 		super.mouseClicked(event);
 		
-		event.getPickedNode().setTransparency(0.8f);
+		GNode node = (GNode) event.getPickedNode();
+		node.setImage(GNode.SELECTED);
 	}
 	
 	@Override
 	public void mouseEntered(PInputEvent event) {
 		super.mouseEntered(event);
 		
-		event.getPickedNode().setTransparency(0.8f);
+		try {
+			GNode node = (GNode) event.getPickedNode();
+			node.setImage(GNode.SELECTED);
+		} catch (Exception e) {}
 	}
 	
-	protected void startDrag(PInputEvent e) {
-		super.startDrag(e);
-		e.setHandled(true);
-		e.getPickedNode().moveToFront();
+	public void startDrag(PInputEvent event) {
+		super.startDrag(event);
+		event.setHandled(true);
+		event.getPickedNode().moveToFront();
 	}
 	
 	@Override
 	public void drag(PInputEvent event) {
 		super.drag(event);
 		
-		GNode node = (GNode) event.getPickedNode();
-		node.update();
+		try {
+			GNode node = (GNode) event.getPickedNode();
+			node.update();
+		} catch (Exception e) {}
 	}
 	
 	@Override
 	public void mouseExited(PInputEvent event) {
 		super.mouseExited(event);
 		
-		event.getPickedNode().setTransparency(1);
+		try {
+			GNode node = (GNode) event.getPickedNode();
+			node.setImage(GNode.DEFAULT);
+		} catch (Exception e) {}
 	}
 }
