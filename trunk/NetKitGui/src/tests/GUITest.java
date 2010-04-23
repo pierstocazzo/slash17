@@ -45,6 +45,9 @@ public class GUITest extends PFrame {
 		secondLayer = new PLayer();
 		mainLayer.addChild(secondLayer);
 		
+		getCanvas().getZoomEventHandler().setMaxScale(1.4);
+		getCanvas().getZoomEventHandler().setMinScale(0.8);
+		
 		DefaultInputHandler handler = new DefaultInputHandler();
 		mainLayer.addInputEventListener(handler);
 		
