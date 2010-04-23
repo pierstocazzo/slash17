@@ -3,27 +3,33 @@ package gui;
 import java.util.ArrayList;
 
 import edu.umd.cs.piccolo.nodes.PImage;
+import edu.umd.cs.piccolo.nodes.PText;
 
 public class GNode extends PImage {
 	private static final long serialVersionUID = 1L;
 
-	protected PImage image;
+	public static final String SELECTED = "_selected";
+	public static final String DELETED = "Del";
+	public static final String STARTED = "Started";
+	public static final String STARTEDSELECTED = "StartedSelected";
+	public static final String DEFAULT = "";
 	
-	protected PImage selectedImage;
+	protected String image;
 	
-	protected PImage deletedImage;
-	
-	protected String id;
+	protected String name;
 	
 	protected ArrayList<GLink> links;
 	
+	protected PText text;
+	
 	public GNode( String name, int x, int y, String image ) {
 		super(image);
-		this.id = name;
 		this.links = new ArrayList<GLink>();
-		this.setX(x);
-		this.setY(y);
-		this.image = new PImage(image);
+		this.image = image;
+
+		setName(name);
+		
+		this.centerFullBoundsOnPoint(x, y);
 	}
 	
 	public void update() {
@@ -33,6 +39,12 @@ public class GNode extends PImage {
 		}
 	}
 		
+	public void setImage( String type ) {
+		int index = image.lastIndexOf(".");
+		String newImage = image.substring( 0, index ) + type + image.substring( index );
+		super.setImage( newImage );
+	}
+	
 	public GLink getLink( int index ) {
 		return links.get( index );
 	}
@@ -45,11 +57,16 @@ public class GNode extends PImage {
 		return links;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setName( String name ) {
+		this.name = name;
+		text = new PText(name);
+		text.centerFullBoundsOnPoint((getWidth()/2), getHeight());
+		text.setPickable(false);
+		text.setScale(1.5);
+		this.addChild(text);
 	}
 
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 }
