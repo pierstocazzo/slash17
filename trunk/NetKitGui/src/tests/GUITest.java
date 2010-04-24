@@ -9,14 +9,14 @@ import java.util.Random;
 import core.Host;
 import core.Interface;
 import core.Topology;
+import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolox.PFrame;
 import gui.GCollisionDomain;
 import gui.GHost;
 import gui.GLink;
 import gui.GNode;
 
-public class GUITest extends PFrame {
+public class GUITest extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
 	PLayer mainLayer;
@@ -29,24 +29,21 @@ public class GUITest extends PFrame {
 		new GUITest();
 	}
 	
-	public GUITest() {
-		setSize(1000, 600);
-		setTitle("NetKitGUI");
-	}
-	
-	public void beforeInitialize() {
+	public GUITest(  ) {
 		this.topology = new Topology();
 		hosts = new LinkedList<GNode>();
 		collisionDomains = new LinkedList<GCollisionDomain>();
+		
+		initialize();
 	}
 	
 	public void initialize() {	
-		mainLayer = getCanvas().getLayer();
+		mainLayer = getLayer();
 		secondLayer = new PLayer();
 		mainLayer.addChild(secondLayer);
 		
-		getCanvas().getZoomEventHandler().setMaxScale(1.4);
-		getCanvas().getZoomEventHandler().setMinScale(0.8);
+		getZoomEventHandler().setMaxScale(1.4);
+		getZoomEventHandler().setMinScale(0.8);
 		
 		DefaultInputHandler handler = new DefaultInputHandler();
 		mainLayer.addInputEventListener(handler);
