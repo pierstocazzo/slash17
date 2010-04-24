@@ -9,9 +9,9 @@ public class GNode extends PImage {
 	private static final long serialVersionUID = 1L;
 
 	public static final String SELECTED = "_selected";
-	public static final String DELETED = "Del";
-	public static final String STARTED = "Started";
-	public static final String STARTEDSELECTED = "StartedSelected";
+	public static final String DELETED = "_deleted";
+	public static final String STARTED = "_started";
+	public static final String STARTEDSELECTED = "_started_selected";
 	public static final String DEFAULT = "";
 	
 	protected String image;

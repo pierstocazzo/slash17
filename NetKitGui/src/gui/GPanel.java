@@ -34,6 +34,7 @@ public class GPanel extends JPanel {
 	
 	JToolBar verticalToolbar;
 	JButton router;
+	JButton firewall;
 	JButton pc;
 	JButton collisionDomain;
 	JButton server;
@@ -71,7 +72,8 @@ public class GPanel extends JPanel {
 		router = new GButton("Router", "Add a router", new ImageIcon("data/images/32x32/router.png"));
 		
 		server = new GButton("Server", "Add a server", new ImageIcon("data/images/32x32/server.png"));
-		
+
+		firewall = new GButton("Firewall", "Add a firewall", new ImageIcon("data/images/32x32/firewall.png"));
 		
 		nattedServer = new GButton("NatServer", "Add a natted server", new ImageIcon("data/images/32x32/nattedserver.png"));
 		
@@ -95,6 +97,8 @@ public class GPanel extends JPanel {
 		verticalToolbar.add( nattedServer );
 		verticalToolbar.addSeparator();
 		verticalToolbar.add( router );
+		verticalToolbar.addSeparator();
+		verticalToolbar.add( firewall );
 		verticalToolbar.addSeparator();
 		verticalToolbar.add( collisionDomain );
 		verticalToolbar.addSeparator();
@@ -177,6 +181,13 @@ public class GPanel extends JPanel {
 			}
 		});
 		
+		firewall.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.addNode(ItemType.FIREWALL);
+			}
+		});
+		
 		server.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -209,6 +220,7 @@ public class GPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("add link");
+				// TODO add link
 			}
 		});
 		
@@ -222,7 +234,7 @@ public class GPanel extends JPanel {
 		area.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("create area");
+				canvas.addNode(ItemType.AREA);
 			}
 		});
 		
