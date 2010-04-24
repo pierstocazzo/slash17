@@ -1,10 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.PageAttributes.OrientationRequestedType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,9 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.LookAndFeel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager.LookAndFeelInfo;
+
+import tests.GUITest;
 
 public class GPanel extends JPanel {
 	private static final long serialVersionUID = -8438576029794021570L;
@@ -53,6 +49,8 @@ public class GPanel extends JPanel {
 		createStateBar();
 		
 		setupListeners();
+		
+		add(new GUITest(), BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
