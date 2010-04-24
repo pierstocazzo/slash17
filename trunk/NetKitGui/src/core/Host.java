@@ -2,7 +2,7 @@ package core;
 
 import java.util.HashMap;
 
-import common.HostType;
+import common.ItemType;
 
 /**
  * Class representing a generic Host (e.g. router, firewall, pc etc)
@@ -15,7 +15,7 @@ public class Host {
 	protected String id;
 	
 	/** host's type */
-	protected HostType type;
+	protected ItemType type;
 	
 	/** host's network interfaces */
 	protected HashMap<String, Interface> interfaces;
@@ -25,7 +25,7 @@ public class Host {
 	 * @param id
 	 * @param type
 	 */
-	public Host(String id, HostType type) {
+	public Host(String id, ItemType type) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -70,11 +70,11 @@ public class Host {
 		this.id = id;
 	}
 
-	public HostType getType() {
+	public ItemType getType() {
 		return type;
 	}
 
-	public void setType(HostType type) {
+	public void setType(ItemType type) {
 		this.type = type;
 	}
 

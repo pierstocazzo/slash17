@@ -3,7 +3,7 @@ package core;
 import java.util.Collection;
 import java.util.HashMap;
 
-import common.HostType;
+import common.ItemType;
 
 public class Topology {
 	
@@ -21,8 +21,8 @@ public class Topology {
 	}
 	
 	private void createTopology() {
-		Host pc = new Host("pc", HostType.PC);
-		Host router = new Host("r", HostType.ROUTER);
+		Host pc = new Host("pc", ItemType.PC);
+		Host router = new Host("r", ItemType.ROUTER);
 		
 		hosts.put( pc.id, pc );
 		hosts.put( router.id, router );

@@ -8,7 +8,7 @@ public class GLink extends PPath {
 	private static final long serialVersionUID = 1L;
 	
 	GNode node;
-	GCollisionDomain collisionDomain;
+	GNode collisionDomain;
 	
 	/** 
 	 * Create a graph edge between two node
@@ -16,7 +16,7 @@ public class GLink extends PPath {
 	 * @param host
 	 * @param cd
 	 */
-	public GLink( GNode host, GCollisionDomain cd ) {
+	public GLink( GNode host, GNode cd ) {
 		this.node = host;
 		this.collisionDomain = cd;
 		
@@ -35,7 +35,7 @@ public class GLink extends PPath {
 		return node;
 	}
 	
-	public GCollisionDomain getCollisionDomain() {
+	public GNode getCollisionDomain() {
 		return collisionDomain;
 	}
 }
