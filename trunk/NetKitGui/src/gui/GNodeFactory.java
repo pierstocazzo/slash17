@@ -5,12 +5,12 @@ import common.ItemType;
 public class GNodeFactory {
 
 	private static final String serverImage = "data/images/128x128/server.png";
-	private static final String nattedServerImage = "data/images/128x128/server.png";
-	private static final String pcImage = "data/images/128x128/pc.png";
-	private static final String routerImage = "data/images/128x128/router.png";
-	private static final String firewallImage = "data/images/128x128/firewall.png";
-	private static final String tapImage = "data/images/128x128/tap.png";
-	private static final String collisionDomainImage = "data/images/128x128/cloud.png";
+	private static final String nattedServerImage = "data/images/images/nattedserver.png";
+	private static final String pcImage = "data/images/images/pc.png";
+	private static final String routerImage = "data/images/images/router.png";
+	private static final String firewallImage = "data/images/images/firewall.png";
+	private static final String tapImage = "data/images/images/tap.png";
+	private static final String collisionDomainImage = "data/images/images/collisionDomain.png";
 	
 	private static int serverCounter = 0;
 	private static int nattedServerCounter = 0;
