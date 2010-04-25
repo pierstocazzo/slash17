@@ -4,7 +4,7 @@ import common.ItemType;
 
 public class GNodeFactory {
 
-	private static final String serverImage = "data/images/128x128/server.png";
+	private static final String serverImage = "data/images/images/server.png";
 	private static final String nattedServerImage = "data/images/images/nattedserver.png";
 	private static final String pcImage = "data/images/images/pc.png";
 	private static final String routerImage = "data/images/images/router.png";
