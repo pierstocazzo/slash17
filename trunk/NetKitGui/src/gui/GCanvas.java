@@ -6,14 +6,10 @@ import input.DefaultInputHandler;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Random;
 
 import common.ItemType;
 
-import core.Host;
-import core.Interface;
-import core.Node;
-import core.Topology;
+import core.Project;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 
@@ -22,7 +18,7 @@ public class GCanvas extends PCanvas {
 	
 	PLayer mainLayer;
 	PLayer secondLayer;
-	Topology topology;
+	Project topology;
 	LinkedList<GNode> hosts;
 	LinkedList<GNode> collisionDomains;
 	
@@ -33,7 +29,7 @@ public class GCanvas extends PCanvas {
 	AddInputHandler addHandler;
 	
 	public GCanvas( GPanel panel ) {
-		this.topology = new Topology();
+		this.topology = new Project();
 		this.panel = panel;
 		hosts = new LinkedList<GNode>();
 		collisionDomains = new LinkedList<GNode>();
@@ -93,16 +89,16 @@ public class GCanvas extends PCanvas {
 		switchToAddHandler();
 	}
 
-	private GNode searchCollisionDomain(String cdName) {
-		Iterator<GNode> it = collisionDomains.iterator();
-		while( it.hasNext() ) {
-			GNode cd = it.next();
-			if( cd.getName().equals(cdName)) {
-				return cd;
-			}
-		}
-		return null;
-	}
+//	private GNode searchCollisionDomain(String cdName) {
+//		Iterator<GNode> it = collisionDomains.iterator();
+//		while( it.hasNext() ) {
+//			GNode cd = it.next();
+//			if( cd.getName().equals(cdName)) {
+//				return cd;
+//			}
+//		}
+//		return null;
+//	}
 
 	public void addNode( GNode node, Point2D pos ) {
 		node.centerFullBoundsOnPoint( pos.getX(), pos.getY() );

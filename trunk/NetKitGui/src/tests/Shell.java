@@ -39,7 +39,7 @@ public class Shell {
 			if( currentDir == null ) 
 				currentDir = new File("/home/sal/lab");
 			try {
-				proc = rnt.exec(command, null, currentDir);
+				proc = rnt.exec("/bin/bash", null, currentDir);
 				out = new PrintWriter( proc.getOutputStream() );
 				in = new BufferedReader( new InputStreamReader( proc.getInputStream() ) );
 			} catch (IOException e) {
