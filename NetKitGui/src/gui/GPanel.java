@@ -7,7 +7,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -69,47 +68,37 @@ public class GPanel extends JPanel {
 		verticalToolbar = new JToolBar();
 		verticalToolbar.setOrientation(JToolBar.VERTICAL);
 		
-		router = new GButton("Router", "Add a router", new ImageIcon("data/images/32x32/router.png"));
+		router = new GButton("Router", "Add a router", "data/images/icon/router_icon.png");
 		
-		server = new GButton("Server", "Add a server", new ImageIcon("data/images/32x32/server.png"));
+		server = new GButton("Server", "Add a server", "data/images/icon/server_icon.png");
 
-		firewall = new GButton("Firewall", "Add a firewall", new ImageIcon("data/images/32x32/firewall.png"));
+		firewall = new GButton("Firewall", "Add a firewall", "data/images/icon/firewall_icon.png");
 		
-		nattedServer = new GButton("NatServer", "Add a natted server", new ImageIcon("data/images/32x32/nattedserver.png"));
+		nattedServer = new GButton("NatServer", "Add a natted server", "data/images/icon/nattedserver_icon.png");
 		
-		pc = new GButton("PC", "Add a pc", new ImageIcon("data/images/32x32/system.png"));
+		pc = new GButton("PC", "Add a pc", "data/images/icon/pc_icon.png");
 		
-		collisionDomain = new GButton("Domain", "Add a collision domain", new ImageIcon("data/images/32x32/cloud.png"));
+		collisionDomain = new GButton("Domain", "Add a collision domain", "data/images/icon/collisionDomain_icon.png");
 		
-		area = new GButton("Area", "Create a Network Area", new ImageIcon("data/images/32x32/cloud.png"));
+		area = new GButton("Area", "Create a Network Area", "data/images/icon/area_icon.png");
 		
-		tap = new GButton("Tap", "Add TAP interface", new ImageIcon("data/images/32x32/tap.png"));
+		tap = new GButton("Tap", "Add TAP interface", "data/images/icon/tap_icon.png");
 		
-		link = new GButton("Link", "Add a link", new ImageIcon("data/images/32x32/rj45_cable.png"));
+		link = new GButton("Link", "Add a link", "data/images/icon/link_icon.png");
 		
-		delete = new GButton("Delete", "Delete a node", new ImageIcon("data/images/32x32/delete.png"));
+		delete = new GButton("Delete", "Delete a node", "data/images/icon/delete_icon.png");
 		
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( pc );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( server );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( nattedServer );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( router );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( firewall );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( collisionDomain );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( area );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( tap );
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( link );
 		verticalToolbar.addSeparator();
 		verticalToolbar.add( delete );
-		verticalToolbar.addSeparator();
 		
 		verticalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.lightGray));
 		
@@ -120,21 +109,24 @@ public class GPanel extends JPanel {
 		// creating toolbar
 		toolbar = new JToolBar();
 		
-		newFile = new GButton("New", "Create a new Project", new ImageIcon("data/images/32x32/new.png"), true);
+		newFile = new GButton("New", "Create a new Project", "data/images/icon/new_icon.png");
 		
-		open = new GButton("Open", "Open a Project", new ImageIcon("data/images/32x32/open.png"), true);
+		open = new GButton("Open", "Open a Project", "data/images/icon/open_icon.png");
 		
-		save = new GButton("Save", "Save the Project", new ImageIcon("data/images/32x32/floppy.png"), true);
+		save = new GButton("Save", "Save the Project", "data/images/icon/save_icon.png");
 		
-		start = new GButton("Start", "Start the lab", new ImageIcon("data/images/32x32/run.png"), true);
+		start = new GButton("Start", "Start the lab", "data/images/icon/start_icon.png");
 		
-		stop = new GButton("Stop", "Stop the lab", new ImageIcon("data/images/32x32/exit.png"), true);
+		stop = new GButton("Stop", "Stop the lab", "data/images/icon/stop_icon.png");
 		
 		toolbar.add( newFile );
+		toolbar.addSeparator();
 		toolbar.add( open );
+		toolbar.addSeparator();
 		toolbar.add( save );
 		toolbar.addSeparator();
 		toolbar.add( start );
+		toolbar.addSeparator();
 		toolbar.add( stop );
 		
 		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
