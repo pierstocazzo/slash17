@@ -88,6 +88,7 @@ public class GPanel extends JPanel {
 		
 		delete = new GButton("Delete", "Delete a node", "data/images/icon/delete_icon.png");
 		
+		verticalToolbar.addSeparator();
 		verticalToolbar.add( pc );
 		verticalToolbar.add( server );
 		verticalToolbar.add( nattedServer );
