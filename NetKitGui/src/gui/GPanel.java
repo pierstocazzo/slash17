@@ -125,6 +125,7 @@ public class GPanel extends JPanel {
 		toolbar.addSeparator();
 		toolbar.add( save );
 		toolbar.addSeparator();
+		toolbar.addSeparator();
 		toolbar.add( start );
 		toolbar.addSeparator();
 		toolbar.add( stop );
