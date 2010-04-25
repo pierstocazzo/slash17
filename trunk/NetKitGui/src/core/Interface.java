@@ -55,9 +55,10 @@ public class Interface {
 		this.host = host;
 	}
 
-	public Interface( String id, CollisionDomain collisionDomain ) {
+	public Interface( String id, CollisionDomain collisionDomain, Host host ) {
 		this.id = id;
 		this.collisionDomain = collisionDomain;
+		this.host = host;
 	}
 	
 	
