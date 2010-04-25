@@ -9,26 +9,18 @@ import common.ItemType;
  * 
  * @author sal
  */
-public class Host {
+public class Host extends Node {
 
-	/** host's id */
-	protected String id;
-	
-	/** host's type */
-	protected ItemType type;
-	
 	/** host's network interfaces */
 	protected HashMap<String, Interface> interfaces;
 
-	/** Create an Host
+	/** Create a Host
 	 * 
-	 * @param id
+	 * @param name
 	 * @param type
 	 */
-	public Host(String id, ItemType type) {
-		super();
-		this.id = id;
-		this.type = type;
+	public Host(String name, ItemType type) {
+		super(name, type);
 		this.interfaces = new HashMap<String, Interface>();
 	}
 	
@@ -62,22 +54,6 @@ public class Host {
 	 * Getter and Setter methods
 	 *********************************/
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public ItemType getType() {
-		return type;
-	}
-
-	public void setType(ItemType type) {
-		this.type = type;
-	}
-
 	public HashMap<String, Interface> getInterfaces() {
 		return interfaces;
 	}

@@ -12,6 +12,7 @@ import common.ItemType;
 
 import core.Host;
 import core.Interface;
+import core.Node;
 import core.Topology;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
@@ -51,35 +52,35 @@ public class GCanvas extends PCanvas {
 		defaultHandler = new DefaultInputHandler();
 		mainLayer.addInputEventListener(defaultHandler);
 		
-		for( Host host : topology.getHosts() ) {
-			Random r = new Random();
-			int x = r.nextInt(700);
-			int y = r.nextInt(600);
-			GNode gh = GNodeFactory.createGNode(host.getType(), x, y);
-			hosts.add(gh);
-			mainLayer.addChild(gh);
-			
-			for( Interface i : host.getInterfaces().values() ) {
-				String cdName = i.getCollisionDomain().getName();
-				
-				GNode cd = searchCollisionDomain( cdName );
-				
-				if( cd == null ) {
-					// sistemare in modo intelligente vicino all'host
-					cd = GNodeFactory.createGNode( ItemType.COLLISIONDOMAIN, x + 400, y );
-					i.getCollisionDomain().setName( cd.getName() );
-					collisionDomains.add(cd);
-					mainLayer.addChild(cd);
-				} else {
-					// sposta l'host in modo che sia vicino al dominio di collisione
-				}
-				
-				GLink l = new GLink(gh, cd);
-				gh.addLink(l);
-				cd.addLink(l);
-				secondLayer.addChild(l);
-			}
-		}
+//		for( Node node : topology.getNodes() ) {
+//			Random r = new Random();
+//			int x = r.nextInt(700);
+//			int y = r.nextInt(600);
+//			GNode gh = GNodeFactory.createGNode(node.getType(), x, y);
+//			hosts.add(gh);
+//			mainLayer.addChild(gh);
+//			
+//			for( Interface i : node.getInterfaces().values() ) {
+//				String cdName = i.getCollisionDomain().getName();
+//				
+//				GNode cd = searchCollisionDomain( cdName );
+//				
+//				if( cd == null ) {
+//					// sistemare in modo intelligente vicino all'host
+//					cd = GNodeFactory.createGNode( ItemType.COLLISIONDOMAIN, x + 400, y );
+//					i.getCollisionDomain().setName( cd.getName() );
+//					collisionDomains.add(cd);
+//					mainLayer.addChild(cd);
+//				} else {
+//					// sposta l'host in modo che sia vicino al dominio di collisione
+//				}
+//				
+//				GLink l = new GLink(gh, cd);
+//				gh.addLink(l);
+//				cd.addLink(l);
+//				secondLayer.addChild(l);
+//			}
+//		}
 	}
 
 	public void addNode( ItemType type ) {

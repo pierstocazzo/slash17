@@ -2,16 +2,21 @@ package common;
 
 public class IpAddress {
 	
+	public static final String maskRx = 
+		"(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\." +
+		"((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}" + 
+		"(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[0-9])"; //TODO
+
 	/** ip address string */
 	protected String ip;
 	
-	private static final String regExp = 
+	public static final String ipRx = 
 		"(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\." +
 		"((2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}" + 
 		"(2[0-5][0-5]|1[0-9][0-9]|[1-9][0-9]|[0-9])";
 	
 	public IpAddress( String ip ) {
-		if( ip.matches(regExp) ) {
+		if( ip.matches(ipRx) ) {
 			this.ip = ip;
 		} else {
 			System.err.println("Ip format incorrect: " + ip);
