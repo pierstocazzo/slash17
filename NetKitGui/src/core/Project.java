@@ -5,16 +5,37 @@ import java.util.HashMap;
 
 import common.ItemType;
 
-public class Topology {
+public class Project {
+	
+	/** project's name */
+	protected String name;
+	
+	/** project's description */
+	protected String description;
+	
+	/** project's author */
+	protected String author;
+	
+	/** project's directory */
+	protected String directory;
+	
+	/** project's version */
+	protected String version;
+	
+	/** author's email */
+	protected String email;
+	
+	/** web site */
+	protected String web;
 	
 	/** Hosts */
-	protected HashMap<String, Node> nodes;
+	protected HashMap<String, Host> nodes;
 	
 	/** Collision Domains */
 	protected HashMap<String, CollisionDomain> collisionDomains;
 	
-	public Topology() {
-		nodes = new HashMap<String, Node>();
+	public Project() {
+		nodes = new HashMap<String, Host>();
 		collisionDomains = new HashMap<String, CollisionDomain>();
 		
 		createTopology();
@@ -54,7 +75,7 @@ public class Topology {
 		tap.addInterface( new Interface("eth0", FT, tap));
 	}
 	
-	public Collection<Node> getNodes() {
+	public Collection<Host> getHosts() {
 		return nodes.values();
 	}
 	

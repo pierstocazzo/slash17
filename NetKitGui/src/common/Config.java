@@ -11,4 +11,6 @@ public class Config {
 	public static void setExitWithoutAsking( boolean bool ) {
 		exitWithoutAsking = bool;
 	}
+	
+	// TODO read configuration from file
 }
