@@ -26,32 +26,32 @@ public class GNodeFactory {
 		
 		switch (type) {
 		case SERVER:
-			node = new GNode( getNextName(type), x, y, serverImage );
+			node = new GNode( getNextName(type), x, y, serverImage, ItemType.SERVER );
 			break;
 		case FIREWALL:
-			node = new GNode( getNextName(type), x, y, firewallImage );
+			node = new GNode( getNextName(type), x, y, firewallImage, ItemType.FIREWALL );
 			break;
 		case NATTEDSERVER:
-			node = new GNode( getNextName(type), x, y, nattedServerImage );
+			node = new GNode( getNextName(type), x, y, nattedServerImage, ItemType.NATTEDSERVER );
 			break;
 		case PC:
-			node = new GNode( getNextName(type), x, y, pcImage );
+			node = new GNode( getNextName(type), x, y, pcImage, ItemType.PC );
 			break;
 		case ROUTER:
-			node = new GNode( getNextName(type), x, y, routerImage );
+			node = new GNode( getNextName(type), x, y, routerImage, ItemType.ROUTER );
 			break;
 		case TAP:
-			node = new GNode( getNextName(type), x, y, tapImage );
+			node = new GNode( getNextName(type), x, y, tapImage, ItemType.TAP );
 			break;
 		case COLLISIONDOMAIN:
-			node = new GNode( getNextName(type), x, y, collisionDomainImage );
+			node = new GNode( getNextName(type), x, y, collisionDomainImage, ItemType.COLLISIONDOMAIN );
 			break;
 		case AREA:
-			node = new GNode( getNextName(type), x, y, collisionDomainImage );
+			node = new GNode( getNextName(type), x, y, collisionDomainImage, ItemType.AREA );
 			break;
 		case LINK:
 			// TODO case link
-			node = new GNode( getNextName(type), x, y, collisionDomainImage );
+			node = new GNode( getNextName(type), x, y, collisionDomainImage, ItemType.LINK );
 			break;
 		}
 		
@@ -63,32 +63,32 @@ public class GNodeFactory {
 		
 		switch (type) {
 		case SERVER:
-			node = new GNode( name, x, y, serverImage );
+			node = new GNode( name, x, y, serverImage, ItemType.SERVER );
 			break;
 		case FIREWALL:
-			node = new GNode( name, x, y, firewallImage );
+			node = new GNode( name, x, y, firewallImage, ItemType.FIREWALL );
 			break;
 		case NATTEDSERVER:
-			node = new GNode( name, x, y, nattedServerImage );
+			node = new GNode( name, x, y, nattedServerImage, ItemType.NATTEDSERVER );
 			break;
 		case PC:
-			node = new GNode( name, x, y, pcImage );
+			node = new GNode( name, x, y, pcImage, ItemType.PC );
 			break;
 		case ROUTER:
-			node = new GNode( name, x, y, routerImage );
+			node = new GNode( name, x, y, routerImage, ItemType.ROUTER );
 			break;
 		case TAP:
-			node = new GNode( name, x, y, tapImage );
+			node = new GNode( name, x, y, tapImage, ItemType.TAP );
 			break;
 		case COLLISIONDOMAIN:
-			node = new GNode( name, x, y, collisionDomainImage );
+			node = new GNode( name, x, y, collisionDomainImage, ItemType.COLLISIONDOMAIN );
 			break;
 		case AREA:
-			node = new GNode( name, x, y, collisionDomainImage );
+			node = new GNode( name, x, y, collisionDomainImage, ItemType.AREA );
 			break;
 		case LINK:
 			// TODO case link
-			node = new GNode( name, x, y, collisionDomainImage );
+			node = new GNode( name, x, y, collisionDomainImage, ItemType.LINK );
 			break;
 		}
 		

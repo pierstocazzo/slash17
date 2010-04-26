@@ -2,6 +2,8 @@ package gui;
 
 import java.util.ArrayList;
 
+import common.ItemType;
+
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PText;
 
@@ -16,10 +18,13 @@ public class GNode extends PImage {
 	
 	protected PText text;
 	
-	public GNode( String name, double x, double y, String image ) {
+	protected ItemType type;
+	
+	public GNode( String name, double x, double y, String image, ItemType type ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
 		this.image = image;
+		this.type = type;
 
 		setName(name);
 		
@@ -60,5 +65,13 @@ public class GNode extends PImage {
 	
 	public String getImageName() {
 		return image;
+	}
+
+	public ItemType getType() {
+		return type;
+	}
+
+	public void setType(ItemType type) {
+		this.type = type;
 	}
 }
