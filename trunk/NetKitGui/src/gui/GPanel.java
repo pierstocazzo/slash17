@@ -90,7 +90,6 @@ public class GPanel extends JPanel {
 		
 		delete = new GButton("Delete", "Delete a node", "data/images/icon/delete_icon.png");
 		
-		verticalToolbar.addSeparator();
 		verticalToolbar.add( pc );
 		verticalToolbar.add( server );
 		verticalToolbar.add( nattedServer );
@@ -123,15 +122,12 @@ public class GPanel extends JPanel {
 		stop = new GButton("Stop", "Stop the lab", "data/images/icon/stop_icon.png");
 		
 		toolbar.add( newFile );
-		toolbar.addSeparator();
 		toolbar.add( open );
-		toolbar.addSeparator();
 		toolbar.add( save );
 		toolbar.addSeparator();
-		toolbar.addSeparator();
 		toolbar.add( start );
-		toolbar.addSeparator();
 		toolbar.add( stop );
+		toolbar.setFloatable(false);
 		
 		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 		

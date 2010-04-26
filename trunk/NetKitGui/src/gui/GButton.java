@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Dimension;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
@@ -18,16 +20,12 @@ public class GButton extends JButton {
 		setVerticalTextPosition(SwingConstants.BOTTOM);
 		setHorizontalTextPosition(SwingConstants.CENTER);
 		
-		setBorder(null);
-		setOpaque(false);
-		setContentAreaFilled(false);
-
-//		Dimension size = new Dimension(60,60);
-//		
-//		setPreferredSize(size);
-//		setMaximumSize(size);
-//		setMinimumSize(size);
-//		setSize(size);
+		Dimension size = new Dimension(60,60);
+		
+		setPreferredSize(size);
+		setMaximumSize(size);
+		setMinimumSize(size);
+		setSize(size);
 		
 		setAlignmentX(JToolBar.CENTER_ALIGNMENT);
 		setAlignmentY(JToolBar.CENTER_ALIGNMENT);

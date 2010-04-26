@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Checkbox;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,13 +13,18 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URI;
 
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 public class GFrame extends JFrame {
 	private static final long serialVersionUID = 3661490807594270819L;
@@ -45,7 +51,7 @@ public class GFrame extends JFrame {
 	JMenuItem addAreaItem;
 	
 	JMenu helpMenu;
-	JMenuItem creditsItem;
+	JMenuItem infoItem;
 	
 	boolean dontAsk;
 	
@@ -55,6 +61,20 @@ public class GFrame extends JFrame {
 		super("NetKit GUI");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
+//		UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels(); 
+//		for (int i=0; i<info.length; i++) { 
+//			String humanReadableName = info[i].getName(); 
+//			String className = info[i].getClassName(); 
+//			System.out.println(humanReadableName + " - " + className);
+//		}
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+		} catch (Exception e) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"); 
+			} catch (Exception e1) {
+			}
+		} 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setSize( screenSize );
@@ -111,9 +131,9 @@ public class GFrame extends JFrame {
 		
 		// creating help menu
 		helpMenu = new JMenu("Help");
-		creditsItem = new JMenuItem("Credits");
+		infoItem = new JMenuItem("Info");
 		
-		helpMenu.add(creditsItem);
+		helpMenu.add(infoItem);
 		menuBar.add(helpMenu);
 		
 		setJMenuBar(menuBar);
@@ -132,6 +152,32 @@ public class GFrame extends JFrame {
 			@Override
 			public void actionPerformed( ActionEvent e ) {
 				closeApplication();
+			}
+		});
+		
+		infoItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String credits = "<html><center><b><font size=6>NetKit GUI</font></b></center><br>" +
+						"Released under GNU General Public License version 3. <a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GPLv3</a><br><br>" +
+						"© Copyright 2010 <i>Loria Salvatore</i><br>" +
+						"Visit <a href=http://slash17.googlecode.com>http://slash17.googlecode.com</a></html>";
+				
+				JEditorPane editorPane = new JEditorPane ("text/html", credits);
+				editorPane.setEditable (false);
+
+				editorPane.addHyperlinkListener (new HyperlinkListener () {
+					public void hyperlinkUpdate (HyperlinkEvent evt) {
+						if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+							try {
+								Desktop.getDesktop().browse(new URI(evt.getDescription()));
+							} catch (Exception e) {
+							}
+						}
+					}
+				});
+
+				JOptionPane.showMessageDialog(mainPanel, editorPane, "Info", JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
 		
