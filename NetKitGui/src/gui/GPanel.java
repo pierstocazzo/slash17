@@ -171,42 +171,42 @@ public class GPanel extends JPanel {
 		router.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.ROUTER);
+				canvas.adding(ItemType.ROUTER);
 			}
 		});
 		
 		firewall.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.FIREWALL);
+				canvas.adding(ItemType.FIREWALL);
 			}
 		});
 		
 		server.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.SERVER);
+				canvas.adding(ItemType.SERVER);
 			}
 		});
 		
 		nattedServer.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.NATTEDSERVER);
+				canvas.adding(ItemType.NATTEDSERVER);
 			}
 		});
 		
 		pc.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.PC);
+				canvas.adding(ItemType.PC);
 			}
 		});
 		
 		collisionDomain.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.COLLISIONDOMAIN);
+				canvas.adding(ItemType.COLLISIONDOMAIN);
 			}
 		});
 		
@@ -221,21 +221,21 @@ public class GPanel extends JPanel {
 		tap.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.TAP);
+				canvas.adding(ItemType.TAP);
 			}
 		});
 		
 		area.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				canvas.addNode(ItemType.AREA);
+				canvas.adding(ItemType.AREA);
 			}
 		});
 		
 		delete.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("delete");
+				canvas.deleting();
 			}
 		});
 		

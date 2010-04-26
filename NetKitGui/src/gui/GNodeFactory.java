@@ -21,7 +21,7 @@ public class GNodeFactory {
 	private static int collisionDomainCounter = 0;
 	
 	
-	public static GNode createGNode( ItemType type, int x, int y ) {
+	public static GNode createGNode( ItemType type, double x, double y ) {
 		GNode node = null;
 		
 		switch (type) {

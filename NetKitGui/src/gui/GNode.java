@@ -8,12 +8,6 @@ import edu.umd.cs.piccolo.nodes.PText;
 public class GNode extends PImage {
 	private static final long serialVersionUID = 1L;
 
-	public static final String SELECTED = "_selected";
-	public static final String DELETED = "_deleted";
-	public static final String STARTED = "_started";
-	public static final String STARTEDSELECTED = "_started_selected";
-	public static final String DEFAULT = "";
-	
 	protected String image;
 	
 	protected String name;
@@ -22,7 +16,7 @@ public class GNode extends PImage {
 	
 	protected PText text;
 	
-	public GNode( String name, int x, int y, String image ) {
+	public GNode( String name, double x, double y, String image ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
 		this.image = image;
@@ -39,12 +33,6 @@ public class GNode extends PImage {
 		}
 	}
 		
-	public void setImage( String type ) {
-		int index = image.lastIndexOf(".");
-		String newImage = image.substring( 0, index ) + type + image.substring( index );
-		super.setImage( newImage );
-	}
-	
 	public GLink getLink( int index ) {
 		return links.get( index );
 	}
@@ -68,5 +56,9 @@ public class GNode extends PImage {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getImageName() {
+		return image;
 	}
 }
