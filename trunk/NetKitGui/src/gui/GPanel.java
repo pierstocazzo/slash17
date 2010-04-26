@@ -213,8 +213,7 @@ public class GPanel extends JPanel {
 		link.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("add link");
-				// TODO add link
+				canvas.adding(ItemType.LINK);
 			}
 		});
 		

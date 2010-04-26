@@ -1,6 +1,7 @@
 package gui;
 
-import gui.input.AddInputHandler;
+import gui.input.AddLinkInputHandler;
+import gui.input.AddNodeInputHandler;
 import gui.input.DefaultInputHandler;
 import gui.input.DeleteInputHandler;
 
@@ -13,6 +14,7 @@ import core.Project;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
+import edu.umd.cs.piccolo.nodes.PPath;
 
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +29,8 @@ public class GCanvas extends PCanvas {
 	
 	DefaultInputHandler defaultHandler;
 	DeleteInputHandler deleteHandler;
-	AddInputHandler addHandler;
+	AddNodeInputHandler addNodeHandler;
+	AddLinkInputHandler addLinkHandler;
 	
 	PBasicInputEventHandler currentHandler;
 	
@@ -50,6 +53,7 @@ public class GCanvas extends PCanvas {
 		
 		defaultHandler = new DefaultInputHandler();
 		deleteHandler = new DeleteInputHandler(this);
+		addLinkHandler = new AddLinkInputHandler(this);
 		
 		switchToDefaultHandler();
 		
@@ -87,20 +91,31 @@ public class GCanvas extends PCanvas {
 	public void adding( ItemType type ) {
 		// TODO aggiornamento logica
 
-		// remove previously created addhandler
-		if( currentHandler.equals(addHandler) ) {
-			removeInputEventListener(addHandler);
+		if( type != ItemType.LINK ) {
+			// remove previously created addhandler
+			if( currentHandler.equals(addNodeHandler) ) {
+				removeInputEventListener(addNodeHandler);
+			}
+			
+			// create a new addhandler for this node type
+			addNodeHandler = new AddNodeInputHandler(this, type);
 		}
 		
-		// create a new addhandler for this node type
-		addHandler = new AddInputHandler(this, type);
-		
-		switchToAddHandler();
+		switchToAddHandler( type );
 	}
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
 		GNode node = GNodeFactory.createGNode( nodeType, pos.getX(), pos.getY() );
 		mainLayer.addChild(node);
+		
+		switchToDefaultHandler();
+	}
+	
+	public void addLink( GNode node, GNode collisionDomain ) {
+		GLink link = new GLink( node, collisionDomain );
+		node.addLink(link);
+		collisionDomain.addLink(link);
+		secondLayer.addChild(link);
 		
 		switchToDefaultHandler();
 	}
@@ -117,11 +132,19 @@ public class GCanvas extends PCanvas {
 		}
 	}
 
-	private void switchToAddHandler() {
-		if( !currentHandler.equals(addHandler) ) {
-			mainLayer.removeInputEventListener(defaultHandler);
-			addInputEventListener(addHandler);
-			currentHandler = addHandler;
+	private void switchToAddHandler( ItemType type ) {
+		if( type == ItemType.LINK ) {
+			if( !currentHandler.equals(addLinkHandler) ) {
+				mainLayer.removeInputEventListener(defaultHandler);
+				addInputEventListener(addLinkHandler);
+				currentHandler = addLinkHandler;
+			}
+		} else {
+			if( !currentHandler.equals(addNodeHandler) ) {
+				mainLayer.removeInputEventListener(defaultHandler);
+				addInputEventListener(addNodeHandler);
+				currentHandler = addNodeHandler;
+			}
 		}
 	}
 	
@@ -134,12 +157,24 @@ public class GCanvas extends PCanvas {
 	}
 	
 	private void switchToDefaultHandler() {
-		removeInputEventListener(addHandler);
+		removeInputEventListener(addNodeHandler);
+		removeInputEventListener(addLinkHandler);
 		mainLayer.removeInputEventListener(deleteHandler);
 		mainLayer.addInputEventListener(defaultHandler);
 		currentHandler = defaultHandler;
 	}
-	
+
+	public void addLine( PPath line ) {
+		secondLayer.addChild(line);
+	}
+
+	public void deleteLink(PPath link) {
+		try {
+			secondLayer.removeChild(link);
+		} catch (Exception e) {
+		}
+	}
+
 	
 //	private GNode searchCollisionDomain(String cdName) {
 //	Iterator<GNode> it = collisionDomains.iterator();
