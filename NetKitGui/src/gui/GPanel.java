@@ -153,6 +153,7 @@ public class GPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("NewProject");
+				Workspace.newProject( frame );
 			}
 		});
 		
