@@ -1,5 +1,6 @@
 package gui.input;
 
+import util.Util;
 import edu.umd.cs.piccolo.event.PDragEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import gui.GNode;
@@ -9,8 +10,10 @@ public class DefaultInputHandler extends PDragEventHandler {
 	public void mouseClicked(PInputEvent event) {
 		super.mouseClicked(event);
 		
-		GNode node = (GNode) event.getPickedNode();
-		node.setImage(GNode.SELECTED);
+		try {
+			GNode node = (GNode) event.getPickedNode();
+			node.setImage( Util.getImageIcon(node.getImageName(), Util.SELECTED).getImage() );
+		} catch (Exception e) {}
 	}
 	
 	@Override
@@ -19,7 +22,7 @@ public class DefaultInputHandler extends PDragEventHandler {
 		
 		try {
 			GNode node = (GNode) event.getPickedNode();
-			node.setImage(GNode.SELECTED);
+			node.setImage( Util.getImageIcon(node.getImageName(), Util.SELECTED).getImage() );
 		} catch (Exception e) {}
 	}
 	
@@ -45,7 +48,7 @@ public class DefaultInputHandler extends PDragEventHandler {
 		
 		try {
 			GNode node = (GNode) event.getPickedNode();
-			node.setImage(GNode.DEFAULT);
+			node.setImage( Util.getImageIcon(node.getImageName(), Util.DEFAULT).getImage() );
 		} catch (Exception e) {}
 	}
 }

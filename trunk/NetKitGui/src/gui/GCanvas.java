@@ -2,6 +2,7 @@ package gui;
 
 import gui.input.AddInputHandler;
 import gui.input.DefaultInputHandler;
+import gui.input.DeleteInputHandler;
 
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import common.ItemType;
 import core.Project;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
@@ -24,8 +26,10 @@ public class GCanvas extends PCanvas {
 	GPanel panel;
 	
 	DefaultInputHandler defaultHandler;
-
+	DeleteInputHandler deleteHandler;
 	AddInputHandler addHandler;
+	
+	PBasicInputEventHandler currentHandler;
 	
 	public GCanvas( GPanel panel ) {
 		this.topology = new Project();
@@ -42,10 +46,12 @@ public class GCanvas extends PCanvas {
 		mainLayer.addChild(secondLayer);
 		
 		getZoomEventHandler().setMaxScale(1.4);
-		getZoomEventHandler().setMinScale(0.8);
+		getZoomEventHandler().setMinScale(0.4);
 		
 		defaultHandler = new DefaultInputHandler();
-		mainLayer.addInputEventListener(defaultHandler);
+		deleteHandler = new DeleteInputHandler(this);
+		
+		switchToDefaultHandler();
 		
 //		for( Node node : topology.getNodes() ) {
 //			Random r = new Random();
@@ -78,41 +84,71 @@ public class GCanvas extends PCanvas {
 //		}
 	}
 
-	public void addNode( ItemType type ) {
+	public void adding( ItemType type ) {
 		// TODO aggiornamento logica
-		GNode node = GNodeFactory.createGNode(type, 0, 0);
-		hosts.add(node);
+
+		// remove previously created addhandler
+		if( currentHandler.equals(addHandler) ) {
+			removeInputEventListener(addHandler);
+		}
 		
-		addHandler = new AddInputHandler(this, node);
+		// create a new addhandler for this node type
+		addHandler = new AddInputHandler(this, type);
 		
 		switchToAddHandler();
 	}
 
-//	private GNode searchCollisionDomain(String cdName) {
-//		Iterator<GNode> it = collisionDomains.iterator();
-//		while( it.hasNext() ) {
-//			GNode cd = it.next();
-//			if( cd.getName().equals(cdName)) {
-//				return cd;
-//			}
-//		}
-//		return null;
-//	}
-
-	public void addNode( GNode node, Point2D pos ) {
-		node.centerFullBoundsOnPoint( pos.getX(), pos.getY() );
+	public void addNode( ItemType nodeType, Point2D pos ) {
+		GNode node = GNodeFactory.createGNode( nodeType, pos.getX(), pos.getY() );
 		mainLayer.addChild(node);
 		
 		switchToDefaultHandler();
 	}
 	
+	public void deleting() {
+		switchToDeleteHandler();
+	}
+
+	public void deleteNode(GNode node) {
+		try {
+			mainLayer.removeChild(node);
+			switchToDefaultHandler();
+		} catch (Exception e) {
+		}
+	}
+
 	private void switchToAddHandler() {
-		mainLayer.removeInputEventListener(defaultHandler);
-		this.addInputEventListener(addHandler);
+		if( !currentHandler.equals(addHandler) ) {
+			mainLayer.removeInputEventListener(defaultHandler);
+			addInputEventListener(addHandler);
+			currentHandler = addHandler;
+		}
+	}
+	
+	private void switchToDeleteHandler() {
+		if( !currentHandler.equals(deleteHandler) ) {
+			mainLayer.removeInputEventListener(defaultHandler);
+			mainLayer.addInputEventListener(deleteHandler);
+			currentHandler = deleteHandler;
+		}
 	}
 	
 	private void switchToDefaultHandler() {
+		removeInputEventListener(addHandler);
+		mainLayer.removeInputEventListener(deleteHandler);
 		mainLayer.addInputEventListener(defaultHandler);
-		this.removeInputEventListener(addHandler);
+		currentHandler = defaultHandler;
 	}
+	
+	
+//	private GNode searchCollisionDomain(String cdName) {
+//	Iterator<GNode> it = collisionDomains.iterator();
+//	while( it.hasNext() ) {
+//		GNode cd = it.next();
+//		if( cd.getName().equals(cdName)) {
+//			return cd;
+//		}
+//	}
+//	return null;
+//}
 }
