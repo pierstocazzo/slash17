@@ -1,4 +1,4 @@
-package input;
+package gui.input;
 
 import edu.umd.cs.piccolo.event.PDragEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;

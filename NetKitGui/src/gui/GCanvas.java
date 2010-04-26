@@ -1,10 +1,9 @@
 package gui;
 
-import input.AddInputHandler;
-import input.DefaultInputHandler;
+import gui.input.AddInputHandler;
+import gui.input.DefaultInputHandler;
 
 import java.awt.geom.Point2D;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import common.ItemType;
