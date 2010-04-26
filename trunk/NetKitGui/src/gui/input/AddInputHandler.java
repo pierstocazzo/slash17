@@ -1,4 +1,4 @@
-package input;
+package gui.input;
 
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;

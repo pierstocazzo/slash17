@@ -52,11 +52,13 @@ public class GFrame extends JFrame {
 	boolean saved = false;
 	
 	public GFrame() {
+		super("NetKit GUI");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setSize( screenSize );
+
 		setLayout(new BorderLayout());
 		
 		createMenuBar();
