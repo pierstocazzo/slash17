@@ -1,0 +1,10 @@
+#! /bin/bash
+
+if [ -z $NETKIT_HOME ] ; then
+	export NETKIT_HOME=/home/sal/netkit
+	export PATH=$PATH:$NETKIT_HOME/bin
+fi
+
+lcrash -d /home/sal/lab/
+
+exit;

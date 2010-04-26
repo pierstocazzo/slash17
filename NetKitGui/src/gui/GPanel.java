@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import netkit.Shell;
+
 import common.ItemType;
 
 
@@ -241,14 +243,16 @@ public class GPanel extends JPanel {
 		start.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("start lab");
+				System.out.println("starting lab");
+				Shell.startLab( "/home/sal/lab" );
 			}
 		});
 		
 		stop.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("stop lab");
+				System.out.println("stopping lab");
+				Shell.stopLab( "/home/sal/lab", true );
 			}
 		});
 	}
