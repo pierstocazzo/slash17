@@ -55,6 +55,13 @@ public class Interface {
 		this.host = host;
 	}
 
+	/** Interface constructor<br>
+	 * Create a new Interface
+	 * 
+	 * @param id - (String) interface's name (e.g. eht0)
+	 * @param collisionDomain - (String) Interface's collision domain (e.g. CD1)
+	 * @param host - (String) host (e.g. r1)
+	 */
 	public Interface( String id, CollisionDomain collisionDomain, Host host ) {
 		this.id = id;
 		this.collisionDomain = collisionDomain;

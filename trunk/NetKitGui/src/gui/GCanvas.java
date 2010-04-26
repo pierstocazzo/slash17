@@ -5,6 +5,7 @@ import gui.input.AddNodeInputHandler;
 import gui.input.DefaultInputHandler;
 import gui.input.DeleteInputHandler;
 
+import java.awt.Cursor;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 
@@ -89,8 +90,6 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void adding( ItemType type ) {
-		// TODO aggiornamento logica
-
 		if( type != ItemType.LINK ) {
 			// remove previously created addhandler
 			if( currentHandler.equals(addNodeHandler) ) {
@@ -105,6 +104,7 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
+		// TODO aggiornamento logica
 		GNode node = GNodeFactory.createGNode( nodeType, pos.getX(), pos.getY() );
 		mainLayer.addChild(node);
 		
@@ -112,6 +112,7 @@ public class GCanvas extends PCanvas {
 	}
 	
 	public void addLink( GNode node, GNode collisionDomain ) {
+		// TODO aggiornamento logica
 		GLink link = new GLink( node, collisionDomain );
 		node.addLink(link);
 		collisionDomain.addLink(link);
@@ -125,6 +126,7 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void deleteNode(GNode node) {
+		// TODO aggiornamento logica
 		try {
 			mainLayer.removeChild(node);
 			switchToDefaultHandler();
@@ -149,6 +151,7 @@ public class GCanvas extends PCanvas {
 	}
 	
 	private void switchToDeleteHandler() {
+		panel.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
 		if( !currentHandler.equals(deleteHandler) ) {
 			mainLayer.removeInputEventListener(defaultHandler);
 			mainLayer.addInputEventListener(deleteHandler);
@@ -157,6 +160,7 @@ public class GCanvas extends PCanvas {
 	}
 	
 	private void switchToDefaultHandler() {
+		panel.setCursor( new Cursor(Cursor.DEFAULT_CURSOR));
 		removeInputEventListener(addNodeHandler);
 		removeInputEventListener(addLinkHandler);
 		mainLayer.removeInputEventListener(deleteHandler);
