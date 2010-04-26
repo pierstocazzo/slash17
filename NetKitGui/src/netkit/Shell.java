@@ -1,4 +1,4 @@
-package tests;
+package netkit;
 
 import java.io.BufferedReader;
 import java.io.File;
