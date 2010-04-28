@@ -25,6 +25,8 @@ public class GPanel extends JPanel {
 	
 	GCanvas canvas;
 	
+	ConfPanel confpanel;
+	
 	/** tool bar */
 	JToolBar toolbar;
 	JButton newFile;
@@ -63,6 +65,9 @@ public class GPanel extends JPanel {
 		
 		canvas = new GCanvas(this);
 		add(canvas, BorderLayout.CENTER);
+		
+		confpanel = new ConfPanel(canvas.project);
+		add(confpanel, BorderLayout.EAST);
 	}
 	
 	private void createVericalToolBar() {
