@@ -149,7 +149,7 @@ public class GPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("NewProject");
-				Workspace.newProject( frame );
+				canvas.workspace.newProject( frame );
 			}
 		});
 		
@@ -163,7 +163,7 @@ public class GPanel extends JPanel {
 		save.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Save");
+				canvas.saveProject();
 			}
 		});
 		
@@ -241,7 +241,7 @@ public class GPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("starting lab");
-				Shell.startLab( "/home/sal/lab" );
+				Shell.startLab( canvas.project.getDirectory() );
 			}
 		});
 		
@@ -249,7 +249,7 @@ public class GPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("stopping lab");
-				Shell.stopLab( "/home/sal/lab", true );
+				Shell.stopLab( canvas.project.getDirectory(), true );
 			}
 		});
 	}

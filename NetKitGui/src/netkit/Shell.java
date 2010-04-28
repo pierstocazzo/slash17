@@ -18,7 +18,7 @@ public class Shell {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
-			rnt.exec("sh startlab");
+			rnt.exec("sh startlab " + labDirectory);
 			
 			return true;
 		} catch (IOException e) {
@@ -32,7 +32,7 @@ public class Shell {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
-			rnt.exec("sh stoplab");
+			rnt.exec("sh stoplab " + labDirectory + " " + crash);
 			
 			return true;
 		} catch (IOException e) {

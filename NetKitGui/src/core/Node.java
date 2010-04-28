@@ -20,7 +20,7 @@ public class Node {
 	 * @param name - (String) item's name
 	 * @param type - (ItemType) item's type
 	 */
-	public Node(String name, ItemType type) {
+	public Node( String name, ItemType type ) {
 		this.name = name;
 		this.type = type;
 	}

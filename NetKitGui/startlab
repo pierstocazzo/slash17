@@ -5,6 +5,8 @@ if [ -z $NETKIT_HOME ] ; then
 	export PATH=$PATH:$NETKIT_HOME/bin
 fi
 
-lstart -d /home/sal/lab/
+DIR=$1
+
+lstart -d $DIR
 
 exit;

@@ -10,9 +10,9 @@ public class Link {
 	
 	/** collision domain */
 	protected CollisionDomain collisionDomain;
-
 	
 	/** Connect an host to a collision domain
+	 * 
 	 * @param hostInterface
 	 * @param collisionDomain
 	 */
@@ -20,6 +20,11 @@ public class Link {
 		this.hostInterface = hostInterface;
 		this.collisionDomain = collisionDomain;
 	}
+	
+	
+	/****************************
+	 * Getter and Setter methods
+	 ****************************/
 
 	public CollisionDomain getCollisionDomain() {
 		return collisionDomain;

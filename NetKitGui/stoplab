@@ -5,6 +5,6 @@ if [ -z $NETKIT_HOME ] ; then
 	export PATH=$PATH:$NETKIT_HOME/bin
 fi
 
-lcrash -d /home/sal/lab/
+lcrash -d $1
 
 exit;

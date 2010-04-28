@@ -11,6 +11,7 @@ import java.util.LinkedList;
 
 import common.ItemType;
 
+import core.Host;
 import core.Project;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
@@ -20,9 +21,11 @@ import edu.umd.cs.piccolo.nodes.PPath;
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
+	Project project;
+	Workspace workspace;
+	
 	PLayer mainLayer;
 	PLayer secondLayer;
-	Project topology;
 	LinkedList<GNode> hosts;
 	LinkedList<GNode> collisionDomains;
 	
@@ -36,11 +39,11 @@ public class GCanvas extends PCanvas {
 	PBasicInputEventHandler currentHandler;
 	
 	public GCanvas( GPanel panel ) {
-		this.topology = new Project();
 		this.panel = panel;
 		hosts = new LinkedList<GNode>();
 		collisionDomains = new LinkedList<GNode>();
-		
+		project = new Project("", "");
+		workspace = new Workspace( project );
 		createCanvas();
 	}
 	
@@ -88,6 +91,10 @@ public class GCanvas extends PCanvas {
 //			}
 //		}
 	}
+	
+	public void saveProject() {
+		workspace.saveProject();
+	}
 
 	public void adding( ItemType type ) {
 		if( type != ItemType.LINK ) {
@@ -104,8 +111,10 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
-		// TODO aggiornamento logica
 		GNode node = GNodeFactory.createGNode( nodeType, pos.getX(), pos.getY() );
+		if(  project == null ) 
+			System.out.println("fuck");
+		project.addHost( new Host( node.getName(), node.getType() ) );
 		mainLayer.addChild(node);
 		
 		switchToDefaultHandler();
