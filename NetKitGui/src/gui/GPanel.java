@@ -249,7 +249,7 @@ public class GPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("stopping lab");
-				Shell.stopLab( canvas.project.getDirectory(), true );
+				Shell.stopLab( canvas.project.getDirectory(), false );
 			}
 		});
 	}
