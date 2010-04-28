@@ -5,6 +5,14 @@ if [ -z $NETKIT_HOME ] ; then
 	export PATH=$PATH:$NETKIT_HOME/bin
 fi
 
-lcrash -d $1
+DIR=$1
+
+CRASH=$2
+
+if $CRASH ; then
+	lcrash -d $DIR
+else
+	lhalt -d $DIR
+fi
 
 exit;

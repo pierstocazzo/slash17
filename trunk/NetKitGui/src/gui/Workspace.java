@@ -20,16 +20,18 @@ public class Workspace {
 		this.project = project;
 	}
 
-	public void newProject( Component c ) {
+	public boolean newProject( Component c ) {
 		
 		String projectName = JOptionPane.showInputDialog(c, "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
 		
 		if( projectName == null ) {
-			return;
+			return false;
 		}
 		
 		while( projectName.equals("") ) {
-			projectName = JOptionPane.showInputDialog(c, "You must insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
+			projectName = JOptionPane.showInputDialog(c, "Insert a valid name:", "New Project", JOptionPane.QUESTION_MESSAGE);
+			if( projectName == null ) 
+				return false;
 		}
 		
 		JFileChooser fc = new JFileChooser();
@@ -46,23 +48,35 @@ public class Workspace {
 			
 			createDirectory(projectName, dir);
 			
-			String content = 
-				"# \"lab.conf\" created by NetKit GUI\n" +
-				"# website: http://slash17.googlecode.com";
+			String content = "# 'lab.conf' created by NetKit GUI\n\n";
 			
 			createFile("lab.conf", project.getDirectory(), content);
+			
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
-	public boolean saveProject() {
+	public boolean saveProject( Component c ) {
 		Collection<Host> hosts = project.getHosts();
 		String projDir = project.getDirectory();
+		
+		if( projDir.equals("notsetted") ) {
+			if( !newProject(c) ) {
+				JOptionPane.showMessageDialog(c, "Error: you must create the project before save it");
+				return false;
+			}
+		}
+		
+		projDir = project.getDirectory();
 		
 		for( Host host : hosts ) {
 			String name = host.getName();
 			createDirectory( name, projDir );
 			String content = "# '" + name + ".startup' created by NetKit GUI\n\n";
 			createFile( name + ".startup", projDir, content );
+			
 		}
 		
 		return true;
@@ -80,6 +94,7 @@ public class Workspace {
 			out.close();
 			
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 

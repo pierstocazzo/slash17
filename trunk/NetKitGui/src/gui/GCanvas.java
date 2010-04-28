@@ -42,7 +42,7 @@ public class GCanvas extends PCanvas {
 		this.panel = panel;
 		hosts = new LinkedList<GNode>();
 		collisionDomains = new LinkedList<GNode>();
-		project = new Project("", "");
+		project = new Project("notsetted", "notsetted");
 		workspace = new Workspace( project );
 		createCanvas();
 	}
@@ -60,40 +60,10 @@ public class GCanvas extends PCanvas {
 		addLinkHandler = new AddLinkInputHandler(this);
 		
 		switchToDefaultHandler();
-		
-//		for( Node node : topology.getNodes() ) {
-//			Random r = new Random();
-//			int x = r.nextInt(700);
-//			int y = r.nextInt(600);
-//			GNode gh = GNodeFactory.createGNode(node.getType(), x, y);
-//			hosts.add(gh);
-//			mainLayer.addChild(gh);
-//			
-//			for( Interface i : node.getInterfaces().values() ) {
-//				String cdName = i.getCollisionDomain().getName();
-//				
-//				GNode cd = searchCollisionDomain( cdName );
-//				
-//				if( cd == null ) {
-//					// sistemare in modo intelligente vicino all'host
-//					cd = GNodeFactory.createGNode( ItemType.COLLISIONDOMAIN, x + 400, y );
-//					i.getCollisionDomain().setName( cd.getName() );
-//					collisionDomains.add(cd);
-//					mainLayer.addChild(cd);
-//				} else {
-//					// sposta l'host in modo che sia vicino al dominio di collisione
-//				}
-//				
-//				GLink l = new GLink(gh, cd);
-//				gh.addLink(l);
-//				cd.addLink(l);
-//				secondLayer.addChild(l);
-//			}
-//		}
 	}
 	
 	public void saveProject() {
-		workspace.saveProject();
+		workspace.saveProject(this);
 	}
 
 	public void adding( ItemType type ) {
