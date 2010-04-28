@@ -4,15 +4,23 @@ import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Collection;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import core.Host;
+import core.Project;
+
 public class Workspace {
 
-	protected static String projectDirectory;
+	Project project;
 	
-	public static void newProject( Component c ) {
+	public Workspace( Project project ) {
+		this.project = project;
+	}
+
+	public void newProject( Component c ) {
 		
 		String projectName = JOptionPane.showInputDialog(c, "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
 		
@@ -32,26 +40,53 @@ public class Workspace {
 		
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			String dir = fc.getSelectedFile().getAbsolutePath();
+
+			project.setName(projectName);
+			project.setDirectory(dir + "/" + projectName);
 			
-			File proj = new File(dir + "/" + projectName);
-			proj.mkdir();
-			projectDirectory = proj.getAbsolutePath();
-			System.out.println("Project's main directory: " + projectDirectory);
+			createDirectory(projectName, dir);
 			
-			File labconf = new File(projectDirectory + "/lab.conf");
+			String content = 
+				"# \"lab.conf\" created by NetKit GUI\n" +
+				"# website: http://slash17.googlecode.com";
 			
-			try {
-				PrintWriter out = new PrintWriter(labconf);
-				
-				out.println("# \"lab.conf\" created by NetKit GUI\n" +
-						"# website: http://slash17.googlecode.com");
-				out.flush();
-				
-				out.close();
-				
-			} catch (FileNotFoundException e) {
-			}
+			createFile("lab.conf", project.getDirectory(), content);
 		}
+	}
+	
+	public boolean saveProject() {
+		Collection<Host> hosts = project.getHosts();
+		String projDir = project.getDirectory();
+		
+		for( Host host : hosts ) {
+			String name = host.getName();
+			createDirectory( name, projDir );
+			String content = "# '" + name + ".startup' created by NetKit GUI\n\n";
+			createFile( name + ".startup", projDir, content );
+		}
+		
+		return true;
+	}
+
+	private void createFile( String fileName, String projDir, String content ) {
+		File f = new File( projDir + "/" + fileName );
+		
+		try {
+			PrintWriter out = new PrintWriter(f);
+			
+			out.println( content );
+			out.flush();
+			
+			out.close();
+			
+		} catch (FileNotFoundException e) {
+		}
+	}
+
+	private String createDirectory( String name, String topDirectory ) {
+		File proj = new File( topDirectory + "/" + name );
+		proj.mkdir();
+		return proj.getAbsolutePath();
 	}
 }
 
