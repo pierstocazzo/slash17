@@ -1,0 +1,118 @@
+Funzionalità software (grafiche)
+
+creare e posizionare host (pc, firewall, router, server), dominio di collisione
+
+creare link tra host e dominio di collisione
+
+eliminare host, dominio di collisione, link
+
+visualizzare e configurare interfaccie di un host (assegnare/modificare/resettare ip,mask,bcast)
+
+visualizzare e configurare rotte di un host (aggiungere/modificare/eliminare rotte)
+
+visualizzare e configurare iptables in un host (creare/eliminare catene, aggiungere/modificare/eliminare regole)
+
+creare/aprire/salvare un progetto
+
+avviare/chiudere un laboratorio netkit
+
+avviare/spegnere una macchina virtuale
+
+generare n topologie non configurate
+
+
+Azioni logiche di ogni funzionalità
+
+creare e posizionare host (pc, firewall, router, server) :  creare host senza interfaccie
+creare e posizionare dominio di collisione :  creare un dominio di collisione vuoto
+creare link tra host e dominio di collisione : 	aggiungere una nuova interfaccia all'host e collegarla al dominio
+												aggiungere l'interfaccia dell'host al dominio
+
+eliminare host : eliminare tutte le sue interfacce e i relativi link e ed eventuali dominii di collisione ormai inutili
+
+eliminare dominio di collisione : eliminare tutte le interfaccie degli host collegate ad esso e i relativi link
+
+eliminare link : eliminare l'interfaccia dell'host coinvolto, eliminare il link ed eventualmente eliminare il dominio di collisione se inutile
+
+visualizzare e configurare interfaccie host:
+	visualizzazione : metodi getter
+	assegnare ip,mask,bcast : interface.set*
+	modificare ip,mask,bcast : interface.set*
+	resettare : rimettere vuoti ip, mask e bcast
+
+visualizzare e configurare rotte di un host
+	visualizzazione : metodi getter
+	aggiungere rotta : addRoute( net, gw )
+	modificare rotta : route.set*
+	eliminare rotta : delRoute( .. )
+	
+visualizzare e configurare iptables in un host
+	visualizzazione: metodi getter
+	creare catena : addChain( Chain )
+	eliminare catena : delChain( Chain ) - eliminare tutte le regole relative
+	aggiungere regola : addRule( .. )
+	modificare regola : rule.set*
+	eliminare regola : delRule( .. )
+	
+creare progetto
+	creare progetto logico con campi vuoti
+	
+aprire progetto
+	caricare un progetto logico
+	
+salvare progetto
+	scrivere il progetto su disco
+	
+avviare/chiudere un laboratorio netkit
+	interazione con la shell
+
+avviare/spegnere una macchina virtuale
+	ottenere le interfaccie della macchina - interazione con la shell
+
+generare n topologie non configurate
+	algoritmo di generazione random con vincoli
+	
+	
+Azioni fisiche di ogni funzionalità
+
+creare e posizionare host (pc, firewall, router, server)
+	creare cartella e file .startup vuoti, aggiungere voce relativa nel lab.conf (machines)
+
+creare link tra host e dominio di collisione
+	aggiungere voce relativa nel lab.conf (host[interface]="colldom")
+
+eliminare host
+	eliminare cartella e file .startup, eliminare voci relative in lab.conf
+
+eliminare dominio di collisione
+	eliminare voci relative in lab.conf
+	
+eliminare link
+	eliminare voce relativa in lab.conf
+
+configurare interfaccie di un host (assegnare/modificare/resettare ip,mask,bcast)
+	modificare file .startup relativo
+
+visualizzare e configurare rotte di un host (aggiungere/modificare/eliminare rotte)
+	modificare file .startup relativo
+
+visualizzare e configurare iptables in un host (creare/eliminare catene, aggiungere/modificare/eliminare regole)
+	modificare file .startup relativo
+
+creare un progetto
+	creazione cartella relativa
+salvare un progetto
+	scrittura del file relativo nella cartella
+aprire un progetto
+	lettura del file relativo
+
+avviare/chiudere un laboratorio netkit
+	comandi lstart - lcrash/lhalt dalla cartella di progetto
+
+avviare/spegnere una macchina virtuale
+	comando vstart con le informazioni necessarie dalla cartella di progetto
+
+generare n topologie non configurate
+	creare cartella principale
+	creare una cartella per ogni topologia/progetto
+	salvare il progetto nella relativa cartella
