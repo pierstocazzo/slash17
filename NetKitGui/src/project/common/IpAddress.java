@@ -41,10 +41,4 @@ public class IpAddress {
 	public boolean equals( Object o ) {
 		return this.ip.equals( ((IpAddress) o).toString() );
 	}
-	
-	public static void main(String[] args) throws InterruptedException {
-		IpAddress a = new IpAddress("192.168.0.267");
-		IpAddress b = new IpAddress("192.168.1.1");
-		System.out.println( a.equals(b) );
-	}
 }

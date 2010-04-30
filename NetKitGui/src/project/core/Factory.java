@@ -2,14 +2,14 @@ package project.core;
 
 import project.common.ItemType;
 
-class Factory implements AbstractFactory {
+public class Factory implements AbstractFactory {
 
-	private Factory factory;
+	private static Factory factory;
 	
 	private Factory() {
 	}
 	
-	public AbstractFactory getInstance() {
+	public static AbstractFactory getInstance() {
 		if( factory == null ) {
 			factory = new Factory();
 		}

@@ -1,5 +1,7 @@
 package project.core;
 
+import project.common.ItemType;
+
 public interface AbstractHost {
 
 	public String getName();
@@ -13,4 +15,6 @@ public interface AbstractHost {
 	public boolean deleteInterface( String name );
 	
 	public boolean delete();
+
+	public ItemType getType();
 }

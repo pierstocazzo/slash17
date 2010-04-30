@@ -3,31 +3,30 @@ package project.gui;
 import java.util.ArrayList;
 
 import project.common.ItemType;
+import project.core.AbstractHost;
 
 
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PText;
 
-public class GNode extends PImage {
+public class GHost extends PImage {
 	private static final long serialVersionUID = 1L;
 
 	protected String image;
-	
-	protected String name;
 	
 	protected ArrayList<GLink> links;
 	
 	protected PText text;
 	
-	protected ItemType type;
+	AbstractHost host;
 	
-	public GNode( String name, double x, double y, String image, ItemType type ) {
+	public GHost( double x, double y, String image, AbstractHost host ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
 		this.image = image;
-		this.type = type;
+		this.host = host;
 
-		setName(name);
+		setName(host.getName());
 		
 		this.centerFullBoundsOnPoint(x, y);
 	}
@@ -52,7 +51,6 @@ public class GNode extends PImage {
 	}
 
 	public void setName( String name ) {
-		this.name = name;
 		text = new PText(name);
 		text.centerFullBoundsOnPoint((getWidth()/2), getHeight());
 		text.setPickable(false);
@@ -60,19 +58,11 @@ public class GNode extends PImage {
 		this.addChild(text);
 	}
 
-	public String getName() {
-		return name;
-	}
-	
 	public String getImageName() {
 		return image;
 	}
 
 	public ItemType getType() {
-		return type;
-	}
-
-	public void setType(ItemType type) {
-		this.type = type;
+		return host.getType();
 	}
 }
