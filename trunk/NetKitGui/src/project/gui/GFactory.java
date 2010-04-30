@@ -3,6 +3,7 @@ package project.gui;
 import project.common.ItemType;
 import project.core.AbstractFactory;
 import project.core.AbstractHost;
+import project.core.AbstractLink;
 
 public class GFactory {
 
@@ -62,6 +63,9 @@ public class GFactory {
 	}
 	
 	public GLink createLink( GHost host, GCollisionDomain collisionDomain ) {
-		return new GLink(host, collisionDomain);
+		AbstractLink link = factory.createLink(host.host, collisionDomain.collisionDomain);
+		if( link != null ) 
+			return new GLink(host, collisionDomain, link );
+		return null;
 	}
 }

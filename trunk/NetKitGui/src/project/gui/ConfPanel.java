@@ -14,6 +14,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import project.core.AbstractInterface;
 import project.core.Project;
 
 
@@ -25,10 +26,13 @@ public class ConfPanel extends JPanel {
 	JPanel routingTab;
 	JPanel firewallingTab;
 	
-	Project project;
+//	Project project;
+	
+	DefaultMutableTreeNode topNode;
+	JTree tree;
 	
 	public ConfPanel( Project project ) {
-		this.project = project;
+//		this.project = project;
 		
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
@@ -52,10 +56,18 @@ public class ConfPanel extends JPanel {
 		
 		setBorder(new MatteBorder(0, 1, 0, 0, Color.lightGray));
 	}
+	
+	public void update( GHost host ) {
+		topNode.removeAllChildren();
+		for( AbstractInterface iface : host.host.getInterfaces() ) {
+			DefaultMutableTreeNode ifaceNode = new DefaultMutableTreeNode(iface.getName());
+			topNode.add(ifaceNode);
+		}
+	}
 
-	private void createJTree(JPanel interfacesTab) {
-		DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Interfaces");
-		JTree tree = new JTree(topNode);
+	private void createJTree( JPanel interfacesTab ) {
+		topNode = new DefaultMutableTreeNode("Interfaces");
+		tree = new JTree(topNode);
 		tree.getSelectionModel().setSelectionMode
         (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -66,9 +78,6 @@ public class ConfPanel extends JPanel {
 				System.out.println("changed");
 			}
 		});
-
-		DefaultMutableTreeNode iface = new DefaultMutableTreeNode("eth0");
-		topNode.add(iface);
 		
 		JScrollPane scrollPane = new JScrollPane(tree);
 		scrollPane.setPreferredSize(new Dimension(140, 200));

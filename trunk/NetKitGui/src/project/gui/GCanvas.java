@@ -4,14 +4,14 @@ import java.awt.Cursor;
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 import project.common.ItemType;
 import project.core.Project;
 import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
-
-
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -39,10 +39,13 @@ public class GCanvas extends PCanvas {
 	PBasicInputEventHandler currentHandler;
 	
 	GFactory factory;
+
+	ConfPanel confPanel;
 	
-	public GCanvas( GPanel panel, GFactory gFactory ) {
+	public GCanvas( GPanel panel, GFactory gFactory, ConfPanel confPanel ) {
 		this.panel = panel;
 		this.factory = gFactory;
+		this.confPanel = confPanel;
 		
 		hosts = new LinkedList<GHost>();
 		collisionDomains = new LinkedList<GHost>();
@@ -59,7 +62,7 @@ public class GCanvas extends PCanvas {
 		getZoomEventHandler().setMaxScale(1.4);
 		getZoomEventHandler().setMinScale(0.4);
 		
-		defaultHandler = new DefaultInputHandler();
+		defaultHandler = new DefaultInputHandler(confPanel);
 		deleteHandler = new DeleteInputHandler(this);
 		addLinkHandler = new AddLinkInputHandler(this);
 		
@@ -98,10 +101,16 @@ public class GCanvas extends PCanvas {
 		switchToDefaultHandler();
 	}
 	
-	public void addLink( GHost node, GCollisionDomain collisionDomain ) {
-		// TODO aggiornamento logica
-		GLink link = new GLink( node, collisionDomain );
-		node.addLink(link);
+	public void addLink( GHost host, GCollisionDomain collisionDomain ) {
+		GLink link = factory.createLink( host, collisionDomain );
+		
+		if( link == null ) {
+			JOptionPane.showMessageDialog(this, "A netkit host can't have more then 4 interfaces");
+			switchToDefaultHandler();
+			return;
+		}
+		
+		host.addLink(link);
 		collisionDomain.addLink(link);
 		secondLayer.addChild(link);
 		
@@ -163,5 +172,9 @@ public class GCanvas extends PCanvas {
 			secondLayer.removeChild(link);
 		} catch (Exception e) {
 		}
+	}
+
+	public void setConfPanel(ConfPanel confpanel) {
+		this.confPanel = confpanel;
 	}
 }

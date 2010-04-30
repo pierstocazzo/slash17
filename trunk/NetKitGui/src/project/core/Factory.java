@@ -28,9 +28,12 @@ public class Factory implements AbstractFactory {
 	}
 
 	@Override
-	public AbstractLink createLink(AbstractInterface hostInterface,
-			AbstractCollisionDomain collisionDomain) {
-		return new Link(hostInterface, collisionDomain);
+	public AbstractLink createLink(AbstractHost host, AbstractCollisionDomain collisionDomain) {
+		AbstractInterface iface = host.addInterface(collisionDomain);
+		
+		if( iface != null ) 	
+			return new Link(iface, collisionDomain);
+		else return null;
 	}
 
 }
