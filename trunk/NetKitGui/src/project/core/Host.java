@@ -102,4 +102,9 @@ public class Host implements AbstractHost {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public ItemType getType() {
+		return type;
+	}
 }

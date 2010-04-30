@@ -57,8 +57,13 @@ public class GFrame extends JFrame {
 	
 	boolean saved = false;
 	
-	public GFrame() {
+	GFactory factory;
+	
+	public GFrame( GFactory factory ) {
 		super("NetKit GUI");
+		
+		this.factory = factory;
+		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 //		UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels(); 
@@ -242,8 +247,8 @@ public class GFrame extends JFrame {
 			this.dispose();
 		}
 	}
-	
-	public static void main(String[] args) {
-		new GFrame();
+
+	public GFactory getFactory() {
+		return factory;
 	}
 }

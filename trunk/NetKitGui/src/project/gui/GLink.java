@@ -7,18 +7,18 @@ import edu.umd.cs.piccolo.nodes.PPath;
 public class GLink extends PPath {
 	private static final long serialVersionUID = 1L;
 	
-	GNode node;
-	GNode collisionDomain;
+	GHost node;
+	GCollisionDomain collisionDomain;
 	
 	/** 
 	 * Create a graph edge between two node
 	 * 
 	 * @param host
-	 * @param cd
+	 * @param collisionDomain2
 	 */
-	public GLink( GNode host, GNode cd ) {
+	public GLink( GHost host, GCollisionDomain collisionDomain ) {
 		this.node = host;
-		this.collisionDomain = cd;
+		this.collisionDomain = collisionDomain;
 		
 		update();
 	}
@@ -31,11 +31,11 @@ public class GLink extends PPath {
 		lineTo((float)end.getX(), (float)end.getY());
 	}
 	
-	public GNode getNode() {
+	public GHost getNode() {
 		return node;
 	}
 	
-	public GNode getCollisionDomain() {
+	public GCollisionDomain getCollisionDomain() {
 		return collisionDomain;
 	}
 }

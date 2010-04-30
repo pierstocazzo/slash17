@@ -14,6 +14,7 @@ import project.gui.input.DeleteInputHandler;
 
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.nodes.PPath;
 
@@ -25,8 +26,8 @@ public class GCanvas extends PCanvas {
 	
 	PLayer mainLayer;
 	PLayer secondLayer;
-	LinkedList<GNode> hosts;
-	LinkedList<GNode> collisionDomains;
+	LinkedList<GHost> hosts;
+	LinkedList<GHost> collisionDomains;
 	
 	GPanel panel;
 	
@@ -37,10 +38,14 @@ public class GCanvas extends PCanvas {
 	
 	PBasicInputEventHandler currentHandler;
 	
-	public GCanvas( GPanel panel ) {
+	GFactory factory;
+	
+	public GCanvas( GPanel panel, GFactory gFactory ) {
 		this.panel = panel;
-		hosts = new LinkedList<GNode>();
-		collisionDomains = new LinkedList<GNode>();
+		this.factory = gFactory;
+		
+		hosts = new LinkedList<GHost>();
+		collisionDomains = new LinkedList<GHost>();
 //		project = new Project("notsetted", "notsetted"); TODO
 		workspace = new Workspace( project );
 		createCanvas();
@@ -80,16 +85,20 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
-		GNode node = GNodeFactory.createGNode( nodeType, pos.getX(), pos.getY() );
-		if(  project == null ) 
-			System.out.println("fuck");
+		if( nodeType == ItemType.COLLISIONDOMAIN ) {
+			GCollisionDomain collsionDomain = factory.createCollisionDomain(pos.getX(), pos.getY());
+			mainLayer.addChild(collsionDomain);
+		} else {
+			GHost host = factory.createGHost( nodeType, pos.getX(), pos.getY() );
+			mainLayer.addChild(host);
+		}
+		
 //		project.addHost( new Host( node.getName(), node.getType() ) ); TODO
-		mainLayer.addChild(node);
 		
 		switchToDefaultHandler();
 	}
 	
-	public void addLink( GNode node, GNode collisionDomain ) {
+	public void addLink( GHost node, GCollisionDomain collisionDomain ) {
 		// TODO aggiornamento logica
 		GLink link = new GLink( node, collisionDomain );
 		node.addLink(link);
@@ -103,8 +112,7 @@ public class GCanvas extends PCanvas {
 		switchToDeleteHandler();
 	}
 
-	public void deleteNode(GNode node) {
-		// TODO aggiornamento logica
+	public void deleteNode( PNode node ) {
 		try {
 			mainLayer.removeChild(node);
 			switchToDefaultHandler();
@@ -156,16 +164,4 @@ public class GCanvas extends PCanvas {
 		} catch (Exception e) {
 		}
 	}
-
-	
-//	private GNode searchCollisionDomain(String cdName) {
-//	Iterator<GNode> it = collisionDomains.iterator();
-//	while( it.hasNext() ) {
-//		GNode cd = it.next();
-//		if( cd.getName().equals(cdName)) {
-//			return cd;
-//		}
-//	}
-//	return null;
-//}
 }

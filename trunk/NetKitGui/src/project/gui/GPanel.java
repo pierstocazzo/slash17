@@ -64,7 +64,7 @@ public class GPanel extends JPanel {
 		
 		setupListeners();
 		
-		canvas = new GCanvas(this);
+		canvas = new GCanvas(this, frame.getFactory());
 		add(canvas, BorderLayout.CENTER);
 		
 		confpanel = new ConfPanel(canvas.project);
