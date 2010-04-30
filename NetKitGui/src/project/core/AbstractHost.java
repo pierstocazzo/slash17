@@ -1,5 +1,7 @@
 package project.core;
 
+import java.util.Collection;
+
 import project.common.ItemType;
 
 public interface AbstractHost {
@@ -12,6 +14,8 @@ public interface AbstractHost {
 	
 	public AbstractInterface getInterface( String name );
 	
+	public Collection<AbstractInterface> getInterfaces();
+
 	public boolean deleteInterface( String name );
 	
 	public boolean delete();

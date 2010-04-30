@@ -1,5 +1,6 @@
 package project.core;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import project.common.ItemType;
@@ -15,7 +16,7 @@ public class Host implements AbstractHost {
 	protected String name;
 	
 	/** host's network interfaces */
-	protected HashMap<String, Interface> interfaces;
+	protected HashMap<String, AbstractInterface> interfaces;
 
 	protected ItemType type;
 
@@ -29,7 +30,7 @@ public class Host implements AbstractHost {
 	Host(String name, ItemType type) {
 		this.name = name;
 		this.type = type;
-		this.interfaces = new HashMap<String, Interface>();
+		this.interfaces = new HashMap<String, AbstractInterface>();
 	}
 	
 	/**
@@ -48,30 +49,20 @@ public class Host implements AbstractHost {
 		}
 	}
 	
-	public HashMap<String, Interface> getInterfaces() {
-		return interfaces;
+	public Collection<AbstractInterface> getInterfaces() {
+		return interfaces.values();
 	}
 
-	public void setInterfaces(HashMap<String, Interface> interfaces) {
-		this.interfaces = interfaces;
-	}
-	
 	@Override
 	public AbstractInterface addInterface( AbstractCollisionDomain cd ) {
 		if( ifaceNumber < 4 ) {
-			return getNextIFace( cd );
+			String ifaceName = "eth" + ifaceNumber++;
+			Interface iface = new Interface( ifaceName, (CollisionDomain) cd, this);
+			interfaces.put(ifaceName, iface);
+			return iface;
 		} else {
 			return null;
 		}
-	}
-
-	private AbstractInterface getNextIFace( AbstractCollisionDomain cd ) {
-		String ifaceName = "eth" + ifaceNumber;
-		ifaceNumber++;
-		Interface iface = new Interface( ifaceName, (CollisionDomain) cd, this);
-		interfaces.put(ifaceName, iface);
-		
-		return iface;
 	}
 
 	@Override

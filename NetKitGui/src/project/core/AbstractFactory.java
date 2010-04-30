@@ -11,5 +11,6 @@ public interface AbstractFactory {
 	public AbstractCollisionDomain createCollisionDomain();
 	
 	/** connect this host to this collision domain */
-	public AbstractLink createLink( AbstractInterface hostInterface, AbstractCollisionDomain collisionDomain ); 
+	public AbstractLink createLink( AbstractHost host, AbstractCollisionDomain collisionDomain ); 
 }
+

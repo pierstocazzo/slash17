@@ -28,7 +28,7 @@ public class GHost extends PImage {
 
 		setName(host.getName());
 		
-		this.centerFullBoundsOnPoint(x, y);
+		centerFullBoundsOnPoint(x, y);
 	}
 	
 	public void update() {

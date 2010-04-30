@@ -2,6 +2,8 @@ package project.gui;
 
 import java.awt.geom.Point2D;
 
+import project.core.AbstractLink;
+
 import edu.umd.cs.piccolo.nodes.PPath;
 
 public class GLink extends PPath {
@@ -10,15 +12,19 @@ public class GLink extends PPath {
 	GHost node;
 	GCollisionDomain collisionDomain;
 	
+	AbstractLink link;
+	
 	/** 
 	 * Create a graph edge between two node
 	 * 
 	 * @param host
+	 * @param abstractLink 
 	 * @param collisionDomain2
 	 */
-	public GLink( GHost host, GCollisionDomain collisionDomain ) {
+	public GLink( GHost host, GCollisionDomain collisionDomain, AbstractLink abstractLink ) {
 		this.node = host;
 		this.collisionDomain = collisionDomain;
+		this.link = abstractLink;
 		
 		update();
 	}
