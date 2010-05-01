@@ -10,7 +10,7 @@ import project.common.ItemType;
  * 
  * @author sal
  */
-public class Project {
+public class Project implements AbstractProject {
 	
 	/** project's name */
 	protected String name;
@@ -34,10 +34,10 @@ public class Project {
 	protected String web;
 	
 	/** Hosts */
-	protected HashMap<String, Host> hosts;
+	protected HashMap<String, AbstractHost> hosts;
 	
 	/** Collision Domains */
-	protected HashMap<String, CollisionDomain> collisionDomains;
+	protected HashMap<String, AbstractCollisionDomain> collisionDomains;
 	
 	/**
 	 * Create a new empty netkit project with this name in this directory
@@ -46,8 +46,8 @@ public class Project {
 	 * @param directory (String) - the project's directory
 	 */
 	Project( String directory, String name ) {
-		hosts = new HashMap<String, Host>();
-		collisionDomains = new HashMap<String, CollisionDomain>();
+		hosts = new HashMap<String, AbstractHost>();
+		collisionDomains = new HashMap<String, AbstractCollisionDomain>();
 		this.directory = directory;
 		this.name = name;
 	}
@@ -56,7 +56,7 @@ public class Project {
 	 * 
 	 * @param host (Host) the new host to add
 	 */
-	public void addHost( Host host ) {
+	public void addHost( AbstractHost host ) {
 		hosts.put( host.getName(), host );
 	}
 	
@@ -64,7 +64,7 @@ public class Project {
 	 * 
 	 * @param cd (CollisionDomain) the new collisiondomain
 	 */
-	public void addCollisionDomain( CollisionDomain cd ) {
+	public void addCollisionDomain( AbstractCollisionDomain cd ) {
 		collisionDomains.put( cd.getName(), cd );
 	}
 	
@@ -125,11 +125,11 @@ public class Project {
 	 * Getter and Setter methods
 	 *******************************/
 	
-	public Collection<Host> getHosts() {
+	public Collection<AbstractHost> getHosts() {
 		return hosts.values();
 	}
 	
-	public Collection<CollisionDomain> getCollisionDomains() {
+	public Collection<AbstractCollisionDomain> getCollisionDomains() {
 		return collisionDomains.values();
 	}
 

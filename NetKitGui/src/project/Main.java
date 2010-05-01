@@ -6,7 +6,7 @@ import project.gui.GFactory;
 
 public class Main {
 	public static void main(String[] args) {
-		GFactory factory = new GFactory( Factory.getInstance() );
-		new GFrame( factory );
+		GFactory.init( Factory.getInstance() );
+		new GFrame();
 	}
 }

@@ -36,4 +36,9 @@ public class Factory implements AbstractFactory {
 		else return null;
 	}
 
+	@Override
+	public AbstractProject createProject(String name, String directory) {
+		return new Project(directory, name);
+	}
+
 }

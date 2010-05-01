@@ -4,6 +4,7 @@ import project.common.ItemType;
 import project.core.AbstractFactory;
 import project.core.AbstractHost;
 import project.core.AbstractLink;
+import project.core.AbstractProject;
 
 public class GFactory {
 
@@ -23,16 +24,30 @@ public class GFactory {
 	protected static int tapCounter = 0;
 	protected static int collisionDomainCounter = 0;
 	
-	protected AbstractFactory factory;
+	protected AbstractFactory absFactory;
 	
-	public GFactory( AbstractFactory factory ) {
-		this.factory = factory;
+	protected static GFactory gFactory;
+	
+	private GFactory( AbstractFactory factory ) {
+		this.absFactory = factory;
+	}
+	
+	public static void init( AbstractFactory absFactory ) {
+		gFactory = new GFactory(absFactory);
+	}
+	
+	public static GFactory getInstance() {
+		return gFactory;
+	}
+	
+	public AbstractProject createProject( String name, String directory ) {
+		return absFactory.createProject(name, directory);
 	}
 	
 	public GHost createGHost( ItemType type, double x, double y ) {
 		GHost host = null;
 		
-		AbstractHost absHost = factory.createHost(type);
+		AbstractHost absHost = absFactory.createHost(type);
 		
 		switch (type) {
 		case SERVER:
@@ -59,11 +74,11 @@ public class GFactory {
 	}
 	
 	public GCollisionDomain createCollisionDomain( double x, double y ) {
-		return new GCollisionDomain(x, y, factory.createCollisionDomain());
+		return new GCollisionDomain(x, y, absFactory.createCollisionDomain());
 	}
 	
 	public GLink createLink( GHost host, GCollisionDomain collisionDomain ) {
-		AbstractLink link = factory.createLink(host.host, collisionDomain.collisionDomain);
+		AbstractLink link = absFactory.createLink(host.absHost, collisionDomain.absCollisionDomain);
 		if( link != null ) 
 			return new GLink(host, collisionDomain, link );
 		return null;

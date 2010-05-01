@@ -15,9 +15,6 @@ import javax.swing.JToolBar;
 import project.common.ItemType;
 import project.netkit.Shell;
 
-
-
-
 public class GPanel extends JPanel {
 	private static final long serialVersionUID = -8438576029794021570L;
 
@@ -64,7 +61,7 @@ public class GPanel extends JPanel {
 		
 		setupListeners();
 		confpanel = new ConfPanel(null);
-		canvas = new GCanvas(this, frame.getFactory(), confpanel);
+		canvas = new GCanvas(this, confpanel);
 		add(canvas, BorderLayout.CENTER);
 		
 		add(confpanel, BorderLayout.EAST);

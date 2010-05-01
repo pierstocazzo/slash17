@@ -17,12 +17,12 @@ public class GCollisionDomain extends PImage {
 	
 	protected PText text;
 	
-	protected AbstractCollisionDomain collisionDomain;
+	protected AbstractCollisionDomain absCollisionDomain;
 	
 	public GCollisionDomain( double x, double y, AbstractCollisionDomain collisionDomain ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
-		this.collisionDomain = collisionDomain;
+		this.absCollisionDomain = collisionDomain;
 
 		setName(collisionDomain.getName());
 		
@@ -57,6 +57,10 @@ public class GCollisionDomain extends PImage {
 	
 	public String getImageName() {
 		return image;
+	}
+	
+	public AbstractCollisionDomain getLogic() {
+		return absCollisionDomain;
 	}
 }
 

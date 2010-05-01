@@ -18,13 +18,13 @@ public class GHost extends PImage {
 	
 	protected PText text;
 	
-	AbstractHost host;
+	AbstractHost absHost;
 	
 	public GHost( double x, double y, String image, AbstractHost host ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
 		this.image = image;
-		this.host = host;
+		this.absHost = host;
 
 		setName(host.getName());
 		
@@ -63,6 +63,10 @@ public class GHost extends PImage {
 	}
 
 	public ItemType getType() {
-		return host.getType();
+		return absHost.getType();
+	}
+	
+	public AbstractHost getLogic() {
+		return absHost;
 	}
 }
