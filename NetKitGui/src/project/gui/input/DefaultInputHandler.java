@@ -1,8 +1,8 @@
 package project.gui.input;
 
-import project.gui.ConfPanel;
 import project.gui.GCollisionDomain;
 import project.gui.GHost;
+import project.gui.netconf.DynamicTree;
 import project.util.Util;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PDragEventHandler;
@@ -10,12 +10,6 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 
 public class DefaultInputHandler extends PDragEventHandler {
 	
-	ConfPanel confPanel;
-	
-	public DefaultInputHandler(ConfPanel confPanel) {
-		this.confPanel = confPanel;
-	}
-
 	@Override
 	public void mouseClicked(PInputEvent event) {
 		super.mouseClicked(event);
@@ -24,7 +18,10 @@ public class DefaultInputHandler extends PDragEventHandler {
 		
 		if( node instanceof GHost ) {
 			((GHost) node).setImage( Util.getImageIcon(((GHost) node).getImageName(), Util.SELECTED).getImage() );
-			confPanel.update((GHost) node);
+			if( event.getClickCount() >= 2 ) {
+				DynamicTree.update( ((GHost) node).getLogic() );
+			}
+		
 		} else if( node instanceof GCollisionDomain ) {
 			((GCollisionDomain) node).setImage( Util.getImageIcon(((GCollisionDomain) node).getImageName(), Util.SELECTED).getImage() );
 		}
