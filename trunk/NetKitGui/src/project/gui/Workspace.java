@@ -9,16 +9,15 @@ import java.util.Collection;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import project.core.Host;
-import project.core.Project;
-
+import project.core.AbstractHost;
+import project.core.AbstractProject;
 
 public class Workspace {
 
-	Project project;
+	AbstractProject project;
 	
-	public Workspace( Project project ) {
-		this.project = project;
+	public Workspace( AbstractProject project2 ) {
+		this.project = project2;
 	}
 
 	public boolean newProject( Component c ) {
@@ -60,7 +59,7 @@ public class Workspace {
 	}
 	
 	public boolean saveProject( Component c ) {
-		Collection<Host> hosts = project.getHosts();
+		Collection<AbstractHost> hosts = project.getHosts();
 		String projDir = project.getDirectory();
 		
 		if( projDir.equals("notsetted") ) {
@@ -72,7 +71,7 @@ public class Workspace {
 		
 		projDir = project.getDirectory();
 		
-		for( Host host : hosts ) {
+		for( AbstractHost host : hosts ) {
 			String name = host.getName();
 			createDirectory( name, projDir );
 			String content = "# '" + name + ".startup' created by NetKit GUI\n\n";

@@ -12,5 +12,7 @@ public interface AbstractFactory {
 	
 	/** connect this host to this collision domain */
 	public AbstractLink createLink( AbstractHost host, AbstractCollisionDomain collisionDomain ); 
+	
+	public AbstractProject createProject( String name, String directory );
 }
 

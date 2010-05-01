@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 import project.common.ItemType;
-import project.core.Project;
+import project.core.AbstractProject;
 import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
 import project.gui.input.DefaultInputHandler;
@@ -21,7 +21,7 @@ import edu.umd.cs.piccolo.nodes.PPath;
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
-	Project project;
+	AbstractProject project;
 	Workspace workspace;
 	
 	PLayer mainLayer;
@@ -38,18 +38,15 @@ public class GCanvas extends PCanvas {
 	
 	PBasicInputEventHandler currentHandler;
 	
-	GFactory factory;
-
 	ConfPanel confPanel;
 	
-	public GCanvas( GPanel panel, GFactory gFactory, ConfPanel confPanel ) {
+	public GCanvas( GPanel panel, ConfPanel confPanel ) {
 		this.panel = panel;
-		this.factory = gFactory;
 		this.confPanel = confPanel;
 		
 		hosts = new LinkedList<GHost>();
 		collisionDomains = new LinkedList<GHost>();
-//		project = new Project("notsetted", "notsetted"); TODO
+		project = GFactory.getInstance().createProject("notsetted", "notsetted");
 		workspace = new Workspace( project );
 		createCanvas();
 	}
@@ -89,20 +86,20 @@ public class GCanvas extends PCanvas {
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
-			GCollisionDomain collsionDomain = factory.createCollisionDomain(pos.getX(), pos.getY());
+			GCollisionDomain collsionDomain = GFactory.getInstance().createCollisionDomain(pos.getX(), pos.getY());
 			mainLayer.addChild(collsionDomain);
+			project.addCollisionDomain(collsionDomain.getLogic());
 		} else {
-			GHost host = factory.createGHost( nodeType, pos.getX(), pos.getY() );
+			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY() );
 			mainLayer.addChild(host);
+			project.addHost(host.getLogic());
 		}
-		
-//		project.addHost( new Host( node.getName(), node.getType() ) ); TODO
 		
 		switchToDefaultHandler();
 	}
 	
 	public void addLink( GHost host, GCollisionDomain collisionDomain ) {
-		GLink link = factory.createLink( host, collisionDomain );
+		GLink link = GFactory.getInstance().createLink( host, collisionDomain );
 		
 		if( link == null ) {
 			JOptionPane.showMessageDialog(this, "A netkit host can't have more then 4 interfaces");

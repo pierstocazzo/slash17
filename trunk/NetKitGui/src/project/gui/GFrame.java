@@ -57,12 +57,8 @@ public class GFrame extends JFrame {
 	
 	boolean saved = false;
 	
-	GFactory factory;
-	
-	public GFrame( GFactory factory ) {
+	public GFrame() {
 		super("NetKit GUI");
-		
-		this.factory = factory;
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -246,9 +242,5 @@ public class GFrame extends JFrame {
 		} else {
 			this.dispose();
 		}
-	}
-
-	public GFactory getFactory() {
-		return factory;
 	}
 }

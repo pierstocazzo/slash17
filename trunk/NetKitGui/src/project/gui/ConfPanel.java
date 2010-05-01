@@ -59,7 +59,7 @@ public class ConfPanel extends JPanel {
 	
 	public void update( GHost host ) {
 		topNode.removeAllChildren();
-		for( AbstractInterface iface : host.host.getInterfaces() ) {
+		for( AbstractInterface iface : host.absHost.getInterfaces() ) {
 			DefaultMutableTreeNode ifaceNode = new DefaultMutableTreeNode(iface.getName());
 			topNode.add(ifaceNode);
 		}
