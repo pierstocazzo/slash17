@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import project.common.ItemType;
+import project.gui.netconf.ConfPanel;
 import project.netkit.Shell;
 
 public class GPanel extends JPanel {

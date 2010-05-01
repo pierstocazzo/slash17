@@ -12,6 +12,7 @@ import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
+import project.gui.netconf.ConfPanel;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -59,7 +60,7 @@ public class GCanvas extends PCanvas {
 		getZoomEventHandler().setMaxScale(1.4);
 		getZoomEventHandler().setMinScale(0.4);
 		
-		defaultHandler = new DefaultInputHandler(confPanel);
+		defaultHandler = new DefaultInputHandler();
 		deleteHandler = new DeleteInputHandler(this);
 		addLinkHandler = new AddLinkInputHandler(this);
 		
@@ -108,6 +109,7 @@ public class GCanvas extends PCanvas {
 		}
 		
 		host.addLink(link);
+		
 		collisionDomain.addLink(link);
 		secondLayer.addChild(link);
 		
