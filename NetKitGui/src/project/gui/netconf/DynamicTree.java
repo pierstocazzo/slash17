@@ -44,7 +44,7 @@ public class DynamicTree extends JPanel {
     	clear();
     	DefaultMutableTreeNode hostNode = addObject(host.getName());
     	for( AbstractInterface iface : host.getInterfaces() ) {
-    		addObject(hostNode, iface.getName());
+    		addObject(hostNode, iface.getName() + " : " + iface.getCollisionDomain().getName(), true);
     	}
     }
     

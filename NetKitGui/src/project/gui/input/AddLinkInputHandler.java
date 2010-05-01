@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import project.gui.GCanvas;
 import project.gui.GCollisionDomain;
 import project.gui.GHost;
+import project.gui.netconf.DynamicTree;
 import project.util.Util;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
@@ -34,6 +35,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 			if( collisionDomain != null && host == null ) {
 				host = (GHost) node;
 				canvas.addLink( host, collisionDomain );
+				DynamicTree.update(host.getLogic());
 				reset();
 			} else {
 				if( host == null ) {
@@ -46,6 +48,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 			if( host != null && collisionDomain == null ) {
 				collisionDomain = (GCollisionDomain) node;
 				canvas.addLink( host, collisionDomain );
+				DynamicTree.update(host.getLogic());
 				reset();
 			} else {
 				if( collisionDomain == null ) {
