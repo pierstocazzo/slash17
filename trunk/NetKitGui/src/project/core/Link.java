@@ -45,4 +45,11 @@ public class Link implements AbstractLink {
 	public AbstractHost getHost() {
 		return hostInterface.getHost();
 	}
+
+
+	@Override
+	public void delete() {
+		hostInterface.delete();
+		collisionDomain.removeConnection( hostInterface );
+	}
 }

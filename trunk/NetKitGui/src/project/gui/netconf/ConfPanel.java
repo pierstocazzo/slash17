@@ -22,7 +22,7 @@ public class ConfPanel extends JPanel {
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 		  
-		interfacesTab = new DynamicTree();
+		interfacesTab = new InterfacesTree();
 		routingTab = new JPanel();
 		firewallingTab = new JPanel();
 	
@@ -39,7 +39,7 @@ public class ConfPanel extends JPanel {
 		setBorder(new MatteBorder(0, 1, 0, 0, Color.lightGray));
 	}
 	
-	public DynamicTree getInterfaceTree() {
-		return (DynamicTree) interfacesTab;
+	public InterfacesTree getInterfaceTree() {
+		return (InterfacesTree) interfacesTab;
 	}
 }

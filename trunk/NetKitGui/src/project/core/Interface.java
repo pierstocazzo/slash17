@@ -154,4 +154,8 @@ public class Interface implements AbstractInterface {
 	public void setHost(AbstractHost host) {
 		this.host = (Host) host;
 	}
+
+	public void delete() {
+		host.deleteInterface(name);
+	}
 }

@@ -21,4 +21,6 @@ public interface AbstractHost {
 	public boolean delete();
 
 	public ItemType getType();
+
+	public boolean isConnectedTo( AbstractCollisionDomain collisionDomain );
 }
