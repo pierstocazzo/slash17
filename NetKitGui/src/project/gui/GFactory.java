@@ -1,5 +1,6 @@
 package project.gui;
 
+import edu.umd.cs.piccolo.PLayer;
 import project.common.ItemType;
 import project.core.AbstractFactory;
 import project.core.AbstractHost;
@@ -44,43 +45,43 @@ public class GFactory {
 		return absFactory.createProject(name, directory);
 	}
 	
-	public GHost createGHost( ItemType type, double x, double y ) {
+	public GHost createGHost( ItemType type, double x, double y, PLayer layer ) {
 		GHost host = null;
 		
 		AbstractHost absHost = absFactory.createHost(type);
 		
 		switch (type) {
 		case SERVER:
-			host = new GHost( x, y, serverImage, absHost );
+			host = new GHost( x, y, serverImage, absHost, layer );
 			break;
 		case FIREWALL:
-			host = new GHost( x, y, firewallImage, absHost );
+			host = new GHost( x, y, firewallImage, absHost, layer );
 			break;
 		case NATTEDSERVER:
-			host = new GHost( x, y, nattedServerImage, absHost );
+			host = new GHost( x, y, nattedServerImage, absHost, layer );
 			break;
 		case PC:
-			host = new GHost( x, y, pcImage, absHost );
+			host = new GHost( x, y, pcImage, absHost, layer );
 			break;
 		case ROUTER:
-			host = new GHost( x, y, routerImage, absHost );
+			host = new GHost( x, y, routerImage, absHost, layer );
 			break;
 		case TAP:
-			host = new GHost( x, y, tapImage, absHost );
+			host = new GHost( x, y, tapImage, absHost, layer );
 			break;
 		}
 		
 		return host;
 	}
 	
-	public GCollisionDomain createCollisionDomain( double x, double y ) {
-		return new GCollisionDomain(x, y, absFactory.createCollisionDomain());
+	public GCollisionDomain createCollisionDomain( double x, double y, PLayer layer ) {
+		return new GCollisionDomain(x, y, absFactory.createCollisionDomain(), layer);
 	}
 	
-	public GLink createLink( GHost host, GCollisionDomain collisionDomain ) {
+	public GLink createLink( GHost host, GCollisionDomain collisionDomain, PLayer layer ) {
 		AbstractLink link = absFactory.createLink(host.absHost, collisionDomain.absCollisionDomain);
 		if( link != null ) 
-			return new GLink(host, collisionDomain, link );
+			return new GLink(host, collisionDomain, link, layer );
 		return null;
 	}
 }

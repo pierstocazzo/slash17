@@ -2,10 +2,13 @@ package project.gui.netconf;
 
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -16,7 +19,7 @@ import javax.swing.event.TreeModelListener;
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
 
-public class DynamicTree extends JPanel {
+public class InterfacesTree extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	protected static DefaultMutableTreeNode rootNode;
@@ -24,7 +27,7 @@ public class DynamicTree extends JPanel {
     protected static JTree tree;
     private static Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-    public DynamicTree() {
+    public InterfacesTree() {
         super(new GridLayout(1,0));
         
         rootNode = new DefaultMutableTreeNode("Interfaces");
@@ -36,6 +39,18 @@ public class DynamicTree extends JPanel {
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setShowsRootHandles(true);
 
+        //Set the icon for leaf nodes.
+        ImageIcon leafIcon = new ImageIcon("data/images/icon/nic_icon.png");
+        if (leafIcon != null) {
+            DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+            renderer.setLeafIcon(leafIcon);
+            tree.setCellRenderer(renderer);
+        } else {
+            System.err.println("Leaf icon missing; using default.");
+        }
+
+
+        
         JScrollPane scrollPane = new JScrollPane(tree);
         add(scrollPane);
     }
@@ -101,7 +116,7 @@ public class DynamicTree extends JPanel {
             parent = rootNode;
         }
 	
-	//It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
+        //It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
         treeModel.insertNodeInto(childNode, parent, 
                                  parent.getChildCount());
 
@@ -124,8 +139,8 @@ public class DynamicTree extends JPanel {
              * specified node are the same.
              */
 
-                int index = e.getChildIndices()[0];
-                node = (DefaultMutableTreeNode)(node.getChildAt(index));
+            int index = e.getChildIndices()[0];
+            node = (DefaultMutableTreeNode)(node.getChildAt(index));
 
             System.out.println("The user has finished editing the node.");
             System.out.println("New value: " + node.getUserObject());

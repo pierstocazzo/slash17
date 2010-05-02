@@ -29,6 +29,9 @@ public class Factory implements AbstractFactory {
 
 	@Override
 	public AbstractLink createLink(AbstractHost host, AbstractCollisionDomain collisionDomain) {
+		if( host.isConnectedTo( collisionDomain ) ) 
+			return null;
+		
 		AbstractInterface iface = host.addInterface(collisionDomain);
 		
 		if( iface != null ) 	

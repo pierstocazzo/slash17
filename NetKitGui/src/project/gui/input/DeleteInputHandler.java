@@ -20,7 +20,7 @@ public class DeleteInputHandler extends PBasicInputEventHandler {
 	public void mousePressed(PInputEvent event) {
 		super.mousePressed(event);
 		
-		canvas.deleteNode( event.getPickedNode() );
+		canvas.delete( event.getPickedNode() );
 	}
 	
 	@Override

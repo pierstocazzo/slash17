@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import project.core.AbstractCollisionDomain;
 
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PText;
 
@@ -19,11 +20,14 @@ public class GCollisionDomain extends PImage {
 	
 	protected AbstractCollisionDomain absCollisionDomain;
 	
-	public GCollisionDomain( double x, double y, AbstractCollisionDomain collisionDomain ) {
+	PLayer layer;
+	
+	public GCollisionDomain( double x, double y, AbstractCollisionDomain collisionDomain, PLayer layer ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
 		this.absCollisionDomain = collisionDomain;
-
+		this.layer = layer;
+		
 		setName(collisionDomain.getName());
 		
 		this.centerFullBoundsOnPoint(x, y);
@@ -61,6 +65,14 @@ public class GCollisionDomain extends PImage {
 	
 	public AbstractCollisionDomain getLogic() {
 		return absCollisionDomain;
+	}
+	
+	public void delete() {
+		layer.removeChild(this);
+		for( GLink l : links ) {
+			l.delete();
+		}
+		absCollisionDomain.delete();
 	}
 }
 

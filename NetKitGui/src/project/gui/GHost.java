@@ -6,6 +6,7 @@ import project.common.ItemType;
 import project.core.AbstractHost;
 
 
+import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PText;
 
@@ -20,13 +21,16 @@ public class GHost extends PImage {
 	
 	AbstractHost absHost;
 	
-	public GHost( double x, double y, String image, AbstractHost host ) {
+	PLayer layer;
+	
+	public GHost( double x, double y, String image, AbstractHost host, PLayer layer ) {
 		super(image);
 		this.links = new ArrayList<GLink>();
 		this.image = image;
 		this.absHost = host;
+		this.layer = layer;
 
-		setName(host.getName());
+		setText(host.getName());
 		
 		centerFullBoundsOnPoint(x, y);
 	}
@@ -37,20 +41,16 @@ public class GHost extends PImage {
 			gl.update();
 		}
 	}
-		
-	public GLink getLink( int index ) {
-		return links.get( index );
-	}
 	
-	public void addLink( GLink edge ) {
-		links.add(edge);
+	public void addLink( GLink link ) {
+		links.add(link);
 	}
 	
 	public ArrayList<GLink> getLinks() {
 		return links;
 	}
 
-	public void setName( String name ) {
+	private void setText( String name ) {
 		text = new PText(name);
 		text.centerFullBoundsOnPoint((getWidth()/2), getHeight());
 		text.setPickable(false);
@@ -68,5 +68,13 @@ public class GHost extends PImage {
 	
 	public AbstractHost getLogic() {
 		return absHost;
+	}
+
+	public void delete() {
+		layer.removeChild(this);
+		for( GLink l : links ) {
+			l.delete();
+		}
+		absHost.delete();
 	}
 }

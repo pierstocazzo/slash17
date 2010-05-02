@@ -87,11 +87,11 @@ public class GCanvas extends PCanvas {
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
-			GCollisionDomain collsionDomain = GFactory.getInstance().createCollisionDomain(pos.getX(), pos.getY());
+			GCollisionDomain collsionDomain = GFactory.getInstance().createCollisionDomain(pos.getX(), pos.getY(), mainLayer);
 			mainLayer.addChild(collsionDomain);
 			project.addCollisionDomain(collsionDomain.getLogic());
 		} else {
-			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY() );
+			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), mainLayer );
 			mainLayer.addChild(host);
 			project.addHost(host.getLogic());
 		}
@@ -100,18 +100,15 @@ public class GCanvas extends PCanvas {
 	}
 	
 	public void addLink( GHost host, GCollisionDomain collisionDomain ) {
-		GLink link = GFactory.getInstance().createLink( host, collisionDomain );
+		GLink link = GFactory.getInstance().createLink( host, collisionDomain, secondLayer );
 		
 		if( link == null ) {
-			JOptionPane.showMessageDialog(this, "A netkit host can't have more then 4 interfaces");
-			switchToDefaultHandler();
-			return;
+			JOptionPane.showMessageDialog(this, "Can't add another link");
+		} else {
+			host.addLink(link);
+			collisionDomain.addLink(link);
+			secondLayer.addChild(link);
 		}
-		
-		host.addLink(link);
-		
-		collisionDomain.addLink(link);
-		secondLayer.addChild(link);
 		
 		switchToDefaultHandler();
 	}
@@ -120,12 +117,18 @@ public class GCanvas extends PCanvas {
 		switchToDeleteHandler();
 	}
 
-	public void deleteNode( PNode node ) {
+	public void delete( PNode node ) {
 		try {
-			mainLayer.removeChild(node);
-			switchToDefaultHandler();
+			if( node instanceof GLink ) {
+				((GLink) node).delete();
+			} else if( node instanceof GCollisionDomain ) {
+				((GCollisionDomain) node).delete();
+			} else if( node instanceof GHost ){
+				((GHost) node).delete();
+			}
 		} catch (Exception e) {
 		}
+		switchToDefaultHandler();
 	}
 
 	private void switchToAddHandler( ItemType type ) {
@@ -148,7 +151,7 @@ public class GCanvas extends PCanvas {
 		panel.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
 		if( !currentHandler.equals(deleteHandler) ) {
 			mainLayer.removeInputEventListener(defaultHandler);
-			mainLayer.addInputEventListener(deleteHandler);
+			addInputEventListener(deleteHandler);
 			currentHandler = deleteHandler;
 		}
 	}

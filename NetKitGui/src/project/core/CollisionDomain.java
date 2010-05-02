@@ -126,4 +126,8 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public void removeConnection(AbstractInterface hostInterface) {
+		this.hostsInterfaces.remove(hostInterface);
+	}
 }

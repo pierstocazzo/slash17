@@ -98,4 +98,13 @@ public class Host implements AbstractHost {
 	public ItemType getType() {
 		return type;
 	}
+
+	@Override
+	public boolean isConnectedTo(AbstractCollisionDomain collisionDomain) {
+		for( AbstractInterface iface : interfaces.values() ) {
+			if( iface.getCollisionDomain().equals(collisionDomain)) 
+				return true;
+		}
+		return false;
+	}
 }
