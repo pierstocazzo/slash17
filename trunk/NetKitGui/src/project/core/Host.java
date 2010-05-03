@@ -1,7 +1,7 @@
 package project.core;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import project.common.ItemType;
 
@@ -16,7 +16,7 @@ public class Host implements AbstractHost {
 	protected String name;
 	
 	/** host's network interfaces */
-	protected HashMap<String, AbstractInterface> interfaces;
+	protected LinkedHashMap<String, AbstractInterface> interfaces;
 
 	protected ItemType type;
 
@@ -30,7 +30,7 @@ public class Host implements AbstractHost {
 	Host(String name, ItemType type) {
 		this.name = name;
 		this.type = type;
-		this.interfaces = new HashMap<String, AbstractInterface>();
+		this.interfaces = new LinkedHashMap<String, AbstractInterface>();
 	}
 	
 	/**
@@ -67,8 +67,11 @@ public class Host implements AbstractHost {
 
 	@Override
 	public boolean delete() {
-		// TODO Auto-generated method stub
-		return false;
+		for( AbstractInterface i : interfaces.values() ) {
+			i.delete();
+		}
+		interfaces.clear();
+		return true;
 	}
 
 	@Override

@@ -156,6 +156,8 @@ public class Interface implements AbstractInterface {
 	}
 
 	public void delete() {
+		reset();
 		host.deleteInterface(name);
+		collisionDomain.removeConnection(this);
 	}
 }
