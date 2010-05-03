@@ -27,4 +27,6 @@ public interface AbstractInterface {
 	public void setHost( AbstractHost host );
 	
 	public void reset();
+
+	public void delete();
 }

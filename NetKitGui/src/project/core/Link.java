@@ -49,7 +49,7 @@ public class Link implements AbstractLink {
 
 	@Override
 	public void delete() {
-		hostInterface.delete();
 		collisionDomain.removeConnection( hostInterface );
+		hostInterface.delete();
 	}
 }

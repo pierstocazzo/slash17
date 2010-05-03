@@ -114,6 +114,10 @@ public class CollisionDomain implements AbstractCollisionDomain {
 
 	@Override
 	public boolean delete() {
+		for( AbstractInterface i : hostsInterfaces ) {
+			i.delete();
+		}
+		hostsInterfaces.clear();
 		return true;
 	}
 
