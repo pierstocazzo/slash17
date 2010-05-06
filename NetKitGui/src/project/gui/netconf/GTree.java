@@ -1,8 +1,6 @@
 package project.gui.netconf;
 
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-
+import java.awt.GridLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,28 +14,31 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-public class InterfacesTree extends JPanel {
+public class GTree extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	protected static DefaultMutableTreeNode rootNode;
     protected static DefaultTreeModel treeModel;
     protected static JTree tree;
-    private static Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-    public InterfacesTree() {
-        super(new FlowLayout());
+    public GTree( String rootNodeName ) {
+        super(new GridLayout(1,0));
         
-        rootNode = new DefaultMutableTreeNode("Interfaces");
+        rootNode = new DefaultMutableTreeNode(rootNodeName);
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
         tree = new JTree(treeModel);
         tree.setEditable(false);
-        tree.getSelectionModel().setSelectionMode
-                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setShowsRootHandles(true);
 
-        //Set the icon for leaf nodes.
-        ImageIcon leafIcon = new ImageIcon("data/images/icon/nic_icon.png");
+        JScrollPane scrollPane = new JScrollPane(tree);
+        add(scrollPane);
+    }
+
+    public void setLeafIcon( String icon ) {
+    	//Set the icon for leaf nodes.
+        ImageIcon leafIcon = new ImageIcon( icon );
         if (leafIcon != null) {
             DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
             renderer.setLeafIcon(leafIcon);
@@ -45,19 +46,11 @@ public class InterfacesTree extends JPanel {
         } else {
             System.err.println("Leaf icon missing; using default.");
         }
-
-
-        
-        JScrollPane scrollPane = new JScrollPane(tree);
-        add(scrollPane);
     }
-
+    
     public void update() {
     	clear();
-//    	DefaultMutableTreeNode hostNode = addObject(host.getName());
-//    	for( AbstractInterface iface : host.getInterfaces() ) {
-//    		addObject(hostNode, iface.getName() + " : " + iface.getCollisionDomain().getName(), true);
-//    	}
+    	// update the tree
     }
     
     /** Remove all nodes except the root node. */
@@ -78,9 +71,6 @@ public class InterfacesTree extends JPanel {
                 return;
             }
         } 
-
-        // Either there was no selection, or the root was selected.
-        toolkit.beep();
     }
 
     /** Add child to the currently selected node. */
