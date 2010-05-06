@@ -1,45 +1,47 @@
 package project.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URI;
 
-import javax.swing.JDialog;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import project.common.ItemType;
+import project.netkit.Shell;
+
 public class GFrame extends JFrame {
 	private static final long serialVersionUID = 3661490807594270819L;
 
-	/** main panel */
-	GPanel mainPanel;
-	
+	/** Menus and menus items */
 	JMenuBar menuBar;
-	
 	JMenu fileMenu;
 	JMenuItem openItem;
 	JMenuItem saveItem;
 	JMenuItem saveAsItem;
 	JMenuItem exitItem;
-	
 	JMenu projectMenu;
 	JMenuItem addRouterItem;
 	JMenuItem addCollisionDomainItem;
@@ -49,49 +51,68 @@ public class GFrame extends JFrame {
 	JMenuItem addNattedServerItem;
 	JMenuItem addFirewallItem;
 	JMenuItem addAreaItem;
-	
 	JMenu helpMenu;
 	JMenuItem infoItem;
 	
-	boolean dontAsk;
+	/** tool bars and buttons */
+	JToolBar toolbar;
+	JButton newFile;
+	JButton open;
+	JButton save;
+	JButton start;
+	JButton stop;
+	JToolBar verticalToolbar;
+	JButton router;
+	JButton firewall;
+	JButton pc;
+	JButton collisionDomain;
+	JButton server;
+	JButton nattedServer;
+	JButton area;
+	JButton tap;
+	JButton link;
+	JButton delete;
 	
-	boolean saved = false;
+	/** state bar's components */
+	JLabel stateLabel;
+	JPanel statePanel;
+
+	private GCanvas canvas;
 	
 	public GFrame() {
 		super("NetKit GUI");
 		
+		createFrame();
+	}
+	
+	private void createFrame() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-//		UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels(); 
-//		for (int i=0; i<info.length; i++) { 
-//			String humanReadableName = info[i].getName(); 
-//			String className = info[i].getClassName(); 
-//			System.out.println(humanReadableName + " - " + className);
-//		}
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 		} catch (Exception e) {
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"); 
-			} catch (Exception e1) {
-			}
+			} catch (Exception e1) {}
 		} 
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setSize( screenSize );
 
-		setLayout(new BorderLayout());
-		
 		createMenuBar();
+		
+		createToolBar();
+		
+		createVericalToolBar();
+		
+		createStateBar();
 		
 		setupListeners();
 		
-		mainPanel = new GPanel(this);
-		setContentPane(mainPanel);
-		
 		setVisible(true);
 	}
-	
+
 	private void createMenuBar() {
 		// creating the menu bar
 		menuBar = new JMenuBar();
@@ -140,14 +161,88 @@ public class GFrame extends JFrame {
 		setJMenuBar(menuBar);
 	}
 	
+	private void createVericalToolBar() {
+		// creating toolbar
+		verticalToolbar = new JToolBar();
+		verticalToolbar.setOrientation(JToolBar.VERTICAL);
+		
+		router = new GButton("Router", "Add a router", "data/images/icon/router_icon.png");
+		server = new GButton("Server", "Add a server", "data/images/icon/server_icon.png");
+		firewall = new GButton("Firewall", "Add a firewall", "data/images/icon/firewall_icon.png");
+		nattedServer = new GButton("NatServer", "Add a natted server", "data/images/icon/nattedserver_icon.png");
+		pc = new GButton("PC", "Add a pc", "data/images/icon/pc_icon.png");
+		collisionDomain = new GButton("Domain", "Add a collision domain", "data/images/icon/collisionDomain_icon.png");
+		area = new GButton("Area", "Create a Network Area", "data/images/icon/area_icon.png");
+		tap = new GButton("Tap", "Add TAP interface", "data/images/icon/tap_icon.png");
+		link = new GButton("Link", "Add a link", "data/images/icon/link_icon.png");
+		delete = new GButton("Delete", "Delete a node", "data/images/icon/delete_icon.png");
+		
+		verticalToolbar.add( pc );
+		verticalToolbar.add( server );
+		verticalToolbar.add( nattedServer );
+		verticalToolbar.add( router );
+		verticalToolbar.add( firewall );
+		verticalToolbar.add( collisionDomain );
+		verticalToolbar.add( area );
+		verticalToolbar.add( tap );
+		verticalToolbar.add( link );
+		verticalToolbar.addSeparator();
+		verticalToolbar.add( delete );
+		
+		verticalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.lightGray));
+		
+		add( verticalToolbar, BorderLayout.WEST );
+	}
+
+	private void createToolBar() {
+		// creating toolbar
+		toolbar = new JToolBar();
+		
+		newFile = new GButton("New", "Create a new Project", "data/images/icon/new_icon.png");
+		open = new GButton("Open", "Open a Project", "data/images/icon/open_icon.png");
+		save = new GButton("Save", "Save the Project", "data/images/icon/save_icon.png");
+		start = new GButton("Start", "Start the lab", "data/images/icon/start_icon.png");
+		stop = new GButton("Stop", "Stop the lab", "data/images/icon/stop_icon.png");
+		
+		toolbar.add( newFile );
+		toolbar.add( open );
+		toolbar.add( save );
+		toolbar.addSeparator();
+		toolbar.add( start );
+		toolbar.add( stop );
+		toolbar.setFloatable(false);
+		
+		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
+		
+		add( toolbar, BorderLayout.NORTH );
+	}
+	
+	private void createStateBar() {
+		stateLabel = new JLabel("Status: editing", JLabel.TRAILING);
+		statePanel = new JPanel(new GridLayout(1, 1));
+		
+		statePanel.setBorder(BorderFactory.createLoweredBevelBorder());
+		statePanel.add(stateLabel);
+		
+		add( statePanel, BorderLayout.SOUTH );
+	}
+	
+	public void setCanvas( GCanvas canvas ) {
+		this.canvas = canvas;
+	}
+	
 	private void setupListeners() {
-		// set windows clising event
+		/** set windows clising event */
 		addWindowListener( new WindowAdapter() {
 			@Override 
 			public void windowClosing( WindowEvent e ) {
 				closeApplication();
 			}
 		});
+		
+		/********************************
+		 * Menu items listeners
+		 ********************************/
 		
 		exitItem.addActionListener( new ActionListener() {
 			@Override
@@ -178,69 +273,126 @@ public class GFrame extends JFrame {
 					}
 				});
 
-				JOptionPane.showMessageDialog(mainPanel, editorPane, "Info", JOptionPane.INFORMATION_MESSAGE, null);
+				JOptionPane.showMessageDialog(null, editorPane, "Info", JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
 		
 		// TODO menu items listeners
+		
+		/********************************
+		 *  Buttons listeners
+		 ********************************/
+		
+		newFile.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("NewProject");
+//				canvas.workspace.newProject( null );
+			}
+		});
+		
+		open.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Open");
+			}
+		});
+		
+		save.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+//				canvas.saveProject();
+			}
+		});
+		
+		router.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.ROUTER);
+			}
+		});
+		
+		firewall.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.FIREWALL);
+			}
+		});
+		
+		server.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.SERVER);
+			}
+		});
+		
+		nattedServer.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.NATTEDSERVER);
+			}
+		});
+		
+		pc.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.PC);
+			}
+		});
+		
+		collisionDomain.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.COLLISIONDOMAIN);
+			}
+		});
+		
+		link.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.LINK);
+			}
+		});
+		
+		tap.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.TAP);
+			}
+		});
+		
+		area.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.adding(ItemType.AREA);
+			}
+		});
+		
+		delete.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				canvas.deleting();
+			}
+		});
+		
+		start.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("starting lab");
+				Shell.startLab( canvas.project.getDirectory() );
+			}
+		});
+		
+		stop.addMouseListener( new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("stopping lab");
+				Shell.stopLab( canvas.project.getDirectory(), false );
+			}
+		});
 	}
 	
 	public void closeApplication() {
-		if( saved = false ) {
-			if( dontAsk == true ) {
-				this.dispose();
-			} else {
-				
-				final JOptionPane exitDialog = new JOptionPane( "Do you want to quit the application without saving?",
-						JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION );
-				
-				final Checkbox check = new Checkbox( "Never show this dialog again", false );
-				check.addItemListener( new ItemListener() {
-					@Override
-					public void itemStateChanged(ItemEvent e) {
-						dontAsk = check.getState();
-					}
-				});
-				exitDialog.add( check );
-				check.setVisible(true);
-				
-				final JDialog dialog = new JDialog( this,
-						"Click a button",
-						true);
-				dialog.setContentPane( exitDialog );
-				dialog.setDefaultCloseOperation(
-						JDialog.DO_NOTHING_ON_CLOSE);
-	
-	            exitDialog.addPropertyChangeListener(
-	                    new PropertyChangeListener() {
-	                        public void propertyChange(PropertyChangeEvent e) {
-	                            String prop = e.getPropertyName();
-	
-	                            if (dialog.isVisible()
-	                             && ( e.getSource() == exitDialog )
-	                             && (JOptionPane.VALUE_PROPERTY.equals(prop))) {
-	                                //If you were going to check something
-	                                //before closing the window, you'd do
-	                                //it here.
-	                                dialog.setVisible(false);
-	                            }
-	                        }
-	                    });
-	
-				
-				dialog.pack();
-	            dialog.setLocationRelativeTo( this );
-	            dialog.setVisible(true);
-	
-				
-				int answer = ((Integer) exitDialog.getValue()).intValue();
-		
-				if( answer == JOptionPane.YES_OPTION ) {
-					this.dispose();
-				}
-			}
-		} else {
-			this.dispose();
-		}
+		this.dispose();
 	}
 }

@@ -1,23 +1,20 @@
 package project.gui.netconf;
 
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-
-import project.core.AbstractHost;
-import project.core.AbstractInterface;
 
 public class InterfacesTree extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +25,7 @@ public class InterfacesTree extends JPanel {
     private static Toolkit toolkit = Toolkit.getDefaultToolkit();
 
     public InterfacesTree() {
-        super(new GridLayout(1,0));
+        super(new FlowLayout());
         
         rootNode = new DefaultMutableTreeNode("Interfaces");
         treeModel = new DefaultTreeModel(rootNode);
@@ -55,12 +52,12 @@ public class InterfacesTree extends JPanel {
         add(scrollPane);
     }
 
-    public static void update( AbstractHost host ) {
+    public void update() {
     	clear();
-    	DefaultMutableTreeNode hostNode = addObject(host.getName());
-    	for( AbstractInterface iface : host.getInterfaces() ) {
-    		addObject(hostNode, iface.getName() + " : " + iface.getCollisionDomain().getName(), true);
-    	}
+//    	DefaultMutableTreeNode hostNode = addObject(host.getName());
+//    	for( AbstractInterface iface : host.getInterfaces() ) {
+//    		addObject(hostNode, iface.getName() + " : " + iface.getCollisionDomain().getName(), true);
+//    	}
     }
     
     /** Remove all nodes except the root node. */

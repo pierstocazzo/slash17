@@ -2,7 +2,6 @@ package project.gui;
 
 import java.awt.Cursor;
 import java.awt.geom.Point2D;
-import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
@@ -27,10 +26,9 @@ public class GCanvas extends PCanvas {
 	
 	PLayer mainLayer;
 	PLayer secondLayer;
-	LinkedList<GHost> hosts;
-	LinkedList<GHost> collisionDomains;
+	PLayer areaLayer;
 	
-	GPanel panel;
+	GFrame frame;
 	
 	DefaultInputHandler defaultHandler;
 	DeleteInputHandler deleteHandler;
@@ -41,12 +39,10 @@ public class GCanvas extends PCanvas {
 	
 	ConfPanel confPanel;
 	
-	public GCanvas( GPanel panel, ConfPanel confPanel ) {
-		this.panel = panel;
+	public GCanvas( GFrame gFrame, ConfPanel confPanel ) {
+		this.frame = gFrame;
 		this.confPanel = confPanel;
 		
-		hosts = new LinkedList<GHost>();
-		collisionDomains = new LinkedList<GHost>();
 		project = GFactory.getInstance().createProject("notsetted", "notsetted");
 		workspace = new Workspace( project );
 		createCanvas();
@@ -55,6 +51,7 @@ public class GCanvas extends PCanvas {
 	public void createCanvas() {	
 		mainLayer = getLayer();
 		secondLayer = new PLayer();
+		areaLayer = new PLayer();
 		mainLayer.addChild(secondLayer);
 		
 		getZoomEventHandler().setMaxScale(1.4);
@@ -121,14 +118,17 @@ public class GCanvas extends PCanvas {
 		try {
 			if( node instanceof GLink ) {
 				((GLink) node).delete();
+				switchToDefaultHandler();
 			} else if( node instanceof GCollisionDomain ) {
 				((GCollisionDomain) node).delete();
+				switchToDefaultHandler();
 			} else if( node instanceof GHost ){
 				((GHost) node).delete();
+				switchToDefaultHandler();
 			}
 		} catch (Exception e) {
+			switchToDefaultHandler();
 		}
-		switchToDefaultHandler();
 	}
 
 	private void switchToAddHandler( ItemType type ) {
@@ -148,7 +148,7 @@ public class GCanvas extends PCanvas {
 	}
 	
 	private void switchToDeleteHandler() {
-		panel.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
+		frame.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
 		if( !currentHandler.equals(deleteHandler) ) {
 			mainLayer.removeInputEventListener(defaultHandler);
 			addInputEventListener(deleteHandler);
@@ -157,10 +157,10 @@ public class GCanvas extends PCanvas {
 	}
 	
 	private void switchToDefaultHandler() {
-		panel.setCursor( new Cursor(Cursor.DEFAULT_CURSOR));
+		frame.setCursor( new Cursor(Cursor.DEFAULT_CURSOR));
 		removeInputEventListener(addNodeHandler);
 		removeInputEventListener(addLinkHandler);
-		mainLayer.removeInputEventListener(deleteHandler);
+		removeInputEventListener(deleteHandler);
 		mainLayer.addInputEventListener(defaultHandler);
 		currentHandler = defaultHandler;
 	}
@@ -178,5 +178,17 @@ public class GCanvas extends PCanvas {
 
 	public void setConfPanel(ConfPanel confpanel) {
 		this.confPanel = confpanel;
+	}
+
+	public PLayer getNodeLayer() {
+		return mainLayer;
+	}
+
+	public PLayer getAreaLayer() {
+		return areaLayer;
+	}
+
+	public PLayer getLinkLayer() {
+		return secondLayer;
 	}
 }
