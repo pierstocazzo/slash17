@@ -12,14 +12,24 @@ import javax.swing.JOptionPane;
 import project.core.AbstractHost;
 import project.core.AbstractProject;
 
-public class Workspace {
+public class ProjectHandler {
 
-	AbstractProject project;
+	private AbstractProject project;
 	
-	public Workspace( AbstractProject project2 ) {
-		this.project = project2;
+	private static ProjectHandler projectHandler;
+	
+	/** Singleton implementation for the ProjectHandler */
+	private ProjectHandler() {
 	}
 
+	public static ProjectHandler getInstance() {
+		if( projectHandler == null )  
+			projectHandler = new ProjectHandler();
+		
+		return projectHandler;
+	}
+	/****************************************************/
+	
 	public boolean newProject( Component c ) {
 		
 		String projectName = JOptionPane.showInputDialog(c, "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);

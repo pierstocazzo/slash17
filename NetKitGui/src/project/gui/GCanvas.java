@@ -23,7 +23,6 @@ public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
 	AbstractProject project;
-	Workspace workspace;
 	
 	PLayer mainLayer;
 	PLayer secondLayer;
@@ -40,12 +39,11 @@ public class GCanvas extends PCanvas {
 	
 	LabConfPanel confPanel;
 	
-	public GCanvas( GFrame gFrame, LabConfPanel confPanel ) {
+	public GCanvas( GFrame gFrame, AbstractProject project, LabConfPanel confPanel ) {
 		this.frame = gFrame;
 		this.confPanel = confPanel;
+		this.project = project;
 		
-		project = GFactory.getInstance().createProject("notsetted", "notsetted");
-		workspace = new Workspace( project );
 		createCanvas();
 	}
 	
@@ -66,7 +64,7 @@ public class GCanvas extends PCanvas {
 	}
 	
 	public void saveProject() {
-		workspace.saveProject(this);
+		ProjectHandler.getInstance().saveProject(this);
 	}
 
 	public void adding( ItemType type ) {

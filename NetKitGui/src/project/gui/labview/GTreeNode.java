@@ -4,6 +4,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import project.gui.GHost;
+
 public class GTreeNode extends DefaultMutableTreeNode {
 	private static final long serialVersionUID = -2967012607835738947L;
 
@@ -18,6 +20,8 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	private static final Icon firewallIcon = new ImageIcon("data/images/24x24/firewall_icon.png");
 	
 	private int type;
+	
+	private GHost host;
 	
 	public GTreeNode( int type ) {
 		super();
@@ -55,5 +59,13 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		}
 		
 		return icon;
+	}
+	
+	public GHost getHost() {
+		return host;
+	}
+	
+	public int getType() {
+		return type;
 	}
 }
