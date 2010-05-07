@@ -24,6 +24,7 @@ public class LabConfPanel extends JPanel {
 	
 	public LabConfPanel( AbstractProject project ) {
 		super(new GridLayout(2,1));
+		this.project = project;
 		
 		setBorder( new MatteBorder(0, 1, 0, 0, Color.lightGray));
 		
@@ -31,11 +32,17 @@ public class LabConfPanel extends JPanel {
 		
 		this.project = project;
 		
-		interfacesTab = new GTreePanel("Hosts interfaces");
+		String projName = "";
+		if( project == null ) 
+			projName = "noProject";
+		else
+			projName = project.getName();
 		
-		routingTab = new GTreePanel("Hosts routing tables");
+		interfacesTab = new GTreePanel("Hosts interfaces", projName, GTreePanel.INTERFACES);
 		
-		firewallingTab = new GTreePanel("Firewalls");
+		routingTab = new GTreePanel("Hosts routing tables", projName, GTreePanel.ROUTING);
+		
+		firewallingTab = new GTreePanel("Firewalls", projName, GTreePanel.FIREWALLING);
 	
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
@@ -43,7 +50,7 @@ public class LabConfPanel extends JPanel {
 		
 		add(tab, -1);
 		
-		netkitTree = new GTreePanel("Filesystem view");
+		netkitTree = new GTreePanel("Filesystem view", projName, GTreePanel.FILESYSTEM);
 		
 		add(netkitTree, -1);
 	}
@@ -53,6 +60,10 @@ public class LabConfPanel extends JPanel {
 		routingTab.update();
 		firewallingTab.update();
 		netkitTree.update();
+	}
+
+	public void setProject( AbstractProject project ) {
+		this.project = project;
 	}
 }
 

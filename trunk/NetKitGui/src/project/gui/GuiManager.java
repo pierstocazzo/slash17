@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.JLabel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 
+import project.core.AbstractProject;
 import project.gui.labview.LabConfPanel;
 
 public class GuiManager {
@@ -14,7 +17,10 @@ public class GuiManager {
 	
 	GFrame frame;
 	LabConfPanel confPanel;
+	JLabel emptyCanvas;
 	GCanvas canvas;
+	JSplitPane jSplitPane;
+	AbstractProject project;
 	
 	private GuiManager() {}
 	
@@ -31,18 +37,29 @@ public class GuiManager {
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		confPanel = new LabConfPanel(null);
-		canvas = new GCanvas(frame, confPanel);
+		emptyCanvas = new JLabel("Create a new project or open an existing one.");
+		emptyCanvas.setHorizontalAlignment(SwingConstants.CENTER);
 		// set the canvas preferred size to the 80% of the window's size 
-		canvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
+		emptyCanvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
 		
-		JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, canvas, confPanel);
+		jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, emptyCanvas, confPanel);
 		jSplitPane.setDividerSize(2);
 		frame.add(jSplitPane, BorderLayout.CENTER);
-		
+	}
+	
+	public void setCanvas( GCanvas canvas ) {
+		this.canvas = canvas;
+		jSplitPane.setLeftComponent(canvas);
 		frame.setCanvas(canvas);
 	}
 	
+	public void setProject( AbstractProject project ) {
+		this.project = project;
+		confPanel.setProject( project );
+	}
+	
 	public void update() {
-		confPanel.update();
+		if( canvas != null )
+			confPanel.update();
 	}
 }

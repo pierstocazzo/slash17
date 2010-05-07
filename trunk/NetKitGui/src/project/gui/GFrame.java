@@ -97,24 +97,20 @@ public class GFrame extends JFrame {
 		} 
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
 		setSize( screenSize );
 
 		createMenuBar();
-		
 		createToolBar();
-		
 		createVericalToolBar();
-		
 		createStateBar();
-		
 		setupListeners();
 		
 		setVisible(true);
 	}
 
+	/** Create the menu bar and add it to the frame
+	 */
 	private void createMenuBar() {
-		// creating the menu bar
 		menuBar = new JMenuBar();
 		
 		// creating the file menu
@@ -123,13 +119,11 @@ public class GFrame extends JFrame {
 		saveItem = new JMenuItem("Save");
 		saveAsItem = new JMenuItem("SaveAs");
 		exitItem = new JMenuItem("Exit");
-		
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
 		fileMenu.add(saveAsItem);
 		fileMenu.add(exitItem);
 		menuBar.add(fileMenu);
-		
 		// creating the project menu
 		projectMenu = new JMenu("Project");
 		addRouterItem = new JMenuItem("add router");
@@ -140,7 +134,6 @@ public class GFrame extends JFrame {
 		addNattedServerItem = new JMenuItem("add natted server");
 		addFirewallItem = new JMenuItem("add firewall");
 		addAreaItem = new JMenuItem("add area");
-		
 		projectMenu.add(addRouterItem);
 		projectMenu.add(addCollisionDomainItem);
 		projectMenu.add(addLinkItem);
@@ -150,21 +143,22 @@ public class GFrame extends JFrame {
 		projectMenu.add(addFirewallItem);
 		projectMenu.add(addAreaItem);
 		menuBar.add(projectMenu);
-		
 		// creating help menu
 		helpMenu = new JMenu("Help");
 		infoItem = new JMenuItem("Info");
-		
 		helpMenu.add(infoItem);
 		menuBar.add(helpMenu);
 		
 		setJMenuBar(menuBar);
 	}
 	
+	/** Create the vertical toolbar and add it to the west side of the frame
+	 */
 	private void createVericalToolBar() {
-		// creating toolbar
 		verticalToolbar = new JToolBar();
 		verticalToolbar.setOrientation(JToolBar.VERTICAL);
+		verticalToolbar.setFloatable(false);
+		verticalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.lightGray));
 		
 		router = new GButton("Router", "Add a router", "data/images/32x32/router_icon.png");
 		server = new GButton("Server", "Add a server", "data/images/32x32/server_icon.png");
@@ -189,14 +183,15 @@ public class GFrame extends JFrame {
 		verticalToolbar.addSeparator();
 		verticalToolbar.add( delete );
 		
-		verticalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.lightGray));
-		
 		add( verticalToolbar, BorderLayout.WEST );
 	}
 
+	/** Create the standard toolbar and add it to the north side of the frame
+	 */
 	private void createToolBar() {
-		// creating toolbar
 		toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 		
 		newFile = new GButton("New", "Create a new Project", "data/images/32x32/new_icon.png");
 		open = new GButton("Open", "Open a Project", "data/images/32x32/open_icon.png");
@@ -210,13 +205,12 @@ public class GFrame extends JFrame {
 		toolbar.addSeparator();
 		toolbar.add( start );
 		toolbar.add( stop );
-		toolbar.setFloatable(false);
-		
-		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 		
 		add( toolbar, BorderLayout.NORTH );
 	}
 	
+	/** Create the stateBar and add it to the south side of the frame
+	 */
 	private void createStateBar() {
 		stateLabel = new JLabel("Status: editing", JLabel.TRAILING);
 		statePanel = new JPanel(new GridLayout(1, 1));

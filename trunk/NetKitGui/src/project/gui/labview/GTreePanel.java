@@ -2,14 +2,14 @@ package project.gui.labview;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -20,24 +20,32 @@ import javax.swing.tree.TreeSelectionModel;
 public class GTreePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
+	public static final int INTERFACES = 0;
+	public static final int FIREWALLING = 1;
+	public static final int ROUTING = 2;
+	public static final int FILESYSTEM = 3;
+	
 	protected GTreeNode rootNode;
     protected DefaultTreeModel treeModel;
     protected JTree tree;
+    
+    protected int type;
 
-    public GTreePanel( String rootNodeName ) {
+    public GTreePanel( String stringLabel, String projectName, int type ) {
         super(new BorderLayout());
         
-        JLabel label = new JLabel( rootNodeName );
+        JLabel label = new JLabel( stringLabel );
 		label.setBorder( new EmptyBorder(5, 5, 5, 5) );
 		add( label, BorderLayout.NORTH );
         
-        rootNode = new GTreeNode(rootNodeName, GTreeNode.FOLDER);
+        rootNode = new GTreeNode(projectName, GTreeNode.FOLDER);
         treeModel = new DefaultTreeModel(rootNode);
-        treeModel.addTreeModelListener(new MyTreeModelListener());
+        
         tree = new JTree(treeModel);
         tree.setEditable(false);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setShowsRootHandles(true);
+        tree.addMouseListener( new MyListener() );
         
         MyRenderer renderer = new MyRenderer();
         tree.setCellRenderer(renderer);
@@ -108,30 +116,18 @@ public class GTreePanel extends JPanel {
         return childNode;
     }
 
-    class MyTreeModelListener implements TreeModelListener {
-    	public void treeNodesChanged(TreeModelEvent e) {
-    		DefaultMutableTreeNode node;
-    		node = (DefaultMutableTreeNode)(e.getTreePath().getLastPathComponent());
-
-    		/*
-    		 * If the event lists children, then the changed
-    		 * node is the child of the node we've already
-    		 * gotten.  Otherwise, the changed node and the
-    		 * specified node are the same.
-    		 */
-
-    		int index = e.getChildIndices()[0];
-    		node = (DefaultMutableTreeNode)(node.getChildAt(index));
-
-    		System.out.println("The user has finished editing the node.");
-    		System.out.println("New value: " + node.getUserObject());
-    	}
-    	public void treeNodesInserted(TreeModelEvent e) {
-    	}
-    	public void treeNodesRemoved(TreeModelEvent e) {
-    	}
-    	public void treeStructureChanged(TreeModelEvent e) {
-    	}
+    /** the mouse listeners for the tree nodes */
+    class MyListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+	         TreePath selPath = tree.getSelectionPath();
+	         GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
+	         
+	         if( e.getClickCount() >= 2 ) {
+	        	 System.out.println(selPath + " - " + node.getType() + " " + node.getHost());
+	        	 // TODO edit configuration
+             }
+		}
     }
 
     /** Renderer for the tree */
