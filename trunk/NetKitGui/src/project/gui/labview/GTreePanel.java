@@ -3,8 +3,6 @@ package project.gui.labview;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,13 +20,10 @@ import javax.swing.tree.TreeSelectionModel;
 public class GTreePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	protected static DefaultMutableTreeNode rootNode;
-    protected static DefaultTreeModel treeModel;
-    protected static JTree tree;
+	protected GTreeNode rootNode;
+    protected DefaultTreeModel treeModel;
+    protected JTree tree;
 
-    protected Icon leafIcon;
-    protected Icon nodeIcon;
-    
     public GTreePanel( String rootNodeName ) {
         super(new BorderLayout());
         
@@ -36,28 +31,19 @@ public class GTreePanel extends JPanel {
 		label.setBorder( new EmptyBorder(5, 5, 5, 5) );
 		add( label, BorderLayout.NORTH );
         
-        rootNode = new DefaultMutableTreeNode(rootNodeName);
+        rootNode = new GTreeNode(rootNodeName, GTreeNode.FOLDER);
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
         tree = new JTree(treeModel);
-        tree.setEditable(true);
+        tree.setEditable(false);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setShowsRootHandles(true);
+        
+        MyRenderer renderer = new MyRenderer();
+        tree.setCellRenderer(renderer);
 
         JScrollPane scrollPane = new JScrollPane(tree);
         add(scrollPane);
-    }
-
-    public void setIcons( String leafIconPath, String nodeIconPath ) {
-    	//Set the icon for leaf nodes.
-        leafIcon = new ImageIcon( leafIconPath );
-        nodeIcon = new ImageIcon( nodeIconPath );
-        if (leafIcon != null) {
-            MyRenderer renderer = new MyRenderer(leafIcon, nodeIcon);
-            tree.setCellRenderer(renderer);
-        } else {
-            System.err.println("Leaf icon missing; using default.");
-        }
     }
     
     public void update() {
@@ -66,7 +52,7 @@ public class GTreePanel extends JPanel {
     }
     
     /** Remove all nodes except the root node. */
-    public static void clear() {
+    public void clear() {
         rootNode.removeAllChildren();
         treeModel.reload();
     }
@@ -86,117 +72,96 @@ public class GTreePanel extends JPanel {
     }
 
     /** Add child to the currently selected node. */
-    public static DefaultMutableTreeNode addObject(Object child) {
-        DefaultMutableTreeNode parentNode = null;
+    public GTreeNode addObject( Object child, int type ) {
+    	GTreeNode parentNode = null;
         TreePath parentPath = tree.getSelectionPath();
 
         if (parentPath == null) {
             parentNode = rootNode;
         } else {
-            parentNode = (DefaultMutableTreeNode)
-                         (parentPath.getLastPathComponent());
+            parentNode = (GTreeNode) (parentPath.getLastPathComponent());
         }
 
-        return addObject(parentNode, child, true);
+        return addObject( parentNode, child, true, type );
     }
 
-    public static DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent,
-                                            Object child) {
-        return addObject(parent, child, false);
+    public GTreeNode addObject( GTreeNode parent, Object child, int type) {
+        return addObject( parent, child, false, type );
     }
 
-    public static DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent,
-                                            Object child, 
-                                            boolean shouldBeVisible) {
-        DefaultMutableTreeNode childNode = 
-                new DefaultMutableTreeNode(child);
+    public GTreeNode addObject( GTreeNode parent,  Object child, boolean visible, int type ) {
+    	
+    	GTreeNode childNode = new GTreeNode(child, type);
 
         if (parent == null) {
             parent = rootNode;
         }
 	
         //It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
-        treeModel.insertNodeInto(childNode, parent, 
-                                 parent.getChildCount());
+        treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
 
         //Make sure the user can see the lovely new node.
-        if (shouldBeVisible) {
+        if (visible) {
             tree.scrollPathToVisible(new TreePath(childNode.getPath()));
         }
+        
         return childNode;
     }
 
     class MyTreeModelListener implements TreeModelListener {
-        public void treeNodesChanged(TreeModelEvent e) {
-            DefaultMutableTreeNode node;
-            node = (DefaultMutableTreeNode)(e.getTreePath().getLastPathComponent());
+    	public void treeNodesChanged(TreeModelEvent e) {
+    		DefaultMutableTreeNode node;
+    		node = (DefaultMutableTreeNode)(e.getTreePath().getLastPathComponent());
 
-            /*
-             * If the event lists children, then the changed
-             * node is the child of the node we've already
-             * gotten.  Otherwise, the changed node and the
-             * specified node are the same.
-             */
+    		/*
+    		 * If the event lists children, then the changed
+    		 * node is the child of the node we've already
+    		 * gotten.  Otherwise, the changed node and the
+    		 * specified node are the same.
+    		 */
 
-            int index = e.getChildIndices()[0];
-            node = (DefaultMutableTreeNode)(node.getChildAt(index));
+    		int index = e.getChildIndices()[0];
+    		node = (DefaultMutableTreeNode)(node.getChildAt(index));
 
-            System.out.println("The user has finished editing the node.");
-            System.out.println("New value: " + node.getUserObject());
-        }
-        public void treeNodesInserted(TreeModelEvent e) {
-        }
-        public void treeNodesRemoved(TreeModelEvent e) {
-        }
-        public void treeStructureChanged(TreeModelEvent e) {
-        }
+    		System.out.println("The user has finished editing the node.");
+    		System.out.println("New value: " + node.getUserObject());
+    	}
+    	public void treeNodesInserted(TreeModelEvent e) {
+    	}
+    	public void treeNodesRemoved(TreeModelEvent e) {
+    	}
+    	public void treeStructureChanged(TreeModelEvent e) {
+    	}
     }
-    
+
     /** Renderer for the tree */
     class MyRenderer extends DefaultTreeCellRenderer {
-		private static final long serialVersionUID = 1L;
-		
-		Icon nodeIcon, leafIcon;
+    	private static final long serialVersionUID = 1L;
 
-        public MyRenderer(Icon leafIcon, Icon nodeIcon) {
-            this.nodeIcon = nodeIcon;
-            this.leafIcon = leafIcon;
-        }
+    	public MyRenderer() {
+    		super();
+    	}
 
-        public Component getTreeCellRendererComponent(
-                            JTree tree,
-                            Object value,
-                            boolean sel,
-                            boolean expanded,
-                            boolean leaf,
-                            int row,
-                            boolean hasFocus) {
+    	public Component getTreeCellRendererComponent(
+    			JTree tree,
+    			Object value,
+    			boolean sel,
+    			boolean expanded,
+    			boolean leaf,
+    			int row,
+    			boolean hasFocus) {
 
-            super.getTreeCellRendererComponent(
-                            tree, value, sel,
-                            expanded, leaf, row,
-                            hasFocus);
-            
-            if (leaf && isLeaf(value)) {
-                setIcon(leafIcon);
-                setToolTipText("Double click to edit configuration.");
-            } else {
-            	setIcon(nodeIcon);
-                setToolTipText(null);
-            }
+    		super.getTreeCellRendererComponent(
+    				tree, value, sel,
+    				expanded, leaf, row,
+    				hasFocus);
 
-            return this;
-        }
+    		GTreeNode node = (GTreeNode) value;
 
-        protected boolean isLeaf(Object value) {
-            DefaultMutableTreeNode node =
-                    (DefaultMutableTreeNode) value;
-            
-            if( ((String) node.getUserObject()).matches(".*[0-9]+.*") ) 
-            	return true;
+    		setIcon( node.getIcon() );
 
-            return false;
-        }
+    		return this;
+    	}
     }
 }
 
