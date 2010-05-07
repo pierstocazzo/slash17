@@ -86,7 +86,7 @@ public class GFrame extends JFrame {
 	}
 	
 	private void createFrame() {
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
@@ -280,7 +280,7 @@ public class GFrame extends JFrame {
 		newFile.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ProjectHandler.getInstance().newProject(null);
+				ProjectHandler.getInstance().newProject(e.getComponent());
 			}
 		});
 		
@@ -386,6 +386,15 @@ public class GFrame extends JFrame {
 	}
 	
 	public void closeApplication() {
-		this.dispose();
+		
+		if( ProjectHandler.getInstance().isSaved() == false ) {
+			int close = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit without saving the project?", 
+					"Project not saved", JOptionPane.YES_NO_OPTION);
+			if( close == JOptionPane.YES_OPTION ) {
+				this.dispose();
+			}
+		} else {
+			this.dispose();
+		}
 	}
 }
