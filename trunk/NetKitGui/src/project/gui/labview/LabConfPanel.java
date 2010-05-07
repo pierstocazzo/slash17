@@ -2,11 +2,14 @@ package project.gui.labview;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.Collection;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.MatteBorder;
 
+import project.core.AbstractHost;
+import project.core.AbstractInterface;
 import project.core.AbstractProject;
 
 public class LabConfPanel extends JPanel {
@@ -50,16 +53,37 @@ public class LabConfPanel extends JPanel {
 		
 		add(tab, -1);
 		
-		labStructure = new GTreePanel("Laboratory's structure", projName, GTreePanel.FILESYSTEM);
+		labStructure = new GTreePanel("Lab structure", projName, GTreePanel.LABSTRUCTURE);
 		
 		add(labStructure, -1);
 	}
 	
 	public void update() {
-		interfacesTab.update();
-		routingTab.update();
-		firewallingTab.update();
-		labStructure.update();
+		if( project == null ) 
+			return;
+		
+		interfacesTab.clear();
+		routingTab.clear();
+		firewallingTab.clear();
+		labStructure.clear();
+		
+		Collection<AbstractHost> hosts = project.getHosts();
+		
+		labStructure.addObject( "lab.conf", GTreeNode.FILE );
+		
+		for( AbstractHost host : hosts ) {
+			// add a folder for each host
+			GTreeNode node = interfacesTab.addObject( host.getName(), GTreeNode.FOLDER, host );
+			// add his interfaces to each host
+			for( AbstractInterface iface : host.getInterfaces() ) {
+				interfacesTab.addObject( node, iface.getName(), GTreeNode.IFACE, host );
+			}
+			
+			labStructure.addObject( host.getName(), GTreeNode.FOLDER );
+			labStructure.addObject( host.getName() + ".startup", GTreeNode.FILE );
+		}
+		
+		this.repaint();
 	}
 
 	public void setProject( AbstractProject project ) {

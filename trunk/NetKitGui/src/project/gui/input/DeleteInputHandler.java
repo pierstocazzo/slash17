@@ -3,6 +3,7 @@ package project.gui.input;
 import project.gui.GCanvas;
 import project.gui.GCollisionDomain;
 import project.gui.GHost;
+import project.gui.GuiManager;
 import project.util.Util;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
@@ -21,6 +22,7 @@ public class DeleteInputHandler extends PBasicInputEventHandler {
 		super.mousePressed(event);
 		
 		canvas.delete( event.getPickedNode() );
+		GuiManager.getInstance().update();
 	}
 	
 	@Override
