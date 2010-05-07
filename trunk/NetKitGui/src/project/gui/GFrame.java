@@ -215,7 +215,7 @@ public class GFrame extends JFrame {
 		stateLabel = new JLabel("Status: editing", JLabel.TRAILING);
 		statePanel = new JPanel(new GridLayout(1, 1));
 		
-		statePanel.setBorder(BorderFactory.createLoweredBevelBorder());
+		statePanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.lightGray));
 		statePanel.add(stateLabel);
 		
 		add( statePanel, BorderLayout.SOUTH );
