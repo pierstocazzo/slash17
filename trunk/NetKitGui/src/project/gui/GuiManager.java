@@ -22,6 +22,7 @@ public class GuiManager {
 	JSplitPane jSplitPane;
 	AbstractProject project;
 	
+	/** Singleton implementation */
 	private GuiManager() {}
 	
 	public static GuiManager getInstance() {
@@ -30,6 +31,7 @@ public class GuiManager {
 		
 		return gmanager;
 	}
+	/*****************************/
 	
 	public void startGui() {
 		frame = new GFrame();
@@ -47,15 +49,17 @@ public class GuiManager {
 		frame.add(jSplitPane, BorderLayout.CENTER);
 	}
 	
-	public void setCanvas( GCanvas canvas ) {
-		this.canvas = canvas;
-		jSplitPane.setLeftComponent(canvas);
-		frame.setCanvas(canvas);
-	}
-	
 	public void setProject( AbstractProject project ) {
 		this.project = project;
 		confPanel.setProject( project );
+		
+		canvas = new GCanvas(frame, project, confPanel);
+		
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		canvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
+		
+		jSplitPane.setLeftComponent(canvas);
+		frame.setCanvas(canvas);
 	}
 	
 	public void update() {

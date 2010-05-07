@@ -64,6 +64,10 @@ public class LabConfPanel extends JPanel {
 
 	public void setProject( AbstractProject project ) {
 		this.project = project;
+		interfacesTab.setName(project.getName());
+		routingTab.setName(project.getName());
+		firewallingTab.setName(project.getName());
+		netkitTree.setName(project.getName());
 	}
 }
 

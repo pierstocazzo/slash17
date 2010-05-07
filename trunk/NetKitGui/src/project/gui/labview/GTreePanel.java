@@ -159,5 +159,9 @@ public class GTreePanel extends JPanel {
     		return this;
     	}
     }
+
+	public void setName( String name ) {
+		rootNode.setUserObject( name );
+	}
 }
 
