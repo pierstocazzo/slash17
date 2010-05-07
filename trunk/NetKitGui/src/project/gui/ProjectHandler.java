@@ -71,7 +71,7 @@ public class ProjectHandler {
 	
 	public boolean saveProject() {
 		if( project == null ) {
-			JOptionPane.showMessageDialog(null, "Error: you must create the project before save it");
+			JOptionPane.showMessageDialog(null, "No project to save", "No Project", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		

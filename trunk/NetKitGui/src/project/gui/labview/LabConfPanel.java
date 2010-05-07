@@ -20,7 +20,7 @@ public class LabConfPanel extends JPanel {
 	
 	JTabbedPane tab;
 	
-	GTreePanel netkitTree;
+	GTreePanel labStructure;
 	
 	public LabConfPanel( AbstractProject project ) {
 		super(new GridLayout(2,1));
@@ -50,16 +50,16 @@ public class LabConfPanel extends JPanel {
 		
 		add(tab, -1);
 		
-		netkitTree = new GTreePanel("Filesystem view", projName, GTreePanel.FILESYSTEM);
+		labStructure = new GTreePanel("Laboratory's structure", projName, GTreePanel.FILESYSTEM);
 		
-		add(netkitTree, -1);
+		add(labStructure, -1);
 	}
 	
 	public void update() {
 		interfacesTab.update();
 		routingTab.update();
 		firewallingTab.update();
-		netkitTree.update();
+		labStructure.update();
 	}
 
 	public void setProject( AbstractProject project ) {
@@ -67,7 +67,7 @@ public class LabConfPanel extends JPanel {
 		interfacesTab.setName(project.getName());
 		routingTab.setName(project.getName());
 		firewallingTab.setName(project.getName());
-		netkitTree.setName(project.getName());
+		labStructure.setName(project.getName());
 	}
 }
 
