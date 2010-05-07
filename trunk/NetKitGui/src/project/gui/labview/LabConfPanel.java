@@ -9,7 +9,7 @@ import javax.swing.border.MatteBorder;
 
 import project.core.AbstractProject;
 
-public class LabConf extends JPanel {
+public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	GTreePanel interfacesTab;
@@ -22,7 +22,7 @@ public class LabConf extends JPanel {
 	
 	GTreePanel netkitTree;
 	
-	public LabConf( AbstractProject project ) {
+	public LabConfPanel( AbstractProject project ) {
 		super(new GridLayout(2,1));
 		
 		setBorder( new MatteBorder(0, 1, 0, 0, Color.lightGray));
