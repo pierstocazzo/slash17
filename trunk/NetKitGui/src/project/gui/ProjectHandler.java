@@ -18,6 +18,8 @@ public class ProjectHandler {
 	
 	private static ProjectHandler projectHandler;
 	
+	private static boolean saved = true;
+	
 	/** Singleton implementation for the ProjectHandler */
 	private ProjectHandler() {
 	}
@@ -63,6 +65,8 @@ public class ProjectHandler {
 			
 			GuiManager.getInstance().setProject(project);
 			
+			saved = false;
+			
 			return true;
 		} else {
 			return false;
@@ -84,6 +88,8 @@ public class ProjectHandler {
 			String content = "# '" + name + ".startup' created by NetKit GUI\n\n";
 			createFile( name + ".startup", projDir, content );
 		}
+		
+		saved = true;
 		
 		return true;
 	}
@@ -108,6 +114,14 @@ public class ProjectHandler {
 		File proj = new File( topDirectory + "/" + name );
 		proj.mkdir();
 		return proj.getAbsolutePath();
+	}
+
+	public void setSaved(boolean saved) {
+		ProjectHandler.saved = saved;
+	}
+
+	public boolean isSaved() {
+		return saved;
 	}
 }
 
