@@ -62,10 +62,6 @@ public class GCanvas extends PCanvas {
 		
 		switchToDefaultHandler();
 	}
-	
-	public void saveProject() {
-		ProjectHandler.getInstance().saveProject(this);
-	}
 
 	public void adding( ItemType type ) {
 		if( type != ItemType.LINK ) {

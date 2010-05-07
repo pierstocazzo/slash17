@@ -53,8 +53,7 @@ public class ProjectHandler {
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			String dir = fc.getSelectedFile().getAbsolutePath();
 
-			project.setName(projectName);
-			project.setDirectory(dir + "/" + projectName);
+			project = GFactory.getInstance().createProject(projectName, dir + "/" + projectName);
 			
 			createDirectory(projectName, dir);
 			
@@ -62,31 +61,28 @@ public class ProjectHandler {
 			
 			createFile("lab.conf", project.getDirectory(), content);
 			
+			GuiManager.getInstance().setProject(project);
+			
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	public boolean saveProject( Component c ) {
-		Collection<AbstractHost> hosts = project.getHosts();
-		String projDir = project.getDirectory();
-		
-		if( projDir.equals("notsetted") ) {
-			if( !newProject(c) ) {
-				JOptionPane.showMessageDialog(c, "Error: you must create the project before save it");
-				return false;
-			}
+	public boolean saveProject() {
+		if( project == null ) {
+			JOptionPane.showMessageDialog(null, "Error: you must create the project before save it");
+			return false;
 		}
 		
-		projDir = project.getDirectory();
+		String projDir = project.getDirectory();
+		Collection<AbstractHost> hosts = project.getHosts();
 		
 		for( AbstractHost host : hosts ) {
 			String name = host.getName();
 			createDirectory( name, projDir );
 			String content = "# '" + name + ".startup' created by NetKit GUI\n\n";
 			createFile( name + ".startup", projDir, content );
-			
 		}
 		
 		return true;

@@ -280,8 +280,7 @@ public class GFrame extends JFrame {
 		newFile.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("NewProject");
-//				canvas.workspace.newProject( null );
+				ProjectHandler.getInstance().newProject(null);
 			}
 		});
 		
@@ -295,7 +294,7 @@ public class GFrame extends JFrame {
 		save.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-//				canvas.saveProject();
+				ProjectHandler.getInstance().saveProject();
 			}
 		});
 		
