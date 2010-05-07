@@ -1,7 +1,9 @@
 package project.gui.labview;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,6 +26,9 @@ public class GTreePanel extends JPanel {
     protected static DefaultTreeModel treeModel;
     protected static JTree tree;
 
+    protected Icon leafIcon;
+    protected Icon nodeIcon;
+    
     public GTreePanel( String rootNodeName ) {
         super(new BorderLayout());
         
@@ -35,7 +40,7 @@ public class GTreePanel extends JPanel {
         treeModel = new DefaultTreeModel(rootNode);
         treeModel.addTreeModelListener(new MyTreeModelListener());
         tree = new JTree(treeModel);
-        tree.setEditable(false);
+        tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.setShowsRootHandles(true);
 
@@ -43,12 +48,12 @@ public class GTreePanel extends JPanel {
         add(scrollPane);
     }
 
-    public void setLeafIcon( String icon ) {
+    public void setIcons( String leafIconPath, String nodeIconPath ) {
     	//Set the icon for leaf nodes.
-        ImageIcon leafIcon = new ImageIcon( icon );
+        leafIcon = new ImageIcon( leafIconPath );
+        nodeIcon = new ImageIcon( nodeIconPath );
         if (leafIcon != null) {
-            DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-            renderer.setLeafIcon(leafIcon);
+            MyRenderer renderer = new MyRenderer(leafIcon, nodeIcon);
             tree.setCellRenderer(renderer);
         } else {
             System.err.println("Leaf icon missing; using default.");
@@ -144,6 +149,53 @@ public class GTreePanel extends JPanel {
         public void treeNodesRemoved(TreeModelEvent e) {
         }
         public void treeStructureChanged(TreeModelEvent e) {
+        }
+    }
+    
+    /** Renderer for the tree */
+    class MyRenderer extends DefaultTreeCellRenderer {
+		private static final long serialVersionUID = 1L;
+		
+		Icon nodeIcon, leafIcon;
+
+        public MyRenderer(Icon leafIcon, Icon nodeIcon) {
+            this.nodeIcon = nodeIcon;
+            this.leafIcon = leafIcon;
+        }
+
+        public Component getTreeCellRendererComponent(
+                            JTree tree,
+                            Object value,
+                            boolean sel,
+                            boolean expanded,
+                            boolean leaf,
+                            int row,
+                            boolean hasFocus) {
+
+            super.getTreeCellRendererComponent(
+                            tree, value, sel,
+                            expanded, leaf, row,
+                            hasFocus);
+            
+            if (leaf && isLeaf(value)) {
+                setIcon(leafIcon);
+                setToolTipText("Double click to edit configuration.");
+            } else {
+            	setIcon(nodeIcon);
+                setToolTipText(null);
+            }
+
+            return this;
+        }
+
+        protected boolean isLeaf(Object value) {
+            DefaultMutableTreeNode node =
+                    (DefaultMutableTreeNode) value;
+            
+            if( ((String) node.getUserObject()).matches(".*[0-9]+.*") ) 
+            	return true;
+
+            return false;
         }
     }
 }
