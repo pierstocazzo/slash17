@@ -31,14 +31,11 @@ public class LabConfPanel extends JPanel {
 		
 		this.project = project;
 		
-		interfacesTab = new GTreePanel("Interfaces");
-		interfacesTab.setIcons("data/images/24x24/nic_icon.png", "data/images/24x24/folder_icon.png");
+		interfacesTab = new GTreePanel("Hosts interfaces");
 		
-		routingTab = new GTreePanel("Routers");
-		routingTab.setIcons("data/images/24x24/router_icon.png", "data/images/24x24/folder_icon.png");
+		routingTab = new GTreePanel("Hosts routing tables");
 		
 		firewallingTab = new GTreePanel("Firewalls");
-		firewallingTab.setIcons("data/images/24x24/firewall_icon.png", "data/images/24x24/folder_icon.png");
 	
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
@@ -47,7 +44,6 @@ public class LabConfPanel extends JPanel {
 		add(tab, -1);
 		
 		netkitTree = new GTreePanel("Filesystem view");
-		netkitTree.setIcons("data/images/24x24/file_icon.png", "data/images/24x24/folder_icon.png");
 		
 		add(netkitTree, -1);
 	}
