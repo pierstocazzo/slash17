@@ -12,7 +12,7 @@ import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
-import project.gui.labview.LabConf;
+import project.gui.labview.LabConfPanel;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -38,9 +38,9 @@ public class GCanvas extends PCanvas {
 	
 	PBasicInputEventHandler currentHandler;
 	
-	LabConf confPanel;
+	LabConfPanel confPanel;
 	
-	public GCanvas( GFrame gFrame, LabConf confPanel ) {
+	public GCanvas( GFrame gFrame, LabConfPanel confPanel ) {
 		this.frame = gFrame;
 		this.confPanel = confPanel;
 		
@@ -177,7 +177,7 @@ public class GCanvas extends PCanvas {
 		}
 	}
 
-	public void setConfPanel(LabConf confpanel) {
+	public void setConfPanel(LabConfPanel confpanel) {
 		this.confPanel = confpanel;
 	}
 
