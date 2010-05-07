@@ -6,14 +6,14 @@ import java.awt.Toolkit;
 
 import javax.swing.JSplitPane;
 
-import project.gui.netconf.LabConfPanel;
+import project.gui.labview.LabConf;
 
 public class GuiManager {
 
 	private static GuiManager gmanager;
 	
 	GFrame frame;
-	LabConfPanel confPanel;
+	LabConf confPanel;
 	GCanvas canvas;
 	
 	private GuiManager() {}
@@ -30,15 +30,15 @@ public class GuiManager {
 		
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		confPanel = new LabConfPanel(null);
+		confPanel = new LabConf(null);
 		canvas = new GCanvas(frame, confPanel);
 		// set the canvas preferred size to the 80% of the window's size 
 		canvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
 		
 		JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, canvas, confPanel);
 		jSplitPane.setDividerSize(2);
-		
 		frame.add(jSplitPane, BorderLayout.CENTER);
+		
 		frame.setCanvas(canvas);
 	}
 	

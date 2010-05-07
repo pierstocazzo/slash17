@@ -5,13 +5,14 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JOptionPane;
 
+
 import project.common.ItemType;
 import project.core.AbstractProject;
 import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
-import project.gui.netconf.LabConfPanel;
+import project.gui.labview.LabConf;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -37,9 +38,9 @@ public class GCanvas extends PCanvas {
 	
 	PBasicInputEventHandler currentHandler;
 	
-	LabConfPanel confPanel;
+	LabConf confPanel;
 	
-	public GCanvas( GFrame gFrame, LabConfPanel confPanel ) {
+	public GCanvas( GFrame gFrame, LabConf confPanel ) {
 		this.frame = gFrame;
 		this.confPanel = confPanel;
 		
@@ -176,7 +177,7 @@ public class GCanvas extends PCanvas {
 		}
 	}
 
-	public void setConfPanel(LabConfPanel confpanel) {
+	public void setConfPanel(LabConf confpanel) {
 		this.confPanel = confpanel;
 	}
 
