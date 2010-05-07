@@ -1,6 +1,5 @@
 package project.gui;
 
-import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -32,16 +31,16 @@ public class ProjectHandler {
 	}
 	/****************************************************/
 	
-	public boolean newProject( Component c ) {
+	public boolean newProject() {
 		
-		String projectName = JOptionPane.showInputDialog(c, "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
+		String projectName = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
 		
 		if( projectName == null ) {
 			return false;
 		}
 		
 		while( projectName.equals("") ) {
-			projectName = JOptionPane.showInputDialog(c, "Insert a valid name:", "New Project", JOptionPane.QUESTION_MESSAGE);
+			projectName = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Insert a valid name:", "New Project", JOptionPane.QUESTION_MESSAGE);
 			if( projectName == null ) 
 				return false;
 		}
@@ -50,7 +49,7 @@ public class ProjectHandler {
 		fc.setDialogTitle("Select the project's directory");
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.setAcceptAllFileFilterUsed(false);
-		int choose = fc.showDialog( c, "Select" );
+		int choose = fc.showDialog( GuiManager.getInstance().getFrame(), "Select" );
 		
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			String dir = fc.getSelectedFile().getAbsolutePath();

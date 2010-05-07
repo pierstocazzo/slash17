@@ -2,6 +2,7 @@ package project.gui.input;
 
 import project.common.ItemType;
 import project.gui.GCanvas;
+import project.gui.GuiManager;
 
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -21,5 +22,6 @@ public class AddNodeInputHandler extends PBasicInputEventHandler {
 		super.mousePressed(event);
 		
 		canvas.addNode( nodeType, event.getPosition() );
+		GuiManager.getInstance().update();
 	}
 }

@@ -280,7 +280,7 @@ public class GFrame extends JFrame {
 		newFile.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ProjectHandler.getInstance().newProject(e.getComponent());
+				ProjectHandler.getInstance().newProject();
 			}
 		});
 		

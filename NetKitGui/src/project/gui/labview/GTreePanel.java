@@ -17,13 +17,15 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import project.core.AbstractHost;
+
 public class GTreePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int INTERFACES = 0;
 	public static final int FIREWALLING = 1;
 	public static final int ROUTING = 2;
-	public static final int FILESYSTEM = 3;
+	public static final int LABSTRUCTURE = 3;
 	
 	protected GTreeNode rootNode;
     protected DefaultTreeModel treeModel;
@@ -115,6 +117,22 @@ public class GTreePanel extends JPanel {
         
         return childNode;
     }
+    
+    public void setName( String name ) {
+		rootNode.setUserObject( name );
+	}
+
+	public GTreeNode addObject(String name, int type, AbstractHost host) {
+		GTreeNode node = addObject(name, type);
+		node.setHost(host);
+		return node;
+	}
+	
+	public GTreeNode addObject(GTreeNode parent, String name, int type, AbstractHost host) {
+		GTreeNode node = addObject(parent, name, true, type);
+		node.setHost(host);
+		return node;
+	}
 
     /** the mouse listeners for the tree nodes */
     class MyListener extends MouseAdapter {
@@ -123,9 +141,8 @@ public class GTreePanel extends JPanel {
 	         TreePath selPath = tree.getSelectionPath();
 	         GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
 	         
-	         if( e.getClickCount() >= 2 ) {
-	        	 System.out.println(selPath + " - " + node.getType() + " " + node.getHost());
-	        	 // TODO edit configuration
+	         if( e.getClickCount() >= 2 && node.getType() == GTreeNode.IFACE ) {
+	        	 new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
              }
 		}
     }
@@ -156,12 +173,9 @@ public class GTreePanel extends JPanel {
 
     		setIcon( node.getIcon() );
 
+    		
     		return this;
     	}
     }
-
-	public void setName( String name ) {
-		rootNode.setUserObject( name );
-	}
 }
 

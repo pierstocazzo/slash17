@@ -2,6 +2,7 @@ package project.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -66,7 +67,12 @@ public class GuiManager {
 	}
 	
 	public void update() {
-		if( canvas != null )
+		if( canvas != null ) {
 			confPanel.update();
+		}
+	}
+
+	public Component getFrame() {
+		return frame;
 	}
 }
