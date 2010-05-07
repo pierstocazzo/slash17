@@ -1,9 +1,11 @@
 package project.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
@@ -41,11 +43,12 @@ public class GuiManager {
 		confPanel = new LabConfPanel(null);
 		emptyCanvas = new JLabel("Create a new project or open an existing one.");
 		emptyCanvas.setHorizontalAlignment(SwingConstants.CENTER);
+		emptyCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		// set the canvas preferred size to the 80% of the window's size 
 		emptyCanvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
 		
 		jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, emptyCanvas, confPanel);
-		jSplitPane.setDividerSize(2);
+		jSplitPane.setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
 		frame.add(jSplitPane, BorderLayout.CENTER);
 	}
 	
@@ -54,7 +57,7 @@ public class GuiManager {
 		confPanel.setProject( project );
 		
 		canvas = new GCanvas(frame, project, confPanel);
-		
+		canvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		canvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
 		
