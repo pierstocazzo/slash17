@@ -120,11 +120,11 @@ public class GFrame extends JFrame {
 		
 		// creating the file menu
 		fileMenu = new JMenu("File");
-		newItem = new JMenuItem("New Project", new ImageIcon("data/images/24x24/file_icon.png"));
-		openItem = new JMenuItem("Open", new ImageIcon("data/images/24x24/folder_icon.png"));
-		saveItem = new JMenuItem("Save", new ImageIcon("data/images/24x24/save_icon.png"));
-		saveAsItem = new JMenuItem("Save as", new ImageIcon("data/images/24x24/saveas_icon.png"));
-		exitItem = new JMenuItem("Exit");
+		newItem = new JMenuItem("New Project", new ImageIcon("data/images/16x16/new_icon.png"));
+		openItem = new JMenuItem("Open", new ImageIcon("data/images/16x16/open_icon.png"));
+		saveItem = new JMenuItem("Save", new ImageIcon("data/images/16x16/save_icon.png"));
+		saveAsItem = new JMenuItem("Save as", new ImageIcon("data/images/16x16/save_icon.png"));
+		exitItem = new JMenuItem("Exit", new ImageIcon("data/images/16x16/exit_icon.png"));
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
@@ -134,14 +134,14 @@ public class GFrame extends JFrame {
 		menuBar.add(fileMenu);
 		// creating the project menu
 		projectMenu = new JMenu("Project");
-		addRouterItem = new JMenuItem("Add router");
-		addCollisionDomainItem = new JMenuItem("Add collision domain");
-		addLinkItem = new JMenuItem("Add link");
-		addPcItem = new JMenuItem("Add pc");
-		addServerItem = new JMenuItem("Add server");
-		addNattedServerItem = new JMenuItem("Add natted server");
-		addFirewallItem = new JMenuItem("Add firewall");
-		addAreaItem = new JMenuItem("Add area");
+		addRouterItem = new JMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
+		addCollisionDomainItem = new JMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
+		addLinkItem = new JMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
+		addPcItem = new JMenuItem("Add pc", new ImageIcon("data/images/16x16/pc_icon.png"));
+		addServerItem = new JMenuItem("Add server", new ImageIcon("data/images/16x16/server_icon.png"));
+		addNattedServerItem = new JMenuItem("Add natted server", new ImageIcon("data/images/16x16/nattedserver_icon.png"));
+		addFirewallItem = new JMenuItem("Add firewall", new ImageIcon("data/images/16x16/firewall_icon.png"));
+		addAreaItem = new JMenuItem("Add area", new ImageIcon("data/images/16x16/area_icon.png"));
 		projectMenu.add(addRouterItem);
 		projectMenu.add(addCollisionDomainItem);
 		projectMenu.add(addPcItem);
@@ -154,7 +154,7 @@ public class GFrame extends JFrame {
 		menuBar.add(projectMenu);
 		// creating help menu
 		helpMenu = new JMenu("Help");
-		infoItem = new JMenuItem("Info");
+		infoItem = new JMenuItem("Info", new ImageIcon("data/images/16x16/info_icon.png"));
 		helpMenu.add(infoItem);
 		menuBar.add(helpMenu);
 		
@@ -276,7 +276,8 @@ public class GFrame extends JFrame {
 					}
 				});
 
-				JOptionPane.showMessageDialog(null, editorPane, "Info", JOptionPane.INFORMATION_MESSAGE, null);
+				JOptionPane.showMessageDialog( GuiManager.getInstance().getFrame(), editorPane, "Info", 
+						JOptionPane.INFORMATION_MESSAGE, new ImageIcon("data/images/images/GNU.png"));
 			}
 		});
 		
