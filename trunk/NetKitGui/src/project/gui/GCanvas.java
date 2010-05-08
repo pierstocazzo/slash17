@@ -82,6 +82,7 @@ public class GCanvas extends PCanvas {
 			GCollisionDomain collsionDomain = GFactory.getInstance().createCollisionDomain(pos.getX(), pos.getY(), mainLayer);
 			mainLayer.addChild(collsionDomain);
 			project.addCollisionDomain(collsionDomain.getLogic());
+			
 		} else {
 			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), mainLayer );
 			mainLayer.addChild(host);
@@ -112,16 +113,39 @@ public class GCanvas extends PCanvas {
 	public void delete( PNode node ) {
 		try {
 			if( node instanceof GLink ) {
-				((GLink) node).delete();
+				
+				System.err.println("deleting glink");
+				
+				GLink link = ((GLink) node);
+				link.delete();
+				project.removeLink( link.getLogic() );
 				switchToDefaultHandler();
+				
 			} else if( node instanceof GCollisionDomain ) {
-				((GCollisionDomain) node).delete();
+
+				System.err.println("deleting gcollisiondomain");
+				
+				GCollisionDomain cd = ((GCollisionDomain) node);
+				cd.delete();
+				project.removeCollisionDomain( cd.getLogic() );
 				switchToDefaultHandler();
+				
 			} else if( node instanceof GHost ){
-				((GHost) node).delete();
+
+				System.err.println("deleting ghost");
+				
+				GHost host = ((GHost) node);
+				host.delete();
+				project.removeHost( host.getLogic() );
 				switchToDefaultHandler();
+			} else {
+
+				System.err.println("deleting what?");
+				
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error deleting something..");
 			switchToDefaultHandler();
 		}
 	}

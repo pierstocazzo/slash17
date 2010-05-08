@@ -33,6 +33,7 @@ public class Factory implements AbstractFactory {
 			return null;
 		
 		AbstractInterface iface = host.addInterface(collisionDomain);
+		collisionDomain.addConnection(iface);
 		
 		if( iface != null ) 	
 			return new Link(iface, collisionDomain);

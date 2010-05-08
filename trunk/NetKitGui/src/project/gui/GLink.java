@@ -55,6 +55,7 @@ public class GLink extends PPath {
 
 	public void delete() {
 		layer.removeChild(this);
-		absLink.delete();
+		collisionDomain.removeLink( this );
+		host.removeLink( this );
 	}
 }

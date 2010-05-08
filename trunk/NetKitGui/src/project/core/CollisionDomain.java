@@ -30,7 +30,7 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	protected String ipRange;
 	
 	/** hosts interfaces on this collision domain */
-	protected ArrayList<Interface> hostsInterfaces;
+	protected ArrayList<AbstractInterface> hostsInterfaces;
 	
 	/** 
 	 * Create a collision domain with a minimum ip addresses required
@@ -41,6 +41,7 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	CollisionDomain( String name, int minIpAddr ) {
 		this.minIpAddr = minIpAddr;
 		this.name = name;
+		this.hostsInterfaces = new ArrayList<AbstractInterface>();
 	}
 
 	/** 
@@ -50,8 +51,12 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	 */
 	CollisionDomain( String name ) {
 		this.name = name;
+		this.hostsInterfaces = new ArrayList<AbstractInterface>();
 	}
 	
+	public void addConnection( AbstractInterface hostInterface ) {
+		hostsInterfaces.add(hostInterface);
+	}
 	
 	/*******************************
 	 * Getter and setter methods
@@ -114,10 +119,9 @@ public class CollisionDomain implements AbstractCollisionDomain {
 
 	@Override
 	public boolean delete() {
-		for( AbstractInterface i : hostsInterfaces ) {
-			i.delete();
+		while( !hostsInterfaces.isEmpty() ) {
+			hostsInterfaces.get(0).delete();
 		}
-		hostsInterfaces.clear();
 		return true;
 	}
 

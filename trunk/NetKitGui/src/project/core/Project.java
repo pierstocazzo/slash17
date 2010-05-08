@@ -72,16 +72,20 @@ public class Project implements AbstractProject {
 	 * 
 	 * @param host (Host) the host to remove
 	 */
-	public void removeHost( String host ) {
-		hosts.remove(host);
+	public void removeHost( AbstractHost host ) {
+		AbstractHost h = hosts.remove(host.getName());
+		if( h != null )
+			h.delete();
 	}
 	
 	/** Remove the collision domain with this name
 	 * 
 	 * @param cd (CollisionDomain) the collision domain to remove
 	 */
-	public void removeCollisionDomain( String cd ) {
-		collisionDomains.remove(cd);
+	public void removeCollisionDomain( AbstractCollisionDomain cd ) {
+		AbstractCollisionDomain c = collisionDomains.remove(cd.getName());
+		if( c != null )
+			c.delete();
 	}
 	
 	/** 
@@ -187,6 +191,11 @@ public class Project implements AbstractProject {
 
 	public void setWeb(String web) {
 		this.web = web;
+	}
+
+	@Override
+	public void removeLink(AbstractLink link) {
+		link.delete();
 	}
 }
 

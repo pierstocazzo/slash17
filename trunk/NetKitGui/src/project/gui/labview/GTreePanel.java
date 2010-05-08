@@ -62,7 +62,10 @@ public class GTreePanel extends JPanel {
     	for( int i = 0; i < rootNode.getChildCount(); i++ ) {
     		GTreeNode host = ((GTreeNode) rootNode.getChildAt(i));
     		if( host.getUserObject().equals( hostName ) ) {
-    			tree.scrollPathToVisible(new TreePath( ((DefaultMutableTreeNode) host.getLastChild()).getPath()) );
+    			try {
+    				tree.scrollPathToVisible( new TreePath( ((GTreeNode) host.getLastChild()).getPath()) );
+    			} catch (Exception e) {
+				}
     			return;
     		}
     	}
@@ -136,6 +139,7 @@ public class GTreePanel extends JPanel {
 
         //Make sure the user can see the lovely new node.
         if (visible) {
+        	collapseAll();
             tree.scrollPathToVisible(new TreePath(childNode.getPath()));
         }
         
@@ -163,11 +167,13 @@ public class GTreePanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 	         TreePath selPath = tree.getSelectionPath();
-	         GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
+	         if( selPath != null ) {
+	        	 GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
 	         
-	         if( e.getClickCount() >= 2 && node.getType() == GTreeNode.IFACE ) {
-	        	 new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
-             }
+		         if( e.getClickCount() >= 2 && node.getType() == GTreeNode.IFACE ) {
+		        	 new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
+	             }
+	         }
 		}
     }
 

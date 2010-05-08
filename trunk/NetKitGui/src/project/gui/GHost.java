@@ -71,10 +71,13 @@ public class GHost extends PImage {
 	}
 
 	public void delete() {
-		layer.removeChild(this);
-		for( GLink l : links ) {
-			l.delete();
+		while( !links.isEmpty() ) {
+			links.get(0).delete();
 		}
-		absHost.delete();
+		layer.removeChild(this);
+	}
+
+	public void removeLink(GLink gLink) {
+		links.remove(gLink);
 	}
 }

@@ -7,4 +7,8 @@ public interface AbstractCollisionDomain {
 	public void setName( String name );
 	
 	public boolean delete();
+	
+	public void addConnection( AbstractInterface hostInterface );
+	
+	public void removeConnection( AbstractInterface hostInterface );
 }
