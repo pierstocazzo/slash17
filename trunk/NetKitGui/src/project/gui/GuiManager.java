@@ -2,7 +2,6 @@ package project.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -64,20 +63,29 @@ public class GuiManager {
 		jSplitPane.setLeftComponent(canvas);
 		frame.setCanvas(canvas);
 		
+		
 		frame.validate();
 	}
 	
 	public void update() {
+		frame.validate();
+		confPanel.validate();
+		canvas.validate();
+		
 		if( canvas != null ) {
 			confPanel.update();
 		}
 	}
-	
-	public void selectHost( String host ) {
-		confPanel.selectHost(host);
-	}
 
-	public Component getFrame() {
+	public LabConfPanel getConfPanel() {
+		return confPanel;
+	}
+	
+	public GCanvas getCanvas() {
+		return canvas;
+	}
+	
+	public GFrame getFrame() {
 		return frame;
 	}
 

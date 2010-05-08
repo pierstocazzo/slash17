@@ -155,5 +155,10 @@ public class ProjectHandler {
 	public boolean isSaved() {
 		return saved;
 	}
+
+	public void openProject() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
