@@ -2,20 +2,13 @@ package project.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URI;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,11 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
-import project.common.ItemType;
-import project.netkit.Shell;
+import project.gui.listeners.GActionListener;
+import project.gui.listeners.GActionListener.ActionType;
 
 public class GFrame extends JFrame {
 	private static final long serialVersionUID = 3661490807594270819L;
@@ -244,183 +235,31 @@ public class GFrame extends JFrame {
 		 * Menu items listeners
 		 ********************************/
 		
-		exitItem.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed( ActionEvent e ) {
-				closeApplication();
-			}
-		});
-		
-		infoItem.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String credits = "<html><center><b><font size=6>NetKit GUI</font></b></center><br>" +
-						"Released under GNU General Public License version 3. <a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GPLv3</a><br><br>" +
-						"Copyright © 2010 <i>Loria Salvatore</i><br>" +
-						"Visit <a href=http://slash17.googlecode.com>http://slash17.googlecode.com</a></html>";
-				
-				JEditorPane editorPane = new JEditorPane ("text/html", credits);
-				editorPane.setEditable (false);
-
-				editorPane.addHyperlinkListener (new HyperlinkListener () {
-					public void hyperlinkUpdate (HyperlinkEvent evt) {
-						if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-							try {
-								Desktop.getDesktop().browse(new URI(evt.getDescription()));
-							} catch (Exception e) {
-							}
-						}
-					}
-				});
-
-				JOptionPane.showMessageDialog( GuiManager.getInstance().getFrame(), editorPane, "Info", 
-						JOptionPane.INFORMATION_MESSAGE, new ImageIcon("data/images/images/GNU.png"));
-			}
-		});
-		
-		newItem.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ProjectHandler.getInstance().newProject();
-			}
-		});
-		
-		openItem.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO open project
-			}
-		});
-		
-		saveItem.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String message;
-				if( ProjectHandler.getInstance().saveProject() ) 
-					message = "Project saved";
-				else
-					message = "Unable to save the project";
-				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), message);
-			}
-		});
-		
-		// TODO menu items listeners
+		exitItem.addActionListener( new GActionListener(ActionType.exit) );
+		infoItem.addActionListener( new GActionListener(ActionType.showInfo) );
+		newItem.addActionListener( new GActionListener(ActionType.newProject) );
+		openItem.addActionListener( new GActionListener(ActionType.openProject) );
+		saveItem.addActionListener( new GActionListener(ActionType.saveProject) );
 		
 		/********************************
 		 *  Buttons listeners
 		 ********************************/
 		
-		newFile.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ProjectHandler.getInstance().newProject();
-			}
-		});
-		
-		open.addActionListener( new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO open a project
-			}
-		});
-		
-		save.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String message;
-				if( ProjectHandler.getInstance().saveProject() ) 
-					message = "Project saved";
-				else
-					message = "Unable to save the project";
-				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), message);
-			}
-		});
-		
-		router.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.ROUTER);
-			}
-		});
-		
-		firewall.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.FIREWALL);
-			}
-		});
-		
-		server.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.SERVER);
-			}
-		});
-		
-		nattedServer.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.NATTEDSERVER);
-			}
-		});
-		
-		pc.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.PC);
-			}
-		});
-		
-		collisionDomain.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.COLLISIONDOMAIN);
-			}
-		});
-		
-		link.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.LINK);
-			}
-		});
-		
-		tap.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.TAP);
-			}
-		});
-		
-		area.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.adding(ItemType.AREA);
-			}
-		});
-		
-		delete.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				canvas.deleting();
-			}
-		});
-		
-		start.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("starting lab");
-				Shell.startLab( GuiManager.getInstance().getProject().getDirectory() );
-			}
-		});
-		
-		stop.addMouseListener( new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("stopping lab");
-				Shell.stopLab( GuiManager.getInstance().getProject().getDirectory(), false );
-			}
-		});
+		newFile.addActionListener( new GActionListener(ActionType.newProject) );
+		open.addActionListener( new GActionListener(ActionType.openProject) );
+		save.addActionListener( new GActionListener(ActionType.saveProject) );
+		router.addActionListener( new GActionListener(ActionType.addRouter) );
+		firewall.addActionListener( new GActionListener(ActionType.addFirewall) );
+		server.addActionListener( new GActionListener(ActionType.addServer) );
+		nattedServer.addActionListener( new GActionListener(ActionType.addNattedServer) );
+		pc.addActionListener( new GActionListener(ActionType.addPc) );
+		collisionDomain.addActionListener( new GActionListener(ActionType.addCollisionDomain) );
+		link.addActionListener( new GActionListener(ActionType.addLink) );
+		tap.addActionListener( new GActionListener(ActionType.addTap) );
+		area.addActionListener( new GActionListener(ActionType.addArea) );
+		delete.addActionListener( new GActionListener(ActionType.delete) );
+		start.addActionListener( new GActionListener(ActionType.startLab) );
+		stop.addActionListener( new GActionListener(ActionType.stopLab) );
 	}
 	
 	public void closeApplication() {

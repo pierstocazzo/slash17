@@ -20,7 +20,7 @@ public class DefaultInputHandler extends PDragEventHandler {
 			GHost host = ((GHost) node);
 			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
 			// expand this host's configuration in the trees
-			GuiManager.getInstance().selectHost( host.getLogic().getName() );
+			GuiManager.getInstance().getConfPanel().selectHost( host.getLogic().getName() );
 			
 		} else if( node instanceof GCollisionDomain ) {
 			GCollisionDomain cd = ((GCollisionDomain) node);
