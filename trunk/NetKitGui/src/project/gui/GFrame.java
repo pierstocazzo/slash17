@@ -3,6 +3,8 @@ package project.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -17,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import project.gui.listeners.GActionListener;
@@ -41,6 +44,7 @@ public class GFrame extends JFrame {
 	JMenuItem addNattedServerItem;
 	JMenuItem addFirewallItem;
 	JMenuItem addAreaItem;
+	JMenuItem addTapItem;
 	JMenu helpMenu;
 	JMenuItem infoItem;
 	
@@ -69,7 +73,7 @@ public class GFrame extends JFrame {
 
 	/** the canvas */
 	GCanvas canvas;
-	
+
 	/**
 	 * Create the NetKit GUI main Frame
 	 */
@@ -110,10 +114,14 @@ public class GFrame extends JFrame {
 		
 		// creating the file menu
 		fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
 		newItem = new GMenuItem("New Project", new ImageIcon("data/images/16x16/new_icon.png"));
+		newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
 		openItem = new GMenuItem("Open", new ImageIcon("data/images/16x16/open_icon.png"));
 		saveItem = new GMenuItem("Save", new ImageIcon("data/images/16x16/save_icon.png"));
+		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 		exitItem = new GMenuItem("Exit", new ImageIcon("data/images/16x16/exit_icon.png"));
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
@@ -122,6 +130,7 @@ public class GFrame extends JFrame {
 		menuBar.add(fileMenu);
 		// creating the project menu
 		projectMenu = new JMenu("Project");
+		projectMenu.setMnemonic(KeyEvent.VK_P);
 		addRouterItem = new GMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
 		addCollisionDomainItem = new GMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
 		addLinkItem = new GMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
@@ -130,6 +139,7 @@ public class GFrame extends JFrame {
 		addNattedServerItem = new GMenuItem("Add natted server", new ImageIcon("data/images/16x16/nattedserver_icon.png"));
 		addFirewallItem = new GMenuItem("Add firewall", new ImageIcon("data/images/16x16/firewall_icon.png"));
 		addAreaItem = new GMenuItem("Add area", new ImageIcon("data/images/16x16/area_icon.png"));
+		addTapItem = new GMenuItem("Add tap", new ImageIcon("data/images/16x16/tap_icon.png"));
 		projectMenu.add(addRouterItem);
 		projectMenu.add(addCollisionDomainItem);
 		projectMenu.add(addPcItem);
@@ -137,12 +147,15 @@ public class GFrame extends JFrame {
 		projectMenu.add(addNattedServerItem);
 		projectMenu.add(addFirewallItem);
 		projectMenu.add(addAreaItem);
+		projectMenu.add(addTapItem);
 		projectMenu.addSeparator();
 		projectMenu.add(addLinkItem);
 		menuBar.add(projectMenu);
 		// creating help menu
 		helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic(KeyEvent.VK_H);
 		infoItem = new GMenuItem("Info", new ImageIcon("data/images/16x16/info_icon.png"));
+		infoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));
 		helpMenu.add(infoItem);
 		menuBar.add(helpMenu);
 		
@@ -223,9 +236,9 @@ public class GFrame extends JFrame {
 	}
 	
 	private void setupListeners() {
-		/** set windows clising event */
+		/** set windows clising event 
+		 */
 		addWindowListener( new WindowAdapter() {
-			@Override 
 			public void windowClosing( WindowEvent e ) {
 				closeApplication();
 			}
@@ -235,19 +248,31 @@ public class GFrame extends JFrame {
 		 * Menu items listeners
 		 ********************************/
 		
-		exitItem.addActionListener( new GActionListener(ActionType.exit) );
-		infoItem.addActionListener( new GActionListener(ActionType.showInfo) );
 		newItem.addActionListener( new GActionListener(ActionType.newProject) );
 		openItem.addActionListener( new GActionListener(ActionType.openProject) );
 		saveItem.addActionListener( new GActionListener(ActionType.saveProject) );
+		exitItem.addActionListener( new GActionListener(ActionType.exit) );
+		
+		infoItem.addActionListener( new GActionListener(ActionType.showInfo) );
+		
+		addPcItem.addActionListener( new GActionListener(ActionType.addPc) );
+		addRouterItem.addActionListener( new GActionListener(ActionType.addRouter) );
+		addFirewallItem.addActionListener( new GActionListener(ActionType.addFirewall) );
+		addServerItem.addActionListener( new GActionListener(ActionType.addServer) );
+		addNattedServerItem.addActionListener( new GActionListener(ActionType.addNattedServer) );
+		addAreaItem.addActionListener( new GActionListener(ActionType.addArea) );
+		addCollisionDomainItem.addActionListener( new GActionListener(ActionType.addCollisionDomain) );
+		addLinkItem.addActionListener( new GActionListener(ActionType.addLink) );
+		addTapItem.addActionListener( new GActionListener(ActionType.addTap) );
 		
 		/********************************
-		 *  Buttons listeners
+		 * Buttons listeners
 		 ********************************/
 		
 		newFile.addActionListener( new GActionListener(ActionType.newProject) );
 		open.addActionListener( new GActionListener(ActionType.openProject) );
 		save.addActionListener( new GActionListener(ActionType.saveProject) );
+		
 		router.addActionListener( new GActionListener(ActionType.addRouter) );
 		firewall.addActionListener( new GActionListener(ActionType.addFirewall) );
 		server.addActionListener( new GActionListener(ActionType.addServer) );
@@ -258,6 +283,7 @@ public class GFrame extends JFrame {
 		tap.addActionListener( new GActionListener(ActionType.addTap) );
 		area.addActionListener( new GActionListener(ActionType.addArea) );
 		delete.addActionListener( new GActionListener(ActionType.delete) );
+		
 		start.addActionListener( new GActionListener(ActionType.startLab) );
 		stop.addActionListener( new GActionListener(ActionType.stopLab) );
 	}
