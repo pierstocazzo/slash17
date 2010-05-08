@@ -43,11 +43,23 @@ public class IfaceConfFrame extends JDialog {
 	private void createDialog( String message ) {
 		setLayout(new BorderLayout());
 		
+		String name = iface.getName();
+		String ip = iface.getIp();
+		String mask = iface.getMask();
+		String bcast = iface.getBCast();
+		String host = iface.getHost().getName();
+		
+		if( ip == null || mask == null || bcast == null ) {
+			ip = "";
+			mask = "";
+			bcast = "";
+		}
+		
 		final JLabel label;
 		if( message == null ) 
-			label = new JLabel("Set the interface " + iface.getName() + " of " + iface.getHost().getName() );
+			label = new JLabel("Set the interface " + name + " of " + host );
 		else 
-			label = new JLabel(message + "\nSet the interface " + iface.getName() + " of " + iface.getHost().getName() );
+			label = new JLabel(message + "\nSet the interface " + name + " of " + host );
 		
 		label.setFont( new Font("Serif", Font.BOLD, 14) );
 		label.setBorder( BorderFactory.createEmptyBorder(5, 5, 5, 5) );
@@ -76,7 +88,7 @@ public class IfaceConfFrame extends JDialog {
 		labelConstraint.gridx = 1;
 		panel.add( new JLabel("IP:"), labelConstraint );
 		
-		final JTextField ipField = new JTextField(15);
+		final JTextField ipField = new JTextField(ip, 15);
 		textFieldConstraint.gridy = 0;
 		textFieldConstraint.gridx = 2; //fino a 5
 		panel.add( ipField, textFieldConstraint );
@@ -85,7 +97,7 @@ public class IfaceConfFrame extends JDialog {
 		labelConstraint.gridx = 1;
 		panel.add( new JLabel("NetMask:"), labelConstraint );
 		
-		final JTextField maskField = new JTextField(15);
+		final JTextField maskField = new JTextField(mask, 15);
 		textFieldConstraint.gridy = 1;
 		textFieldConstraint.gridx = 2;
 		panel.add( maskField, textFieldConstraint );
@@ -94,7 +106,7 @@ public class IfaceConfFrame extends JDialog {
 		labelConstraint.gridx = 1;
 		panel.add(new JLabel("BroadCast:"), labelConstraint );
 		
-		final JTextField bcastField = new JTextField(15);
+		final JTextField bcastField = new JTextField(bcast, 15);
 		textFieldConstraint.gridy = 2;
 		textFieldConstraint.gridx = 2;
 		panel.add( bcastField, textFieldConstraint );
