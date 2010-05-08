@@ -56,10 +56,34 @@ public class GTreePanel extends JPanel {
         add(scrollPane);
     }
     
-    public void update() {
-    	clear();
-    	// update the tree
+    public void selectHost( String hostName ) {
+    	collapseAll();
+    	
+    	for( int i = 0; i < rootNode.getChildCount(); i++ ) {
+    		GTreeNode host = ((GTreeNode) rootNode.getChildAt(i));
+    		if( host.getUserObject().equals( hostName ) ) {
+    			tree.scrollPathToVisible(new TreePath( ((DefaultMutableTreeNode) host.getLastChild()).getPath()) );
+    			return;
+    		}
+    	}
     }
+    
+    public void collapseAll() {
+    	int row = tree.getRowCount() - 1;
+    	while (row >= 0) {
+    		tree.collapseRow(row);
+    		row--;
+    	}
+    }
+
+    public void expandAll(JTree tree) {
+    	int row = 0;
+    	while (row < tree.getRowCount()) {
+    		tree.expandRow(row);
+    		row++;
+    	}
+    }
+
     
     /** Remove all nodes except the root node. */
     public void clear() {

@@ -71,6 +71,10 @@ public class GuiManager {
 			confPanel.update();
 		}
 	}
+	
+	public void selectHost( String host ) {
+		confPanel.selectHost(host);
+	}
 
 	public Component getFrame() {
 		return frame;
