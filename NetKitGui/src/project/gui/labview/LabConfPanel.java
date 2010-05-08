@@ -1,16 +1,19 @@
 package project.gui.labview;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Collection;
 
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.border.MatteBorder;
 
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
 import project.core.AbstractProject;
+import project.gui.GuiManager;
 
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +29,7 @@ public class LabConfPanel extends JPanel {
 	GTreePanel labStructure;
 	
 	public LabConfPanel( AbstractProject project ) {
-		super(new GridLayout(2,1));
+		super(new GridLayout(1,0));
 		this.project = project;
 		
 		setBorder( new MatteBorder(0, 1, 0, 0, Color.lightGray));
@@ -42,20 +45,18 @@ public class LabConfPanel extends JPanel {
 			projName = project.getName();
 		
 		interfacesTab = new GTreePanel("Hosts interfaces", projName, GTreePanel.INTERFACES);
-		
 		routingTab = new GTreePanel("Hosts routing tables", projName, GTreePanel.ROUTING);
-		
 		firewallingTab = new GTreePanel("Firewalls", projName, GTreePanel.FIREWALLING);
 	
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
 		tab.addTab("Firewalling", firewallingTab);
-		
-		add(tab, -1);
+		tab.setMinimumSize( new Dimension( 100, (int) ((int) GuiManager.getInstance().getFrame().getSize().getHeight() / 2.3f) ) );
 		
 		labStructure = new GTreePanel("Lab structure", projName, GTreePanel.LABSTRUCTURE);
 		
-		add(labStructure, -1);
+		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, labStructure);
+		add(splitpane);
 	}
 	
 	public void update() {
