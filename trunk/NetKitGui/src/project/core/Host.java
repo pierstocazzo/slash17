@@ -74,7 +74,8 @@ public class Host implements AbstractHost {
 	}
 
 	@Override
-	public AbstractInterface getInterface(String name) {
+	public AbstractInterface getInterface(String ifaceName) {
+		String name = ifaceName.split(" :")[0];
 		for( AbstractInterface i : interfaces ) {
 			if( i.getName().equals(name) ) 
 				return i;
