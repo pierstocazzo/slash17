@@ -69,7 +69,6 @@ public class ProjectHandler {
 	
 	public boolean saveProject() {
 		if( project == null ) {
-			JOptionPane.showMessageDialog(null, "No project to save", "No Project", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		
