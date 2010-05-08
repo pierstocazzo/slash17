@@ -24,12 +24,7 @@ public class GButton extends JButton {
 		setVerticalTextPosition(SwingConstants.BOTTOM);
 		setHorizontalTextPosition(SwingConstants.CENTER);
 		
-		Dimension size = new Dimension(45, 45);
-		
-		setPreferredSize(size);
-		setMaximumSize(size);
-		setMinimumSize(size);
-		setSize(size);
+		setPreferredSize(new Dimension(50, 50));
 		
 		setAlignmentX(JToolBar.CENTER_ALIGNMENT);
 		setAlignmentY(JToolBar.CENTER_ALIGNMENT);

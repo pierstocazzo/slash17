@@ -2,14 +2,18 @@ package project.gui.labview;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.border.EmptyBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -36,9 +40,37 @@ public class GTreePanel extends JPanel {
     public GTreePanel( String stringLabel, String projectName, int type ) {
         super(new BorderLayout());
         
-        JLabel label = new JLabel( stringLabel );
-		label.setBorder( new EmptyBorder(5, 5, 5, 5) );
-		add( label, BorderLayout.NORTH );
+		JPanel northPanel = new JPanel(new BorderLayout());
+		northPanel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
+		northPanel.add( new JLabel( stringLabel ), BorderLayout.WEST );
+		
+		Dimension size = new Dimension(24, 24);
+		
+		JButton coll = new JButton("-");
+		coll.setPreferredSize(size);
+		coll.setToolTipText("Collapse All");
+		coll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				collapseAll();
+			}
+		});
+		
+		JButton exp = new JButton("+");
+		exp.setPreferredSize(size);
+		exp.setToolTipText("Expand All");
+		exp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				expandAll(tree);
+			}
+		});
+		
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.add(coll);
+		buttonsPanel.add(exp);
+		
+		northPanel.add(buttonsPanel, BorderLayout.EAST);
+		
+		add( northPanel, BorderLayout.NORTH );
         
         rootNode = new GTreeNode(projectName, GTreeNode.FOLDER);
         treeModel = new DefaultTreeModel(rootNode);
@@ -65,6 +97,7 @@ public class GTreePanel extends JPanel {
     			try {
     				tree.scrollPathToVisible( new TreePath( ((GTreeNode) host.getLastChild()).getPath()) );
     			} catch (Exception e) {
+    				tree.scrollPathToVisible( new TreePath( ((GTreeNode) host).getPath() ) );
 				}
     			return;
     		}
