@@ -20,7 +20,7 @@ public class GuiManager {
 	LabConfPanel confPanel;
 	JLabel emptyCanvas;
 	GCanvas canvas;
-	JSplitPane jSplitPane;
+	JSplitPane splitPane;
 	AbstractProject project;
 	
 	/** Singleton implementation */
@@ -45,9 +45,10 @@ public class GuiManager {
 		// set the canvas preferred size to the 80% of the window's size 
 		emptyCanvas.setPreferredSize(new Dimension((int) (frame.getSize().getWidth()*0.8), (int) (frame.getSize().getHeight()*0.8)));
 		
-		jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, emptyCanvas, confPanel);
-		jSplitPane.setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
-		frame.add(jSplitPane, BorderLayout.CENTER);
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, emptyCanvas, confPanel);
+		splitPane.setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
+	    splitPane.setResizeWeight(1D);
+		frame.add(splitPane, BorderLayout.CENTER);
 		
 		frame.validate();
 	}
@@ -60,7 +61,7 @@ public class GuiManager {
 		canvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		canvas.setPreferredSize(new Dimension((int) (frame.getSize().getWidth()*0.8), (int) (frame.getSize().getHeight()*0.8)));
 		
-		jSplitPane.setLeftComponent(canvas);
+		splitPane.setLeftComponent(canvas);
 		frame.setCanvas(canvas);
 		
 		
