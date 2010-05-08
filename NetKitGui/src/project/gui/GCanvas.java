@@ -22,8 +22,6 @@ import edu.umd.cs.piccolo.nodes.PPath;
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
-	AbstractProject project;
-	
 	PLayer mainLayer;
 	PLayer secondLayer;
 	PLayer areaLayer;
@@ -42,7 +40,6 @@ public class GCanvas extends PCanvas {
 	public GCanvas( GFrame gFrame, AbstractProject project, LabConfPanel confPanel ) {
 		this.frame = gFrame;
 		this.confPanel = confPanel;
-		this.project = project;
 		
 		createCanvas();
 	}
@@ -81,12 +78,12 @@ public class GCanvas extends PCanvas {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
 			GCollisionDomain collsionDomain = GFactory.getInstance().createCollisionDomain(pos.getX(), pos.getY(), mainLayer);
 			mainLayer.addChild(collsionDomain);
-			project.addCollisionDomain(collsionDomain.getLogic());
+			GuiManager.getInstance().getProject().addCollisionDomain(collsionDomain.getLogic());
 			
 		} else {
 			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), mainLayer );
 			mainLayer.addChild(host);
-			project.addHost(host.getLogic());
+			GuiManager.getInstance().getProject().addHost(host.getLogic());
 		}
 		
 		switchToDefaultHandler();
@@ -115,19 +112,19 @@ public class GCanvas extends PCanvas {
 			if( node instanceof GLink ) {
 				GLink link = ((GLink) node);
 				link.delete();
-				project.removeLink( link.getLogic() );
+				GuiManager.getInstance().getProject().removeLink( link.getLogic() );
 				switchToDefaultHandler();
 				
 			} else if( node instanceof GCollisionDomain ) {
 				GCollisionDomain cd = ((GCollisionDomain) node);
 				cd.delete();
-				project.removeCollisionDomain( cd.getLogic() );
+				GuiManager.getInstance().getProject().removeCollisionDomain( cd.getLogic() );
 				switchToDefaultHandler();
 				
 			} else if( node instanceof GHost ){
 				GHost host = ((GHost) node);
 				host.delete();
-				project.removeHost( host.getLogic() );
+				GuiManager.getInstance().getProject().removeHost( host.getLogic() );
 				switchToDefaultHandler();
 			} else {
 				switchToDefaultHandler();
