@@ -93,5 +93,9 @@ public class LabConfPanel extends JPanel {
 		firewallingTab.setName(project.getName());
 		labStructure.setName(project.getName());
 	}
+	
+	public void selectHost( String hostName ) {
+		interfacesTab.selectHost(hostName);
+	}
 }
 

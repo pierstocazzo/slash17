@@ -18,9 +18,7 @@ public class DefaultInputHandler extends PDragEventHandler {
 		
 		if( node instanceof GHost ) {
 			((GHost) node).setImage( Util.getImageIcon(((GHost) node).getImageName(), Util.SELECTED).getImage() );
-			if( event.getClickCount() >= 2 ) {
-				GuiManager.getInstance().update();
-			}
+			GuiManager.getInstance().selectHost(((GHost) node).getLogic().getName());
 		} else if( node instanceof GCollisionDomain ) {
 			((GCollisionDomain) node).setImage( Util.getImageIcon(((GCollisionDomain) node).getImageName(), Util.SELECTED).getImage() );
 		}

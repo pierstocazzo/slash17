@@ -2,6 +2,7 @@ package project.gui;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
@@ -9,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import project.core.AbstractHost;
+import project.core.AbstractInterface;
 import project.core.AbstractProject;
 
 public class ProjectHandler {
@@ -55,13 +57,6 @@ public class ProjectHandler {
 			String dir = fc.getSelectedFile().getAbsolutePath();
 
 			project = GFactory.getInstance().createProject(projectName, dir + "/" + projectName);
-			
-			createDirectory(projectName, dir);
-			
-			String content = "# 'lab.conf' created by NetKit GUI\n\n";
-			
-			createFile("lab.conf", project.getDirectory(), content);
-			
 			GuiManager.getInstance().setProject(project);
 			
 			saved = false;
@@ -79,14 +74,43 @@ public class ProjectHandler {
 		}
 		
 		String projDir = project.getDirectory();
+		String projName = project.getName();
 		Collection<AbstractHost> hosts = project.getHosts();
 		
+		createDirectory(projName, projDir);
+		
+		String labConfcontent = "# 'lab.conf' created by NetKit GUI\n\n";
+		
 		for( AbstractHost host : hosts ) {
-			String name = host.getName();
-			createDirectory( name, projDir );
-			String content = "# '" + name + ".startup' created by NetKit GUI\n\n";
-			createFile( name + ".startup", projDir, content );
+			String hostName = host.getName();
+			createDirectory( hostName, projDir );
+			
+			String startupContent = "# '" + hostName + ".startup' created by NetKit GUI\n\n";
+			
+			for( AbstractInterface iface : host.getInterfaces() ) {
+				
+				String ifaceName =  iface.getName();
+				String ip = iface.getIp();
+				String mask = iface.getMask();
+				String bcast = iface.getBCast();
+				String cdName = iface.getCollisionDomain().getName();
+				
+				labConfcontent += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
+				
+				if( ip != null && mask != null && bcast != null ) {
+					startupContent += "ifconfig " + ifaceName + " " + ip + " netmask " + 
+									mask + " broadcast " + bcast + " up\n";
+				} else {
+					startupContent += "ifconfig " + ifaceName + " up # not configured \n";
+				}
+			}
+			labConfcontent += "\n";
+			
+			
+			createFile( hostName + ".startup", projDir, startupContent );
 		}
+		
+		createFile("lab.conf", project.getDirectory(), labConfcontent);
 		
 		saved = true;
 		
@@ -95,6 +119,13 @@ public class ProjectHandler {
 
 	private void createFile( String fileName, String projDir, String content ) {
 		File f = new File( projDir + "/" + fileName );
+		if( f.exists() ) {
+			f.delete();
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+			}
+		}
 		
 		try {
 			PrintWriter out = new PrintWriter(f);
@@ -111,8 +142,11 @@ public class ProjectHandler {
 
 	private String createDirectory( String name, String topDirectory ) {
 		File proj = new File( topDirectory + "/" + name );
-		proj.mkdir();
-		return proj.getAbsolutePath();
+		if( !proj.exists() ) 
+			proj.mkdirs();
+		
+		String dir = proj.getAbsolutePath();
+		return dir;
 	}
 
 	public void setSaved(boolean saved) {
