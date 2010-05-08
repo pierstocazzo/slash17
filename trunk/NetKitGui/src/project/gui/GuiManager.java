@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -39,18 +38,18 @@ public class GuiManager {
 	public void startGui() {
 		frame = new GFrame();
 		
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		
 		confPanel = new LabConfPanel(null);
 		emptyCanvas = new JLabel("Create a new project or open an existing one.");
 		emptyCanvas.setHorizontalAlignment(SwingConstants.CENTER);
 		emptyCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		// set the canvas preferred size to the 80% of the window's size 
-		emptyCanvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
+		emptyCanvas.setPreferredSize(new Dimension((int) (frame.getSize().getWidth()*0.8), (int) (frame.getSize().getHeight()*0.8)));
 		
 		jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, emptyCanvas, confPanel);
 		jSplitPane.setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
 		frame.add(jSplitPane, BorderLayout.CENTER);
+		
+		frame.validate();
 	}
 	
 	public void setProject( AbstractProject project ) {
@@ -59,11 +58,12 @@ public class GuiManager {
 		
 		canvas = new GCanvas(frame, project, confPanel);
 		canvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		canvas.setPreferredSize(new Dimension((int) (size.getWidth()*0.8), (int) (size.getHeight()*0.8)));
+		canvas.setPreferredSize(new Dimension((int) (frame.getSize().getWidth()*0.8), (int) (frame.getSize().getHeight()*0.8)));
 		
 		jSplitPane.setLeftComponent(canvas);
 		frame.setCanvas(canvas);
+		
+		frame.validate();
 	}
 	
 	public void update() {
@@ -78,5 +78,9 @@ public class GuiManager {
 
 	public Component getFrame() {
 		return frame;
+	}
+
+	public AbstractProject getProject() {
+		return project;
 	}
 }

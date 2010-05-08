@@ -3,9 +3,7 @@ package project.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -15,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.net.URI;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -38,6 +37,7 @@ public class GFrame extends JFrame {
 	/** Menus and menus items */
 	JMenuBar menuBar;
 	JMenu fileMenu;
+	JMenuItem newItem;
 	JMenuItem openItem;
 	JMenuItem saveItem;
 	JMenuItem saveAsItem;
@@ -77,8 +77,12 @@ public class GFrame extends JFrame {
 	JLabel stateLabel;
 	JPanel statePanel;
 
-	private GCanvas canvas;
+	/** the canvas */
+	GCanvas canvas;
 	
+	/**
+	 * Create the NetKit GUI main Frame
+	 */
 	public GFrame() {
 		super("NetKit GUI");
 		
@@ -96,8 +100,9 @@ public class GFrame extends JFrame {
 			} catch (Exception e1) {}
 		} 
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize( screenSize );
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//		setSize( screenSize );
+		setSize( 1280, 800 );
 
 		createMenuBar();
 		createToolBar();
@@ -115,33 +120,37 @@ public class GFrame extends JFrame {
 		
 		// creating the file menu
 		fileMenu = new JMenu("File");
-		openItem = new JMenuItem("Open");
-		saveItem = new JMenuItem("Save");
-		saveAsItem = new JMenuItem("SaveAs");
+		newItem = new JMenuItem("New Project", new ImageIcon("data/images/24x24/file_icon.png"));
+		openItem = new JMenuItem("Open", new ImageIcon("data/images/24x24/folder_icon.png"));
+		saveItem = new JMenuItem("Save", new ImageIcon("data/images/24x24/save_icon.png"));
+		saveAsItem = new JMenuItem("Save as", new ImageIcon("data/images/24x24/saveas_icon.png"));
 		exitItem = new JMenuItem("Exit");
+		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
 		fileMenu.add(saveAsItem);
+		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 		menuBar.add(fileMenu);
 		// creating the project menu
 		projectMenu = new JMenu("Project");
-		addRouterItem = new JMenuItem("add router");
-		addCollisionDomainItem = new JMenuItem("add collision domain");
-		addLinkItem = new JMenuItem("add link");
-		addPcItem = new JMenuItem("add pc");
-		addServerItem = new JMenuItem("add server");
-		addNattedServerItem = new JMenuItem("add natted server");
-		addFirewallItem = new JMenuItem("add firewall");
-		addAreaItem = new JMenuItem("add area");
+		addRouterItem = new JMenuItem("Add router");
+		addCollisionDomainItem = new JMenuItem("Add collision domain");
+		addLinkItem = new JMenuItem("Add link");
+		addPcItem = new JMenuItem("Add pc");
+		addServerItem = new JMenuItem("Add server");
+		addNattedServerItem = new JMenuItem("Add natted server");
+		addFirewallItem = new JMenuItem("Add firewall");
+		addAreaItem = new JMenuItem("Add area");
 		projectMenu.add(addRouterItem);
 		projectMenu.add(addCollisionDomainItem);
-		projectMenu.add(addLinkItem);
 		projectMenu.add(addPcItem);
 		projectMenu.add(addServerItem);
 		projectMenu.add(addNattedServerItem);
 		projectMenu.add(addFirewallItem);
 		projectMenu.add(addAreaItem);
+		projectMenu.addSeparator();
+		projectMenu.add(addLinkItem);
 		menuBar.add(projectMenu);
 		// creating help menu
 		helpMenu = new JMenu("Help");
@@ -372,7 +381,7 @@ public class GFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("starting lab");
-				Shell.startLab( canvas.project.getDirectory() );
+				Shell.startLab( GuiManager.getInstance().getProject().getDirectory() );
 			}
 		});
 		
@@ -380,7 +389,7 @@ public class GFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("stopping lab");
-				Shell.stopLab( canvas.project.getDirectory(), false );
+				Shell.stopLab( GuiManager.getInstance().getProject().getDirectory(), false );
 			}
 		});
 	}
