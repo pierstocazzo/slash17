@@ -38,7 +38,8 @@ public class GuiManager {
 	public void startGui() {
 		frame = new GFrame();
 		
-		confPanel = new LabConfPanel(null);
+		confPanel = new LabConfPanel();
+		
 		emptyCanvas = new JLabel("Create a new project or open an existing one.");
 		emptyCanvas.setHorizontalAlignment(SwingConstants.CENTER);
 		emptyCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));

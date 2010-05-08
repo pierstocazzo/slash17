@@ -40,7 +40,6 @@ public class GFrame extends JFrame {
 	JMenuItem newItem;
 	JMenuItem openItem;
 	JMenuItem saveItem;
-	JMenuItem saveAsItem;
 	JMenuItem exitItem;
 	JMenu projectMenu;
 	JMenuItem addRouterItem;
@@ -120,28 +119,26 @@ public class GFrame extends JFrame {
 		
 		// creating the file menu
 		fileMenu = new JMenu("File");
-		newItem = new JMenuItem("New Project", new ImageIcon("data/images/16x16/new_icon.png"));
-		openItem = new JMenuItem("Open", new ImageIcon("data/images/16x16/open_icon.png"));
-		saveItem = new JMenuItem("Save", new ImageIcon("data/images/16x16/save_icon.png"));
-		saveAsItem = new JMenuItem("Save as", new ImageIcon("data/images/16x16/save_icon.png"));
-		exitItem = new JMenuItem("Exit", new ImageIcon("data/images/16x16/exit_icon.png"));
+		newItem = new GMenuItem("New Project", new ImageIcon("data/images/16x16/new_icon.png"));
+		openItem = new GMenuItem("Open", new ImageIcon("data/images/16x16/open_icon.png"));
+		saveItem = new GMenuItem("Save", new ImageIcon("data/images/16x16/save_icon.png"));
+		exitItem = new GMenuItem("Exit", new ImageIcon("data/images/16x16/exit_icon.png"));
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
-		fileMenu.add(saveAsItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 		menuBar.add(fileMenu);
 		// creating the project menu
 		projectMenu = new JMenu("Project");
-		addRouterItem = new JMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
-		addCollisionDomainItem = new JMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
-		addLinkItem = new JMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
-		addPcItem = new JMenuItem("Add pc", new ImageIcon("data/images/16x16/pc_icon.png"));
-		addServerItem = new JMenuItem("Add server", new ImageIcon("data/images/16x16/server_icon.png"));
-		addNattedServerItem = new JMenuItem("Add natted server", new ImageIcon("data/images/16x16/nattedserver_icon.png"));
-		addFirewallItem = new JMenuItem("Add firewall", new ImageIcon("data/images/16x16/firewall_icon.png"));
-		addAreaItem = new JMenuItem("Add area", new ImageIcon("data/images/16x16/area_icon.png"));
+		addRouterItem = new GMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
+		addCollisionDomainItem = new GMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
+		addLinkItem = new GMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
+		addPcItem = new GMenuItem("Add pc", new ImageIcon("data/images/16x16/pc_icon.png"));
+		addServerItem = new GMenuItem("Add server", new ImageIcon("data/images/16x16/server_icon.png"));
+		addNattedServerItem = new GMenuItem("Add natted server", new ImageIcon("data/images/16x16/nattedserver_icon.png"));
+		addFirewallItem = new GMenuItem("Add firewall", new ImageIcon("data/images/16x16/firewall_icon.png"));
+		addAreaItem = new GMenuItem("Add area", new ImageIcon("data/images/16x16/area_icon.png"));
 		projectMenu.add(addRouterItem);
 		projectMenu.add(addCollisionDomainItem);
 		projectMenu.add(addPcItem);
@@ -154,7 +151,7 @@ public class GFrame extends JFrame {
 		menuBar.add(projectMenu);
 		// creating help menu
 		helpMenu = new JMenu("Help");
-		infoItem = new JMenuItem("Info", new ImageIcon("data/images/16x16/info_icon.png"));
+		infoItem = new GMenuItem("Info", new ImageIcon("data/images/16x16/info_icon.png"));
 		helpMenu.add(infoItem);
 		menuBar.add(helpMenu);
 		
@@ -169,16 +166,16 @@ public class GFrame extends JFrame {
 		verticalToolbar.setFloatable(false);
 		verticalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.lightGray));
 		
-		router = new GButton("Router", "Add a router", "data/images/32x32/router_icon.png");
-		server = new GButton("Server", "Add a server", "data/images/32x32/server_icon.png");
-		firewall = new GButton("Firewall", "Add a firewall", "data/images/32x32/firewall_icon.png");
-		nattedServer = new GButton("NatServer", "Add a natted server", "data/images/32x32/nattedserver_icon.png");
-		pc = new GButton("PC", "Add a pc", "data/images/32x32/pc_icon.png");
-		collisionDomain = new GButton("Domain", "Add a collision domain", "data/images/32x32/collisionDomain_icon.png");
-		area = new GButton("Area", "Create a Network Area", "data/images/32x32/area_icon.png");
-		tap = new GButton("Tap", "Add TAP interface", "data/images/32x32/tap_icon.png");
-		link = new GButton("Link", "Add a link", "data/images/32x32/link_icon.png");
-		delete = new GButton("Delete", "Delete a node", "data/images/32x32/delete_icon.png");
+		router = new GButton("Router", "Add a router", "data/images/24x24/router_icon.png");
+		server = new GButton("Server", "Add a server", "data/images/24x24/server_icon.png");
+		firewall = new GButton("Firewall", "Add a firewall", "data/images/24x24/firewall_icon.png");
+		nattedServer = new GButton("NatServer", "Add a natted server", "data/images/24x24/nattedserver_icon.png");
+		pc = new GButton("PC", "Add a pc", "data/images/24x24/pc_icon.png");
+		collisionDomain = new GButton("Domain", "Add a collision domain", "data/images/24x24/collisionDomain_icon.png");
+		area = new GButton("Area", "Create a Network Area", "data/images/24x24/area_icon.png");
+		tap = new GButton("Tap", "Add TAP interface", "data/images/24x24/tap_icon.png");
+		link = new GButton("Link", "Add a link", "data/images/24x24/link_icon.png");
+		delete = new GButton("Delete", "Delete a node", "data/images/24x24/delete_icon.png");
 		
 		verticalToolbar.add( pc );
 		verticalToolbar.add( server );
@@ -202,11 +199,11 @@ public class GFrame extends JFrame {
 		toolbar.setFloatable(false);
 		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 		
-		newFile = new GButton("New", "Create a new Project", "data/images/32x32/new_icon.png");
-		open = new GButton("Open", "Open a Project", "data/images/32x32/open_icon.png");
-		save = new GButton("Save", "Save the Project", "data/images/32x32/save_icon.png");
-		start = new GButton("Start", "Start the lab", "data/images/32x32/start_icon.png");
-		stop = new GButton("Stop", "Stop the lab", "data/images/32x32/stop_icon.png");
+		newFile = new GButton("New", "Create a new Project", "data/images/24x24/new_icon.png");
+		open = new GButton("Open", "Open a Project", "data/images/24x24/open_icon.png");
+		save = new GButton("Save", "Save the Project", "data/images/24x24/save_icon.png");
+		start = new GButton("Start", "Start the lab", "data/images/24x24/start_icon.png");
+		stop = new GButton("Stop", "Stop the lab", "data/images/24x24/stop_icon.png");
 		
 		toolbar.add( newFile );
 		toolbar.add( open );
@@ -281,6 +278,32 @@ public class GFrame extends JFrame {
 			}
 		});
 		
+		newItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ProjectHandler.getInstance().newProject();
+			}
+		});
+		
+		openItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO open project
+			}
+		});
+		
+		saveItem.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String message;
+				if( ProjectHandler.getInstance().saveProject() ) 
+					message = "Project saved";
+				else
+					message = "Unable to save the project";
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), message);
+			}
+		});
+		
 		// TODO menu items listeners
 		
 		/********************************
@@ -294,17 +317,22 @@ public class GFrame extends JFrame {
 			}
 		});
 		
-		open.addMouseListener( new MouseAdapter() {
+		open.addActionListener( new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("Open");
+			public void actionPerformed(ActionEvent e) {
+				// TODO open a project
 			}
 		});
 		
 		save.addMouseListener( new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ProjectHandler.getInstance().saveProject();
+				String message;
+				if( ProjectHandler.getInstance().saveProject() ) 
+					message = "Project saved";
+				else
+					message = "Unable to save the project";
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), message);
 			}
 		});
 		

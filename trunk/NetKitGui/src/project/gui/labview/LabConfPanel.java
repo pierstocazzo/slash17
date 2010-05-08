@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Collection;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -28,15 +29,12 @@ public class LabConfPanel extends JPanel {
 	
 	GTreePanel labStructure;
 	
-	public LabConfPanel( AbstractProject project ) {
+	public LabConfPanel() {
 		super(new GridLayout(1,0));
-		this.project = project;
 		
-		setBorder( new MatteBorder(0, 1, 0, 0, Color.lightGray));
+		setBorder( new MatteBorder(0, 1, 0, 0, Color.lightGray) );
 		
 		tab = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
-		
-		this.project = project;
 		
 		String projName = "";
 		if( project == null ) 
@@ -51,12 +49,18 @@ public class LabConfPanel extends JPanel {
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
 		tab.addTab("Firewalling", firewallingTab);
-		tab.setMinimumSize( new Dimension( 100, (int) ((int) GuiManager.getInstance().getFrame().getSize().getHeight() / 2.3f) ) );
+		tab.setMinimumSize( new Dimension( 100, (int) (GuiManager.getInstance().getFrame().getSize().getHeight() / 2.3f) ) );
 		
 		labStructure = new GTreePanel("Lab structure", projName, GTreePanel.LABSTRUCTURE);
+		labStructure.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		
 		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, labStructure);
 		add(splitpane);
+	}
+	
+	@Override
+	public Dimension getMinimumSize() {
+		return new Dimension(220, 400);
 	}
 	
 	public void update() {

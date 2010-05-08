@@ -1,6 +1,7 @@
 package project.gui;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,10 +19,12 @@ public class GButton extends JButton {
 		setToolTipText( toolTip );
 		setIconTextGap(0);
 		
+		setFont( new Font("SansSerif", Font.PLAIN, 10));
+		
 		setVerticalTextPosition(SwingConstants.BOTTOM);
 		setHorizontalTextPosition(SwingConstants.CENTER);
 		
-		Dimension size = new Dimension(60,60);
+		Dimension size = new Dimension(45, 45);
 		
 		setPreferredSize(size);
 		setMaximumSize(size);
