@@ -14,7 +14,6 @@ import javax.swing.border.MatteBorder;
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
 import project.core.AbstractProject;
-import project.gui.GuiManager;
 
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -49,12 +48,12 @@ public class LabConfPanel extends JPanel {
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
 		tab.addTab("Firewalling", firewallingTab);
-		tab.setMinimumSize( new Dimension( 100, (int) (GuiManager.getInstance().getFrame().getSize().getHeight() / 2.3f) ) );
 		
 		labStructure = new GTreePanel("Lab structure", projName, GTreePanel.LABSTRUCTURE);
 		labStructure.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		
 		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, labStructure);
+		splitpane.setResizeWeight(0.5D);
 		add(splitpane);
 	}
 	
