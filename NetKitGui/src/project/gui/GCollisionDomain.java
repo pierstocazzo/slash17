@@ -44,7 +44,6 @@ public class GCollisionDomain extends PImage {
 	
 	public void addLink( GLink link ) {
 		links.add(link);
-		System.out.println("aggiunto un link a " + absCollisionDomain.getName() + " size= " + links.size() );
 	}
 	
 	public ArrayList<GLink> getLinks() {

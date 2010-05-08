@@ -113,39 +113,27 @@ public class GCanvas extends PCanvas {
 	public void delete( PNode node ) {
 		try {
 			if( node instanceof GLink ) {
-				
-				System.err.println("deleting glink");
-				
 				GLink link = ((GLink) node);
 				link.delete();
 				project.removeLink( link.getLogic() );
 				switchToDefaultHandler();
 				
 			} else if( node instanceof GCollisionDomain ) {
-
-				System.err.println("deleting gcollisiondomain");
-				
 				GCollisionDomain cd = ((GCollisionDomain) node);
 				cd.delete();
 				project.removeCollisionDomain( cd.getLogic() );
 				switchToDefaultHandler();
 				
 			} else if( node instanceof GHost ){
-
-				System.err.println("deleting ghost");
-				
 				GHost host = ((GHost) node);
 				host.delete();
 				project.removeHost( host.getLogic() );
 				switchToDefaultHandler();
 			} else {
-
-				System.err.println("deleting what?");
-				
+				switchToDefaultHandler();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("Error deleting something..");
 			switchToDefaultHandler();
 		}
 	}
