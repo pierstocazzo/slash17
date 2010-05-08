@@ -22,9 +22,11 @@ public interface AbstractProject {
 	
 	public void addCollisionDomain( AbstractCollisionDomain cd );
 	
-	public void removeHost( String host );
+	public void removeHost( AbstractHost abstractHost );
 	
-	public void removeCollisionDomain( String cd );
+	public void removeCollisionDomain( AbstractCollisionDomain abstractCollisionDomain );
+	
+	public void removeLink( AbstractLink link );
 
 	public Collection<AbstractHost> getHosts();
 	

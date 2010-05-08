@@ -1,7 +1,6 @@
 package project.core;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 import project.common.ItemType;
 
@@ -16,7 +15,7 @@ public class Host implements AbstractHost {
 	protected String name;
 	
 	/** host's network interfaces */
-	protected LinkedHashMap<String, AbstractInterface> interfaces;
+	protected ArrayList<AbstractInterface> interfaces;
 
 	protected ItemType type;
 
@@ -30,7 +29,7 @@ public class Host implements AbstractHost {
 	Host(String name, ItemType type) {
 		this.name = name;
 		this.type = type;
-		this.interfaces = new LinkedHashMap<String, AbstractInterface>();
+		this.interfaces = new ArrayList<AbstractInterface>();
 	}
 	
 	/**
@@ -40,17 +39,12 @@ public class Host implements AbstractHost {
 	 * @param i - (Interface) the interface to add
 	 * @return boolean
 	 */
-	public boolean addInterface( Interface i ) {
-		if( interfaces.get( i.getName() ) == null ) {
-			interfaces.put( i.getName(), i );
-			return true;
-		} else {
-			return false;
-		}
+	public void addInterface( Interface i ) {
+		interfaces.add( i );
 	}
 	
-	public Collection<AbstractInterface> getInterfaces() {
-		return interfaces.values();
+	public ArrayList<AbstractInterface> getInterfaces() {
+		return interfaces;
 	}
 
 	@Override
@@ -58,7 +52,7 @@ public class Host implements AbstractHost {
 		if( ifaceNumber < 4 ) {
 			String ifaceName = "eth" + ifaceNumber++;
 			Interface iface = new Interface( ifaceName, (CollisionDomain) cd, this);
-			interfaces.put(ifaceName, iface);
+			interfaces.add(iface);
 			return iface;
 		} else {
 			return null;
@@ -67,24 +61,25 @@ public class Host implements AbstractHost {
 
 	@Override
 	public boolean delete() {
-		for( AbstractInterface i : interfaces.values() ) {
-			i.delete();
+		while( !interfaces.isEmpty() ) {
+			interfaces.get(0).delete();
 		}
 		interfaces.clear();
 		return true;
 	}
 
 	@Override
-	public boolean deleteInterface(String name) {
-		if( interfaces.remove(name) != null )
-			return true;
-		else 
-			return false;
+	public boolean deleteInterface( AbstractInterface iface ) {
+		return interfaces.remove( iface );
 	}
 
 	@Override
 	public AbstractInterface getInterface(String name) {
-		return interfaces.get(name);
+		for( AbstractInterface i : interfaces ) {
+			if( i.getName().equals(name) ) 
+				return i;
+		}
+		return null;
 	}
 
 	@Override
@@ -104,7 +99,7 @@ public class Host implements AbstractHost {
 
 	@Override
 	public boolean isConnectedTo(AbstractCollisionDomain collisionDomain) {
-		for( AbstractInterface iface : interfaces.values() ) {
+		for( AbstractInterface iface : interfaces ) {
 			if( iface.getCollisionDomain().equals(collisionDomain)) 
 				return true;
 		}

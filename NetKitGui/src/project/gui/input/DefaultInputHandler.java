@@ -17,10 +17,14 @@ public class DefaultInputHandler extends PDragEventHandler {
 		PNode node = event.getPickedNode();
 		
 		if( node instanceof GHost ) {
-			((GHost) node).setImage( Util.getImageIcon(((GHost) node).getImageName(), Util.SELECTED).getImage() );
-			GuiManager.getInstance().selectHost(((GHost) node).getLogic().getName());
+			GHost host = ((GHost) node);
+			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
+			// expand this host's configuration in the trees
+			GuiManager.getInstance().selectHost( host.getLogic().getName() );
+			
 		} else if( node instanceof GCollisionDomain ) {
-			((GCollisionDomain) node).setImage( Util.getImageIcon(((GCollisionDomain) node).getImageName(), Util.SELECTED).getImage() );
+			GCollisionDomain cd = ((GCollisionDomain) node);
+			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.SELECTED).getImage() );
 		}
 	}
 	
@@ -31,9 +35,12 @@ public class DefaultInputHandler extends PDragEventHandler {
 		PNode node = event.getPickedNode();
 		
 		if( node instanceof GHost ) {
-			((GHost) node).setImage( Util.getImageIcon(((GHost) node).getImageName(), Util.SELECTED).getImage() );
+			GHost host = ((GHost) node);
+			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
+			
 		} else if( node instanceof GCollisionDomain ) {
-			((GCollisionDomain) node).setImage( Util.getImageIcon(((GCollisionDomain) node).getImageName(), Util.SELECTED).getImage() );
+			GCollisionDomain cd = ((GCollisionDomain) node);
+			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.SELECTED).getImage() );
 		}
 	}
 	
@@ -50,11 +57,14 @@ public class DefaultInputHandler extends PDragEventHandler {
 		PNode node = event.getPickedNode();
 		
 		if( node instanceof GHost ) {
-			((GHost) node).setImage( Util.getImageIcon(((GHost) node).getImageName(), Util.SELECTED).getImage() );
-			((GHost) node).update();
+			GHost host = ((GHost) node);
+			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
+			host.update();
+			
 		} else if( node instanceof GCollisionDomain ) {
-			((GCollisionDomain) node).setImage( Util.getImageIcon(((GCollisionDomain) node).getImageName(), Util.SELECTED).getImage() );
-			((GCollisionDomain) node).update();
+			GCollisionDomain cd = ((GCollisionDomain) node);
+			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.SELECTED).getImage() );
+			cd.update();
 		}
 	}
 	
@@ -65,9 +75,12 @@ public class DefaultInputHandler extends PDragEventHandler {
 		PNode node = event.getPickedNode();
 		
 		if( node instanceof GHost ) {
-			((GHost) node).setImage( Util.getImageIcon(((GHost) node).getImageName(), Util.DEFAULT).getImage() );
+			GHost host = ((GHost) node);
+			host.setImage( Util.getImageIcon( host.getImageName(), Util.DEFAULT).getImage() );
+			
 		} else if( node instanceof GCollisionDomain ) {
-			((GCollisionDomain) node).setImage( Util.getImageIcon(((GCollisionDomain) node).getImageName(), Util.DEFAULT).getImage() );
+			GCollisionDomain cd = ((GCollisionDomain) node);
+			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.DEFAULT).getImage() );
 		}
 	}
 }

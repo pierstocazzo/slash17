@@ -76,7 +76,7 @@ public class LabConfPanel extends JPanel {
 			GTreeNode node = interfacesTab.addObject( host.getName(), GTreeNode.FOLDER, host );
 			// add his interfaces to each host
 			for( AbstractInterface iface : host.getInterfaces() ) {
-				interfacesTab.addObject( node, iface.getName(), GTreeNode.IFACE, host );
+				interfacesTab.addObject( node, iface.getName() + " : " + iface.getCollisionDomain().getName(), GTreeNode.IFACE, host );
 			}
 			
 			labStructure.addObject( host.getName(), GTreeNode.FOLDER );

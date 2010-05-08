@@ -3,7 +3,6 @@ package project.gui;
 import java.util.ArrayList;
 
 import project.core.AbstractCollisionDomain;
-
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PText;
@@ -43,8 +42,9 @@ public class GCollisionDomain extends PImage {
 		return links.get( index );
 	}
 	
-	public void addLink( GLink edge ) {
-		links.add(edge);
+	public void addLink( GLink link ) {
+		links.add(link);
+		System.out.println("aggiunto un link a " + absCollisionDomain.getName() + " size= " + links.size() );
 	}
 	
 	public ArrayList<GLink> getLinks() {
@@ -68,11 +68,14 @@ public class GCollisionDomain extends PImage {
 	}
 	
 	public void delete() {
-		layer.removeChild(this);
-		for( GLink l : links ) {
-			l.delete();
+		while( !links.isEmpty() ) {
+			links.get(0).delete();
 		}
-		absCollisionDomain.delete();
+		layer.removeChild(this);
+	}
+
+	public void removeLink(GLink gLink) {
+		links.remove(gLink);
 	}
 }
 

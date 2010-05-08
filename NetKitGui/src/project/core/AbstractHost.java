@@ -1,6 +1,6 @@
 package project.core;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 import project.common.ItemType;
 
@@ -14,9 +14,9 @@ public interface AbstractHost {
 	
 	public AbstractInterface getInterface( String name );
 	
-	public Collection<AbstractInterface> getInterfaces();
+	public ArrayList<AbstractInterface> getInterfaces();
 
-	public boolean deleteInterface( String name );
+	public boolean deleteInterface( AbstractInterface iface );
 	
 	public boolean delete();
 
