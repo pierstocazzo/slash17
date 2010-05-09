@@ -41,59 +41,54 @@ public class GActionListener implements ActionListener {
 			break;
 			
 		case saveProject:
-			String message;
-			if( ProjectHandler.getInstance().saveProject() ) 
-				message = "Project saved";
-			else
-				message = "Unable to save the project";
-			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), message);
+			ProjectHandler.getInstance().saveProject();
 			break;
 			
 		case startLab:
-			Shell.startLab( GuiManager.getInstance().getProject().getDirectory() );
+			Shell.startLab( GuiManager.getInstance().getProject() );
 			break;
 			
 		case stopLab:
-			Shell.stopLab( GuiManager.getInstance().getProject().getDirectory(), false );
+			Shell.stopLab( GuiManager.getInstance().getProject(), false );
 			break;
 			
 		case addPc:
-			manager.getCanvas().adding(ItemType.PC);
+			manager.adding(ItemType.PC);
 			break;
 			
 		case addRouter:
-			manager.getCanvas().adding(ItemType.ROUTER);
+			manager.adding(ItemType.ROUTER);
 			break;
 			
 		case addFirewall:
-			manager.getCanvas().adding(ItemType.FIREWALL);
+			manager.adding(ItemType.FIREWALL);
 			break;
 			
 		case addArea:
-			manager.getCanvas().adding(ItemType.AREA);
+			manager.adding(ItemType.AREA);
 			break;
 			
 		case addCollisionDomain:
-			manager.getCanvas().adding(ItemType.COLLISIONDOMAIN);
+			manager.adding(ItemType.COLLISIONDOMAIN);
 			break;
 			
 		case addTap:
-			manager.getCanvas().adding(ItemType.TAP);
+			manager.adding(ItemType.TAP);
 			break;
 			
 		case addLink:
-			manager.getCanvas().adding(ItemType.LINK);
+			manager.adding(ItemType.LINK);
 			break;
 			
 		case addNattedServer:
-			manager.getCanvas().adding(ItemType.NATTEDSERVER);
+			manager.adding(ItemType.NATTEDSERVER);
 			break;
 			
 		case addServer: 
-			manager.getCanvas().adding(ItemType.SERVER);
+			manager.adding(ItemType.SERVER);
 			break;
 		case delete:
-			manager.getCanvas().deleting();
+			manager.deleting();
 			break;
 			
 		case showInfo:

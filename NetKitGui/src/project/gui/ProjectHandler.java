@@ -67,53 +67,53 @@ public class ProjectHandler {
 		}
 	}
 	
-	public boolean saveProject() {
-		if( project == null ) {
-			return false;
-		}
-		
-		String projDir = project.getDirectory();
-		String projName = project.getName();
-		Collection<AbstractHost> hosts = project.getHosts();
-		
-		createDirectory(projName, projDir);
-		
-		String labConfcontent = "# 'lab.conf' created by NetKit GUI\n\n";
-		
-		for( AbstractHost host : hosts ) {
-			String hostName = host.getName();
-			createDirectory( hostName, projDir );
+	public void saveProject() {
+		if( project != null ) {
+			String projDir = project.getDirectory();
+			Collection<AbstractHost> hosts = project.getHosts();
 			
-			String startupContent = "# '" + hostName + ".startup' created by NetKit GUI\n\n";
+			createDirectory(projDir);
 			
-			for( AbstractInterface iface : host.getInterfaces() ) {
+			String labConfcontent = "# 'lab.conf' created by NetKit GUI\n\n";
+			
+			for( AbstractHost host : hosts ) {
+				String hostName = host.getName();
+				createDirectory( projDir + "/" + hostName );
 				
-				String ifaceName =  iface.getName();
-				String ip = iface.getIp();
-				String mask = iface.getMask();
-				String bcast = iface.getBCast();
-				String cdName = iface.getCollisionDomain().getName();
+				String startupContent = "# '" + hostName + ".startup' created by NetKit GUI\n\n";
 				
-				labConfcontent += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
-				
-				if( ip != null && mask != null && bcast != null ) {
-					startupContent += "ifconfig " + ifaceName + " " + ip + " netmask " + 
-									mask + " broadcast " + bcast + " up\n";
-				} else {
-					startupContent += "ifconfig " + ifaceName + " up # not configured \n";
+				for( AbstractInterface iface : host.getInterfaces() ) {
+					
+					String ifaceName =  iface.getName();
+					String ip = iface.getIp();
+					String mask = iface.getMask();
+					String bcast = iface.getBCast();
+					String cdName = iface.getCollisionDomain().getName();
+					
+					labConfcontent += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
+					
+					if( ip != null && mask != null && bcast != null ) {
+						startupContent += "ifconfig " + ifaceName + " " + ip + " netmask " + 
+										mask + " broadcast " + bcast + " up\n";
+					} else {
+						startupContent += "ifconfig " + ifaceName + " up # not configured \n";
+					}
 				}
+				labConfcontent += "\n";
+				
+				
+				createFile( hostName + ".startup", projDir, startupContent );
 			}
-			labConfcontent += "\n";
 			
+			createFile("lab.conf", project.getDirectory(), labConfcontent);
 			
-			createFile( hostName + ".startup", projDir, startupContent );
+			saved = true;
+		
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Project Saved");
+		} else {
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Unable to save the project", 
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		createFile("lab.conf", project.getDirectory(), labConfcontent);
-		
-		saved = true;
-		
-		return true;
 	}
 
 	private void createFile( String fileName, String projDir, String content ) {
@@ -139,8 +139,8 @@ public class ProjectHandler {
 		}
 	}
 
-	private String createDirectory( String name, String topDirectory ) {
-		File proj = new File( topDirectory + "/" + name );
+	private String createDirectory( String directory ) {
+		File proj = new File( directory );
 		if( !proj.exists() ) 
 			proj.mkdirs();
 		
