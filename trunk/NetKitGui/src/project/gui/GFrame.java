@@ -3,6 +3,8 @@ package project.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -28,46 +30,36 @@ import project.gui.listeners.GActionListener.ActionType;
 public class GFrame extends JFrame {
 	private static final long serialVersionUID = 3661490807594270819L;
 
-	/** Menus and menus items */
+	/** menu bar */
 	JMenuBar menuBar;
+	
+	/** file menu */
 	JMenu fileMenu;
-	JMenuItem newItem;
-	JMenuItem openItem;
-	JMenuItem saveItem;
-	JMenuItem exitItem;
+	/** file menu item */
+	JMenuItem newItem, openItem, saveItem, exitItem;
+	
+	/** lab menu */
 	JMenu labMenu;
-	JMenuItem startLabItem;
-	JMenuItem stopLabItem;
-	JMenuItem addRouterItem;
-	JMenuItem addCollisionDomainItem;
-	JMenuItem addLinkItem;
-	JMenuItem addPcItem;
-	JMenuItem addServerItem;
-	JMenuItem addNattedServerItem;
-	JMenuItem addFirewallItem;
-	JMenuItem addAreaItem;
-	JMenuItem addTapItem;
+	/** lab menu item */
+	JMenuItem 	startLabItem, stopLabItem, addRouterItem, addFirewallItem,
+				addLinkItem, addPcItem, addServerItem, addNattedServerItem, 
+				addCollisionDomainItem, addAreaItem, addTapItem;
+		
+	/** help menu */
 	JMenu helpMenu;
+	/** help menu item */
 	JMenuItem infoItem;
 	
-	/** tool bars and buttons */
-	JToolBar toolbar;
-	JButton newFile;
-	JButton open;
-	JButton save;
-	JButton start;
-	JButton stop;
+	/** horizontal tool bar */
+	JToolBar horizontalToolbar;
+	/** horizontal tool bar's button */
+	JButton newFile, open, save, start, stop;
+	
+	/** vertical tool bar */
 	JToolBar verticalToolbar;
-	JButton router;
-	JButton firewall;
-	JButton pc;
-	JButton collisionDomain;
-	JButton server;
-	JButton nattedServer;
-	JButton area;
-	JButton tap;
-	JButton link;
-	JButton delete;
+	/** vertical tool bar button */
+	JButton router, firewall, pc, collisionDomain, server, 
+			nattedServer, area, tap, link, delete;
 	
 	/** state bar's components */
 	JLabel stateLabel;
@@ -77,7 +69,7 @@ public class GFrame extends JFrame {
 	GCanvas canvas;
 
 	/**
-	 * Create the NetKit GUI main Frame
+	 * Create the NetKit GUI window
 	 */
 	public GFrame() {
 		super("NetKit GUI");
@@ -85,21 +77,37 @@ public class GFrame extends JFrame {
 		createFrame();
 	}
 	
+	/** Create and show the frame 
+	 */
 	private void createFrame() {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-		} catch (Exception e) {
+		/* Operating system check */
+		String os = System.getProperty("os.name");
+		if( os.equals("Linux") ) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			} catch (Exception e) { 
+				System.err.println("Cannot set the GTK Look and Feel. Setting the default"); 
+			}
+		} else {
+			String message = "WARNING: some features are not available on your system.\n" +
+							"Run NetKitGUI on a GNU/Linux system with a netkit installation.";
+			String title = "WARNING: " + os + " is not fully supported";
+			
+			JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
+			
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"); 
-			} catch (Exception e1) {}
+			} catch (Exception e) { 
+				System.err.println("Cannot set the Windows Look and Feel. Setting the default"); 
+			}
 		} 
 		
 //		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 //		setSize( screenSize );
 		setSize( 1280, 800 );
-
+		
 		createMenuBar();
 		createToolBar();
 		createVericalToolBar();
@@ -208,9 +216,9 @@ public class GFrame extends JFrame {
 	/** Create the standard toolbar and add it to the north side of the frame
 	 */
 	private void createToolBar() {
-		toolbar = new JToolBar();
-		toolbar.setFloatable(false);
-		toolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
+		horizontalToolbar = new JToolBar();
+		horizontalToolbar.setFloatable(false);
+		horizontalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 		
 		newFile = new GButton("New", "Create a new Project", "data/images/24x24/new_icon.png");
 		open = new GButton("Open", "Open a Project", "data/images/24x24/open_icon.png");
@@ -218,14 +226,14 @@ public class GFrame extends JFrame {
 		start = new GButton("Start", "Start the lab", "data/images/24x24/start_icon.png");
 		stop = new GButton("Stop", "Stop the lab", "data/images/24x24/stop_icon.png");
 		
-		toolbar.add( newFile );
-		toolbar.add( open );
-		toolbar.add( save );
-		toolbar.addSeparator();
-		toolbar.add( start );
-		toolbar.add( stop );
+		horizontalToolbar.add( newFile );
+		horizontalToolbar.add( open );
+		horizontalToolbar.add( save );
+		horizontalToolbar.addSeparator();
+		horizontalToolbar.add( start );
+		horizontalToolbar.add( stop );
 		
-		add( toolbar, BorderLayout.NORTH );
+		add( horizontalToolbar, BorderLayout.NORTH );
 	}
 	
 	/** Create the stateBar and add it to the south side of the frame
@@ -245,7 +253,7 @@ public class GFrame extends JFrame {
 	}
 	
 	private void setupListeners() {
-		/** set windows clising event 
+		/** set the window's closing event 
 		 */
 		addWindowListener( new WindowAdapter() {
 			public void windowClosing( WindowEvent e ) {
@@ -253,8 +261,19 @@ public class GFrame extends JFrame {
 			}
 		});
 		
+		/** Set the window's minimum size
+		 */
+		addComponentListener( new ComponentAdapter() {
+			public void componentResized( ComponentEvent e ) {
+				JFrame tmp = (JFrame) e.getSource();
+				if ( tmp.getWidth() < 600 || tmp.getHeight() < 600 ) {
+					tmp.setSize( 700, 630 );
+				}
+			}
+		});
+		
 		/********************************
-		 * Menu items listeners
+		 * Menu's items listeners
 		 ********************************/
 		
 		newItem.addActionListener( new GActionListener(ActionType.newProject) );

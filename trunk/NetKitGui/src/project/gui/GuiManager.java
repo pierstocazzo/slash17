@@ -44,8 +44,6 @@ public class GuiManager {
 		emptyCanvas = new JLabel("Create a new project or open an existing one.");
 		emptyCanvas.setHorizontalAlignment(SwingConstants.CENTER);
 		emptyCanvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		// set the canvas preferred size to the 80% of the window's size 
-		emptyCanvas.setPreferredSize(new Dimension((int) (frame.getSize().getWidth()*0.8), (int) (frame.getSize().getHeight()*0.8)));
 		
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, emptyCanvas, confPanel);
 		splitPane.setBorder( BorderFactory.createLineBorder(Color.LIGHT_GRAY) );
