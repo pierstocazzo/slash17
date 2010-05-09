@@ -35,7 +35,9 @@ public class GFrame extends JFrame {
 	JMenuItem openItem;
 	JMenuItem saveItem;
 	JMenuItem exitItem;
-	JMenu projectMenu;
+	JMenu labMenu;
+	JMenuItem startLabItem;
+	JMenuItem stopLabItem;
 	JMenuItem addRouterItem;
 	JMenuItem addCollisionDomainItem;
 	JMenuItem addLinkItem;
@@ -129,8 +131,12 @@ public class GFrame extends JFrame {
 		fileMenu.add(exitItem);
 		menuBar.add(fileMenu);
 		// creating the project menu
-		projectMenu = new JMenu("Project");
-		projectMenu.setMnemonic(KeyEvent.VK_P);
+		labMenu = new JMenu("Laboratory");
+		labMenu.setMnemonic(KeyEvent.VK_L);
+		startLabItem = new GMenuItem("Start lab", new ImageIcon("data/images/16x16/start_icon.png"));
+		startLabItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK));
+		stopLabItem = new GMenuItem("Stop lab", new ImageIcon("data/images/16x16/stop_icon.png"));
+		stopLabItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK));
 		addRouterItem = new GMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
 		addCollisionDomainItem = new GMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
 		addLinkItem = new GMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
@@ -140,17 +146,20 @@ public class GFrame extends JFrame {
 		addFirewallItem = new GMenuItem("Add firewall", new ImageIcon("data/images/16x16/firewall_icon.png"));
 		addAreaItem = new GMenuItem("Add area", new ImageIcon("data/images/16x16/area_icon.png"));
 		addTapItem = new GMenuItem("Add tap", new ImageIcon("data/images/16x16/tap_icon.png"));
-		projectMenu.add(addRouterItem);
-		projectMenu.add(addCollisionDomainItem);
-		projectMenu.add(addPcItem);
-		projectMenu.add(addServerItem);
-		projectMenu.add(addNattedServerItem);
-		projectMenu.add(addFirewallItem);
-		projectMenu.add(addAreaItem);
-		projectMenu.add(addTapItem);
-		projectMenu.addSeparator();
-		projectMenu.add(addLinkItem);
-		menuBar.add(projectMenu);
+		labMenu.add(startLabItem);
+		labMenu.add(stopLabItem);
+		labMenu.addSeparator();
+		labMenu.add(addRouterItem);
+		labMenu.add(addCollisionDomainItem);
+		labMenu.add(addPcItem);
+		labMenu.add(addServerItem);
+		labMenu.add(addNattedServerItem);
+		labMenu.add(addFirewallItem);
+		labMenu.add(addAreaItem);
+		labMenu.add(addTapItem);
+		labMenu.addSeparator();
+		labMenu.add(addLinkItem);
+		menuBar.add(labMenu);
 		// creating help menu
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -255,6 +264,8 @@ public class GFrame extends JFrame {
 		
 		infoItem.addActionListener( new GActionListener(ActionType.showInfo) );
 		
+		startLabItem.addActionListener( new GActionListener(ActionType.startLab) );
+		stopLabItem.addActionListener( new GActionListener(ActionType.stopLab) );
 		addPcItem.addActionListener( new GActionListener(ActionType.addPc) );
 		addRouterItem.addActionListener( new GActionListener(ActionType.addRouter) );
 		addFirewallItem.addActionListener( new GActionListener(ActionType.addFirewall) );

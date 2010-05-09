@@ -6,9 +6,11 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
+import project.common.ItemType;
 import project.core.AbstractProject;
 import project.gui.labview.LabConfPanel;
 
@@ -92,5 +94,21 @@ public class GuiManager {
 
 	public AbstractProject getProject() {
 		return project;
+	}
+
+	public void adding(ItemType type) {
+		if( canvas != null ) 
+			canvas.adding(type);
+		else 
+			JOptionPane.showMessageDialog( frame, "Create the project before", 
+					"Error: no project", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void deleting() {
+		if( canvas != null ) 
+			canvas.deleting();
+		else 
+			JOptionPane.showMessageDialog( frame, "Create the project before", 
+					"Error: no project", JOptionPane.ERROR_MESSAGE);
 	}
 }

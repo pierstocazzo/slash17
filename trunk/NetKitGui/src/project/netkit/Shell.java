@@ -5,6 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.JOptionPane;
+
+import project.core.AbstractProject;
+import project.gui.GuiManager;
+
 public class Shell {
 	
 	static Runtime rnt;
@@ -13,31 +18,40 @@ public class Shell {
 	static BufferedReader in;
 	static PrintWriter out;
 	
-	public static boolean startLab( String labDirectory ) {
+	public static void startLab( AbstractProject project ) {
 		try {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
-			rnt.exec("sh startlab " + labDirectory);
+			if( project != null && isDirectory( project.getDirectory() ) ) 
+				rnt.exec("sh startlab " + project.getDirectory() );
+			else 
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
+						"Save the project before start", "Error", JOptionPane.ERROR_MESSAGE);
 			
-			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
 	
-	public static boolean stopLab( String labDirectory, boolean crash ) {
+	public static void stopLab( AbstractProject project, boolean crash ) {
 		try {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
-			rnt.exec("sh stoplab " + labDirectory + " " + crash);
+			if( project != null && isDirectory( project.getDirectory() ) )
+				rnt.exec("sh stoplab " + project.getDirectory() + " " + crash);
+			else 
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
+						"Save the project before stop", "Error", JOptionPane.ERROR_MESSAGE);
 			
-			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
 		}
+	}
+	
+	private static boolean isDirectory(String directory) {
+		File f = new File(directory);
+		return f.isDirectory();
 	}
 }
