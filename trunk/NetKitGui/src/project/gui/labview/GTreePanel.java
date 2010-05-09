@@ -9,10 +9,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -44,9 +46,9 @@ public class GTreePanel extends JPanel {
 		northPanel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
 		northPanel.add( new JLabel( stringLabel ), BorderLayout.WEST );
 		
-		Dimension size = new Dimension(24, 24);
+		Dimension size = new Dimension(20, 20);
 		
-		JButton coll = new JButton("-");
+		JButton coll = new JButton(new ImageIcon("data/images/16x16/collapse_icon.png"));
 		coll.setPreferredSize(size);
 		coll.setToolTipText("Collapse All");
 		coll.addActionListener(new ActionListener() {
@@ -55,7 +57,7 @@ public class GTreePanel extends JPanel {
 			}
 		});
 		
-		JButton exp = new JButton("+");
+		JButton exp = new JButton(new ImageIcon("data/images/16x16/expand_icon.png"));
 		exp.setPreferredSize(size);
 		exp.setToolTipText("Expand All");
 		exp.addActionListener(new ActionListener() {
@@ -64,11 +66,12 @@ public class GTreePanel extends JPanel {
 			}
 		});
 		
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.add(coll);
-		buttonsPanel.add(exp);
+		JToolBar buttonsBar = new JToolBar();
+		buttonsBar.setFloatable(false);
+		buttonsBar.add(coll);
+		buttonsBar.add(exp);
 		
-		northPanel.add(buttonsPanel, BorderLayout.EAST);
+		northPanel.add(buttonsBar, BorderLayout.EAST);
 		
 		add( northPanel, BorderLayout.NORTH );
         
