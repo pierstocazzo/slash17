@@ -12,7 +12,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
@@ -32,7 +34,7 @@ public class GTreePanel extends JPanel {
 	public static final int FIREWALLING = 1;
 	public static final int ROUTING = 2;
 	public static final int LABSTRUCTURE = 3;
-	
+	JPopupMenu popup;
 	protected GTreeNode rootNode;
     protected DefaultTreeModel treeModel;
     protected JTree tree;
@@ -89,25 +91,48 @@ public class GTreePanel extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(tree);
         add(scrollPane);
+        
+        //Create the popup menu.
+	    popup = new JPopupMenu();
+	    JMenuItem menuItem = new JMenuItem("Set interface");
+	    menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TreePath selPath = tree.getSelectionPath();
+				if( selPath != null ) {
+					GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
+					new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
+				}
+			}
+		});
+	    popup.add(menuItem);
     }
     
     public void selectHost( String hostName ) {
     	collapseAll();
     	
     	for( int i = 0; i < rootNode.getChildCount(); i++ ) {
-    		GTreeNode host = ((GTreeNode) rootNode.getChildAt(i));
-    		if( host.getUserObject().equals( hostName ) ) {
+    		GTreeNode node = ((GTreeNode) rootNode.getChildAt(i));
+    		if( node.getUserObject().equals( hostName ) ) {
     			try {
-    				tree.scrollPathToVisible( new TreePath( ((GTreeNode) host.getLastChild()).getPath()) );
+    				TreePath path = new TreePath( ((GTreeNode) node.getLastChild()).getPath());
+    				tree.scrollPathToVisible( path );
+    				tree.setSelectionPath( path );
     			} catch (Exception e) {
-    				tree.scrollPathToVisible( new TreePath( ((GTreeNode) host).getPath() ) );
-				}
+    				TreePath path = new TreePath( ((GTreeNode) node).getPath());
+    				tree.scrollPathToVisible( path );
+    				tree.setSelectionPath( path );
+    			}
     			return;
     		}
     	}
     }
     
-    public void collapseAll() {
+    public void setName( String name ) {
+		rootNode.setUserObject( name );
+	}
+
+	public void collapseAll() {
     	int row = tree.getRowCount() - 1;
     	while (row >= 0) {
     		tree.collapseRow(row);
@@ -123,7 +148,6 @@ public class GTreePanel extends JPanel {
     	}
     }
 
-    
     /** Remove all nodes except the root node. */
     public void clear() {
         rootNode.removeAllChildren();
@@ -146,70 +170,73 @@ public class GTreePanel extends JPanel {
 
     /** Add child to the currently selected node. */
     public GTreeNode addObject( Object child, int type ) {
-    	GTreeNode parentNode = null;
-        TreePath parentPath = tree.getSelectionPath();
+//    	GTreeNode parentNode = null;
+//        TreePath parentPath = tree.getSelectionPath();
+//
+//        if (parentPath == null) {
+//            parentNode = rootNode;
+//        } else {
+//            parentNode = (GTreeNode) (parentPath.getLastPathComponent());
+//        }
 
-        if (parentPath == null) {
-            parentNode = rootNode;
-        } else {
-            parentNode = (GTreeNode) (parentPath.getLastPathComponent());
-        }
-
-        return addObject( parentNode, child, true, type );
+        return addObject( rootNode, child, type );
     }
 
-    public GTreeNode addObject( GTreeNode parent, Object child, int type) {
-        return addObject( parent, child, false, type );
-    }
-
-    public GTreeNode addObject( GTreeNode parent,  Object child, boolean visible, int type ) {
-    	
+    public GTreeNode addObject( GTreeNode parent,  Object child, int type ) {
     	GTreeNode childNode = new GTreeNode(child, type);
-
-        if (parent == null) {
-            parent = rootNode;
-        }
 	
         //It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
         treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
-
-        //Make sure the user can see the lovely new node.
-        if (visible) {
-        	collapseAll();
-            tree.scrollPathToVisible(new TreePath(childNode.getPath()));
-        }
+        
+    	collapseAll();
+		TreePath path = new TreePath( childNode.getPath() );
+		tree.scrollPathToVisible( path );
         
         return childNode;
     }
     
-    public void setName( String name ) {
-		rootNode.setUserObject( name );
-	}
-
 	public GTreeNode addObject(String name, int type, AbstractHost host) {
-		GTreeNode node = addObject(name, type);
+		GTreeNode node = addObject(rootNode, name, type);
 		node.setHost(host);
 		return node;
 	}
 	
 	public GTreeNode addObject(GTreeNode parent, String name, int type, AbstractHost host) {
-		GTreeNode node = addObject(parent, name, true, type);
+		GTreeNode node = addObject(parent, name, type);
 		node.setHost(host);
 		return node;
 	}
 
     /** the mouse listeners for the tree nodes */
     class MyListener extends MouseAdapter {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-	         TreePath selPath = tree.getSelectionPath();
-	         if( selPath != null ) {
-	        	 GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
-	         
-		         if( e.getClickCount() >= 2 && node.getType() == GTreeNode.IFACE ) {
-		        	 new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
-	             }
-	         }
+    	@Override
+    	public void mousePressed(MouseEvent e) {
+    		int selRow = tree.getRowForLocation(e.getX(), e.getY());
+    		if( selRow < 0 )
+    			return;
+
+    		TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+    		tree.setSelectionPath(selPath); 
+
+			GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
+
+			if( node.getType() == GTreeNode.IFACE ) {
+				maybeShowPopup(e);
+				if( e.getClickCount() >= 2 ) {
+					new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
+				}
+			} 
+		}
+//
+//		public void mouseReleased(MouseEvent e) {
+//			maybeShowPopup(e);
+//		}
+
+		private void maybeShowPopup(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				popup.show(e.getComponent(),
+						e.getX(), e.getY());
+			}
 		}
     }
 
