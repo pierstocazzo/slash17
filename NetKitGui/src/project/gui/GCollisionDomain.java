@@ -27,12 +27,18 @@ public class GCollisionDomain extends PImage {
 		this.absCollisionDomain = collisionDomain;
 		this.layer = layer;
 		
-		setName(collisionDomain.getName());
+		centerFullBoundsOnPoint(x, y);
 		
-		this.centerFullBoundsOnPoint(x, y);
+		text = new PText(absCollisionDomain.getName());
+		text.setPickable(false);
+		layer.addChild(text);
+		update();
 	}
 	
 	public void update() {
+		double x = getGlobalTranslation().getX();
+		double y = getGlobalTranslation().getY();
+		text.centerFullBoundsOnPoint(x + getWidth()/2, y + getHeight() + 10);
 		for( GLink gl : links ) {
 			gl.update();
 		}
@@ -48,14 +54,6 @@ public class GCollisionDomain extends PImage {
 	
 	public ArrayList<GLink> getLinks() {
 		return links;
-	}
-
-	public void setName( String name ) {
-		text = new PText(name);
-		text.centerFullBoundsOnPoint((getWidth()/2), getHeight());
-		text.setPickable(false);
-		text.setScale(1.5);
-		this.addChild(text);
 	}
 	
 	public String getImageName() {
