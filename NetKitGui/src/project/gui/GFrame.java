@@ -48,7 +48,7 @@ public class GFrame extends JFrame {
 	/** help menu */
 	JMenu helpMenu;
 	/** help menu item */
-	JMenuItem infoItem;
+	JMenuItem aboutItem, licenceItem;
 	
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
@@ -171,9 +171,11 @@ public class GFrame extends JFrame {
 		// creating help menu
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
-		infoItem = new GMenuItem("About", new ImageIcon("data/images/16x16/info_icon.png"));
-		infoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-		helpMenu.add(infoItem);
+		aboutItem = new GMenuItem("About", new ImageIcon("data/images/16x16/info_icon.png"));
+		aboutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
+		licenceItem = new GMenuItem("Licence", new ImageIcon("data/images/16x16/info_icon.png"));
+		helpMenu.add(aboutItem);
+		helpMenu.add(licenceItem);
 		menuBar.add(helpMenu);
 		
 		setJMenuBar(menuBar);
@@ -281,7 +283,8 @@ public class GFrame extends JFrame {
 		saveItem.addActionListener( new GActionListener(ActionType.saveProject) );
 		exitItem.addActionListener( new GActionListener(ActionType.exit) );
 		
-		infoItem.addActionListener( new GActionListener(ActionType.showInfo) );
+		aboutItem.addActionListener( new GActionListener(ActionType.showInfo) );
+		licenceItem.addActionListener( new GActionListener(ActionType.showLicence) );
 		
 		startLabItem.addActionListener( new GActionListener(ActionType.startLab) );
 		stopLabItem.addActionListener( new GActionListener(ActionType.stopLab) );

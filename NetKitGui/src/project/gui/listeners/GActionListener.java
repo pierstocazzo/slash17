@@ -1,13 +1,24 @@
 package project.gui.listeners;
 
+import java.awt.BorderLayout;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.net.URI;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
@@ -94,7 +105,11 @@ public class GActionListener implements ActionListener {
 		case showInfo:
 			showInfo();
 			break;
-			
+		
+		case showLicence:
+			showLicence();
+			break;
+		
 		case exit:
 			manager.getFrame().closeApplication();
 			break;
@@ -126,6 +141,32 @@ public class GActionListener implements ActionListener {
 				JOptionPane.INFORMATION_MESSAGE, new ImageIcon("data/images/images/GNU.png"));
 	}
 	
+	public void showLicence() {
+		File f = new File("licence.txt");
+		String text = "";
+		try {
+			BufferedReader r = new BufferedReader(new FileReader(f));
+			String s;
+			while( (s = r.readLine() ) != null ) {
+				text = text + s + "\n";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JDialog d = new JDialog(manager.getFrame());
+		d.setTitle("Licence");
+		d.setContentPane(new JPanel(new BorderLayout()));
+		JLabel title = new JLabel("NetKit GUI Licence", JLabel.CENTER);
+		title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		title.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		d.add(title, BorderLayout.NORTH);
+		JScrollPane scrollPane = new JScrollPane(new JTextArea(text));
+		d.add(scrollPane);
+		d.setSize(600, 600);
+		d.setLocationRelativeTo(manager.getFrame());
+		d.setVisible(true);
+	}
+	
 	public enum ActionType {
 		newProject,
 		saveProject,
@@ -143,6 +184,7 @@ public class GActionListener implements ActionListener {
 		addTap,
 		delete,
 		showInfo,
+		showLicence,
 		exit;
 	}
 }
