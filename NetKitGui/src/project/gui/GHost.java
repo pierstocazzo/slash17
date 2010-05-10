@@ -27,7 +27,7 @@ public class GHost extends PImage {
 		this.image = image;
 		this.absHost = host;
 		this.layer = layer;
-
+		
 		setText(host.getName());
 		
 		centerFullBoundsOnPoint(x, y);
@@ -54,7 +54,6 @@ public class GHost extends PImage {
 		text = new PText(name);
 		text.centerFullBoundsOnPoint((getWidth()/2), getHeight());
 		text.setPickable(false);
-		text.setScale(1.5);
 		this.addChild(text);
 	}
 
