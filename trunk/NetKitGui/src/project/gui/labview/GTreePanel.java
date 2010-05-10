@@ -94,7 +94,7 @@ public class GTreePanel extends JPanel {
         
         //Create the popup menu.
 	    popup = new JPopupMenu();
-	    JMenuItem menuItem = new JMenuItem("Set interface");
+	    JMenuItem menuItem = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
 	    menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

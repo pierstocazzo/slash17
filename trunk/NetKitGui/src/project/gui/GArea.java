@@ -2,6 +2,7 @@ package project.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +43,7 @@ public class GArea extends PPath {
 		});
 		menu.add(setText);
 		
-		JMenuItem selectcolor = new JMenuItem("Select Color");
+		JMenuItem selectcolor = new JMenuItem("Select Color", new ImageIcon("data/images/16x16/color_icon.png"));
 		selectcolor.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Color color = JColorChooser.showDialog(GuiManager.getInstance().getFrame(), "Area Color", Color.cyan);
@@ -68,6 +69,7 @@ public class GArea extends PPath {
 		if( name != null && !name.equals("") ) {
 			text = new PText(name);
 			text.setPickable(false);
+			text.setFont(new Font("SansSerif", Font.BOLD, 16));
 			addChild(text);
 			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
 		}
@@ -76,7 +78,8 @@ public class GArea extends PPath {
 	@Override
 	public boolean setBounds(Rectangle2D newBounds) {
 		boolean result = super.setBounds(newBounds);
-		text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
+		if( text != null )
+			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
 		return result;
 	}
 	

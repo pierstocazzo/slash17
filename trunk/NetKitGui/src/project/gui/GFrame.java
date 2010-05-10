@@ -171,8 +171,8 @@ public class GFrame extends JFrame {
 		// creating help menu
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
-		infoItem = new GMenuItem("Info", new ImageIcon("data/images/16x16/info_icon.png"));
-		infoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));
+		infoItem = new GMenuItem("About", new ImageIcon("data/images/16x16/info_icon.png"));
+		infoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
 		helpMenu.add(infoItem);
 		menuBar.add(helpMenu);
 		
