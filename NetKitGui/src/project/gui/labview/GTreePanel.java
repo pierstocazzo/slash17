@@ -227,10 +227,6 @@ public class GTreePanel extends JPanel {
 				}
 			} 
 		}
-//
-//		public void mouseReleased(MouseEvent e) {
-//			maybeShowPopup(e);
-//		}
 
 		private void maybeShowPopup(MouseEvent e) {
 			if (e.isPopupTrigger()) {

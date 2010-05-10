@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import project.common.ItemType;
 import project.core.AbstractHost;
-
-
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.nodes.PText;
@@ -33,6 +31,8 @@ public class GHost extends PImage {
 		setText(host.getName());
 		
 		centerFullBoundsOnPoint(x, y);
+		
+		layer.addChild(this);
 	}
 	
 	public void update() {

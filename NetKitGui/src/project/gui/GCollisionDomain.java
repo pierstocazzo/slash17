@@ -33,6 +33,8 @@ public class GCollisionDomain extends PImage {
 		text.setPickable(false);
 		layer.addChild(text);
 		update();
+		
+		layer.addChild(this);
 	}
 	
 	public void update() {
