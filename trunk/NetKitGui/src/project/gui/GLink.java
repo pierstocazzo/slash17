@@ -31,6 +31,8 @@ public class GLink extends PPath {
 		this.layer = layer;
 		
 		update();
+		
+		layer.addChild(this);
 	}
 
 	public void update() {

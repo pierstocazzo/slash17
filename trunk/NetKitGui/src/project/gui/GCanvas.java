@@ -1,22 +1,25 @@
 package project.gui;
 
 import java.awt.Cursor;
+import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
 
 import javax.swing.JOptionPane;
-
 
 import project.common.ItemType;
 import project.core.AbstractProject;
 import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
+import project.gui.input.BoundsHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
+import project.gui.input.MouseWheelZoomEventHandler;
 import project.gui.labview.LabConfPanel;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
+import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolo.nodes.PPath;
 
 public class GCanvas extends PCanvas {
@@ -36,6 +39,8 @@ public class GCanvas extends PCanvas {
 	PBasicInputEventHandler currentHandler;
 	
 	LabConfPanel confPanel;
+
+	MouseWheelZoomEventHandler zoomEventHandler;
 	
 	public GCanvas( GFrame gFrame, AbstractProject project, LabConfPanel confPanel ) {
 		this.frame = gFrame;
@@ -49,13 +54,22 @@ public class GCanvas extends PCanvas {
 		secondLayer = new PLayer();
 		areaLayer = new PLayer();
 		mainLayer.addChild(secondLayer);
-		
-		getZoomEventHandler().setMaxScale(1.4);
-		getZoomEventHandler().setMinScale(0.4);
+		secondLayer.addChild(areaLayer);
 		
 		defaultHandler = new DefaultInputHandler();
 		deleteHandler = new DeleteInputHandler(this);
 		addLinkHandler = new AddLinkInputHandler(this);
+		
+		/* replace the default zoom event handler with the mouse wheel zoom event handler */
+		removeInputEventListener(getZoomEventHandler());
+		zoomEventHandler = new MouseWheelZoomEventHandler();
+		addInputEventListener(zoomEventHandler);
+
+		/* use the right mouse button for the pan event handler, instead of the left button */
+		getPanEventHandler().setEventFilter(new PInputEventFilter(InputEvent.BUTTON3_MASK));
+		
+		/* add the bounds handler for areas creation */
+		addInputEventListener(new BoundsHandler());
 		
 		switchToDefaultHandler();
 	}
@@ -76,13 +90,14 @@ public class GCanvas extends PCanvas {
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
-			GCollisionDomain collsionDomain = GFactory.getInstance().createCollisionDomain(pos.getX(), pos.getY(), mainLayer);
-			mainLayer.addChild(collsionDomain);
-			GuiManager.getInstance().getProject().addCollisionDomain(collsionDomain.getLogic());
+			GCollisionDomain cd = GFactory.getInstance().createCollisionDomain( pos.getX(), pos.getY(), mainLayer );
+			GuiManager.getInstance().getProject().addCollisionDomain(cd.getLogic());
+			
+		} else if( nodeType == ItemType.AREA ) {
+			GFactory.getInstance().createArea( pos.getX(), pos.getY(), areaLayer );
 			
 		} else {
 			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), mainLayer );
-			mainLayer.addChild(host);
 			GuiManager.getInstance().getProject().addHost(host.getLogic());
 		}
 		
@@ -97,7 +112,6 @@ public class GCanvas extends PCanvas {
 		} else {
 			host.addLink(link);
 			collisionDomain.addLink(link);
-			secondLayer.addChild(link);
 		}
 		
 		switchToDefaultHandler();
@@ -125,6 +139,9 @@ public class GCanvas extends PCanvas {
 				GHost host = ((GHost) node);
 				host.delete();
 				GuiManager.getInstance().getProject().removeHost( host.getLogic() );
+				switchToDefaultHandler();
+			} else if( node instanceof PPath ) {
+				areaLayer.removeChild(node);
 				switchToDefaultHandler();
 			} else {
 				switchToDefaultHandler();
