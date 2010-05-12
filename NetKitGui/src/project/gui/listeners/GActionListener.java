@@ -109,6 +109,10 @@ public class GActionListener implements ActionListener {
 		case showLicence:
 			showLicence();
 			break;
+			
+		case exportImage:
+			manager.getCanvas().saveImage();
+			break;
 		
 		case exit:
 			manager.getFrame().closeApplication();
@@ -185,6 +189,7 @@ public class GActionListener implements ActionListener {
 		delete,
 		showInfo,
 		showLicence,
+		exportImage,
 		exit;
 	}
 }
