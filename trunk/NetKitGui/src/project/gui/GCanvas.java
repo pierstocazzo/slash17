@@ -1,9 +1,15 @@
 package project.gui;
 
 import java.awt.Cursor;
+import java.awt.Graphics2D;
 import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import project.common.ItemType;
@@ -72,6 +78,33 @@ public class GCanvas extends PCanvas {
 		addInputEventListener(new BoundsHandler());
 		
 		switchToDefaultHandler();
+	}
+
+	public void saveImage() {
+		int width = getWidth();
+		int height = getHeight();
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = image.createGraphics();
+		this.paint(g2);
+		g2.dispose();
+		
+		JFileChooser saveImg = new JFileChooser("data/images");
+		saveImg.setFileFilter(new ImgFileFilter(".png"));
+		saveImg.setFileFilter(new ImgFileFilter(".jpg"));
+		saveImg.setFileFilter(new ImgFileFilter(".gif"));
+		saveImg.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		
+		saveImg.showSaveDialog(frame);
+		
+		File f = saveImg.getSelectedFile();
+		
+		String ext = saveImg.getFileFilter().getDescription();
+		
+		try {
+			ImageIO.write(image, ext, f);
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void adding( ItemType type ) {

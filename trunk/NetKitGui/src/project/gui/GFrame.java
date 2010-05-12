@@ -53,7 +53,7 @@ public class GFrame extends JFrame {
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
 	/** horizontal tool bar's button */
-	JButton newFile, open, save, start, stop;
+	JButton newFile, open, save, start, stop, exportImg;
 	
 	/** vertical tool bar */
 	JToolBar verticalToolbar;
@@ -227,6 +227,7 @@ public class GFrame extends JFrame {
 		save = new GButton("Save", "Save the Project", "data/images/24x24/save_icon.png");
 		start = new GButton("Start", "Start the lab", "data/images/24x24/start_icon.png");
 		stop = new GButton("Stop", "Stop the lab", "data/images/24x24/stop_icon.png");
+		exportImg = new GButton("Export", "Export", "data/images/24x24/save_icon.png");
 		
 		horizontalToolbar.add( newFile );
 		horizontalToolbar.add( open );
@@ -234,7 +235,9 @@ public class GFrame extends JFrame {
 		horizontalToolbar.addSeparator();
 		horizontalToolbar.add( start );
 		horizontalToolbar.add( stop );
-		
+		horizontalToolbar.addSeparator();
+		horizontalToolbar.add( exportImg );
+		 
 		add( horizontalToolbar, BorderLayout.NORTH );
 	}
 	
@@ -305,6 +308,7 @@ public class GFrame extends JFrame {
 		newFile.addActionListener( new GActionListener(ActionType.newProject) );
 		open.addActionListener( new GActionListener(ActionType.openProject) );
 		save.addActionListener( new GActionListener(ActionType.saveProject) );
+		exportImg.addActionListener( new  GActionListener(ActionType.exportImage) );
 		
 		router.addActionListener( new GActionListener(ActionType.addRouter) );
 		firewall.addActionListener( new GActionListener(ActionType.addFirewall) );
