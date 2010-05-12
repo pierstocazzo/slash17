@@ -111,7 +111,8 @@ public class GActionListener implements ActionListener {
 			break;
 			
 		case exportImage:
-			manager.getCanvas().saveImage();
+			if( manager.getCanvas() != null ) 
+				manager.getCanvas().saveImage();
 			break;
 		
 		case exit:
