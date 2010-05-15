@@ -21,19 +21,19 @@ import project.common.IpAddress;
 import project.core.AbstractInterface;
 import project.gui.GuiManager;
 
-public class IfaceConfFrame extends JDialog {
+public class InterfaceDialog extends JDialog {
 	private static final long serialVersionUID = -9193720585561385320L;
 
 	AbstractInterface iface;
 	
-	public IfaceConfFrame( final AbstractInterface iface ) {
+	public InterfaceDialog( final AbstractInterface iface ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Interface configuration" );
 		this.iface = iface;
 		
 		createDialog( null );
 	}	
 	
-	public IfaceConfFrame( final AbstractInterface iface, String message ) {
+	public InterfaceDialog( final AbstractInterface iface, String message ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Interface configuration" );
 		this.iface = iface;
 		

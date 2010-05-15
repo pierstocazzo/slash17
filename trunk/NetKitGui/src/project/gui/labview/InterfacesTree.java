@@ -27,7 +27,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import project.core.AbstractHost;
 
-public class GTreePanel extends JPanel {
+public class InterfacesTree extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int INTERFACES = 0;
@@ -41,7 +41,7 @@ public class GTreePanel extends JPanel {
     
     protected int type;
 
-    public GTreePanel( String stringLabel, String projectName, int type ) {
+    public InterfacesTree( String stringLabel, String projectName, int type ) {
         super(new BorderLayout());
         
 		JPanel northPanel = new JPanel(new BorderLayout());
@@ -101,7 +101,7 @@ public class GTreePanel extends JPanel {
 				TreePath selPath = tree.getSelectionPath();
 				if( selPath != null ) {
 					GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
-					new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
+					new InterfaceDialog( node.getHost().getInterface( (String) node.getUserObject() ) );
 				}
 			}
 		});
@@ -223,7 +223,7 @@ public class GTreePanel extends JPanel {
 			if( node.getType() == GTreeNode.IFACE ) {
 				maybeShowPopup(e);
 				if( e.getClickCount() >= 2 ) {
-					new IfaceConfFrame( node.getHost().getInterface( (String) node.getUserObject() ) );
+					new InterfaceDialog( node.getHost().getInterface( (String) node.getUserObject() ) );
 				}
 			} 
 		}

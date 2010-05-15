@@ -18,15 +18,15 @@ import project.core.AbstractProject;
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	GTreePanel interfacesTab;
-	GTreePanel routingTab;
-	GTreePanel firewallingTab;
+	InterfacesTree interfacesTab;
+	InterfacesTree routingTab;
+	InterfacesTree firewallingTab;
 	
 	AbstractProject project;
 	
 	JTabbedPane tab;
 	
-	GTreePanel labStructure;
+	InterfacesTree labStructure;
 	
 	public LabConfPanel() {
 		super(new GridLayout(1,0));
@@ -41,15 +41,15 @@ public class LabConfPanel extends JPanel {
 		else
 			projName = project.getName();
 		
-		interfacesTab = new GTreePanel("Hosts interfaces", projName, GTreePanel.INTERFACES);
-		routingTab = new GTreePanel("Hosts routing tables", projName, GTreePanel.ROUTING);
-		firewallingTab = new GTreePanel("Firewalls", projName, GTreePanel.FIREWALLING);
+		interfacesTab = new InterfacesTree("Hosts interfaces", projName, InterfacesTree.INTERFACES);
+		routingTab = new InterfacesTree("Hosts routing tables", projName, InterfacesTree.ROUTING);
+		firewallingTab = new InterfacesTree("Firewalls", projName, InterfacesTree.FIREWALLING);
 	
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
 		tab.addTab("Firewalling", firewallingTab);
 		
-		labStructure = new GTreePanel("Lab structure", projName, GTreePanel.LABSTRUCTURE);
+		labStructure = new InterfacesTree("Lab structure", projName, InterfacesTree.LABSTRUCTURE);
 		labStructure.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		
 		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, labStructure);
