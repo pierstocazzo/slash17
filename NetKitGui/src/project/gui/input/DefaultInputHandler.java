@@ -1,30 +1,34 @@
 package project.gui.input;
 
-import project.gui.GCollisionDomain;
-import project.gui.GHost;
-import project.gui.GuiManager;
-import project.util.Util;
-import edu.umd.cs.piccolo.PNode;
-import edu.umd.cs.piccolo.event.PDragEventHandler;
-import edu.umd.cs.piccolo.event.PInputEvent;
+import java.awt.event.MouseEvent;
 
-public class DefaultInputHandler extends PDragEventHandler {
+import project.gui.GHost;
+import project.gui.GNode;
+import project.gui.GuiManager;
+import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
+import edu.umd.cs.piccolo.event.PInputEvent;
+import edu.umd.cs.piccolo.util.PDimension;
+
+public class DefaultInputHandler extends PBasicInputEventHandler {
 	
+	private int pressedButton;
+
 	@Override
 	public void mouseClicked(PInputEvent event) {
 		super.mouseClicked(event);
 		
-		PNode node = event.getPickedNode();
+		GNode node = (GNode) event.getPickedNode();
 		
-		if( node instanceof GHost ) {
-			GHost host = ((GHost) node);
-			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
+		node.setSelected(true);	
+		
+		if( node.getType() == GNode.host ) {
 			// expand this host's configuration in the trees
-			GuiManager.getInstance().getConfPanel().selectHost( host.getLogic().getName() );
+			GuiManager.getInstance().getConfPanel().selectHost( ((GHost) node).getLogic().getName() );
+		}
+		
 			
-		} else if( node instanceof GCollisionDomain ) {
-			GCollisionDomain cd = ((GCollisionDomain) node);
-			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.SELECTED).getImage() );
+		if( event.getButton() == MouseEvent.BUTTON3 ) {
+			node.showMenu(event);
 		}
 	}
 	
@@ -32,55 +36,39 @@ public class DefaultInputHandler extends PDragEventHandler {
 	public void mouseEntered(PInputEvent event) {
 		super.mouseEntered(event);
 		
-		PNode node = event.getPickedNode();
-		
-		if( node instanceof GHost ) {
-			GHost host = ((GHost) node);
-			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
-			
-		} else if( node instanceof GCollisionDomain ) {
-			GCollisionDomain cd = ((GCollisionDomain) node);
-			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.SELECTED).getImage() );
-		}
-	}
-	
-	public void startDrag(PInputEvent event) {
-		super.startDrag(event);
-		event.setHandled(true);
-		event.getPickedNode().moveToFront();
-	}
-	
-	@Override
-	public void drag(PInputEvent event) {
-		super.drag(event);
-		
-		PNode node = event.getPickedNode();
-		
-		if( node instanceof GHost ) {
-			GHost host = ((GHost) node);
-			host.setImage( Util.getImageIcon( host.getImageName(), Util.SELECTED).getImage() );
-			host.update();
-			
-		} else if( node instanceof GCollisionDomain ) {
-			GCollisionDomain cd = ((GCollisionDomain) node);
-			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.SELECTED).getImage() );
-			cd.update();
-		}
+		GNode node = (GNode) event.getPickedNode();
+		node.setSelected(true);
 	}
 	
 	@Override
 	public void mouseExited(PInputEvent event) {
 		super.mouseExited(event);
 		
-		PNode node = event.getPickedNode();
-		
-		if( node instanceof GHost ) {
-			GHost host = ((GHost) node);
-			host.setImage( Util.getImageIcon( host.getImageName(), Util.DEFAULT).getImage() );
+		GNode node = (GNode) event.getPickedNode();
+		node.setSelected(false);
+	}
+	
+	@Override
+	public void mousePressed(PInputEvent event) {
+		pressedButton = event.getButton();
+	}
+	
+	@Override
+	public void mouseReleased(PInputEvent event) {
+		pressedButton = -1;
+	}
+	
+	@Override
+	public void mouseDragged(PInputEvent event) {
+		if( pressedButton == MouseEvent.BUTTON1 ) {
+			GNode node = (GNode) event.getPickedNode();
 			
-		} else if( node instanceof GCollisionDomain ) {
-			GCollisionDomain cd = ((GCollisionDomain) node);
-			cd.setImage( Util.getImageIcon( cd.getImageName(), Util.DEFAULT).getImage() );
+			PDimension d = event.getDeltaRelativeTo(node);		
+			node.localToParent(d);
+			node.offset(d.getWidth(), d.getHeight());
+			
+			node.setSelected(false);
+			node.update();
 		}
 	}
 }

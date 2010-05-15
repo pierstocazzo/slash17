@@ -52,4 +52,10 @@ public class Link implements AbstractLink {
 		collisionDomain.removeConnection( hostInterface );
 		hostInterface.delete();
 	}
+
+
+	@Override
+	public AbstractInterface getInterface() {
+		return hostInterface;
+	}
 }

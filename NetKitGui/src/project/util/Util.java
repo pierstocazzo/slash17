@@ -1,6 +1,6 @@
 package project.util;
 
-import javax.swing.ImageIcon;
+import edu.umd.cs.piccolo.nodes.PImage;
 
 public class Util {
 
@@ -10,9 +10,9 @@ public class Util {
 	public static final String STARTEDSELECTED = "_started_selected";
 	public static final String DEFAULT = "";
 	
-	public static ImageIcon getImageIcon( String image, String type ) {
+	public static PImage getImage( String image, String type ) {
 		int index = image.lastIndexOf(".");
 		String newImage = image.substring( 0, index ) + type + image.substring( index );
-		return new ImageIcon( newImage );
+		return new PImage( newImage );
 	}
 }

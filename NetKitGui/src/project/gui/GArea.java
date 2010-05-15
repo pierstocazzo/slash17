@@ -20,25 +20,22 @@ import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.nodes.PText;
 import edu.umd.cs.piccolox.handles.PBoundsHandle;
 
-public class GArea extends PPath {
+public class GArea extends GNode {
 	private static final long serialVersionUID = 3492362844970509196L;
-
-	JPopupMenu menu;
-	PLayer layer;
-	PText text;
+	
+	PPath shape;
 	
 	public GArea( int x, int y, PLayer layer ) {
-		super(new Rectangle(x, y, 100, 100));
-		this.layer = layer;
+		super(GNode.area, layer);
 		
-		setPaint(Color.cyan);
+		setShape(x, y);
 		
 		menu = new JPopupMenu();
 		
 		JMenuItem setText = new JMenuItem("Set Name");
 		setText.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setName( e );
+				setText();
 			}
 		});
 		menu.add(setText);
@@ -60,11 +57,21 @@ public class GArea extends PPath {
 			}
 		});
 		menu.add(delete);
-		
-		layer.addChild(this);
 	}
 
-	protected void setName(ActionEvent e) {
+	private void setShape( int x, int y ) {
+		if( shape != null ) {
+			removeChild(shape);
+		}
+		shape = new PPath(new Rectangle(x, y, 100, 100));
+		addChild(shape);
+		setBounds(shape.getBounds());
+		shape.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
+		shape.setPickable(false);
+		shape.setPaint(Color.cyan);
+	}
+
+	protected void setText() {
 		String name = JOptionPane.showInputDialog("Insert the name:");
 		if( name != null && !name.equals("") ) {
 			text = new PText(name);
@@ -74,12 +81,17 @@ public class GArea extends PPath {
 			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
 		}
 	}
+	
+	@Override
+	public void update() {
+		if( text != null )
+			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
+	}
 
 	@Override
 	public boolean setBounds(Rectangle2D newBounds) {
 		boolean result = super.setBounds(newBounds);
-		if( text != null )
-			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
+		update();
 		return result;
 	}
 	

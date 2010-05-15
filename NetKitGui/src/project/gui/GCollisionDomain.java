@@ -5,42 +5,57 @@ import java.util.ArrayList;
 import project.core.AbstractCollisionDomain;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PImage;
-import edu.umd.cs.piccolo.nodes.PText;
 
-public class GCollisionDomain extends PImage {
+public class GCollisionDomain extends GNode {
 
 	private static final long serialVersionUID = 1L;
 
-	protected static String image = "data/images/images/collisionDomain.png";
+	protected static String imagePath = "data/images/images/collisionDomain.png";
+	protected static String selectedImagePath = "data/images/images/collisionDomain_selected.png";
+	
+	PImage image;
 	
 	protected ArrayList<GLink> links;
 	
-	protected PText text;
-	
 	protected AbstractCollisionDomain absCollisionDomain;
 	
-	PLayer layer;
-	
 	public GCollisionDomain( double x, double y, AbstractCollisionDomain collisionDomain, PLayer layer ) {
-		super(image);
+		super( GNode.domain, layer );
+		
 		this.links = new ArrayList<GLink>();
 		this.absCollisionDomain = collisionDomain;
-		this.layer = layer;
+		
+		setSelected(false);
+		
+		setText(absCollisionDomain.getName());
 		
 		centerFullBoundsOnPoint(x, y);
 		
-		text = new PText(absCollisionDomain.getName());
-		text.setPickable(false);
-		layer.addChild(text);
 		update();
-		
-		layer.addChild(this);
+	}
+	
+	private void setImage( String newImage ) {
+		if( image != null ) {
+			removeChild(image);
+		}
+		image = new PImage(newImage);
+		addChild(image);
+		setBounds(image.getBounds());
+		image.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
+		image.setPickable(false);
+	}
+	
+	public void setSelected( boolean selected ) {
+		if( selected ) {
+			setImage(selectedImagePath);
+		} else {
+			setImage(imagePath);
+		}
 	}
 	
 	public void update() {
-		double x = getGlobalTranslation().getX();
-		double y = getGlobalTranslation().getY();
-		text.centerFullBoundsOnPoint(x + getWidth()/2, y + getHeight() + 10);
+		super.update();
+		
 		for( GLink gl : links ) {
 			gl.update();
 		}
@@ -58,8 +73,8 @@ public class GCollisionDomain extends PImage {
 		return links;
 	}
 	
-	public String getImageName() {
-		return image;
+	public String getImagePath() {
+		return imagePath;
 	}
 	
 	public AbstractCollisionDomain getLogic() {
@@ -70,8 +85,7 @@ public class GCollisionDomain extends PImage {
 		while( !links.isEmpty() ) {
 			links.get(0).delete();
 		}
-		layer.removeChild(this);
-		layer.removeChild(text);
+		super.delete();
 	}
 
 	public void removeLink(GLink gLink) {

@@ -5,8 +5,8 @@ import java.awt.geom.Point2D;
 import project.gui.GCanvas;
 import project.gui.GCollisionDomain;
 import project.gui.GHost;
+import project.gui.GNode;
 import project.gui.GuiManager;
-import project.util.Util;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -73,8 +73,6 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	
 	@Override
 	public void mouseMoved(PInputEvent event) {
-		super.mouseMoved(event);
-		
 		update( event );
 	}
 	
@@ -97,23 +95,15 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	public void mouseEntered(PInputEvent event) {
 		super.mouseEntered(event);
 		
-		try {
-			GHost node = (GHost) event.getPickedNode();
-			node.setImage( Util.getImageIcon(node.getImageName(), Util.SELECTED).getImage() );
-		} catch (Exception e) {}
-		
-		update(event);
+		GNode node = (GNode) event.getPickedNode();
+		node.setSelected(true);
 	}
 	
 	@Override
 	public void mouseExited(PInputEvent event) {
 		super.mouseExited(event);
 		
-		try {
-			GHost node = (GHost) event.getPickedNode();
-			node.setImage( Util.getImageIcon(node.getImageName(), Util.DEFAULT).getImage() );
-		} catch (Exception e) {}
-		
-		update(event);
+		GNode node = (GNode) event.getPickedNode();
+		node.setSelected(false);
 	}
 }

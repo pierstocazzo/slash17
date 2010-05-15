@@ -6,43 +6,61 @@ import project.common.ItemType;
 import project.core.AbstractHost;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PImage;
-import edu.umd.cs.piccolo.nodes.PText;
 
-public class GHost extends PImage {
+public class GHost extends GNode {
 	private static final long serialVersionUID = 1L;
 
-	protected String image;
+	protected String imagePath;
+	protected String selectedImagePath;
+	
+	protected PImage image;
 	
 	protected ArrayList<GLink> links;
 	
-	protected PText text;
-	
 	AbstractHost absHost;
 	
-	PLayer layer;
-	
-	public GHost( double x, double y, String image, AbstractHost host, PLayer layer ) {
-		super(image);
-		this.links = new ArrayList<GLink>();
-		this.image = image;
-		this.absHost = host;
-		this.layer = layer;
+	public GHost( double x, double y, String imagePath, AbstractHost host, PLayer layer ) {
+		super( GNode.host, layer );
 		
-//		setText(host.getName());
+		this.links = new ArrayList<GLink>();
+		this.imagePath = imagePath;
+		this.absHost = host;
+		
+		int index = imagePath.lastIndexOf(".");
+		selectedImagePath = imagePath.substring( 0, index ) + "_selected" + imagePath.substring( index );
+		
+		setImage( imagePath );
+		
+		setText(host.getName());
 		
 		centerFullBoundsOnPoint(x, y);
-		text = new PText(absHost.getName());
-		text.setPickable(false);
-		layer.addChild(text);
-		update();
 		
-		layer.addChild(this);
+		update();
 	}
 	
+	private void setImage( String newImage ) {
+		if( image != null ) {
+			removeChild(image);
+		}
+		image = new PImage(newImage);
+		addChild(image);
+		setBounds(image.getBounds());
+		image.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
+		image.setPickable(false);
+	}
+	
+	public void setSelected( boolean selected ) {
+		super.setSelected(selected);
+		if( selected ) {
+			setImage( selectedImagePath );
+		} else {
+			setImage( imagePath );
+		}
+	}
+
 	public void update() {
-		double x = getGlobalTranslation().getX();
-		double y = getGlobalTranslation().getY();
-		text.centerFullBoundsOnPoint(x + getWidth()/2, y + getHeight() + 10);
+		super.update();
+		
 		for( GLink gl : links ) {
 			gl.update();
 		}
@@ -56,11 +74,11 @@ public class GHost extends PImage {
 		return links;
 	}
 
-	public String getImageName() {
-		return image;
+	public String getImagePath() {
+		return imagePath;
 	}
 
-	public ItemType getType() {
+	public ItemType getHostType() {
 		return absHost.getType();
 	}
 	
@@ -72,8 +90,8 @@ public class GHost extends PImage {
 		while( !links.isEmpty() ) {
 			links.get(0).delete();
 		}
-		layer.removeChild(this);
-		layer.removeChild(text);
+		
+		super.delete();
 	}
 
 	public void removeLink(GLink gLink) {

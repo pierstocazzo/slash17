@@ -1,13 +1,15 @@
 package project.gui;
 
+import java.awt.Font;
 import java.awt.geom.Point2D;
 
 import project.core.AbstractLink;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.nodes.PPath;
+import edu.umd.cs.piccolo.nodes.PText;
 
-public class GLink extends PPath {
+public class GLink extends GNode {
 	private static final long serialVersionUID = 1L;
 	
 	GHost host;
@@ -15,7 +17,7 @@ public class GLink extends PPath {
 	
 	AbstractLink absLink;
 	
-	PLayer layer;
+	PPath link;
 	
 	/** 
 	 * Create a graph edge between two node
@@ -25,22 +27,40 @@ public class GLink extends PPath {
 	 * @param collisionDomain2
 	 */
 	public GLink( GHost host, GCollisionDomain collisionDomain, AbstractLink abstractLink, PLayer layer ) {
+		super( GNode.link, layer );
+		
 		this.host = host;
 		this.collisionDomain = collisionDomain;
 		this.absLink = abstractLink;
 		this.layer = layer;
 		
-		update();
+		link = PPath.createLine(0, 0, 0, 0);
+		addChild(link);
 		
-		layer.addChild(this);
+		setText(absLink.getInterface().getName());
+		
+		update();
 	}
 
 	public void update() {
 		Point2D start = host.getFullBoundsReference().getCenter2D();
 		Point2D end = collisionDomain.getFullBoundsReference().getCenter2D();
-		reset();
-		moveTo((float)start.getX(), (float)start.getY());
-		lineTo((float)end.getX(), (float)end.getY());
+		link.reset();
+		link.moveTo((float)start.getX(), (float)start.getY());
+		link.lineTo((float)end.getX(), (float)end.getY());
+		if( text != null ) 
+			text.centerFullBoundsOnPoint( link.getBounds().getCenterX(), link.getBounds().getCenterY() + 10 );
+	}
+	
+	public void setText( String aText ) {
+		if( text != null ) {
+			text.removeFromParent();
+		}
+		text = new PText(aText);
+		text.setPickable(false);
+		text.setFont(new Font("", Font.BOLD, 14));
+		layer.addChild(text);
+		update();
 	}
 	
 	public GHost getHost() {
@@ -56,7 +76,7 @@ public class GLink extends PPath {
 	}
 
 	public void delete() {
-		layer.removeChild(this);
+		super.delete();
 		collisionDomain.removeLink( this );
 		host.removeLink( this );
 	}
