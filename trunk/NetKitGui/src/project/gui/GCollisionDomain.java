@@ -71,6 +71,7 @@ public class GCollisionDomain extends PImage {
 			links.get(0).delete();
 		}
 		layer.removeChild(this);
+		layer.removeChild(text);
 	}
 
 	public void removeLink(GLink gLink) {

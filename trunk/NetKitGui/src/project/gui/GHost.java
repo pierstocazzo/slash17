@@ -28,15 +28,21 @@ public class GHost extends PImage {
 		this.absHost = host;
 		this.layer = layer;
 		
-		setText(host.getName());
+//		setText(host.getName());
 		
 		centerFullBoundsOnPoint(x, y);
+		text = new PText(absHost.getName());
+		text.setPickable(false);
+		layer.addChild(text);
+		update();
 		
 		layer.addChild(this);
 	}
 	
 	public void update() {
-		// update all related links
+		double x = getGlobalTranslation().getX();
+		double y = getGlobalTranslation().getY();
+		text.centerFullBoundsOnPoint(x + getWidth()/2, y + getHeight() + 10);
 		for( GLink gl : links ) {
 			gl.update();
 		}
@@ -48,13 +54,6 @@ public class GHost extends PImage {
 	
 	public ArrayList<GLink> getLinks() {
 		return links;
-	}
-
-	private void setText( String name ) {
-		text = new PText(name);
-		text.centerFullBoundsOnPoint((getWidth()/2), getHeight());
-		text.setPickable(false);
-		this.addChild(text);
 	}
 
 	public String getImageName() {
@@ -74,6 +73,7 @@ public class GHost extends PImage {
 			links.get(0).delete();
 		}
 		layer.removeChild(this);
+		layer.removeChild(text);
 	}
 
 	public void removeLink(GLink gLink) {
