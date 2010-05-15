@@ -112,7 +112,7 @@ public class GActionListener implements ActionListener {
 			
 		case exportImage:
 			if( manager.getCanvas() != null ) 
-				manager.getCanvas().saveImage();
+				manager.getCanvas().export();
 			break;
 		
 		case zoomIn:

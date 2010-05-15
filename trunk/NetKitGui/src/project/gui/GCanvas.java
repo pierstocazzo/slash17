@@ -25,7 +25,6 @@ import project.gui.labview.LabConfPanel;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -120,7 +119,7 @@ public class GCanvas extends PCanvas {
 		System.out.println(camera.getViewScale());
 	}
 	
-	public void saveImage() {
+	public void export() {
 		int width = getWidth();
 		int height = getHeight();
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -208,31 +207,33 @@ public class GCanvas extends PCanvas {
 		switchToDeleteHandler();
 	}
 
-	public void delete( PNode node ) {
+	public void delete( GNode node ) {
 		try {
-			if( node instanceof GLink ) {
-				GLink link = ((GLink) node);
-				link.delete();
-				GuiManager.getInstance().getProject().removeLink( link.getLogic() );
-				switchToDefaultHandler();
-				
-			} else if( node instanceof GCollisionDomain ) {
-				GCollisionDomain cd = ((GCollisionDomain) node);
-				cd.delete();
-				GuiManager.getInstance().getProject().removeCollisionDomain( cd.getLogic() );
-				switchToDefaultHandler();
-				
-			} else if( node instanceof GHost ){
+			switch( node.getType() ) {
+			
+			case GNode.host:
 				GHost host = ((GHost) node);
 				host.delete();
 				GuiManager.getInstance().getProject().removeHost( host.getLogic() );
-				switchToDefaultHandler();
-			} else if( node instanceof PPath ) {
-				areaLayer.removeChild(node);
-				switchToDefaultHandler();
-			} else {
-				switchToDefaultHandler();
+				break;
+				
+			case GNode.domain:
+				GCollisionDomain cd = ((GCollisionDomain) node);
+				GuiManager.getInstance().getProject().removeCollisionDomain( cd.getLogic() );
+				break;
+				
+			case GNode.area:
+				// TODO delete area..
+				break;
+				
+			case GNode.link:
+				GLink link = ((GLink) node);
+				GuiManager.getInstance().getProject().removeLink( link.getLogic() );
+				break;
 			}
+			node.delete();
+			switchToDefaultHandler();
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			switchToDefaultHandler();

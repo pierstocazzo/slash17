@@ -26,7 +26,6 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 			GuiManager.getInstance().getConfPanel().selectHost( ((GHost) node).getLogic().getName() );
 		}
 		
-			
 		if( event.getButton() == MouseEvent.BUTTON3 ) {
 			node.showMenu(event);
 		}
