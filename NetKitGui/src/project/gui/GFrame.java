@@ -2,6 +2,7 @@ package project.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -220,14 +221,15 @@ public class GFrame extends JFrame {
 	private void createToolBar() {
 		horizontalToolbar = new JToolBar();
 		horizontalToolbar.setFloatable(false);
+		horizontalToolbar.setPreferredSize(new Dimension(40, 40));
 		horizontalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
 		
-		newFile = new GButton("New", "Create a new Project", "data/images/24x24/new_icon.png");
-		open = new GButton("Open", "Open a Project", "data/images/24x24/open_icon.png");
-		save = new GButton("Save", "Save the Project", "data/images/24x24/save_icon.png");
-		start = new GButton("Start", "Start the lab", "data/images/24x24/start_icon.png");
-		stop = new GButton("Stop", "Stop the lab", "data/images/24x24/stop_icon.png");
-		exportImg = new GButton("Export", "Export", "data/images/24x24/save_icon.png");
+		newFile = new GButton("New", "Create a new Project", "data/images/16x16/new_icon.png", GButton.standard);
+		open = new GButton("Open", "Open a Project", "data/images/16x16/open_icon.png", GButton.standard);
+		save = new GButton("Save", "Save the Project", "data/images/16x16/save_icon.png", GButton.standard);
+		start = new GButton("Start", "Start the lab", "data/images/16x16/start_icon.png", GButton.standard);
+		stop = new GButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png", GButton.standard);
+		exportImg = new GButton("Export", "Export", "data/images/16x16/save_icon.png", GButton.standard);
 		
 		horizontalToolbar.add( newFile );
 		horizontalToolbar.add( open );
