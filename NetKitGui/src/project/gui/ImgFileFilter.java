@@ -14,6 +14,9 @@ public class ImgFileFilter extends FileFilter {
 	
 	@Override
 	public boolean accept(File f) {
+		if( f.isDirectory() ) {
+			return true;
+		}
 		String fileName = f.getPath();
 		if( fileName.endsWith( extension ) )
 			return true;
@@ -23,7 +26,10 @@ public class ImgFileFilter extends FileFilter {
 
 	@Override
 	public String getDescription() {
+		return extension;
+	}
+	
+	public String getExtension() {
 		return extension.substring(1);
 	}
-
 }

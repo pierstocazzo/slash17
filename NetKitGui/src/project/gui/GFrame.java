@@ -37,7 +37,7 @@ public class GFrame extends JFrame {
 	/** file menu */
 	JMenu fileMenu;
 	/** file menu item */
-	JMenuItem newItem, openItem, saveItem, exitItem;
+	JMenuItem newItem, openItem, saveItem, exportItem, exitItem;
 	
 	/** lab menu */
 	JMenu labMenu;
@@ -54,7 +54,7 @@ public class GFrame extends JFrame {
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
 	/** horizontal tool bar's button */
-	JButton newFile, open, save, start, stop, exportImg;
+	JButton newFile, open, save, start, stop, export;
 	
 	/** vertical tool bar */
 	JToolBar verticalToolbar;
@@ -131,11 +131,13 @@ public class GFrame extends JFrame {
 		openItem = new GMenuItem("Open", new ImageIcon("data/images/16x16/open_icon.png"));
 		saveItem = new GMenuItem("Save", new ImageIcon("data/images/16x16/save_icon.png"));
 		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+		exportItem = new GMenuItem("Export", new ImageIcon("data/images/16x16/export_icon.png"));
 		exitItem = new GMenuItem("Exit", new ImageIcon("data/images/16x16/exit_icon.png"));
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
+		fileMenu.add(exportItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 		menuBar.add(fileMenu);
@@ -229,7 +231,7 @@ public class GFrame extends JFrame {
 		save = new GButton("Save", "Save the Project", "data/images/16x16/save_icon.png", GButton.standard);
 		start = new GButton("Start", "Start the lab", "data/images/16x16/start_icon.png", GButton.standard);
 		stop = new GButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png", GButton.standard);
-		exportImg = new GButton("Export", "Export", "data/images/16x16/save_icon.png", GButton.standard);
+		export = new GButton("Export", "Export", "data/images/16x16/export_icon.png", GButton.standard);
 		
 		horizontalToolbar.add( newFile );
 		horizontalToolbar.add( open );
@@ -238,7 +240,7 @@ public class GFrame extends JFrame {
 		horizontalToolbar.add( start );
 		horizontalToolbar.add( stop );
 		horizontalToolbar.addSeparator();
-		horizontalToolbar.add( exportImg );
+		horizontalToolbar.add( export );
 		 
 		add( horizontalToolbar, BorderLayout.NORTH );
 	}
@@ -310,7 +312,7 @@ public class GFrame extends JFrame {
 		newFile.addActionListener( new GActionListener(ActionType.newProject) );
 		open.addActionListener( new GActionListener(ActionType.openProject) );
 		save.addActionListener( new GActionListener(ActionType.saveProject) );
-		exportImg.addActionListener( new  GActionListener(ActionType.exportImage) );
+		export.addActionListener( new  GActionListener(ActionType.exportImage) );
 		
 		router.addActionListener( new GActionListener(ActionType.addRouter) );
 		firewall.addActionListener( new GActionListener(ActionType.addFirewall) );

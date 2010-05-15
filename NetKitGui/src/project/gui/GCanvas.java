@@ -88,22 +88,36 @@ public class GCanvas extends PCanvas {
 		this.paint(g2);
 		g2.dispose();
 		
-		JFileChooser saveImg = new JFileChooser("data/images");
-		saveImg.setFileFilter(new ImgFileFilter(".png"));
-		saveImg.setFileFilter(new ImgFileFilter(".jpg"));
-		saveImg.setFileFilter(new ImgFileFilter(".gif"));
-		saveImg.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		String[] options = {"png", "gif", "jpg"};
+		String extension = (String) JOptionPane.showInputDialog(frame, "Choose the image type", "Export as..", JOptionPane.QUESTION_MESSAGE, null, options, ".png");
+		
+		if( extension == null ) 
+			return;
+		
+		JFileChooser saveImg = new JFileChooser();
+		saveImg.setMultiSelectionEnabled(false);
 		
 		saveImg.showSaveDialog(frame);
 		
 		File f = saveImg.getSelectedFile();
-		
-		String ext = saveImg.getFileFilter().getDescription();
-		
-		try {
-			ImageIO.write(image, ext, f);
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+		if( f != null ) {
+			while( f.exists() ) {
+				int choose = JOptionPane.showConfirmDialog(frame, "Are you sure you want to overwrite this file?");
+				if( choose == JOptionPane.NO_OPTION ) 
+					saveImg.showSaveDialog(frame);
+				else if( choose == JOptionPane.CANCEL_OPTION )
+					return;
+				else
+					break;
+			}
+			try {
+				if( f.getPath().endsWith("." + extension) ) 
+					ImageIO.write(image, extension, f);
+				else
+					ImageIO.write(image, extension, new File(f.getPath() + "." + extension));
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 	}
 
