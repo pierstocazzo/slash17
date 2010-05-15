@@ -240,7 +240,7 @@ public class GCanvas extends PCanvas {
 		}
 	}
 
-	private void switchToAddHandler( ItemType type ) {
+	public void switchToAddHandler( ItemType type ) {
 		if( type == ItemType.LINK ) {
 			if( !currentHandler.equals(addLinkHandler) ) {
 				mainLayer.removeInputEventListener(defaultHandler);
@@ -256,7 +256,7 @@ public class GCanvas extends PCanvas {
 		}
 	}
 	
-	private void switchToDeleteHandler() {
+	public void switchToDeleteHandler() {
 		frame.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
 		if( !currentHandler.equals(deleteHandler) ) {
 			mainLayer.removeInputEventListener(defaultHandler);
@@ -265,7 +265,7 @@ public class GCanvas extends PCanvas {
 		}
 	}
 	
-	private void switchToDefaultHandler() {
+	public void switchToDefaultHandler() {
 		frame.setCursor( new Cursor(Cursor.DEFAULT_CURSOR));
 		removeInputEventListener(addNodeHandler);
 		removeInputEventListener(addLinkHandler);

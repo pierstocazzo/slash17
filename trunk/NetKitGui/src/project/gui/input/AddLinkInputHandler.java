@@ -1,5 +1,7 @@
 package project.gui.input;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import project.gui.GCanvas;
@@ -28,45 +30,52 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	public void mouseClicked( PInputEvent event ) {
 		super.mousePressed(event);
 		
-		GNode node = (GNode) event.getPickedNode();
-		
-		if( node.getType() == GNode.host ) {
-			if( collisionDomain != null && host == null ) {
+		if( event.getButton() == MouseEvent.BUTTON1 ) {
+			if( !( event.getPickedNode() instanceof GNode) )
+				return;
+			
+			GNode node = (GNode) event.getPickedNode();
+			
+			if( node.getType() == GNode.host ) {
 				host = (GHost) node;
-				canvas.addLink( host, collisionDomain );
-				GuiManager.getInstance().update();
-				reset();
-			} else {
-				if( host == null ) {
-					host = (GHost) node;
-					link = PPath.createLine(0, 0, 0, 0);
-					canvas.addLine( link );
-				}
-			}
-		} else if( node.getType() == GNode.domain ) {
-			if( host != null && collisionDomain == null ) {
+				createLink();
+			} else if( node.getType() == GNode.domain ) {
 				collisionDomain = (GCollisionDomain) node;
+				createLink();
+			}
+			
+			if( host != null && collisionDomain != null ) {
 				canvas.addLink( host, collisionDomain );
 				GuiManager.getInstance().update();
 				reset();
 			} else {
-				if( collisionDomain == null ) {
-					collisionDomain = (GCollisionDomain) node;
-					link = PPath.createLine(0, 0, 0, 0);
-					canvas.addLine( link );
-				}
+				update(event);
 			}
-		} else {
-			return;
+		} else if( event.getButton() == MouseEvent.BUTTON3 ) {
+			reset();
 		}
-		
-		update(event);
 	}
 	
+	@Override
+	public void keyPressed(PInputEvent event) {
+		System.out.println("key pressed");
+		if( event.getKeyCode() == KeyEvent.VK_DELETE ||
+			event.getKeyCode() == KeyEvent.VK_CANCEL ) {
+			reset();
+		}
+	}
+	
+	private void createLink() {
+		if( link == null ) {
+			link = PPath.createLine(0, 0, 0, 0);
+			canvas.addLine(link);
+		}
+	}
+
 	public void reset() {
 		host = null;
 		collisionDomain = null;
-		canvas.deleteLink(link);
+		link.removeFromParent();
 		link = null;
 	}
 	
@@ -77,16 +86,19 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	
 	private void update( PInputEvent e ) {
 		Point2D start = null;
+		Point2D end = e.getPosition();
+		
 		if( host != null ) {
 			start = host.getFullBoundsReference().getCenter2D();
+			if( e.getPickedNode() instanceof GNode && ((GNode) e.getPickedNode()).getType() == GNode.domain )
+				end = e.getPickedNode().getGlobalBounds().getCenter2D();
+			
 		} else if( collisionDomain != null ) {
 			start = collisionDomain.getFullBoundsReference().getCenter2D();
+			if( e.getPickedNode() instanceof GNode && ((GNode) e.getPickedNode()).getType() == GNode.host )
+				end = e.getPickedNode().getGlobalBounds().getCenter2D();
 		}
 		if( start != null ) {
-			Point2D end = e.getPosition();
-			if( e.getPickedNode() instanceof GNode ) {
-				end = e.getPickedNode().getGlobalBounds().getCenter2D();
-			}
 			link.reset();
 			link.moveTo((float)start.getX(), (float)start.getY());
 			link.lineTo((float)end.getX(), (float)end.getY());
