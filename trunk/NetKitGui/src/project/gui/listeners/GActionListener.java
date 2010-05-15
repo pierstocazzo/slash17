@@ -115,6 +115,21 @@ public class GActionListener implements ActionListener {
 				manager.getCanvas().saveImage();
 			break;
 		
+		case zoomIn:
+			if( manager.getCanvas() != null ) 
+				manager.getCanvas().zoomIn();
+			break;
+		
+		case zoomOut:
+			if( manager.getCanvas() != null ) 
+				manager.getCanvas().zoomOut();
+			break;
+			
+		case zoomOriginal:
+			if( manager.getCanvas() != null ) 
+				manager.getCanvas().zoomOriginal();
+			break;
+			
 		case exit:
 			manager.getFrame().closeApplication();
 			break;
@@ -191,6 +206,9 @@ public class GActionListener implements ActionListener {
 		showInfo,
 		showLicence,
 		exportImage,
+		zoomIn,
+		zoomOut,
+		zoomOriginal,
 		exit;
 	}
 }

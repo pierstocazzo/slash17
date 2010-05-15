@@ -2,6 +2,7 @@ package project.gui;
 
 import java.awt.Cursor;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -21,6 +22,7 @@ import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
 import project.gui.input.MouseWheelZoomEventHandler;
 import project.gui.labview.LabConfPanel;
+import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -47,6 +49,8 @@ public class GCanvas extends PCanvas {
 	LabConfPanel confPanel;
 
 	MouseWheelZoomEventHandler zoomEventHandler;
+	
+	double originalScale;
 	
 	public GCanvas( GFrame gFrame, AbstractProject project, LabConfPanel confPanel ) {
 		this.frame = gFrame;
@@ -78,8 +82,44 @@ public class GCanvas extends PCanvas {
 		addInputEventListener(new BoundsHandler());
 		
 		switchToDefaultHandler();
+		
+		originalScale = getCamera().getViewScale();
 	}
+	
+	public void zoomIn() {
+		zoom( 1.2 );
+	}
+	
+	public void zoomOut() {
+		zoom( 0.8 );
+	}
+	
+	public void zoomOriginal() {
+		double delta = originalScale / getCamera().getViewScale();
+		zoom(delta);
+	}
+	
+	private void zoom( double delta ) {
+		PCamera camera = getCamera();
+		
+		double currentScale = camera.getViewScale();
+		double newScale = currentScale * delta;
+		
+		double minScale = zoomEventHandler.getMinScale();
+		double maxScale = zoomEventHandler.getMaxScale();
 
+		if ( newScale < minScale ) {
+			delta = minScale / currentScale;
+		}
+		if ( (maxScale > 0) && (newScale > maxScale) ) {
+			delta = maxScale / currentScale;
+		}
+		Point p = new Point( getBounds().width / 2, getBounds().height / 2 );
+		camera.scaleViewAboutPoint(delta, p.x, p.y);
+		
+		System.out.println(camera.getViewScale());
+	}
+	
 	public void saveImage() {
 		int width = getWidth();
 		int height = getHeight();

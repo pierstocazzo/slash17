@@ -46,6 +46,11 @@ public class GFrame extends JFrame {
 				addLinkItem, addPcItem, addServerItem, addNattedServerItem, 
 				addCollisionDomainItem, addAreaItem, addTapItem;
 		
+	/** view menu */
+	JMenu viewMenu;
+	/** view menu items */
+	JMenuItem zoomInItem, zoomOutItem, zoomOriginalItem;
+	
 	/** help menu */
 	JMenu helpMenu;
 	/** help menu item */
@@ -54,7 +59,7 @@ public class GFrame extends JFrame {
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
 	/** horizontal tool bar's button */
-	JButton newFile, open, save, start, stop, export;
+	JButton newFile, open, save, start, stop, export, zoomIn, zoomOut, zoomOriginal;
 	
 	/** vertical tool bar */
 	JToolBar verticalToolbar;
@@ -171,12 +176,22 @@ public class GFrame extends JFrame {
 		labMenu.addSeparator();
 		labMenu.add(addLinkItem);
 		menuBar.add(labMenu);
+		// creating view menu
+		viewMenu = new JMenu("View");
+		viewMenu.setMnemonic(KeyEvent.VK_V);
+		zoomInItem = new GMenuItem("Zoom In", new ImageIcon("data/images/16x16/zoom_in.png"));
+		zoomOutItem = new GMenuItem("Zoom out", new ImageIcon("data/images/16x16/zoom_out.png"));
+		zoomOriginalItem = new GMenuItem("Zoom original", new ImageIcon("data/images/16x16/zoom_original.png"));
+		viewMenu.add(zoomInItem);
+		viewMenu.add(zoomOutItem);
+		viewMenu.add(zoomOriginalItem);
+		menuBar.add(viewMenu);
 		// creating help menu
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_H);
-		aboutItem = new GMenuItem("About", new ImageIcon("data/images/16x16/info_icon.png"));
+		aboutItem = new GMenuItem("About", new ImageIcon("data/images/16x16/about_icon.png"));
 		aboutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_DOWN_MASK));
-		licenceItem = new GMenuItem("Licence", new ImageIcon("data/images/16x16/info_icon.png"));
+		licenceItem = new GMenuItem("Licence", new ImageIcon("data/images/16x16/license_icon.png"));
 		helpMenu.add(aboutItem);
 		helpMenu.add(licenceItem);
 		menuBar.add(helpMenu);
@@ -232,15 +247,23 @@ public class GFrame extends JFrame {
 		start = new GButton("Start", "Start the lab", "data/images/16x16/start_icon.png", GButton.standard);
 		stop = new GButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png", GButton.standard);
 		export = new GButton("Export", "Export", "data/images/16x16/export_icon.png", GButton.standard);
+		zoomIn = new GButton("", "Zoom in", "data/images/16x16/zoom_in.png", GButton.standard);
+		zoomOut = new GButton("", "Zoom out", "data/images/16x16/zoom_out.png", GButton.standard);
+		zoomOriginal = new GButton("", "Default zoom", "data/images/16x16/zoom_original.png", GButton.standard);
+		
 		
 		horizontalToolbar.add( newFile );
 		horizontalToolbar.add( open );
 		horizontalToolbar.add( save );
+		horizontalToolbar.add( export );
 		horizontalToolbar.addSeparator();
 		horizontalToolbar.add( start );
 		horizontalToolbar.add( stop );
 		horizontalToolbar.addSeparator();
-		horizontalToolbar.add( export );
+		horizontalToolbar.add( zoomIn );
+		horizontalToolbar.add( zoomOut );
+		horizontalToolbar.add( zoomOriginal );
+		
 		 
 		add( horizontalToolbar, BorderLayout.NORTH );
 	}
@@ -293,6 +316,10 @@ public class GFrame extends JFrame {
 		aboutItem.addActionListener( new GActionListener(ActionType.showInfo) );
 		licenceItem.addActionListener( new GActionListener(ActionType.showLicence) );
 		
+		zoomInItem.addActionListener( new GActionListener(ActionType.zoomIn) );
+		zoomOutItem.addActionListener( new GActionListener(ActionType.zoomOut) );
+		zoomOriginalItem.addActionListener( new GActionListener(ActionType.zoomOriginal) );
+		
 		startLabItem.addActionListener( new GActionListener(ActionType.startLab) );
 		stopLabItem.addActionListener( new GActionListener(ActionType.stopLab) );
 		addPcItem.addActionListener( new GActionListener(ActionType.addPc) );
@@ -327,6 +354,10 @@ public class GFrame extends JFrame {
 		
 		start.addActionListener( new GActionListener(ActionType.startLab) );
 		stop.addActionListener( new GActionListener(ActionType.stopLab) );
+		
+		zoomIn.addActionListener( new GActionListener(ActionType.zoomIn) );
+		zoomOut.addActionListener( new GActionListener(ActionType.zoomOut) );
+		zoomOriginal.addActionListener( new GActionListener(ActionType.zoomOriginal) );
 	}
 	
 	public void closeApplication() {
