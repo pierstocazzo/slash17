@@ -7,7 +7,6 @@ import project.gui.GCollisionDomain;
 import project.gui.GHost;
 import project.gui.GNode;
 import project.gui.GuiManager;
-import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -26,12 +25,12 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	}
 	
 	@Override
-	public void mousePressed( PInputEvent event ) {
+	public void mouseClicked( PInputEvent event ) {
 		super.mousePressed(event);
 		
-		PNode node = event.getPickedNode();
+		GNode node = (GNode) event.getPickedNode();
 		
-		if( node instanceof GHost ) {
+		if( node.getType() == GNode.host ) {
 			if( collisionDomain != null && host == null ) {
 				host = (GHost) node;
 				canvas.addLink( host, collisionDomain );
@@ -44,7 +43,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 					canvas.addLine( link );
 				}
 			}
-		} else if( node instanceof GCollisionDomain ) {
+		} else if( node.getType() == GNode.domain ) {
 			if( host != null && collisionDomain == null ) {
 				collisionDomain = (GCollisionDomain) node;
 				canvas.addLink( host, collisionDomain );
@@ -85,6 +84,9 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 		}
 		if( start != null ) {
 			Point2D end = e.getPosition();
+			if( e.getPickedNode() instanceof GNode ) {
+				end = e.getPickedNode().getGlobalBounds().getCenter2D();
+			}
 			link.reset();
 			link.moveTo((float)start.getX(), (float)start.getY());
 			link.lineTo((float)end.getX(), (float)end.getY());
@@ -95,15 +97,19 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	public void mouseEntered(PInputEvent event) {
 		super.mouseEntered(event);
 		
-		GNode node = (GNode) event.getPickedNode();
-		node.setSelected(true);
+		if( event.getPickedNode() instanceof GNode ) {
+			GNode node = (GNode) event.getPickedNode();
+			node.setSelected(true);
+		}
 	}
 	
 	@Override
 	public void mouseExited(PInputEvent event) {
 		super.mouseExited(event);
 		
-		GNode node = (GNode) event.getPickedNode();
-		node.setSelected(false);
+		if( event.getPickedNode() instanceof GNode ) {
+			GNode node = (GNode) event.getPickedNode();
+			node.setSelected(false);
+		}
 	}
 }
