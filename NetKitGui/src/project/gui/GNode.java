@@ -53,7 +53,7 @@ public class GNode extends PNode {
 	}
 	
 	public void showMenu( PInputEvent e ) {
-		System.out.println("click destro su " + text.getText());
+		System.out.println("click destro");
 	}
 	
 	public int getType() {

@@ -1,7 +1,5 @@
 package project.gui.input;
 
-import java.awt.event.MouseEvent;
-
 import project.gui.GArea;
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -19,10 +17,6 @@ public class BoundsHandler extends PBasicInputEventHandler {
 			}
 			selectedNode = node;
 			selectedNode.select();
-				
-			if( e.getButton() == MouseEvent.BUTTON3 ) {
-				selectedNode.popUpMenu(e);
-			}
 		} else {
 			if( selectedNode != null ) {
 				selectedNode.unSelect();

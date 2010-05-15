@@ -3,6 +3,7 @@ package project.gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -91,6 +92,7 @@ public class GArea extends GNode {
 	@Override
 	public boolean setBounds(Rectangle2D newBounds) {
 		boolean result = super.setBounds(newBounds);
+		shape.setBounds(newBounds);
 		update();
 		return result;
 	}
@@ -103,8 +105,13 @@ public class GArea extends GNode {
 		PBoundsHandle.removeBoundsHandlesFrom(this);
 	}
 
-	public void popUpMenu( PInputEvent e ) {
+	public void showMenu( PInputEvent e ) {
 		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
+	}
+	
+	@Override
+	public void setPaint(Paint newPaint) {
+		shape.setPaint(newPaint);
 	}
 	
 	public void delete() {
