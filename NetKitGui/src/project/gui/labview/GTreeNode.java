@@ -14,13 +14,15 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	public static final int ROUTER = 2;
 	public static final int FOLDER = 3;
 	public static final int FILE = 4;
+	public static final int MAINFOLDER = 5;
 	
-	private static final Icon ifaceIcon = new ImageIcon("data/images/24x24/nic_icon.png");
-	private static final Icon folderIcon = new ImageIcon("data/images/24x24/folder_icon.png");
-	private static final Icon routerIcon = new ImageIcon("data/images/24x24/router_icon.png");
-	private static final Icon firewallIcon = new ImageIcon("data/images/24x24/firewall_icon.png");
-	private static final Icon fileIcon = new ImageIcon("data/images/24x24/file_icon.png");
-	
+	private static final Icon ifaceIcon = new ImageIcon("data/images/16x16/nic_icon.png");
+	private static final Icon folderIcon = new ImageIcon("data/images/16x16/folder_icon.png");
+	private static final Icon mainfolderIcon = new ImageIcon("data/images/16x16/mainfolder_icon.png");
+	private static final Icon routerIcon = new ImageIcon("data/images/16x16/router_icon.png");
+	private static final Icon firewallIcon = new ImageIcon("data/images/16x16/firewall_icon.png");
+	private static final Icon fileIcon = new ImageIcon("data/images/16x16/conffile_icon.png");
+
 	private int type;
 	
 	private AbstractHost host;
@@ -62,6 +64,9 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 		case 4: 
 			icon = fileIcon;
+			break;
+		case 5:
+			icon = mainfolderIcon;
 			break;
 		default:
 			break;

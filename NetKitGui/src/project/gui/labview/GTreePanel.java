@@ -77,7 +77,7 @@ public class GTreePanel extends JPanel {
 		
 		add( northPanel, BorderLayout.NORTH );
         
-        rootNode = new GTreeNode(projectName, GTreeNode.FOLDER);
+        rootNode = new GTreeNode(projectName, GTreeNode.MAINFOLDER);
         treeModel = new DefaultTreeModel(rootNode);
         
         tree = new JTree(treeModel);
