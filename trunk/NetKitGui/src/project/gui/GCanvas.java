@@ -76,9 +76,6 @@ public class GCanvas extends PCanvas {
 		/* use the right mouse button for the pan event handler, instead of the left button */
 		getPanEventHandler().setEventFilter(new PInputEventFilter(InputEvent.BUTTON3_MASK));
 		
-		/* add the bounds handler for areas creation */
-//		addInputEventListener(new BoundsHandler());
-		
 		switchToDefaultHandler();
 		
 		originalScale = getCamera().getViewScale();
@@ -114,8 +111,6 @@ public class GCanvas extends PCanvas {
 		}
 		Point p = new Point( getBounds().width / 2, getBounds().height / 2 );
 		camera.scaleViewAboutPoint(delta, p.x, p.y);
-		
-		System.out.println(camera.getViewScale());
 	}
 	
 	public void export() {
