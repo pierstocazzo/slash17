@@ -12,9 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
@@ -27,21 +25,18 @@ import javax.swing.tree.TreeSelectionModel;
 
 import project.core.AbstractHost;
 
-public class InterfacesTree extends JPanel {
+public class GTree extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int INTERFACES = 0;
 	public static final int FIREWALLING = 1;
 	public static final int ROUTING = 2;
 	public static final int LABSTRUCTURE = 3;
-	JPopupMenu popup;
 	protected GTreeNode rootNode;
     protected DefaultTreeModel treeModel;
     protected JTree tree;
     
-    protected int type;
-
-    public InterfacesTree( String stringLabel, String projectName, int type ) {
+    public GTree( String stringLabel, String projectName ) {
         super(new BorderLayout());
         
 		JPanel northPanel = new JPanel(new BorderLayout());
@@ -77,7 +72,7 @@ public class InterfacesTree extends JPanel {
 		
 		add( northPanel, BorderLayout.NORTH );
         
-        rootNode = new GTreeNode(projectName, GTreeNode.MAINFOLDER);
+        rootNode = new GTreeNode(projectName, GTreeNode.MAINFOLDER, tree);
         treeModel = new DefaultTreeModel(rootNode);
         
         tree = new JTree(treeModel);
@@ -91,21 +86,6 @@ public class InterfacesTree extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(tree);
         add(scrollPane);
-        
-        //Create the popup menu.
-	    popup = new JPopupMenu();
-	    JMenuItem menuItem = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
-	    menuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TreePath selPath = tree.getSelectionPath();
-				if( selPath != null ) {
-					GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
-					new InterfaceDialog( node.getHost().getInterface( (String) node.getUserObject() ) );
-				}
-			}
-		});
-	    popup.add(menuItem);
     }
     
     public void selectHost( String hostName ) {
@@ -168,22 +148,14 @@ public class InterfacesTree extends JPanel {
         } 
     }
 
-    /** Add child to the currently selected node. */
+    /** Add child to the root node. */
     public GTreeNode addObject( Object child, int type ) {
-//    	GTreeNode parentNode = null;
-//        TreePath parentPath = tree.getSelectionPath();
-//
-//        if (parentPath == null) {
-//            parentNode = rootNode;
-//        } else {
-//            parentNode = (GTreeNode) (parentPath.getLastPathComponent());
-//        }
-
         return addObject( rootNode, child, type );
     }
 
+    /** Add a child to the given node */
     public GTreeNode addObject( GTreeNode parent,  Object child, int type ) {
-    	GTreeNode childNode = new GTreeNode(child, type);
+    	GTreeNode childNode = new GTreeNode(child, type, tree);
 	
         //It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
         treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
@@ -220,19 +192,11 @@ public class InterfacesTree extends JPanel {
 
 			GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
 
-			if( node.getType() == GTreeNode.IFACE ) {
-				maybeShowPopup(e);
-				if( e.getClickCount() >= 2 ) {
-					new InterfaceDialog( node.getHost().getInterface( (String) node.getUserObject() ) );
-				}
-			} 
-		}
-
-		private void maybeShowPopup(MouseEvent e) {
-			if (e.isPopupTrigger()) {
-				popup.show(e.getComponent(),
-						e.getX(), e.getY());
-			}
+			if (e.isPopupTrigger())
+				node.showMenu(e);
+			
+			if( e.getClickCount() >= 2 )
+				node.showConfDialog();
 		}
     }
 
