@@ -31,6 +31,10 @@ public class GArea extends GNode {
 		
 		setShape(x, y);
 		
+		createPopupMenu();
+	}
+
+	private void createPopupMenu() {
 		menu = new JPopupMenu();
 		
 		JMenuItem setText = new JMenuItem("Set Name", new ImageIcon("data/images/16x16/text_icon.png"));
@@ -75,11 +79,13 @@ public class GArea extends GNode {
 	protected void setText() {
 		String name = JOptionPane.showInputDialog("Insert the name:");
 		if( name != null && !name.equals("") ) {
-			text = new PText(name);
+			if( text == null )
+				text = new PText();
+			text.setText(name);
 			text.setPickable(false);
 			text.setFont(new Font("SansSerif", Font.BOLD, 16));
 			addChild(text);
-			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
+			update();
 		}
 	}
 	

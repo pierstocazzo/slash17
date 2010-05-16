@@ -1,10 +1,18 @@
 package project.gui;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import project.common.ItemType;
 import project.core.AbstractHost;
 import edu.umd.cs.piccolo.PLayer;
+import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.nodes.PImage;
 
 public class GHost extends GNode {
@@ -47,7 +55,27 @@ public class GHost extends GNode {
 		
 		centerFullBoundsOnPoint(x, y);
 		
+		createPopupMenu();
+		
 		update();
+	}
+	
+	private void createPopupMenu() {
+		menu = new JPopupMenu();
+		
+		JMenuItem delete = new JMenuItem("Delete", new ImageIcon("data/images/16x16/delete_icon.png"));
+		delete.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete();
+			}
+		});
+		menu.add(delete);
+	}
+	
+	@Override
+	public void showMenu(PInputEvent e) {
+		super.showMenu(e);
+		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
 	}
 	
 	private void setImage( PImage newImage ) {
