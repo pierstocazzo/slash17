@@ -18,15 +18,15 @@ import project.core.AbstractProject;
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	InterfacesTree interfacesTab;
-	InterfacesTree routingTab;
-	InterfacesTree firewallingTab;
+	GTree interfacesTab;
+	GTree routingTab;
+	GTree firewallingTab;
 	
 	AbstractProject project;
 	
 	JTabbedPane tab;
 	
-	InterfacesTree labStructure;
+	GTree labStructure;
 	
 	public LabConfPanel() {
 		super(new GridLayout(1,0));
@@ -41,15 +41,15 @@ public class LabConfPanel extends JPanel {
 		else
 			projName = project.getName();
 		
-		interfacesTab = new InterfacesTree("Hosts interfaces", projName, InterfacesTree.INTERFACES);
-		routingTab = new InterfacesTree("Hosts routing tables", projName, InterfacesTree.ROUTING);
-		firewallingTab = new InterfacesTree("Firewalls", projName, InterfacesTree.FIREWALLING);
+		interfacesTab = new GTree("Hosts interfaces", projName);
+		routingTab = new GTree("Hosts routing tables", projName);
+		firewallingTab = new GTree("Firewalls", projName);
 	
 		tab.addTab("Interfaces", interfacesTab);
 		tab.addTab("Routing", routingTab);
 		tab.addTab("Firewalling", firewallingTab);
 		
-		labStructure = new InterfacesTree("Lab structure", projName, InterfacesTree.LABSTRUCTURE);
+		labStructure = new GTree("Lab structure", projName);
 		labStructure.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		
 		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, labStructure);
