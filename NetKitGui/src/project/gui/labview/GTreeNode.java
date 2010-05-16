@@ -59,17 +59,23 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		
 		switch (type) {
 		case IFACE:
-			JMenuItem menuItem = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
-		    menuItem.addActionListener(new ActionListener() {
+			JMenuItem set = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
+		    set.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new InterfaceDialog( host.getInterface( (String) getUserObject() ) );
 				}
 			});
-		    menu.add(menuItem);
+		    menu.add(set);
 		    break;
 		    
 		case FILE:
-			//TODO popup menu file
+			JMenuItem view = new JMenuItem("View file", new ImageIcon("data/images/16x16/viewfile_icon.png"));
+		    view.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new FileDialog(host);
+				}
+			});
+		    menu.add(view);
 			break;
 			
 		case RULE:
