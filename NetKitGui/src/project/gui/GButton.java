@@ -14,6 +14,8 @@ public class GButton extends JButton {
 	public static final int standard = 0;
 	public static final int toolbar = 1;
 	
+	private boolean selected = false;
+	
 	public GButton( String text, String toolTip, String icon ) {
 		this( text, toolTip, icon, toolbar );
 	}
@@ -21,9 +23,8 @@ public class GButton extends JButton {
 	public GButton( String text, String toolTip, String icon, int type ) {
 		super( text, new ImageIcon(icon) );
 		setToolTipText( toolTip );
-		setIconTextGap(0);
 		
-		setFont( new Font("SansSerif", Font.PLAIN, 10));
+		setFont( new Font("", Font.PLAIN, 10));
 		
 		if( type == toolbar ) {
 			setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -31,10 +32,25 @@ public class GButton extends JButton {
 			setPreferredSize(new Dimension(50, 50));
 		} else {
 			setVerticalTextPosition(SwingConstants.CENTER);
+			
+			setFont( new Font("", Font.PLAIN, 11));
+
 			setIconTextGap(5);
 		}
 		
 		setAlignmentX(JToolBar.CENTER_ALIGNMENT);
 		setAlignmentY(JToolBar.CENTER_ALIGNMENT);
+	}
+	
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean b) {
+		selected = b;
+	}
+	
+	public void toggleSelected() {
+		selected = !selected;
 	}
 }

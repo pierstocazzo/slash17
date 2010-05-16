@@ -33,7 +33,7 @@ public class GArea extends GNode {
 		
 		menu = new JPopupMenu();
 		
-		JMenuItem setText = new JMenuItem("Set Name");
+		JMenuItem setText = new JMenuItem("Set Name", new ImageIcon("data/images/16x16/text_icon.png"));
 		setText.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setText();
@@ -97,12 +97,21 @@ public class GArea extends GNode {
 		return result;
 	}
 	
-	public void select() {
-		PBoundsHandle.addBoundsHandlesTo(this);
+	public void setSelected( boolean selected ) {
+		super.setSelected(selected);
+		if( selected )
+			PBoundsHandle.addBoundsHandlesTo(this);
+		else 
+			PBoundsHandle.removeBoundsHandlesFrom(this);
 	}
 	
-	public void unSelect() {
-		PBoundsHandle.removeBoundsHandlesFrom(this);
+	public void setMouseOver( boolean mouseOver ) {
+		if( !selected ) {
+			if( mouseOver )
+				setTransparency(0.8f);
+			else 
+				setTransparency(1);
+		}
 	}
 
 	public void showMenu( PInputEvent e ) {

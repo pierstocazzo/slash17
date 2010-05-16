@@ -1,5 +1,7 @@
 package project.gui.input;
 
+import java.awt.event.MouseEvent;
+
 import project.common.ItemType;
 import project.gui.GCanvas;
 import project.gui.GuiManager;
@@ -12,16 +14,24 @@ public class AddNodeInputHandler extends PBasicInputEventHandler {
 	GCanvas canvas;
 	ItemType nodeType;
 	
+	public ItemType getNodeType() {
+		return nodeType;
+	}
+
 	public AddNodeInputHandler( GCanvas canvas, ItemType nodeType ) {
 		this.canvas = canvas;
 		this.nodeType = nodeType;
 	}
 	
 	@Override
-	public void mousePressed( PInputEvent event ) {
+	public void mouseClicked( PInputEvent event ) {
 		super.mousePressed(event);
 		
-		canvas.addNode( nodeType, event.getPosition() );
-		GuiManager.getInstance().update();
+		if( event.getButton() == MouseEvent.BUTTON1 ) {
+			canvas.addNode( nodeType, event.getPosition() );
+			GuiManager.getInstance().update();
+		} else {
+			canvas.switchToDefaultHandler();
+		}
 	}
 }

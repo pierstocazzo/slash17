@@ -75,4 +75,12 @@ public class GNode extends PNode {
 	public void setSelected( boolean selected ) {
 		this.selected = selected;
 	}
+	
+	public void setMouseOver( boolean mouseOver ) {
+		
+	}
+	
+	public void setConnecting( boolean connecting ) {
+		
+	}
 }

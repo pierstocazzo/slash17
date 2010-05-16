@@ -10,10 +10,12 @@ import edu.umd.cs.piccolo.nodes.PImage;
 public class GHost extends GNode {
 	private static final long serialVersionUID = 1L;
 
-	protected String imagePath;
-	protected String selectedImagePath;
+	protected PImage defaultImage;
+	protected PImage selectedImage;
+	protected PImage mouseOverImage;
+	protected PImage connectImage;
 	
-	protected PImage image;
+	protected PImage currentImage;
 	
 	protected ArrayList<GLink> links;
 	
@@ -23,13 +25,23 @@ public class GHost extends GNode {
 		super( GNode.host, layer );
 		
 		this.links = new ArrayList<GLink>();
-		this.imagePath = imagePath;
 		this.absHost = host;
 		
+		/* get the images needed */
 		int index = imagePath.lastIndexOf(".");
-		selectedImagePath = imagePath.substring( 0, index ) + "_selected" + imagePath.substring( index );
+		String extension = imagePath.substring( index );
+		String imageName = imagePath.substring( 0, index );
 		
-		setImage( imagePath );
+		String selectedImagePath = imageName + "_selected" + extension;
+		String mouseOverImagePath = imageName + "_mouseover" + extension;
+		String connectImagePath = imageName + "_connecting" + extension;
+		
+		defaultImage = new PImage(imagePath);
+		selectedImage = new PImage(selectedImagePath);
+		mouseOverImage = new PImage(mouseOverImagePath);
+		connectImage = new PImage(connectImagePath);
+		
+		setImage( defaultImage );
 		
 		setText(host.getName());
 		
@@ -38,24 +50,39 @@ public class GHost extends GNode {
 		update();
 	}
 	
-	private void setImage( String newImage ) {
-		if( image != null ) {
-			removeChild(image);
+	private void setImage( PImage newImage ) {
+		if( currentImage != null ) {
+			removeChild(currentImage);
 		}
-		image = new PImage(newImage);
-		addChild(image);
-		setBounds(image.getBounds());
-		image.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
-		image.setPickable(false);
+		currentImage = newImage;
+		addChild(currentImage);
+		setBounds(currentImage.getBounds());
+		currentImage.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
+		currentImage.setPickable(false);
 	}
 	
 	public void setSelected( boolean selected ) {
 		super.setSelected(selected);
-		if( selected ) {
-			setImage( selectedImagePath );
-		} else {
-			setImage( imagePath );
+		if( selected )
+			setImage(selectedImage);
+		else 
+			setImage(defaultImage);
+	}
+	
+	public void setMouseOver( boolean mouseOver ) {
+		if( !selected ) {
+			if( mouseOver ) 
+				setImage(mouseOverImage);
+			else 
+				setImage(defaultImage);
 		}
+	}
+	
+	public void setConnecting( boolean connecting ) {
+		if( connecting ) 
+			setImage(connectImage);
+		else 
+			setImage(defaultImage);
 	}
 
 	public void update() {
@@ -72,10 +99,6 @@ public class GHost extends GNode {
 	
 	public ArrayList<GLink> getLinks() {
 		return links;
-	}
-
-	public String getImagePath() {
-		return imagePath;
 	}
 
 	public ItemType getHostType() {
