@@ -7,11 +7,12 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import project.core.AbstractHost;
+import project.gui.GuiManager;
 
 public class GTreeNode extends DefaultMutableTreeNode {
 	private static final long serialVersionUID = -2967012607835738947L;
@@ -21,13 +22,16 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	public static final int ROUTE = 2;
 	public static final int FOLDER = 3;
 	public static final int FILE = 4;
-	public static final int MAINFOLDER = 5;
+	public static final int PROJECTFOLDER = 5;
+	public static final int ROUTER = 6;
+	public static final int FIREWALL = 7;
+	public static final int CHAIN = 8;
 	
 	private static final Icon ifaceIcon = new ImageIcon("data/images/16x16/nic_icon.png");
 	private static final Icon folderIcon = new ImageIcon("data/images/16x16/folder_icon.png");
 	private static final Icon mainfolderIcon = new ImageIcon("data/images/16x16/mainfolder_icon.png");
-	private static final Icon routerIcon = new ImageIcon("data/images/16x16/router_icon.png");
-	private static final Icon firewallIcon = new ImageIcon("data/images/16x16/firewall_icon.png");
+	private static final Icon routeIcon = new ImageIcon("data/images/16x16/route_icon.png");
+	private static final Icon ruleIcon = new ImageIcon("data/images/16x16/rule_icon.png");
 	private static final Icon fileIcon = new ImageIcon("data/images/16x16/conffile_icon.png");
 
 	int type;
@@ -36,17 +40,17 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	
 	JPopupMenu menu;
 	
-	JTree tree;
+	GTree tree;
 	
-	public GTreeNode( int type, JTree tree ) {
+	public GTreeNode( int type, GTree tree ) {
 		this(null, type, tree);
 	}
 	
-	public GTreeNode( Object obj, int type, JTree tree ) {
+	public GTreeNode( Object obj, int type, GTree tree ) {
 		this(obj, true, type, tree);
 	}
 	
-	public GTreeNode( Object obj, boolean allowsChildren, int type, JTree tree ) {
+	public GTreeNode( Object obj, boolean allowsChildren, int type, GTree tree ) {
 		super(obj, allowsChildren);
 		this.type = type;
 		this.tree = tree;
@@ -79,13 +83,93 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case RULE:
-			//TODO popup menu rule
+			JMenuItem editRule = new JMenuItem("Set rule", new ImageIcon("data/images/16x16/configure_icon.png"));
+			editRule.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+			menu.add(editRule);
+			JMenuItem removeRule = new JMenuItem("Remove rule", new ImageIcon("data/images/16x16/remove_icon.png"));
+			removeRule.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					tree.removeCurrentNode();
+				}
+			});
+			menu.add(removeRule);
 			break;
 			
 		case ROUTE:
-			//TODO popup menu route
+			JMenuItem editRoute = new JMenuItem("Set route", new ImageIcon("data/images/16x16/configure_icon.png"));
+			editRoute.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+				}
+			});
+			menu.add(editRoute);
+			JMenuItem removeRoute = new JMenuItem("Remove route", new ImageIcon("data/images/16x16/remove_icon.png"));
+			removeRoute.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					tree.removeCurrentNode();
+				}
+			});
+			menu.add(removeRoute);
+			break;
+			
+		case ROUTER:
+			JMenuItem addRoute = new JMenuItem("Add route", new ImageIcon("data/images/16x16/add_icon.png"));
+			addRoute.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					addRoute();
+				}
+			});
+		    menu.add(addRoute);
+			break;
+			
+		case FIREWALL:
+			JMenuItem addChain = new JMenuItem("Add Chain", new ImageIcon("data/images/16x16/add_icon.png"));
+			addChain.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					addChain();
+				}
+			});
+			menu.add(addChain);
+			
+			break;
+			
+		case CHAIN:
+			JMenuItem addRule = new JMenuItem("Add rule", new ImageIcon("data/images/16x16/add_icon.png"));
+			addRule.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					addRule();
+				}
+			});
+			menu.add(addRule);
+			JMenuItem setPolicy = new JMenuItem("Set default policy", new ImageIcon("data/images/16x16/configure_icon.png"));
+			setPolicy.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
+			menu.add(setPolicy);
 			break;
 		}
+	}
+	
+	private void addRoute() {
+		tree.addObject(this, "route", ROUTE, host);
+		tree.repaint();
+	}
+	
+	private void addChain() {
+		String name = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Chain name");
+		tree.addObject(this, name, CHAIN, host);
+		tree.repaint();
+	}
+	
+	private void addRule() {
+		tree.addObject(this, "rule", RULE, host);
+		tree.repaint();
 	}
 
 	public void setHost( AbstractHost host ) {
@@ -104,10 +188,10 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			icon = ifaceIcon;
 			break;
 		case RULE:
-			icon = firewallIcon;
+			icon = ruleIcon;
 			break;
 		case ROUTE:
-			icon = routerIcon;
+			icon = routeIcon;
 			break;
 		case FOLDER: 
 			icon = folderIcon;
@@ -115,8 +199,17 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		case FILE: 
 			icon = fileIcon;
 			break;
-		case MAINFOLDER:
+		case PROJECTFOLDER:
 			icon = mainfolderIcon;
+			break;
+		case ROUTER: 
+			icon = folderIcon;
+			break;
+		case FIREWALL:
+			icon = folderIcon;
+			break;
+		case CHAIN:
+			icon = folderIcon;
 			break;
 		}
 		
