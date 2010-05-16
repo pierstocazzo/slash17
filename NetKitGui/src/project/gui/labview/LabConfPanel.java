@@ -14,6 +14,7 @@ import project.common.ItemType;
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
 import project.core.AbstractProject;
+import project.core.AbstractRoute;
 
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -83,10 +84,10 @@ public class LabConfPanel extends JPanel {
 			
 			// add a folder for each host in the routing tree
 			node = routingTree.addObject( host.getName(), GTreeNode.ROUTER, host );
-			// TODO add his routes to each host
-//			for( AbstractRoute route : host.getRoutes() ) {
-//				routingTree.addObject( node, route.getName(), GTreeNode.ROUTE, host );
-//			}
+			// add the routes
+			for( AbstractRoute route : host.getRoutes() ) {
+				routingTree.addObject( node, route.getNet(), GTreeNode.ROUTE, host );
+			}
 			
 			// add a folder for each host in the firewalling tree
 			if( host.getType() == ItemType.FIREWALL ) {

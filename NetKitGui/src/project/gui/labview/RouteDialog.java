@@ -1,6 +1,7 @@
 package project.gui.labview;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -32,17 +33,19 @@ public class RouteDialog extends JDialog {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
 		this.route = route;
 		host = route.getHost();
-		createDialog( null );
-	}	
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		showDialog(null);
+	}
 	
 	public RouteDialog( final AbstractRoute route, String message ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
 		this.route = route;
-		
-		createDialog( message );
-	}
+		host = route.getHost();
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		showDialog(message);
+	}	
 
-	private void createDialog( String message ) {
+	private void showDialog( String message ) {
 		setLayout(new BorderLayout());
 		
 		String net = route.getNet();
@@ -55,9 +58,9 @@ public class RouteDialog extends JDialog {
 		
 		final JLabel label;
 		if( message == null ) 
-			label = new JLabel("Add a routing table row to " + host );
+			label = new JLabel("Add a routing table row to " + host.getName() );
 		else 
-			label = new JLabel(message + "\nAdd a routing table row to " + host );
+			label = new JLabel(message + "\nAdd a routing table row to " + host.getName() );
 		
 		label.setFont( new Font("Serif", Font.BOLD, 14) );
 		label.setBorder( BorderFactory.createEmptyBorder(5, 5, 5, 5) );
@@ -131,7 +134,7 @@ public class RouteDialog extends JDialog {
 					route.setGw(gw);
 					dispose();
 				} else {
-					label.setText("Format incorrect. Correct example: 192.168.123.254");
+					label.setText("Format incorrect. Correct example: 10.0.0.0/8");
 					repaint();
 				}
 			}

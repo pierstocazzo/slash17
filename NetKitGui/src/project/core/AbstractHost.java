@@ -10,14 +10,25 @@ public interface AbstractHost {
 	
 	public void setName( String name );
 	
+	
 	public AbstractInterface addInterface( AbstractCollisionDomain cd );
 	
 	public AbstractInterface getInterface( String name );
 	
 	public ArrayList<AbstractInterface> getInterfaces();
-
+	
 	public boolean deleteInterface( AbstractInterface iface );
 	
+	
+	public AbstractRoute addRoute();
+	
+	public AbstractRoute getRoute( String net );
+	
+	public ArrayList<AbstractRoute> getRoutes();
+	
+	public void deleteRoute( AbstractRoute route );
+	
+
 	public boolean delete();
 
 	public ItemType getType();
