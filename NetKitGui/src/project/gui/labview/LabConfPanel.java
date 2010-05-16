@@ -3,7 +3,6 @@ package project.gui.labview;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.Collection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -18,9 +17,9 @@ import project.core.AbstractProject;
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	GTree interfacesTab;
-	GTree routingTab;
-	GTree firewallingTab;
+	GTree interfacesTree;
+	GTree routingTree;
+	GTree firewallingTree;
 	
 	AbstractProject project;
 	
@@ -41,13 +40,13 @@ public class LabConfPanel extends JPanel {
 		else
 			projName = project.getName();
 		
-		interfacesTab = new GTree("Hosts interfaces", projName);
-		routingTab = new GTree("Hosts routing tables", projName);
-		firewallingTab = new GTree("Firewalls", projName);
+		interfacesTree = new GTree("Hosts interfaces", projName);
+		routingTree = new GTree("Hosts routing tables", projName);
+		firewallingTree = new GTree("Firewalls", projName);
 	
-		tab.addTab("Interfaces", interfacesTab);
-		tab.addTab("Routing", routingTab);
-		tab.addTab("Firewalling", firewallingTab);
+		tab.addTab("Interfaces", interfacesTree);
+		tab.addTab("Routing", routingTree);
+		tab.addTab("Firewalling", firewallingTree);
 		
 		labStructure = new GTree("Lab structure", projName);
 		labStructure.setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -66,25 +65,37 @@ public class LabConfPanel extends JPanel {
 		if( project == null ) 
 			return;
 		
-		interfacesTab.clear();
-		routingTab.clear();
-		firewallingTab.clear();
+		interfacesTree.clear();
+		routingTree.clear();
+		firewallingTree.clear();
 		labStructure.clear();
 		
-		Collection<AbstractHost> hosts = project.getHosts();
+		labStructure.addObject( "lab.conf", GTreeNode.FILE, null );
 		
-		labStructure.addObject( "lab.conf", GTreeNode.FILE );
-		
-		for( AbstractHost host : hosts ) {
-			// add a folder for each host
-			GTreeNode node = interfacesTab.addObject( host.getName(), GTreeNode.FOLDER, host );
+		for( AbstractHost host : project.getHosts() ) {
+			// add a folder for each host in the interfaces tree
+			GTreeNode node = interfacesTree.addObject( host.getName(), GTreeNode.FOLDER, host );
 			// add his interfaces to each host
 			for( AbstractInterface iface : host.getInterfaces() ) {
-				interfacesTab.addObject( node, iface.getName() + " : " + iface.getCollisionDomain().getName(), GTreeNode.IFACE, host );
+				interfacesTree.addObject( node, iface.getName() + " : " + iface.getCollisionDomain().getName(), GTreeNode.IFACE, host );
 			}
 			
-			labStructure.addObject( host.getName(), GTreeNode.FOLDER );
-			labStructure.addObject( host.getName() + ".startup", GTreeNode.FILE );
+			// add a folder for each host in the routing tree
+			node = routingTree.addObject( host.getName(), GTreeNode.FOLDER, host );
+			// TODO add his routes to each host
+//			for( AbstractRoute route : host.getRoutes() ) {
+//				interfacesTree.addObject( node, route.getName(), GTreeNode.ROUTE, host );
+//			}
+			
+			// add a folder for each host in the firewalling tree
+			node = firewallingTree.addObject( host.getName(), GTreeNode.FOLDER, host );
+			// TODO add his fw rules to each host
+//			for( AbstractRule rule : host.getRules() ) {
+//				interfacesTree.addObject( node, rule.getName(), GTreeNode.RULE, host );
+//			}
+			
+			labStructure.addObject( host.getName(), GTreeNode.FOLDER, host );
+			labStructure.addObject( host.getName() + ".startup", GTreeNode.FILE, host );
 		}
 		
 		this.repaint();
@@ -92,14 +103,14 @@ public class LabConfPanel extends JPanel {
 
 	public void setProject( AbstractProject project ) {
 		this.project = project;
-		interfacesTab.setName(project.getName());
-		routingTab.setName(project.getName());
-		firewallingTab.setName(project.getName());
+		interfacesTree.setName(project.getName());
+		routingTree.setName(project.getName());
+		firewallingTree.setName(project.getName());
 		labStructure.setName(project.getName());
 	}
 	
 	public void selectHost( String hostName ) {
-		interfacesTab.selectHost(hostName);
+		interfacesTree.selectHost(hostName);
 	}
 }
 

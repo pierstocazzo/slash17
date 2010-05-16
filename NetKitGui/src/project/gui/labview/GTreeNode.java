@@ -128,7 +128,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		    break;
 		    
 		case FILE:
-			System.out.println("doppio click su un file");
+			new FileDialog(host);
 			break;
 			
 		case RULE:
