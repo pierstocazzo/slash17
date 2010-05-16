@@ -34,9 +34,9 @@ public class GCollisionDomain extends GNode {
 		this.links = new ArrayList<GLink>();
 		this.absCollisionDomain = collisionDomain;
 		
-		defaultImage = new PImage("data/images/images/collisionDomain.png");
-		selectedImage = new PImage("data/images/images/collisionDomain_selected.png");
-		mouseOverImage = new PImage("data/images/images/collisionDomain_mouseover.png");
+		defaultImage = new PImage("data/images/big/collisionDomain.png");
+		selectedImage = new PImage("data/images/big/collisionDomain_selected.png");
+		mouseOverImage = new PImage("data/images/big/collisionDomain_mouseover.png");
 		
 		setImage(defaultImage);
 		

@@ -37,7 +37,7 @@ public class GFrame extends JFrame {
 	/** file menu */
 	JMenu fileMenu;
 	/** file menu item */
-	GMenuItem newItem, openItem, saveItem, exportItem, exitItem;
+	GMenuItem newItem, openItem, saveItem, saveAsItem, exitItem;
 	
 	/** lab menu */
 	JMenu labMenu;
@@ -59,7 +59,7 @@ public class GFrame extends JFrame {
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
 	/** horizontal tool bar's button */
-	JButton newFile, open, save, start, stop, export, zoomIn, zoomOut, zoomOriginal;
+	JButton newFile, open, save, start, stop, saveAs, zoomIn, zoomOut, zoomOriginal;
 	
 	/** vertical tool bar */
 	JToolBar verticalToolbar;
@@ -106,7 +106,7 @@ public class GFrame extends JFrame {
 			try {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel"); 
 			} catch (Exception e) { 
-				System.err.println("Cannot set the Windows Look and Feel. Setting the default"); 
+				System.err.println("Cannot set the system Look and Feel. Setting the Java L&F"); 
 			}
 		} 
 		
@@ -136,13 +136,13 @@ public class GFrame extends JFrame {
 		openItem = new GMenuItem("Open", new ImageIcon("data/images/16x16/open_icon.png"));
 		saveItem = new GMenuItem("Save", new ImageIcon("data/images/16x16/save_icon.png"));
 		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-		exportItem = new GMenuItem("Export", new ImageIcon("data/images/16x16/export_icon.png"));
+		saveAsItem = new GMenuItem("Save As...", new ImageIcon("data/images/16x16/saveAs_icon.png"));
 		exitItem = new GMenuItem("Exit", new ImageIcon("data/images/16x16/exit_icon.png"));
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
 		fileMenu.add(newItem);
 		fileMenu.add(openItem);
 		fileMenu.add(saveItem);
-		fileMenu.add(exportItem);
+		fileMenu.add(saveAsItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 		menuBar.add(fileMenu);
@@ -199,6 +199,39 @@ public class GFrame extends JFrame {
 		setJMenuBar(menuBar);
 	}
 	
+	/** Create the standard toolbar and add it to the north side of the frame
+	 */
+	private void createToolBar() {
+		horizontalToolbar = new JToolBar();
+		horizontalToolbar.setFloatable(false);
+		horizontalToolbar.setPreferredSize(new Dimension(40, 40));
+		horizontalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
+		
+		newFile = new GButton("New", "Create a new Project", "data/images/16x16/new_icon.png", GButton.standard);
+		open = new GButton("Open", "Open a Project", "data/images/16x16/open_icon.png", GButton.standard);
+		save = new GButton("Save", "Save the Project", "data/images/16x16/save_icon.png", GButton.standard);
+		saveAs = new GButton("Save as...", "Save as..", "data/images/16x16/saveAs_icon.png", GButton.standard);
+		start = new GButton("Start", "Start the lab", "data/images/16x16/start_icon.png", GButton.standard);
+		stop = new GButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png", GButton.standard);
+		zoomIn = new GButton("", "Zoom in", "data/images/22x22/zoom_in.png", GButton.standard);
+		zoomOut = new GButton("", "Zoom out", "data/images/22x22/zoom_out.png", GButton.standard);
+		zoomOriginal = new GButton("", "Default zoom", "data/images/22x22/zoom_original.png", GButton.standard);
+		
+		horizontalToolbar.add( newFile );
+		horizontalToolbar.add( open );
+		horizontalToolbar.add( save );
+		horizontalToolbar.add( saveAs );
+		horizontalToolbar.addSeparator();
+		horizontalToolbar.add( start );
+		horizontalToolbar.add( stop );
+		horizontalToolbar.addSeparator();
+		horizontalToolbar.add( zoomIn );
+		horizontalToolbar.add( zoomOriginal );
+		horizontalToolbar.add( zoomOut );
+		 
+		add( horizontalToolbar, BorderLayout.NORTH );
+	}
+	
 	/** Create the vertical toolbar and add it to the west side of the frame
 	 */
 	private void createVericalToolBar() {
@@ -233,41 +266,6 @@ public class GFrame extends JFrame {
 		add( verticalToolbar, BorderLayout.WEST );
 	}
 
-	/** Create the standard toolbar and add it to the north side of the frame
-	 */
-	private void createToolBar() {
-		horizontalToolbar = new JToolBar();
-		horizontalToolbar.setFloatable(false);
-		horizontalToolbar.setPreferredSize(new Dimension(40, 40));
-		horizontalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray));
-		
-		newFile = new GButton("New", "Create a new Project", "data/images/16x16/new_icon.png", GButton.standard);
-		open = new GButton("Open", "Open a Project", "data/images/16x16/open_icon.png", GButton.standard);
-		save = new GButton("Save", "Save the Project", "data/images/16x16/save_icon.png", GButton.standard);
-		start = new GButton("Start", "Start the lab", "data/images/16x16/start_icon.png", GButton.standard);
-		stop = new GButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png", GButton.standard);
-		export = new GButton("Export", "Export", "data/images/16x16/export_icon.png", GButton.standard);
-		zoomIn = new GButton("", "Zoom in", "data/images/16x16/zoom_in.png", GButton.standard);
-		zoomOut = new GButton("", "Zoom out", "data/images/16x16/zoom_out.png", GButton.standard);
-		zoomOriginal = new GButton("", "Default zoom", "data/images/16x16/zoom_original.png", GButton.standard);
-		
-		
-		horizontalToolbar.add( newFile );
-		horizontalToolbar.add( open );
-		horizontalToolbar.add( save );
-		horizontalToolbar.add( export );
-		horizontalToolbar.addSeparator();
-		horizontalToolbar.add( start );
-		horizontalToolbar.add( stop );
-		horizontalToolbar.addSeparator();
-		horizontalToolbar.add( zoomIn );
-		horizontalToolbar.add( zoomOut );
-		horizontalToolbar.add( zoomOriginal );
-		
-		 
-		add( horizontalToolbar, BorderLayout.NORTH );
-	}
-	
 	/** Create the stateBar and add it to the south side of the frame
 	 */
 	private void createStateBar() {
@@ -339,7 +337,7 @@ public class GFrame extends JFrame {
 		newFile.addActionListener( new GActionListener(ActionType.newProject) );
 		open.addActionListener( new GActionListener(ActionType.openProject) );
 		save.addActionListener( new GActionListener(ActionType.saveProject) );
-		export.addActionListener( new  GActionListener(ActionType.exportImage) );
+		saveAs.addActionListener( new  GActionListener(ActionType.exportImage) );
 		
 		router.addActionListener( new GActionListener(ActionType.addRouter) );
 		firewall.addActionListener( new GActionListener(ActionType.addFirewall) );

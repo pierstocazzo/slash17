@@ -9,13 +9,13 @@ import edu.umd.cs.piccolo.PLayer;
 
 public class GFactory {
 
-	protected static final String serverImage = "data/images/images/server.png";
-	protected static final String nattedServerImage = "data/images/images/nattedserver.png";
-	protected static final String pcImage = "data/images/images/pc.png";
-	protected static final String routerImage = "data/images/images/router.png";
-	protected static final String firewallImage = "data/images/images/firewall.png";
-	protected static final String tapImage = "data/images/images/tap.png";
-	protected static final String collisionDomainImage = "data/images/images/collisionDomain.png";
+	protected static final String serverImage = "data/images/big/server.png";
+	protected static final String nattedServerImage = "data/images/big/nattedserver.png";
+	protected static final String pcImage = "data/images/big/pc.png";
+	protected static final String routerImage = "data/images/big/router.png";
+	protected static final String firewallImage = "data/images/big/firewall.png";
+	protected static final String tapImage = "data/images/big/tap.png";
+	protected static final String collisionDomainImage = "data/images/big/collisionDomain.png";
 	
 	protected static int serverCounter = 0;
 	protected static int nattedServerCounter = 0;
