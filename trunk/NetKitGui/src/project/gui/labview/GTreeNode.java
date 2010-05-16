@@ -12,6 +12,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import project.core.AbstractHost;
+import project.core.AbstractRoute;
 import project.gui.GuiManager;
 
 public class GTreeNode extends DefaultMutableTreeNode {
@@ -103,13 +104,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			JMenuItem editRoute = new JMenuItem("Set route", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					new RouteDialog( host.getRoute( (String) getUserObject() ));
 				}
 			});
 			menu.add(editRoute);
 			JMenuItem removeRoute = new JMenuItem("Remove route", new ImageIcon("data/images/16x16/remove_icon.png"));
 			removeRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					host.getRoute((String) getUserObject()).delete();
 					tree.removeCurrentNode();
 				}
 			});
@@ -157,7 +159,10 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	}
 	
 	private void addRoute() {
-		tree.addObject(this, "route", ROUTE, host);
+		AbstractRoute route = host.addRoute();
+		new RouteDialog(route);
+		if( route.getNet() != null && route.getGw() != null )
+			tree.addObject(this, route.getNet(), ROUTE, host);
 		tree.repaint();
 	}
 	
@@ -235,7 +240,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case ROUTE:
-			System.out.println("doppio click su una route");
+			new RouteDialog( host.getRoute((String) getUserObject()) );
 			break;
 		}
 	}

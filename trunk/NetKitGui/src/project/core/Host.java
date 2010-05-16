@@ -16,6 +16,10 @@ public class Host implements AbstractHost {
 	
 	/** host's network interfaces */
 	protected ArrayList<AbstractInterface> interfaces;
+	/** host's routes */
+	protected ArrayList<AbstractRoute> routes;
+	/** host's iptables chains */
+	protected ArrayList<AbstractChain> chains;
 
 	protected ItemType type;
 
@@ -29,7 +33,10 @@ public class Host implements AbstractHost {
 	Host(String name, ItemType type) {
 		this.name = name;
 		this.type = type;
-		this.interfaces = new ArrayList<AbstractInterface>();
+		
+		interfaces = new ArrayList<AbstractInterface>();
+		routes = new ArrayList<AbstractRoute>();
+		chains = new ArrayList<AbstractChain>();
 	}
 	
 	/**
@@ -65,6 +72,7 @@ public class Host implements AbstractHost {
 			interfaces.get(0).delete();
 		}
 		interfaces.clear();
+		routes.clear();
 		return true;
 	}
 
@@ -105,5 +113,31 @@ public class Host implements AbstractHost {
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public AbstractRoute getRoute(String net) {
+		for( AbstractRoute route : routes ) {
+			if( route.getNet().equals(net) ) 
+				return route;
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<AbstractRoute> getRoutes() {
+		return routes;
+	}
+
+	@Override
+	public AbstractRoute addRoute() {
+		AbstractRoute route = new Route(this);
+		routes.add(route);
+		return route;
+	}
+
+	@Override
+	public void deleteRoute(AbstractRoute route) {
+		routes.remove(route);
 	}
 }
