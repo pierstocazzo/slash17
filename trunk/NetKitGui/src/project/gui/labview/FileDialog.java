@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
+import project.core.AbstractRoute;
 import project.gui.GuiManager;
 
 public class FileDialog extends JDialog {
@@ -58,6 +59,15 @@ public class FileDialog extends JDialog {
 								mask + " broadcast " + bcast + " up\n";
 			} else {
 				text += "ifconfig " + ifaceName + " up # not configured \n";
+			}
+		}
+		text += "\n";
+		
+		for( AbstractRoute route : host.getRoutes() ) {
+			String net = route.getNet();
+			String gw = route.getGw();
+			if( net != null && gw != null ) {
+				text += "route add -net " + net + " gw " + gw + "\n";
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
 import project.core.AbstractProject;
+import project.core.AbstractRoute;
 
 public class ProjectHandler {
 
@@ -100,6 +101,14 @@ public class ProjectHandler {
 					}
 				}
 				labConfcontent += "\n";
+				
+				for( AbstractRoute route : host.getRoutes() ) {
+					String net = route.getNet();
+					String gw = route.getGw();
+					if( net != null && gw != null ) {
+						startupContent += "route add -net " + net + " gw " + gw + "\n";
+					}
+				}
 				
 				
 				createFile( hostName + ".startup", projDir, startupContent );
