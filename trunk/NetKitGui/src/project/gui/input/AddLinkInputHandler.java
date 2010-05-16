@@ -27,7 +27,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	}
 	
 	@Override
-	public void mouseClicked( PInputEvent event ) {
+	public void mousePressed( PInputEvent event ) {
 		super.mousePressed(event);
 		
 		if( event.getButton() == MouseEvent.BUTTON1 ) {
@@ -53,7 +53,14 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 			}
 		} else if( event.getButton() == MouseEvent.BUTTON3 ) {
 			reset();
+			canvas.switchToDefaultHandler();
 		}
+	}
+	
+	@Override
+	public void mouseDragged(PInputEvent event) {
+		super.mouseDragged(event);
+		update(event);
 	}
 	
 	@Override
@@ -62,6 +69,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 		if( event.getKeyCode() == KeyEvent.VK_DELETE ||
 			event.getKeyCode() == KeyEvent.VK_CANCEL ) {
 			reset();
+			canvas.switchToDefaultHandler();
 		}
 	}
 	
@@ -75,7 +83,8 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	public void reset() {
 		host = null;
 		collisionDomain = null;
-		link.removeFromParent();
+		if( link != null )
+			link.removeFromParent();
 		link = null;
 	}
 	
@@ -111,7 +120,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 		
 		if( event.getPickedNode() instanceof GNode ) {
 			GNode node = (GNode) event.getPickedNode();
-			node.setSelected(true);
+			node.setConnecting(true);
 		}
 	}
 	
@@ -121,7 +130,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 		
 		if( event.getPickedNode() instanceof GNode ) {
 			GNode node = (GNode) event.getPickedNode();
-			node.setSelected(false);
+			node.setConnecting(false);
 		}
 	}
 }

@@ -37,7 +37,7 @@ public class GFrame extends JFrame {
 	/** file menu */
 	JMenu fileMenu;
 	/** file menu item */
-	JMenuItem newItem, openItem, saveItem, exportItem, exitItem;
+	GMenuItem newItem, openItem, saveItem, exportItem, exitItem;
 	
 	/** lab menu */
 	JMenu labMenu;
@@ -49,12 +49,12 @@ public class GFrame extends JFrame {
 	/** view menu */
 	JMenu viewMenu;
 	/** view menu items */
-	JMenuItem zoomInItem, zoomOutItem, zoomOriginalItem;
+	GMenuItem zoomInItem, zoomOutItem, zoomOriginalItem;
 	
 	/** help menu */
 	JMenu helpMenu;
 	/** help menu item */
-	JMenuItem aboutItem, licenceItem;
+	GMenuItem aboutItem, licenceItem;
 	
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
@@ -207,16 +207,16 @@ public class GFrame extends JFrame {
 		verticalToolbar.setFloatable(false);
 		verticalToolbar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.lightGray));
 		
-		router = new GButton("Router", "Add a router", "data/images/24x24/router_icon.png");
-		server = new GButton("Server", "Add a server", "data/images/24x24/server_icon.png");
-		firewall = new GButton("Firewall", "Add a firewall", "data/images/24x24/firewall_icon.png");
-		nattedServer = new GButton("NatServer", "Add a natted server", "data/images/24x24/nattedserver_icon.png");
-		pc = new GButton("PC", "Add a pc", "data/images/24x24/pc_icon.png");
-		collisionDomain = new GButton("Domain", "Add a collision domain", "data/images/24x24/collisionDomain_icon.png");
-		area = new GButton("Area", "Create a Network Area", "data/images/24x24/area_icon.png");
-		tap = new GButton("Tap", "Add TAP interface", "data/images/24x24/tap_icon.png");
-		link = new GButton("Link", "Add a link", "data/images/24x24/link_icon.png");
-		delete = new GButton("Delete", "Delete a node", "data/images/24x24/delete_icon.png");
+		router = new GButton("Router", "Add a router", "data/images/22x22/router_icon.png");
+		server = new GButton("Server", "Add a server", "data/images/22x22/server_icon.png");
+		firewall = new GButton("Firewall", "Add a firewall", "data/images/22x22/firewall_icon.png");
+		nattedServer = new GButton("NatServer", "Add a natted server", "data/images/22x22/nattedserver_icon.png");
+		pc = new GButton("PC", "Add a pc", "data/images/22x22/pc_icon.png");
+		collisionDomain = new GButton("Domain", "Add a collision domain", "data/images/22x22/collisionDomain_icon.png");
+		area = new GButton("Area", "Create a Network Area", "data/images/22x22/area_icon.png");
+		tap = new GButton("Tap", "Add TAP interface", "data/images/22x22/tap_icon.png");
+		link = new GButton("Link", "Add a link", "data/images/22x22/link_icon.png");
+		delete = new GButton("Delete", "Delete a node", "data/images/22x22/delete_icon.png");
 		
 		verticalToolbar.add( pc );
 		verticalToolbar.add( server );

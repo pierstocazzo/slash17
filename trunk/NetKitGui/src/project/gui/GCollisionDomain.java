@@ -10,10 +10,11 @@ public class GCollisionDomain extends GNode {
 
 	private static final long serialVersionUID = 1L;
 
-	protected static String imagePath = "data/images/images/collisionDomain.png";
-	protected static String selectedImagePath = "data/images/images/collisionDomain_selected.png";
+	protected PImage defaultImage;
+	protected PImage selectedImage;
+	protected PImage mouseOverImage;
 	
-	PImage image;
+	protected PImage currentImage;
 	
 	protected ArrayList<GLink> links;
 	
@@ -25,7 +26,11 @@ public class GCollisionDomain extends GNode {
 		this.links = new ArrayList<GLink>();
 		this.absCollisionDomain = collisionDomain;
 		
-		setSelected(false);
+		defaultImage = new PImage("data/images/images/collisionDomain.png");
+		selectedImage = new PImage("data/images/images/collisionDomain_selected.png");
+		mouseOverImage = new PImage("data/images/images/collisionDomain_mouseover.png");
+		
+		setImage(defaultImage);
 		
 		setText(absCollisionDomain.getName());
 		
@@ -34,22 +39,32 @@ public class GCollisionDomain extends GNode {
 		update();
 	}
 	
-	private void setImage( String newImage ) {
-		if( image != null ) {
-			removeChild(image);
+	private void setImage( PImage newImage ) {
+		if( currentImage != null ) {
+			removeChild(currentImage);
 		}
-		image = new PImage(newImage);
-		addChild(image);
-		setBounds(image.getBounds());
-		image.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
-		image.setPickable(false);
+		currentImage = newImage;
+		addChild(currentImage);
+		setBounds(currentImage.getBounds());
+		currentImage.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
+		currentImage.setPickable(false);
 	}
 	
 	public void setSelected( boolean selected ) {
+		super.setSelected(selected);
 		if( selected ) {
-			setImage(selectedImagePath);
+			setImage(selectedImage);
 		} else {
-			setImage(imagePath);
+			setImage(defaultImage);
+		}
+	}
+	
+	public void setMouseOver( boolean mouseOver ) {
+		if( !selected ) {
+			if( mouseOver ) 
+				setImage(mouseOverImage);
+			else 
+				setImage(defaultImage);
 		}
 	}
 	
@@ -71,10 +86,6 @@ public class GCollisionDomain extends GNode {
 	
 	public ArrayList<GLink> getLinks() {
 		return links;
-	}
-	
-	public String getImagePath() {
-		return imagePath;
 	}
 	
 	public AbstractCollisionDomain getLogic() {

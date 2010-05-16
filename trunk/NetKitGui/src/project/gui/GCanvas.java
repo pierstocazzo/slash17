@@ -17,7 +17,6 @@ import project.common.ItemType;
 import project.core.AbstractProject;
 import project.gui.input.AddLinkInputHandler;
 import project.gui.input.AddNodeInputHandler;
-import project.gui.input.BoundsHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
 import project.gui.input.MouseWheelZoomEventHandler;
@@ -32,8 +31,8 @@ import edu.umd.cs.piccolo.nodes.PPath;
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
-	PLayer mainLayer;
-	PLayer secondLayer;
+	PLayer nodeLayer;
+	PLayer linkLayer;
 	PLayer areaLayer;
 	
 	GFrame frame;
@@ -59,11 +58,11 @@ public class GCanvas extends PCanvas {
 	}
 	
 	public void createCanvas() {	
-		mainLayer = getLayer();
-		secondLayer = new PLayer();
+		nodeLayer = getLayer();
+		linkLayer = new PLayer();
 		areaLayer = new PLayer();
-		mainLayer.addChild(secondLayer);
-		secondLayer.addChild(areaLayer);
+		nodeLayer.addChild(linkLayer);
+		linkLayer.addChild(areaLayer);
 		
 		defaultHandler = new DefaultInputHandler();
 		deleteHandler = new DeleteInputHandler(this);
@@ -78,7 +77,7 @@ public class GCanvas extends PCanvas {
 		getPanEventHandler().setEventFilter(new PInputEventFilter(InputEvent.BUTTON3_MASK));
 		
 		/* add the bounds handler for areas creation */
-		addInputEventListener(new BoundsHandler());
+//		addInputEventListener(new BoundsHandler());
 		
 		switchToDefaultHandler();
 		
@@ -161,6 +160,12 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void adding( ItemType type ) {
+		if( (currentHandler == addNodeHandler && addNodeHandler.getNodeType() == type) ||
+				(currentHandler == addLinkHandler && type == ItemType.LINK) ) {
+			switchToDefaultHandler();
+			return;
+		}
+		
 		if( type != ItemType.LINK ) {
 			// remove previously created addhandler
 			if( currentHandler.equals(addNodeHandler) ) {
@@ -176,22 +181,20 @@ public class GCanvas extends PCanvas {
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
-			GCollisionDomain cd = GFactory.getInstance().createCollisionDomain( pos.getX(), pos.getY(), mainLayer );
+			GCollisionDomain cd = GFactory.getInstance().createCollisionDomain( pos.getX(), pos.getY(), nodeLayer );
 			GuiManager.getInstance().getProject().addCollisionDomain(cd.getLogic());
 			
 		} else if( nodeType == ItemType.AREA ) {
 			GFactory.getInstance().createArea( pos.getX(), pos.getY(), areaLayer );
-			
+			switchToDefaultHandler();
 		} else {
-			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), mainLayer );
+			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), nodeLayer );
 			GuiManager.getInstance().getProject().addHost(host.getLogic());
 		}
-		
-		switchToDefaultHandler();
 	}
 	
 	public void addLink( GHost host, GCollisionDomain collisionDomain ) {
-		GLink link = GFactory.getInstance().createLink( host, collisionDomain, secondLayer );
+		GLink link = GFactory.getInstance().createLink( host, collisionDomain, linkLayer );
 		
 		if( link == null ) {
 			JOptionPane.showMessageDialog(this, "Can't add another link");
@@ -199,12 +202,13 @@ public class GCanvas extends PCanvas {
 			host.addLink(link);
 			collisionDomain.addLink(link);
 		}
-		
-		switchToDefaultHandler();
 	}
 	
 	public void deleting() {
-		switchToDeleteHandler();
+		if( currentHandler == deleteHandler )
+			switchToDefaultHandler();
+		else 
+			switchToDeleteHandler();
 	}
 
 	public void delete( GNode node ) {
@@ -232,7 +236,6 @@ public class GCanvas extends PCanvas {
 				break;
 			}
 			node.delete();
-			switchToDefaultHandler();
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -241,46 +244,47 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void switchToAddHandler( ItemType type ) {
+		removeCurrentHandler();
+		
 		if( type == ItemType.LINK ) {
-			if( !currentHandler.equals(addLinkHandler) ) {
-				mainLayer.removeInputEventListener(defaultHandler);
-				addInputEventListener(addLinkHandler);
-				currentHandler = addLinkHandler;
-			}
+			addInputEventListener(addLinkHandler);
+			currentHandler = addLinkHandler;
 		} else {
-			if( !currentHandler.equals(addNodeHandler) ) {
-				mainLayer.removeInputEventListener(defaultHandler);
-				addInputEventListener(addNodeHandler);
-				currentHandler = addNodeHandler;
-			}
+			addInputEventListener(addNodeHandler);
+			currentHandler = addNodeHandler;
 		}
 	}
 	
 	public void switchToDeleteHandler() {
+		removeCurrentHandler();
+		
 		frame.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
-		if( !currentHandler.equals(deleteHandler) ) {
-			mainLayer.removeInputEventListener(defaultHandler);
-			addInputEventListener(deleteHandler);
-			currentHandler = deleteHandler;
-		}
+		addInputEventListener(deleteHandler);
+		currentHandler = deleteHandler;
 	}
 	
 	public void switchToDefaultHandler() {
+		removeCurrentHandler();
+		
 		frame.setCursor( new Cursor(Cursor.DEFAULT_CURSOR));
-		removeInputEventListener(addNodeHandler);
-		removeInputEventListener(addLinkHandler);
-		removeInputEventListener(deleteHandler);
-		mainLayer.addInputEventListener(defaultHandler);
+		addInputEventListener(defaultHandler);
 		currentHandler = defaultHandler;
+	}
+	
+	private void removeCurrentHandler() {
+//		nodeLayer.removeInputEventListener(currentHandler);
+//		linkLayer.removeInputEventListener(currentHandler);
+//		areaLayer.removeInputEventListener(currentHandler);
+		removeInputEventListener(currentHandler);
 	}
 
 	public void addLine( PPath line ) {
-		secondLayer.addChild(line);
+		linkLayer.addChild(line);
 	}
 
 	public void deleteLink(PPath link) {
 		try {
-			secondLayer.removeChild(link);
+			linkLayer.removeChild(link);
 		} catch (Exception e) {
 		}
 	}
@@ -290,7 +294,7 @@ public class GCanvas extends PCanvas {
 	}
 
 	public PLayer getNodeLayer() {
-		return mainLayer;
+		return nodeLayer;
 	}
 
 	public PLayer getAreaLayer() {
@@ -298,6 +302,6 @@ public class GCanvas extends PCanvas {
 	}
 
 	public PLayer getLinkLayer() {
-		return secondLayer;
+		return linkLayer;
 	}
 }

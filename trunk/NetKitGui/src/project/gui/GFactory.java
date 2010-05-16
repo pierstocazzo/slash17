@@ -1,13 +1,11 @@
 package project.gui;
 
-import java.awt.Color;
-
-import edu.umd.cs.piccolo.PLayer;
 import project.common.ItemType;
 import project.core.AbstractFactory;
 import project.core.AbstractHost;
 import project.core.AbstractLink;
 import project.core.AbstractProject;
+import edu.umd.cs.piccolo.PLayer;
 
 public class GFactory {
 
@@ -89,7 +87,6 @@ public class GFactory {
 
 	public GArea createArea(double x, double y, PLayer layer) {
 		GArea area = new GArea( (int) x, (int) y, layer );
-		area.setPaint( Color.cyan );
 		return area;
 	}
 }

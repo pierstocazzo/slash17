@@ -13,21 +13,33 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 	
 	private int pressedButton;
 
+	private GNode selectedNode;
+	
 	@Override
 	public void mouseClicked(PInputEvent event) {
 		super.mouseClicked(event);
 		
-		GNode node = (GNode) event.getPickedNode();
-		
-		node.setSelected(true);	
-		
-		if( node.getType() == GNode.host ) {
-			// expand this host's configuration in the trees
-			GuiManager.getInstance().getConfPanel().selectHost( ((GHost) node).getLogic().getName() );
-		}
-		
-		if( event.getButton() == MouseEvent.BUTTON3 ) {
-			node.showMenu(event);
+		if( event.getPickedNode() instanceof GNode ) {
+			GNode node = (GNode) event.getPickedNode();
+			
+			if( selectedNode != null ) {
+				selectedNode.setSelected(false);
+			}
+			selectedNode = node;
+			selectedNode.setSelected(true);	
+			
+			if( node.getType() == GNode.host ) {
+				// expand this host's configuration in the trees
+				GuiManager.getInstance().getConfPanel().selectHost( ((GHost) node).getLogic().getName() );
+			}
+			
+			if( event.getButton() == MouseEvent.BUTTON3 ) {
+				node.showMenu(event);
+			}
+		} else {
+			if( selectedNode != null ) {
+				selectedNode.setSelected(false);
+			}
 		}
 	}
 	
@@ -37,7 +49,7 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 		
 		if( event.getPickedNode() instanceof GNode ) {
 			GNode node = (GNode) event.getPickedNode();
-			node.setSelected(true);
+			node.setMouseOver(true);
 		}
 	}
 	
@@ -47,7 +59,7 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 		
 		if( event.getPickedNode() instanceof GNode ) {
 			GNode node = (GNode) event.getPickedNode();
-			node.setSelected(false);
+			node.setMouseOver(false);
 		}
 	}
 	
@@ -63,8 +75,14 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 	
 	@Override
 	public void mouseDragged(PInputEvent event) {
+		if( !(event.getPickedNode() instanceof GNode) ) 
+			return;
+		
 		if( pressedButton == MouseEvent.BUTTON1 ) {
 			GNode node = (GNode) event.getPickedNode();
+			
+			if( node.getType() == GNode.link )
+				return;
 			
 			PDimension d = event.getDeltaRelativeTo(node);		
 			node.localToParent(d);

@@ -1,5 +1,6 @@
 package project.gui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Point2D;
 
@@ -36,6 +37,8 @@ public class GLink extends GNode {
 		
 		link = PPath.createLine(0, 0, 0, 0);
 		addChild(link);
+		setBounds(link.getBounds());
+		link.setPickable(false);
 		
 		setText(absLink.getInterface().getName());
 		
@@ -48,6 +51,7 @@ public class GLink extends GNode {
 		link.reset();
 		link.moveTo((float)start.getX(), (float)start.getY());
 		link.lineTo((float)end.getX(), (float)end.getY());
+		setBounds(link.getBounds());
 		if( text != null ) 
 			text.centerFullBoundsOnPoint( link.getBounds().getCenterX(), link.getBounds().getCenterY() + 10 );
 	}
@@ -61,6 +65,25 @@ public class GLink extends GNode {
 		text.setFont(new Font("", Font.BOLD, 14));
 		layer.addChild(text);
 		update();
+	}
+	
+	@Override
+	public void setSelected(boolean selected) {
+		super.setSelected(selected);
+		if( selected )
+			link.setPaint(Color.red);
+		else
+			link.setPaint(Color.black);
+	}
+	
+	@Override
+	public void setMouseOver(boolean mouseOver) {
+		if( !selected ) {
+			if( mouseOver )
+				link.setTransparency(0.8f);
+			else
+				link.setTransparency(1.0f);
+		}
 	}
 	
 	public GHost getHost() {
