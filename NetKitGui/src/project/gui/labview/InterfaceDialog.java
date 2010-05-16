@@ -77,7 +77,7 @@ public class InterfaceDialog extends JDialog {
 		textFieldConstraint.gridwidth = 3;
 		textFieldConstraint.anchor = GridBagConstraints.EAST;
 
-		JLabel icon = new JLabel(new ImageIcon("data/images/images/nic.png"));
+		JLabel icon = new JLabel(new ImageIcon("data/images/big/nic.png"));
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 0;
 		labelConstraint.gridheight = 4;

@@ -157,8 +157,8 @@ public class GActionListener implements ActionListener {
 			}
 		});
 
-		JOptionPane.showMessageDialog( GuiManager.getInstance().getFrame(), editorPane, "Info", 
-				JOptionPane.INFORMATION_MESSAGE, new ImageIcon("data/images/images/GNU.png"));
+		JOptionPane.showMessageDialog( GuiManager.getInstance().getFrame(), editorPane, "Abaut...", 
+				JOptionPane.INFORMATION_MESSAGE, new ImageIcon("data/images/big/GNU.png"));
 	}
 	
 	public void showLicence() {
