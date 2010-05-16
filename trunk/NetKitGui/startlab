@@ -7,6 +7,6 @@ fi
 
 DIR=$1
 
-lstart -d $DIR
+lstart -p -d $DIR
 
 exit;

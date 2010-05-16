@@ -60,7 +60,7 @@ public class GActionListener implements ActionListener {
 			break;
 			
 		case stopLab:
-			Shell.stopLab( GuiManager.getInstance().getProject(), false );
+			Shell.stopLab( GuiManager.getInstance().getProject(), true );
 			break;
 			
 		case addPc:
