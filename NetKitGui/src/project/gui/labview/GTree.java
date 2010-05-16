@@ -72,7 +72,7 @@ public class GTree extends JPanel {
 		
 		add( northPanel, BorderLayout.NORTH );
         
-        rootNode = new GTreeNode(projectName, GTreeNode.MAINFOLDER, tree);
+        rootNode = new GTreeNode(projectName, GTreeNode.PROJECTFOLDER, this);
         treeModel = new DefaultTreeModel(rootNode);
         
         tree = new JTree(treeModel);
@@ -155,7 +155,7 @@ public class GTree extends JPanel {
 
     /** Add a child to the given node */
     public GTreeNode addObject( GTreeNode parent,  Object child, int type ) {
-    	GTreeNode childNode = new GTreeNode(child, type, tree);
+    	GTreeNode childNode = new GTreeNode(child, type, this);
 	
         //It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
         treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
