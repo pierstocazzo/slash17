@@ -28,6 +28,15 @@ public interface AbstractHost {
 	
 	public void deleteRoute( AbstractRoute route );
 	
+	
+	public AbstractChain addChain();
+	
+	public AbstractChain getChain( String chain );
+	
+	public ArrayList<AbstractChain> getChains();
+	
+	public void deleteChain( AbstractChain route );
+	
 
 	public boolean delete();
 

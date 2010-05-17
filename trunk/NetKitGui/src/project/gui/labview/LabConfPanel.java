@@ -11,10 +11,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.MatteBorder;
 
 import project.common.ItemType;
+import project.core.AbstractChain;
 import project.core.AbstractHost;
 import project.core.AbstractInterface;
 import project.core.AbstractProject;
 import project.core.AbstractRoute;
+import project.core.AbstractRule;
 
 public class LabConfPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -72,40 +74,37 @@ public class LabConfPanel extends JPanel {
 		firewallingTree.clear();
 		labStructure.clear();
 		
-		labStructure.addObject( "lab.conf", GTreeNode.FILE, null );
+		labStructure.addNode( "lab.conf", GTreeNode.FILE );
 		
 		for( AbstractHost host : project.getHosts() ) {
 			// add a folder for each host in the interfaces tree
-			GTreeNode node = interfacesTree.addObject( host.getName(), GTreeNode.FOLDER, host );
+			GTreeNode node = interfacesTree.addNode( host, GTreeNode.FOLDER );
 			// add his interfaces to each host
 			for( AbstractInterface iface : host.getInterfaces() ) {
-				interfacesTree.addObject( node, iface.getName() + " : " + iface.getCollisionDomain().getName(), GTreeNode.IFACE, host );
+				interfacesTree.addNode( node, iface, GTreeNode.IFACE );
 			}
 			
 			// add a folder for each host in the routing tree
-			node = routingTree.addObject( host.getName(), GTreeNode.ROUTER, host );
+			node = routingTree.addNode( host, GTreeNode.ROUTER );
 			// add the routes
 			for( AbstractRoute route : host.getRoutes() ) {
-				routingTree.addObject( node, route.getNet(), GTreeNode.ROUTE, host );
+				routingTree.addNode( node, route, GTreeNode.ROUTE );
 			}
 			
-			// add a folder for each host in the firewalling tree
+			// add a folder for each firewall in the firewalling tree
 			if( host.getType() == ItemType.FIREWALL ) {
-				node = firewallingTree.addObject( host.getName(), GTreeNode.FIREWALL, host );
-				firewallingTree.addObject( node, "Input", GTreeNode.CHAIN, host );
-				firewallingTree.addObject( node, "Output", GTreeNode.CHAIN, host );
-				firewallingTree.addObject( node, "Forward", GTreeNode.CHAIN, host );
-				// TODO add his fw rules to each host
-//				for( AbstractChain chain : host.getChains() ) {
-//					node = firewallingTree.addObject( node, chain.getName(), GTreeNode.CHAIN, host );
-//					for( AbstractRule rule : chain.getRules() ) {
-//						firewallingTree.addObject( node, rule.getName(), GTreeNode.RULE, host );
-//					}
-//				}
+				node = firewallingTree.addNode( host, GTreeNode.FIREWALL );
+				// add his fw rules to each firewall
+				for( AbstractChain chain : host.getChains() ) {
+					node = firewallingTree.addNode( node, chain, GTreeNode.CHAIN );
+					for( AbstractRule rule : chain.getRules() ) {
+						firewallingTree.addNode( node, rule, GTreeNode.RULE );
+					}
+				}
 			}
 			
-			labStructure.addObject( host.getName(), GTreeNode.FOLDER, host );
-			labStructure.addObject( host.getName() + ".startup", GTreeNode.FILE, host );
+			labStructure.addNode( host, GTreeNode.FOLDER );
+			labStructure.addNode( host, GTreeNode.FILE );
 		}
 		
 		this.repaint();
@@ -120,7 +119,7 @@ public class LabConfPanel extends JPanel {
 	}
 	
 	public void selectHost( String hostName ) {
-		interfacesTree.selectHost(hostName);
+		interfacesTree.expandNode(hostName);
 	}
 }
 
