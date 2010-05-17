@@ -35,7 +35,7 @@ public interface AbstractHost {
 	
 	public ArrayList<AbstractChain> getChains();
 	
-	public void deleteChain( AbstractChain route );
+	public void deleteChain( AbstractChain chain );
 	
 
 	public boolean delete();
@@ -43,4 +43,6 @@ public interface AbstractHost {
 	public ItemType getType();
 
 	public boolean isConnectedTo( AbstractCollisionDomain collisionDomain );
+	
+	public String getStartupFile();
 }

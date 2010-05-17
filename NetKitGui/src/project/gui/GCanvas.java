@@ -20,7 +20,7 @@ import project.gui.input.AddNodeInputHandler;
 import project.gui.input.DefaultInputHandler;
 import project.gui.input.DeleteInputHandler;
 import project.gui.input.MouseWheelZoomEventHandler;
-import project.gui.labview.LabConfPanel;
+import project.gui.labview.ConfigurationPanel;
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
@@ -44,13 +44,13 @@ public class GCanvas extends PCanvas {
 	
 	PBasicInputEventHandler currentHandler;
 	
-	LabConfPanel confPanel;
+	ConfigurationPanel confPanel;
 
 	MouseWheelZoomEventHandler zoomEventHandler;
 	
 	double originalScale;
 	
-	public GCanvas( GFrame gFrame, AbstractProject project, LabConfPanel confPanel ) {
+	public GCanvas( GFrame gFrame, AbstractProject project, ConfigurationPanel confPanel ) {
 		this.frame = gFrame;
 		this.confPanel = confPanel;
 		
@@ -284,7 +284,7 @@ public class GCanvas extends PCanvas {
 		}
 	}
 
-	public void setConfPanel(LabConfPanel confpanel) {
+	public void setConfPanel(ConfigurationPanel confpanel) {
 		this.confPanel = confpanel;
 	}
 

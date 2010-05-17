@@ -4,15 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import project.core.AbstractHost;
-import project.core.AbstractInterface;
 import project.core.AbstractProject;
-import project.core.AbstractRoute;
 
 public class ProjectHandler {
 
@@ -61,60 +58,29 @@ public class ProjectHandler {
 			GuiManager.getInstance().setProject(project);
 			
 			saved = false;
-			
 			return true;
-		} else {
-			return false;
-		}
+		} 
+		return false;
 	}
 	
 	public void saveProject() {
 		if( project != null ) {
 			String projDir = project.getDirectory();
-			Collection<AbstractHost> hosts = project.getHosts();
 			
 			createDirectory(projDir);
 			
-			String labConfcontent = "# 'lab.conf' created by NetKit GUI\n\n";
+			String labConfcontent = project.getLabConfFile();
 			
-			for( AbstractHost host : hosts ) {
+			for( AbstractHost host : project.getHosts() ) {
 				String hostName = host.getName();
 				createDirectory( projDir + "/" + hostName );
 				
-				String startupContent = "# '" + hostName + ".startup' created by NetKit GUI\n\n";
-				
-				for( AbstractInterface iface : host.getInterfaces() ) {
-					
-					String ifaceName =  iface.getName();
-					String ip = iface.getIp();
-					String mask = iface.getMask();
-					String bcast = iface.getBCast();
-					String cdName = iface.getCollisionDomain().getName();
-					
-					labConfcontent += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
-					
-					if( ip != null && mask != null && bcast != null ) {
-						startupContent += "ifconfig " + ifaceName + " " + ip + " netmask " + 
-										mask + " broadcast " + bcast + " up\n";
-					} else {
-						startupContent += "ifconfig " + ifaceName + " up # not configured \n";
-					}
-				}
-				labConfcontent += "\n";
-				
-				for( AbstractRoute route : host.getRoutes() ) {
-					String net = route.getNet();
-					String gw = route.getGw();
-					if( net != null && gw != null ) {
-						startupContent += "route add -net " + net + " gw " + gw + "\n";
-					}
-				}
-				
+				String startupContent = host.getStartupFile();
 				
 				createFile( hostName + ".startup", projDir, startupContent );
 			}
 			
-			createFile("lab.conf", project.getDirectory(), labConfcontent);
+			createFile( "lab.conf", project.getDirectory(), labConfcontent );
 			
 			saved = true;
 		
@@ -166,7 +132,7 @@ public class ProjectHandler {
 	}
 
 	public void openProject() {
-		// TODO Auto-generated method stub
+		// TODO open project
 		
 	}
 }

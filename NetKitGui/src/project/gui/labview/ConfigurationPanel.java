@@ -18,7 +18,7 @@ import project.core.AbstractProject;
 import project.core.AbstractRoute;
 import project.core.AbstractRule;
 
-public class LabConfPanel extends JPanel {
+public class ConfigurationPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	GTree interfacesTree;
@@ -31,7 +31,7 @@ public class LabConfPanel extends JPanel {
 	
 	GTree labStructure;
 	
-	public LabConfPanel() {
+	public ConfigurationPanel() {
 		super(new GridLayout(1,0));
 		
 		setBorder( new MatteBorder(0, 1, 0, 0, Color.lightGray) );
@@ -96,9 +96,9 @@ public class LabConfPanel extends JPanel {
 				node = firewallingTree.addNode( host, GTreeNode.FIREWALL );
 				// add his fw rules to each firewall
 				for( AbstractChain chain : host.getChains() ) {
-					node = firewallingTree.addNode( node, chain, GTreeNode.CHAIN );
+					GTreeNode child = firewallingTree.addNode( node, chain, GTreeNode.CHAIN );
 					for( AbstractRule rule : chain.getRules() ) {
-						firewallingTree.addNode( node, rule, GTreeNode.RULE );
+						firewallingTree.addNode( child, rule, GTreeNode.RULE );
 					}
 				}
 			}
@@ -120,6 +120,8 @@ public class LabConfPanel extends JPanel {
 	
 	public void selectHost( String hostName ) {
 		interfacesTree.expandNode(hostName);
+		routingTree.expandNode(hostName);
+		firewallingTree.expandNode(hostName);
 	}
 }
 

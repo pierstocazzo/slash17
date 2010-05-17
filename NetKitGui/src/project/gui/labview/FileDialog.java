@@ -8,8 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import project.core.AbstractHost;
-import project.core.AbstractInterface;
-import project.core.AbstractRoute;
 import project.gui.GuiManager;
 
 public class FileDialog extends JDialog {
@@ -24,9 +22,9 @@ public class FileDialog extends JDialog {
 		this.host = host;
 		
 		if( host == null ) {
-			createLabConf();
+			text = GuiManager.getInstance().getProject().getLabConfFile();
 		} else {
-			createStartupFile();
+			text = host.getStartupFile();
 		}
 		
 		JTextArea pane = new JTextArea(text);
@@ -42,50 +40,6 @@ public class FileDialog extends JDialog {
 		
 		setLocationRelativeTo(GuiManager.getInstance().getFrame());
 		setVisible(true);
-	}
-
-	private void createStartupFile() {
-		String hostName = host.getName();
-		text = "# '" + hostName + ".startup' created by NetKit GUI\n\n";
-		
-		for( AbstractInterface iface : host.getInterfaces() ) {
-			String ifaceName =  iface.getName();
-			String ip = iface.getIp();
-			String mask = iface.getMask();
-			String bcast = iface.getBCast();
-			
-			if( ip != null && mask != null && bcast != null ) {
-				text += "ifconfig " + ifaceName + " " + ip + " netmask " + 
-								mask + " broadcast " + bcast + " up\n";
-			} else {
-				text += "ifconfig " + ifaceName + " up # not configured \n";
-			}
-		}
-		text += "\n";
-		
-		for( AbstractRoute route : host.getRoutes() ) {
-			String net = route.getNet();
-			String gw = route.getGw();
-			if( net != null && gw != null ) {
-				text += "route add -net " + net + " gw " + gw + "\n";
-			}
-		}
-	}
-
-	private void createLabConf() {
-		text = "# 'lab.conf' created by NetKit GUI\n\n";
-		
-		for( AbstractHost host : GuiManager.getInstance().getProject().getHosts() ) {
-			String hostName = host.getName();
-			
-			for( AbstractInterface iface : host.getInterfaces() ) {
-				String ifaceName =  iface.getName();
-				String cdName = iface.getCollisionDomain().getName();
-				
-				text += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
-			}
-			text += "\n";
-		}
 	}
 	
 //	public class ShHighlighter {

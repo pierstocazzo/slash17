@@ -37,6 +37,12 @@ public class Host implements AbstractHost {
 		interfaces = new ArrayList<AbstractInterface>();
 		routes = new ArrayList<AbstractRoute>();
 		chains = new ArrayList<AbstractChain>();
+		
+		if( type == ItemType.FIREWALL ) {
+			chains.add(new Chain(this, "INPUT"));
+			chains.add(new Chain(this, "OUTPUT"));
+			chains.add(new Chain(this, "FORWARD"));
+		}
 	}
 	
 	/**
@@ -165,5 +171,30 @@ public class Host implements AbstractHost {
 	@Override
 	public ArrayList<AbstractChain> getChains() {
 		return chains;
+	}
+	
+	public String getStartupFile() {
+		String text = "";
+		text = "# '" + name + ".startup' created by NetKit GUI\n\n";
+		
+		for( AbstractInterface iface : interfaces ) {
+			text += iface.getConfCommand();
+		}
+		text += "\n";
+		
+		for( AbstractRoute route : routes ) {
+			text += route.getConfCommand();
+		}
+		text += "\n";
+		
+		for( AbstractChain chain : chains ) {
+			text += chain.getConfCommand();
+			for( AbstractRule rule : chain.getRules() ) {
+				text += rule.getRule();
+			}
+			text += "\n";
+		}
+		
+		return text;
 	}
 }
