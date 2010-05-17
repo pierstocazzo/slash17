@@ -23,8 +23,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import project.core.AbstractHost;
-
 public class GTree extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -88,26 +86,35 @@ public class GTree extends JPanel {
         add(scrollPane);
     }
     
-    public void selectHost( String hostName ) {
+    /** expand the node with this name */
+    public void expandNode( String nodeName ) {
     	collapseAll();
     	
     	for( int i = 0; i < rootNode.getChildCount(); i++ ) {
     		GTreeNode node = ((GTreeNode) rootNode.getChildAt(i));
-    		if( node.getUserObject().equals( hostName ) ) {
-    			try {
-    				TreePath path = new TreePath( ((GTreeNode) node.getLastChild()).getPath());
-    				tree.scrollPathToVisible( path );
-    				tree.setSelectionPath( path );
-    			} catch (Exception e) {
-    				TreePath path = new TreePath( ((GTreeNode) node).getPath());
-    				tree.scrollPathToVisible( path );
-    				tree.setSelectionPath( path );
-    			}
+    		if( node.getUserObject().equals( nodeName ) ) {
+    			TreePath path = ( node.getChildCount() > 0 ) ?
+	    				new TreePath(((GTreeNode) node.getLastChild()).getPath()) :
+	    				new TreePath(((GTreeNode) node).getPath());
+	    				
+				tree.scrollPathToVisible( path );
     			return;
+    		}
+			for( int j = 0; j < node.getChildCount(); j++ ) {
+				GTreeNode child = ((GTreeNode) node.getChildAt(i));
+	    		if( child.getUserObject().equals( nodeName ) ) {
+	    			TreePath path = ( child.getChildCount() > 0 ) ?
+	    				new TreePath(((GTreeNode) child.getLastChild()).getPath()) :
+	    				new TreePath(((GTreeNode) child).getPath());
+	    				
+    				tree.scrollPathToVisible( path );
+	    			return;
+	    		}
     		}
     	}
     }
     
+    /** set the name of this tree's root node */
     public void setName( String name ) {
 		rootNode.setUserObject( name );
 	}
@@ -149,35 +156,21 @@ public class GTree extends JPanel {
     }
 
     /** Add child to the root node. */
-    public GTreeNode addObject( Object child, int type ) {
-        return addObject( rootNode, child, type );
+    public GTreeNode addNode( Object child, int type ) {
+        return addNode( rootNode, child, type );
     }
 
-    /** Add a child to the given node */
-    public GTreeNode addObject( GTreeNode parent,  Object child, int type ) {
-    	GTreeNode childNode = new GTreeNode(child, type, this);
-	
-        //It is key to invoke this on the TreeModel, and NOT DefaultMutableTreeNode
-        treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
+    /** Add child to the parent node. */
+    public GTreeNode addNode( GTreeNode parent, Object obj, int type ) {
+    	GTreeNode node = new GTreeNode(obj, type, this);
+    	
+        treeModel.insertNodeInto(node, parent, parent.getChildCount());
         
-    	collapseAll();
-		TreePath path = new TreePath( childNode.getPath() );
-		tree.scrollPathToVisible( path );
+        collapseAll();
+        tree.scrollPathToVisible(new TreePath(node.getPath()));
         
-        return childNode;
+    	return node;
     }
-    
-	public GTreeNode addObject(String name, int type, AbstractHost host) {
-		GTreeNode node = addObject(rootNode, name, type);
-		node.setHost(host);
-		return node;
-	}
-	
-	public GTreeNode addObject(GTreeNode parent, String name, int type, AbstractHost host) {
-		GTreeNode node = addObject(parent, name, type);
-		node.setHost(host);
-		return node;
-	}
 
     /** the mouse listeners for the tree nodes */
     class MyListener extends MouseAdapter {
@@ -187,9 +180,10 @@ public class GTree extends JPanel {
     		if( selRow < 0 )
     			return;
 
+    		// get the selected node
     		TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
     		tree.setSelectionPath(selPath); 
-
+    		
 			GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
 
 			if (e.isPopupTrigger())
@@ -208,27 +202,15 @@ public class GTree extends JPanel {
     		super();
     	}
 
-    	public Component getTreeCellRendererComponent(
-    			JTree tree,
-    			Object value,
-    			boolean sel,
-    			boolean expanded,
-    			boolean leaf,
-    			int row,
-    			boolean hasFocus) {
+    	public Component getTreeCellRendererComponent( JTree tree, Object value,
+    			boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-    		super.getTreeCellRendererComponent(
-    				tree, value, sel,
-    				expanded, leaf, row,
-    				hasFocus);
+    		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
     		GTreeNode node = (GTreeNode) value;
-
     		setIcon( node.getIcon() );
 
-    		
     		return this;
     	}
     }
 }
-

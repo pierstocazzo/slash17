@@ -140,4 +140,30 @@ public class Host implements AbstractHost {
 	public void deleteRoute(AbstractRoute route) {
 		routes.remove(route);
 	}
+
+	@Override
+	public AbstractChain addChain() {
+		AbstractChain chain = new Chain(this);
+		chains.add(chain);
+		return chain;
+	}
+
+	@Override
+	public void deleteChain(AbstractChain chain) {
+		chains.remove(chain);
+	}
+
+	@Override
+	public AbstractChain getChain(String chain) {
+		for( AbstractChain c : chains ) {
+			if( c.getName().equals(chain) )
+				return c;
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<AbstractChain> getChains() {
+		return chains;
+	}
 }

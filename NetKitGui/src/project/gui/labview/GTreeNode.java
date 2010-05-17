@@ -11,8 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import project.core.AbstractChain;
 import project.core.AbstractHost;
+import project.core.AbstractInterface;
 import project.core.AbstractRoute;
+import project.core.AbstractRule;
 import project.gui.GuiManager;
 
 public class GTreeNode extends DefaultMutableTreeNode {
@@ -38,27 +41,75 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	int type;
 	
 	AbstractHost host;
+	AbstractInterface iface;
+	AbstractChain chain;
+	AbstractRule rule;
+	AbstractRoute route;
 	
 	JPopupMenu menu;
 	
 	GTree tree;
 	
-	public GTreeNode( int type, GTree tree ) {
-		this(null, type, tree);
-	}
-	
 	public GTreeNode( Object obj, int type, GTree tree ) {
-		this(obj, true, type, tree);
-	}
-	
-	public GTreeNode( Object obj, boolean allowsChildren, int type, GTree tree ) {
-		super(obj, allowsChildren);
+		super();
+		
 		this.type = type;
 		this.tree = tree;
 		
+		switch( type ) {
+		case PROJECTFOLDER:
+			setUserObject(obj);
+			break;
+			
+		case FOLDER:
+			host = (AbstractHost) obj;
+			setUserObject(host.getName());
+			break;
+			
+		case FILE:
+			if( obj instanceof AbstractHost ) {
+				host = (AbstractHost) obj;
+				setUserObject(host.getName() + ".startup");
+			} else {
+				setUserObject(obj);
+			}
+			break;
+			
+		case IFACE:
+			iface = (AbstractInterface) obj;
+			// someting like "eth0 : cd1"
+			setUserObject(iface.getName() + " : " + iface.getCollisionDomain().getName());
+			break;
+			
+		case ROUTER:
+			host = (AbstractHost) obj;
+			setUserObject(host.getName());
+			break;
+			
+		case ROUTE:
+			route = (AbstractRoute) obj;
+			setUserObject(route.getNet());
+			break;
+			
+		case FIREWALL:
+			host = (AbstractHost) obj;
+			setUserObject(host.getName());
+			break;
+			
+		case CHAIN:
+			chain = (AbstractChain) obj;
+			setUserObject(chain.getName());
+			break;	
+			
+		case RULE:
+			rule = (AbstractRule) obj;
+			setUserObject(rule.getName());
+			break;
+		}
+		
 		createPopupMenu();
 	}
-	
+
 	private void createPopupMenu() {
 		menu = new JPopupMenu();
 		
@@ -67,7 +118,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			JMenuItem set = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
 		    set.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new InterfaceDialog( host.getInterface( (String) getUserObject() ) );
+					new InterfaceDialog(iface);
 				}
 			});
 		    menu.add(set);
@@ -87,13 +138,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			JMenuItem editRule = new JMenuItem("Set rule", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+					new RuleDialog(rule);
 				}
 			});
 			menu.add(editRule);
 			JMenuItem removeRule = new JMenuItem("Remove rule", new ImageIcon("data/images/16x16/remove_icon.png"));
 			removeRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					rule.delete();
 					tree.removeCurrentNode();
 				}
 			});
@@ -104,14 +156,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			JMenuItem editRoute = new JMenuItem("Set route", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new RouteDialog( host.getRoute( (String) getUserObject() ));
+					new RouteDialog( route );
 				}
 			});
 			menu.add(editRoute);
 			JMenuItem removeRoute = new JMenuItem("Remove route", new ImageIcon("data/images/16x16/remove_icon.png"));
 			removeRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					host.getRoute((String) getUserObject()).delete();
+					route.delete();
 					tree.removeCurrentNode();
 				}
 			});
@@ -147,10 +199,10 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				}
 			});
 			menu.add(addRule);
-			JMenuItem setPolicy = new JMenuItem("Set default policy", new ImageIcon("data/images/16x16/configure_icon.png"));
+			JMenuItem setPolicy = new JMenuItem("Default policy", new ImageIcon("data/images/16x16/configure_icon.png"));
 			setPolicy.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+					setPolicy();
 				}
 			});
 			menu.add(setPolicy);
@@ -162,25 +214,33 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		AbstractRoute route = host.addRoute();
 		new RouteDialog(route);
 		if( route.getNet() != null && route.getGw() != null )
-			tree.addObject(this, route.getNet(), ROUTE, host);
+			tree.addNode(this, route, ROUTE);
 		tree.repaint();
 	}
 	
 	private void addChain() {
 		String name = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Chain name");
-		tree.addObject(this, name, CHAIN, host);
+		AbstractChain chain = host.addChain();
+		chain.setName(name);
+		tree.addNode(this, chain, CHAIN);
 		tree.repaint();
 	}
 	
 	private void addRule() {
-		tree.addObject(this, "rule", RULE, host);
+		AbstractRule rule = chain.addRule();
+		tree.addNode(this, rule, RULE);
 		tree.repaint();
 	}
-
-	public void setHost( AbstractHost host ) {
-		this.host = host;
-	}
 	
+	private void setPolicy() {
+		String[] selection =  {"ACCEPT", "REJECT", "DROP"};
+		String policy = (String) JOptionPane.showInputDialog( GuiManager.getInstance().getFrame(),
+				"View/change the default policy of the " + chain.getName() + " chain", "Set default policy", 
+				JOptionPane.QUESTION_MESSAGE, new ImageIcon("data/images/big/fw.png"), selection, chain.getPolicy() );
+		if( policy != null )
+			chain.setPolicy(policy);
+	}
+
 	public void showMenu(MouseEvent e) {
 		menu.show(e.getComponent(), e.getX(), e.getY());
 	}
@@ -228,7 +288,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	public void showConfDialog() {
 		switch (type) {
 		case IFACE:
-			new InterfaceDialog( host.getInterface( (String) getUserObject() ) );
+			new InterfaceDialog( iface );
 		    break;
 		    
 		case FILE:
@@ -236,11 +296,11 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case RULE:
-			System.out.println("doppio click su una regola di firewalling");
+			new RuleDialog(rule);
 			break;
 			
 		case ROUTE:
-			new RouteDialog( host.getRoute((String) getUserObject()) );
+			new RouteDialog( route );
 			break;
 		}
 	}
