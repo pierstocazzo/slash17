@@ -71,4 +71,15 @@ public class Chain implements AbstractChain {
 		this.policy = policy;
 	}
 
+	@Override
+	public void delete() {
+		host.deleteChain(this);
+	}
+	
+	public String getConfCommand() {
+		String command = "";
+		command += "iptables -N " + name + "\n";
+		return command;
+	}
+
 }

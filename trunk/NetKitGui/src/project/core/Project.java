@@ -1,10 +1,7 @@
 package project.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-
-import project.common.ItemType;
-
 
 /** Class representig a netkit project
  * 
@@ -34,10 +31,10 @@ public class Project implements AbstractProject {
 	protected String web;
 	
 	/** Hosts */
-	protected HashMap<String, AbstractHost> hosts;
+	protected ArrayList<AbstractHost> hosts;
 	
 	/** Collision Domains */
-	protected HashMap<String, AbstractCollisionDomain> collisionDomains;
+	protected ArrayList<AbstractCollisionDomain> collisionDomains;
 	
 	/**
 	 * Create a new empty netkit project with this name in this directory
@@ -46,8 +43,8 @@ public class Project implements AbstractProject {
 	 * @param directory (String) - the project's directory
 	 */
 	Project( String directory, String name ) {
-		hosts = new HashMap<String, AbstractHost>();
-		collisionDomains = new HashMap<String, AbstractCollisionDomain>();
+		hosts = new ArrayList<AbstractHost>();
+		collisionDomains = new ArrayList<AbstractCollisionDomain>();
 		this.directory = directory;
 		this.name = name;
 	}
@@ -57,7 +54,7 @@ public class Project implements AbstractProject {
 	 * @param host (Host) the new host to add
 	 */
 	public void addHost( AbstractHost host ) {
-		hosts.put( host.getName(), host );
+		hosts.add( host );
 	}
 	
 	/** Add a new collision domain to the project
@@ -65,7 +62,7 @@ public class Project implements AbstractProject {
 	 * @param cd (CollisionDomain) the new collisiondomain
 	 */
 	public void addCollisionDomain( AbstractCollisionDomain cd ) {
-		collisionDomains.put( cd.getName(), cd );
+		collisionDomains.add( cd );
 	}
 	
 	/** Remove the host with this name
@@ -73,9 +70,8 @@ public class Project implements AbstractProject {
 	 * @param host (Host) the host to remove
 	 */
 	public void removeHost( AbstractHost host ) {
-		AbstractHost h = hosts.remove(host.getName());
-		if( h != null )
-			h.delete();
+		if( hosts.remove(host) )
+			host.delete();
 	}
 	
 	/** Remove the collision domain with this name
@@ -83,46 +79,14 @@ public class Project implements AbstractProject {
 	 * @param cd (CollisionDomain) the collision domain to remove
 	 */
 	public void removeCollisionDomain( AbstractCollisionDomain cd ) {
-		AbstractCollisionDomain c = collisionDomains.remove(cd.getName());
-		if( c != null )
-			c.delete();
+		if( collisionDomains.remove(cd) )
+			cd.delete();
 	}
 	
 	/** 
 	 * topology example TODO random topology
 	 */
 	public void createTopology() {
-		Host pc1 = new Host("pc1", ItemType.PC);
-		Host pc2 = new Host("pc2", ItemType.PC);
-		Host router = new Host("r", ItemType.ROUTER);
-		Host server = new Host("s", ItemType.SERVER);
-		Host nattedServer = new Host("snatted", ItemType.NATTEDSERVER);
-		Host firewall = new Host("fw", ItemType.FIREWALL);
-		Host tap = new Host("tap", ItemType.TAP);
-		
-		hosts.put( pc1.getName(), pc1 );
-		hosts.put( router.getName(), router );
-		hosts.put( pc2.getName(), pc2 );
-		hosts.put( server.getName(), server);
-		hosts.put(nattedServer.getName(), nattedServer);
-		hosts.put(firewall.getName(), firewall);
-		hosts.put(tap.getName(), tap);
-		
-		CollisionDomain CD1 = new CollisionDomain("CD1");
-		CollisionDomain CD2 = new CollisionDomain("CD2");
-		CollisionDomain RF = new CollisionDomain("RF");
-		CollisionDomain FT = new CollisionDomain("FT");
-		
-		pc1.addInterface( new Interface("eth0", CD1, pc1));
-		pc2.addInterface( new Interface("eth0", CD1, pc1));
-		router.addInterface( new Interface("eth0", CD1, router));
-		router.addInterface( new Interface("eth1", CD2, router));
-		router.addInterface( new Interface("eth2", RF, router));
-		server.addInterface( new Interface("eth0", CD2, server) );
-		nattedServer.addInterface( new Interface("eth0", CD2, nattedServer) );
-		firewall.addInterface( new Interface("eth0", RF, firewall));
-		firewall.addInterface( new Interface("eth1", FT, firewall));
-		tap.addInterface( new Interface("eth0", FT, tap));
 	}
 	
 	/*******************************
@@ -130,11 +94,11 @@ public class Project implements AbstractProject {
 	 *******************************/
 	
 	public Collection<AbstractHost> getHosts() {
-		return hosts.values();
+		return hosts;
 	}
 	
 	public Collection<AbstractCollisionDomain> getCollisionDomains() {
-		return collisionDomains.values();
+		return collisionDomains;
 	}
 
 	public String getName() {
@@ -196,6 +160,23 @@ public class Project implements AbstractProject {
 	@Override
 	public void removeLink(AbstractLink link) {
 		link.delete();
+	}
+	
+	public String getLabConfFile() {
+		String text = "# 'lab.conf' created by NetKit GUI\n\n";
+		
+		for( AbstractHost host : hosts ) {
+			String hostName = host.getName();
+			
+			for( AbstractInterface iface : host.getInterfaces() ) {
+				String ifaceName =  iface.getName();
+				String cdName = iface.getCollisionDomain().getName();
+				
+				text += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
+			}
+			text += "\n";
+		}
+		return text;
 	}
 }
 

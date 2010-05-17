@@ -33,6 +33,9 @@ public class Interface implements AbstractInterface {
 	/** host owner of this interface */
 	protected Host host;
 	
+	/** the ifconfig command for this interface's configuration */
+	protected String confCommand;
+	
 	
 	/** Interface constructor<br>
 	 * Create a new Interface
@@ -159,5 +162,16 @@ public class Interface implements AbstractInterface {
 		reset();
 		host.deleteInterface(this);
 		collisionDomain.removeConnection(this);
+	}
+	
+	public String getConfCommand() {
+		String ifconfig = "";
+		if( ip != null && netmask != null && broadcast != null ) {
+			ifconfig += "ifconfig " + name + " " + ip + " netmask " + 
+							netmask + " broadcast " + broadcast + " up\n";
+		} else {
+			ifconfig += "ifconfig " + name + " up # not configured \n";
+		}
+		return ifconfig;
 	}
 }

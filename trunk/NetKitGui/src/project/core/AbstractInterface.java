@@ -29,4 +29,6 @@ public interface AbstractInterface {
 	public void reset();
 
 	public void delete();
+	
+	public String getConfCommand();
 }

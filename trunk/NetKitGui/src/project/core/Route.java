@@ -39,4 +39,13 @@ public class Route implements AbstractRoute {
 	public void delete() {
 		host.deleteRoute(this);
 	}
+
+	@Override
+	public String getConfCommand() {
+		String command = "";
+		if( net != null && gw != null ) {
+			command += "route add -net " + net + " gw " + gw + "\n";
+		}
+		return command;
+	}
 }

@@ -14,4 +14,5 @@ public interface AbstractRoute {
 	
 	public void delete();
 	
+	public String getConfCommand();
 }

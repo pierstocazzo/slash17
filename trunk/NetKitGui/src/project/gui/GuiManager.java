@@ -12,14 +12,14 @@ import javax.swing.SwingConstants;
 
 import project.common.ItemType;
 import project.core.AbstractProject;
-import project.gui.labview.LabConfPanel;
+import project.gui.labview.ConfigurationPanel;
 
 public class GuiManager {
 
 	private static GuiManager gmanager;
 	
 	GFrame frame;
-	LabConfPanel confPanel;
+	ConfigurationPanel confPanel;
 	JLabel emptyCanvas;
 	GCanvas canvas;
 	JSplitPane splitPane;
@@ -39,7 +39,7 @@ public class GuiManager {
 	public void startGui() {
 		frame = new GFrame();
 		
-		confPanel = new LabConfPanel();
+		confPanel = new ConfigurationPanel();
 		
 		emptyCanvas = new JLabel("Create a new project or open an existing one.");
 		emptyCanvas.setHorizontalAlignment(SwingConstants.CENTER);
@@ -78,7 +78,7 @@ public class GuiManager {
 		}
 	}
 
-	public LabConfPanel getConfPanel() {
+	public ConfigurationPanel getConfPanel() {
 		return confPanel;
 	}
 	

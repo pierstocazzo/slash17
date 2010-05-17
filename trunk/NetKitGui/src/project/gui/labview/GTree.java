@@ -16,30 +16,24 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 public class GTree extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public static final int INTERFACES = 0;
-	public static final int FIREWALLING = 1;
-	public static final int ROUTING = 2;
-	public static final int LABSTRUCTURE = 3;
-	protected GTreeNode rootNode;
-    protected DefaultTreeModel treeModel;
-    protected JTree tree;
+	private GTreeNode rootNode;
+	private DefaultTreeModel treeModel;
+	private JTree tree;
     
-    public GTree( String stringLabel, String projectName ) {
+    public GTree( String treeLabel, String projectName ) {
         super(new BorderLayout());
         
 		JPanel northPanel = new JPanel(new BorderLayout());
 		northPanel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
-		northPanel.add( new JLabel( stringLabel ), BorderLayout.WEST );
+		northPanel.add( new JLabel( treeLabel ), BorderLayout.WEST );
 		
 		Dimension size = new Dimension(20, 20);
 		
@@ -57,7 +51,7 @@ public class GTree extends JPanel {
 		exp.setToolTipText("Expand All");
 		exp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				expandAll(tree);
+				expandAll();
 			}
 		});
 		
@@ -70,20 +64,29 @@ public class GTree extends JPanel {
 		
 		add( northPanel, BorderLayout.NORTH );
         
+		// creating the tree and his tree model
         rootNode = new GTreeNode(projectName, GTreeNode.PROJECTFOLDER, this);
         treeModel = new DefaultTreeModel(rootNode);
-        
         tree = new JTree(treeModel);
         tree.setEditable(false);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tree.setShowsRootHandles(true);
-        tree.addMouseListener( new MyListener() );
-        
-        MyRenderer renderer = new MyRenderer();
-        tree.setCellRenderer(renderer);
+        tree.addMouseListener( new TreeListener() );
+        tree.setCellRenderer( new CellRenderer() );
 
         JScrollPane scrollPane = new JScrollPane(tree);
         add(scrollPane);
+    }
+    
+    public void collapseAll() {
+    	for( int row = tree.getRowCount(); row >= 0; row-- ) {
+    		tree.collapseRow(row);
+    	}
+    }
+
+    public void expandAll() {
+    	for( int row = 0; row < tree.getRowCount(); row++ ) {
+    		tree.expandRow(row);
+    	}
     }
     
     /** expand the node with this name */
@@ -93,23 +96,11 @@ public class GTree extends JPanel {
     	for( int i = 0; i < rootNode.getChildCount(); i++ ) {
     		GTreeNode node = ((GTreeNode) rootNode.getChildAt(i));
     		if( node.getUserObject().equals( nodeName ) ) {
-    			TreePath path = ( node.getChildCount() > 0 ) ?
-	    				new TreePath(((GTreeNode) node.getLastChild()).getPath()) :
-	    				new TreePath(((GTreeNode) node).getPath());
-	    				
-				tree.scrollPathToVisible( path );
+    			TreePath path = new TreePath(node.getPath());
+    			tree.setSelectionPath(path);
+    			int row = tree.getRowForPath(path);
+    			tree.expandRow(row);
     			return;
-    		}
-			for( int j = 0; j < node.getChildCount(); j++ ) {
-				GTreeNode child = ((GTreeNode) node.getChildAt(i));
-	    		if( child.getUserObject().equals( nodeName ) ) {
-	    			TreePath path = ( child.getChildCount() > 0 ) ?
-	    				new TreePath(((GTreeNode) child.getLastChild()).getPath()) :
-	    				new TreePath(((GTreeNode) child).getPath());
-	    				
-    				tree.scrollPathToVisible( path );
-	    			return;
-	    		}
     		}
     	}
     }
@@ -119,22 +110,6 @@ public class GTree extends JPanel {
 		rootNode.setUserObject( name );
 	}
 
-	public void collapseAll() {
-    	int row = tree.getRowCount() - 1;
-    	while (row >= 0) {
-    		tree.collapseRow(row);
-    		row--;
-    	}
-    }
-
-    public void expandAll(JTree tree) {
-    	int row = 0;
-    	while (row < tree.getRowCount()) {
-    		tree.expandRow(row);
-    		row++;
-    	}
-    }
-
     /** Remove all nodes except the root node. */
     public void clear() {
         rootNode.removeAllChildren();
@@ -143,16 +118,11 @@ public class GTree extends JPanel {
 
     /** Remove the currently selected node. */
     public void removeCurrentNode() {
-        TreePath currentSelection = tree.getSelectionPath();
-        if (currentSelection != null) {
-            DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)
-                         (currentSelection.getLastPathComponent());
-            MutableTreeNode parent = (MutableTreeNode)(currentNode.getParent());
-            if (parent != null) {
-                treeModel.removeNodeFromParent(currentNode);
-                return;
-            }
-        } 
+    	TreePath currentSelection = tree.getSelectionPath();
+    	if( currentSelection != null ) {
+    		GTreeNode currentNode = (GTreeNode) currentSelection.getLastPathComponent();
+    		treeModel.removeNodeFromParent(currentNode);
+    	}
     }
 
     /** Add child to the root node. */
@@ -173,7 +143,7 @@ public class GTree extends JPanel {
     }
 
     /** the mouse listeners for the tree nodes */
-    class MyListener extends MouseAdapter {
+    private class TreeListener extends MouseAdapter {
     	@Override
     	public void mousePressed(MouseEvent e) {
     		int selRow = tree.getRowForLocation(e.getX(), e.getY());
@@ -195,10 +165,10 @@ public class GTree extends JPanel {
     }
 
     /** Renderer for the tree */
-    class MyRenderer extends DefaultTreeCellRenderer {
+    private class CellRenderer extends DefaultTreeCellRenderer {
     	private static final long serialVersionUID = 1L;
 
-    	public MyRenderer() {
+    	public CellRenderer() {
     		super();
     	}
 

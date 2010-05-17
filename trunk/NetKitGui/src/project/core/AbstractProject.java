@@ -35,4 +35,6 @@ public interface AbstractProject {
 	public void setName(String projectName);
 
 	public void setDirectory(String string);
+	
+	public String getLabConfFile();
 }

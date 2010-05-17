@@ -20,7 +20,7 @@ import project.gui.GuiManager;
 
 public class GTreeNode extends DefaultMutableTreeNode {
 	private static final long serialVersionUID = -2967012607835738947L;
-
+	
 	public static final int IFACE = 0;
 	public static final int RULE = 1;
 	public static final int ROUTE = 2;
@@ -38,18 +38,25 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	private static final Icon ruleIcon = new ImageIcon("data/images/16x16/rule_icon.png");
 	private static final Icon fileIcon = new ImageIcon("data/images/16x16/conffile_icon.png");
 
-	int type;
+	private int type;
 	
-	AbstractHost host;
-	AbstractInterface iface;
-	AbstractChain chain;
-	AbstractRule rule;
-	AbstractRoute route;
+	private AbstractHost host;
+	private AbstractInterface iface;
+	private AbstractChain chain;
+	private AbstractRule rule;
+	private AbstractRoute route;
 	
-	JPopupMenu menu;
+	private JPopupMenu menu;
 	
-	GTree tree;
+	private GTree tree;
 	
+	/**
+	 * Create a tree node of this type
+	 * 
+	 * @param obj (Object) the object that is represented by this tree node
+	 * @param type (int) the type of tree node (e.g. GTreeNode.FOLDER)
+	 * @param tree (GTree) the tree that contains this node
+	 */
 	public GTreeNode( Object obj, int type, GTree tree ) {
 		super();
 		
@@ -206,6 +213,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				}
 			});
 			menu.add(setPolicy);
+			JMenuItem deleteChain = new JMenuItem("Remove", new ImageIcon("data/images/16x16/delete_icon.png"));
+			deleteChain.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					chain.delete();
+					tree.removeCurrentNode();
+				}
+			});
+			menu.add(deleteChain);
 			break;
 		}
 	}
