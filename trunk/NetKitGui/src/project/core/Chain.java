@@ -49,7 +49,10 @@ public class Chain implements AbstractChain {
 
 	@Override
 	public AbstractRule getRule( String rule ) {
-		// TODO Auto-generated method stub
+		for( AbstractRule r : rules ) {
+			if( r.getName().equals( rule ) )
+				return r;
+		}
 		return null;
 	}
 
