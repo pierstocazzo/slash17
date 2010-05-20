@@ -124,7 +124,7 @@ public class Rule implements AbstractRule {
 		if( destPort != 0 )
 			rule += " --dport " + destPort;
 		if( !target.equals("") ) 
-			rule += " -j " + target;
+			rule += " -j " + target + "\n";
 		return rule;
 	}
 
