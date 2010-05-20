@@ -26,6 +26,12 @@ public class Rule implements AbstractRule {
 		
 		sourcePort = 0;
 		destPort = 0;
+		inputIface = "";
+		outputIface = "";
+		protocol = "";
+		target = "";
+		source = "";
+		destination = "";
 		
 		userRule = null;
 	}
@@ -103,22 +109,21 @@ public class Rule implements AbstractRule {
 			return userRule;
 		
 		rule = "iptables -A " + chain.getName();
-		if( source != null )
+		if( !source.equals("") )
 			rule += " -s " + source;
-		if( destination != null )
+		if( !destination.equals("") )
 			rule += " -d " + destination;
-		if( inputIface != null ) 
+		if( !inputIface.equals("") ) 
 			rule += " -i " + inputIface;
-		if( outputIface != null )
+		if( !outputIface.equals("") )
 			rule += " -o " + outputIface;
-		if( protocol != null ) {
+		if( !protocol.equals("") )
 			rule += " -p " + protocol;
-			if( sourcePort != 0 )
-				rule += " --sport " + sourcePort;
-			if( destPort != 0 )
-				rule += " --dport " + destPort;
-		}
-		if( target != null ) 
+		if( sourcePort != 0 )
+			rule += " --sport " + sourcePort;
+		if( destPort != 0 )
+			rule += " --dport " + destPort;
+		if( !target.equals("") ) 
 			rule += " -j " + target;
 		return rule;
 	}

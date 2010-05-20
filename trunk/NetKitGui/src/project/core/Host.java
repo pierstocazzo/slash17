@@ -177,22 +177,25 @@ public class Host implements AbstractHost {
 		String text = "";
 		text = "# '" + name + ".startup' created by NetKit GUI\n\n";
 		
+		text += "# Interfaces configuration\n";
 		for( AbstractInterface iface : interfaces ) {
 			text += iface.getConfCommand();
 		}
-		text += "\n";
+		text += "\n\n";
 		
+		text += "# Routing configuration\n";
 		for( AbstractRoute route : routes ) {
 			text += route.getConfCommand();
 		}
-		text += "\n";
+		text += "\n\n";
 		
+		text += "# Firewalling configuration\n";
 		for( AbstractChain chain : chains ) {
 			text += chain.getConfCommand();
 			for( AbstractRule rule : chain.getRules() ) {
 				text += rule.getRule();
 			}
-			text += "\n";
+			text += "\n\n";
 		}
 		
 		return text;

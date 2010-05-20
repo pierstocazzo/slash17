@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import project.common.IpAddress;
 import project.core.AbstractChain;
 import project.core.AbstractHost;
 import project.core.AbstractRule;
@@ -195,21 +194,16 @@ public class IptablesDialog extends JDialog {
 				String out = outField.getText();
 				String target = targetField.getText();
 				
-				if( !src.equals("") && !dst.equals("") && (src.matches(IpAddress.netRx) || src.matches(IpAddress.ipRx)) &&
-					(dst.matches(IpAddress.netRx) || dst.matches(IpAddress.ipRx)) ) {
-					rule.setSource(src);
-					rule.setDestination(dst);
-					rule.setSourcePort(Integer.parseInt(sport));
-					rule.setDestPort(Integer.parseInt(dport));
-					rule.setInputIface(in);
-					rule.setOutputIface(out);
-					rule.setProtocol(prot);
-					rule.setTarget(target);
-					dispose();
-				} else {
-					label.setText("Format incorrect. Correct example: 10.0.0.0/8");
-					repaint();
-				}
+				rule.setSource(src);
+				rule.setDestination(dst);
+				rule.setSourcePort(Integer.parseInt(sport));
+				rule.setDestPort(Integer.parseInt(dport));
+				rule.setInputIface(in);
+				rule.setOutputIface(out);
+				rule.setProtocol(prot);
+				rule.setTarget(target);
+				
+				dispose();
 			}
 		});
 		
