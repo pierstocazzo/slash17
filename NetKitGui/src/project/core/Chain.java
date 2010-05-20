@@ -82,6 +82,7 @@ public class Chain implements AbstractChain {
 	public String getConfCommand() {
 		String command = "";
 		command += "iptables -N " + name + "\n";
+		command += "iptables -A " + name + " -P " + policy + "\n";
 		return command;
 	}
 
