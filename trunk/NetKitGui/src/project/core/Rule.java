@@ -102,7 +102,7 @@ public class Rule implements AbstractRule {
 		if( userRule != null )
 			return userRule;
 		
-		rule = "iptables -A " + chain;
+		rule = "iptables -A " + chain.getName();
 		if( source != null )
 			rule += " -s " + source;
 		if( destination != null )
