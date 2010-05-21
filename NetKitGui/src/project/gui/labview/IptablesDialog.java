@@ -18,9 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import project.core.AbstractChain;
-import project.core.AbstractHost;
-import project.core.AbstractRule;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.components.AbstractChain;
+import project.core.nodes.components.AbstractRule;
 import project.gui.GuiManager;
 
 public class IptablesDialog extends JDialog {

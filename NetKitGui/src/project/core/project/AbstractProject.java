@@ -1,6 +1,10 @@
-package project.core;
+package project.core.project;
 
 import java.util.Collection;
+
+import project.core.nodes.AbstractCollisionDomain;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.AbstractLink;
 
 public interface AbstractProject {
 	

@@ -7,7 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import project.core.AbstractHost;
+import project.core.nodes.AbstractHost;
 import project.gui.GuiManager;
 
 public class FileDialog extends JDialog {

@@ -1,4 +1,7 @@
-package project.core;
+package project.core.nodes;
+
+import project.core.nodes.components.AbstractInterface;
+import project.core.nodes.components.Interface;
 
 public class Link implements AbstractLink {
 
@@ -16,7 +19,7 @@ public class Link implements AbstractLink {
 	 * @param hostInterface
 	 * @param collisionDomain
 	 */
-	Link( AbstractInterface hostInterface, AbstractCollisionDomain collisionDomain ) {
+	public Link( AbstractInterface hostInterface, AbstractCollisionDomain collisionDomain ) {
 		this.hostInterface = (Interface) hostInterface;
 		this.collisionDomain = (CollisionDomain) collisionDomain;
 	}

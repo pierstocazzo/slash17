@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import project.core.AbstractCollisionDomain;
+import project.core.nodes.AbstractCollisionDomain;
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.nodes.PImage;

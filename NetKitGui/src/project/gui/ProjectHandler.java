@@ -8,8 +8,8 @@ import java.io.PrintWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import project.core.AbstractHost;
-import project.core.AbstractProject;
+import project.core.nodes.AbstractHost;
+import project.core.project.AbstractProject;
 
 public class ProjectHandler {
 

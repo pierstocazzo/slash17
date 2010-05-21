@@ -1,4 +1,4 @@
-package project.core;
+package project.core.util;
 
 import java.io.Serializable;
 

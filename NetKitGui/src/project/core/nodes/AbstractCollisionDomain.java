@@ -1,4 +1,6 @@
-package project.core;
+package project.core.nodes;
+
+import project.core.nodes.components.AbstractInterface;
 
 public interface AbstractCollisionDomain {
 

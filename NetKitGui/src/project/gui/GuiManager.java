@@ -11,7 +11,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
 import project.common.ItemType;
-import project.core.AbstractProject;
+import project.core.project.AbstractProject;
 import project.gui.labview.ConfigurationPanel;
 
 public class GuiManager {

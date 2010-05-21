@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
-import project.core.AbstractProject;
+import project.core.project.AbstractProject;
 import project.gui.GuiManager;
 
 public class Shell {

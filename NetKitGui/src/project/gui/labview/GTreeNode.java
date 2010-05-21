@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import project.core.AbstractChain;
-import project.core.AbstractHost;
-import project.core.AbstractInterface;
-import project.core.AbstractRoute;
-import project.core.AbstractRule;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.components.AbstractChain;
+import project.core.nodes.components.AbstractInterface;
+import project.core.nodes.components.AbstractRoute;
+import project.core.nodes.components.AbstractRule;
 import project.gui.GuiManager;
 
 public class GTreeNode extends DefaultMutableTreeNode {

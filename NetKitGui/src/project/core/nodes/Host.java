@@ -1,8 +1,15 @@
-package project.core;
+package project.core.nodes;
 
 import java.util.ArrayList;
 
 import project.common.ItemType;
+import project.core.nodes.components.AbstractChain;
+import project.core.nodes.components.AbstractInterface;
+import project.core.nodes.components.AbstractRoute;
+import project.core.nodes.components.AbstractRule;
+import project.core.nodes.components.Chain;
+import project.core.nodes.components.Interface;
+import project.core.nodes.components.Route;
 
 
 /**
@@ -30,7 +37,7 @@ public class Host implements AbstractHost {
 	 * @param name
 	 * @param type
 	 */
-	Host(String name, ItemType type) {
+	public Host(String name, ItemType type) {
 		this.name = name;
 		this.type = type;
 		
