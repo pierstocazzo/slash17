@@ -63,65 +63,24 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		this.type = type;
 		this.tree = tree;
 		
-		switch( type ) {
+		createNode(obj);
+	}
+
+	private void createNode( Object obj ) {
+		menu = new JPopupMenu();
+		
+		switch (type) {
 		case PROJECTFOLDER:
 			setUserObject(obj);
 			break;
 			
-		case FOLDER:
-			host = (AbstractHost) obj;
-			setUserObject(host.getName());
-			break;
-			
-		case FILE:
-			if( obj instanceof AbstractHost ) {
-				host = (AbstractHost) obj;
-				setUserObject(host.getName() + ".startup");
-			} else {
-				setUserObject(obj);
-			}
-			break;
-			
 		case IFACE:
+			/* set the node */
 			iface = (AbstractInterface) obj;
 			// someting like "eth0 : cd1"
 			setUserObject(iface.getName() + " : " + iface.getCollisionDomain().getName());
-			break;
 			
-		case ROUTER:
-			host = (AbstractHost) obj;
-			setUserObject(host.getName());
-			break;
-			
-		case ROUTE:
-			route = (AbstractRoute) obj;
-			setUserObject(route.getNet());
-			break;
-			
-		case FIREWALL:
-			host = (AbstractHost) obj;
-			setUserObject(host.getName());
-			break;
-			
-		case CHAIN:
-			chain = (AbstractChain) obj;
-			setUserObject(chain.getName());
-			break;	
-			
-		case RULE:
-			rule = (AbstractRule) obj;
-			setUserObject(rule.getName());
-			break;
-		}
-		
-		createPopupMenu();
-	}
-
-	private void createPopupMenu() {
-		menu = new JPopupMenu();
-		
-		switch (type) {
-		case IFACE:
+			/* create his popup menu */
 			JMenuItem set = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
 		    set.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -132,6 +91,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		    break;
 		    
 		case FILE:
+			/* set the node */
+			if( obj instanceof AbstractHost ) {
+				host = (AbstractHost) obj;
+				setUserObject(host.getName() + ".startup");
+			} else {
+				setUserObject(obj);
+			}
+			/* create his popup menu */
 			JMenuItem view = new JMenuItem("View file", new ImageIcon("data/images/16x16/viewfile_icon.png"));
 		    view.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -142,6 +109,11 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case RULE:
+			/* set the node */
+			rule = (AbstractRule) obj;
+			setUserObject(rule.getName());
+			
+			/* create his popup menu */
 			JMenuItem editRule = new JMenuItem("Set rule", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -171,6 +143,11 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case ROUTE:
+			/* set the node */
+			route = (AbstractRoute) obj;
+			setUserObject(route.getNet());
+			
+			/* create his popup menu */
 			JMenuItem editRoute = new JMenuItem("Set route", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -189,6 +166,10 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case ROUTER:
+			/* set the node */
+			host = (AbstractHost) obj;
+			setUserObject(host.getName());
+			/* create his popup menu */
 			JMenuItem addRoute = new JMenuItem("Add route", new ImageIcon("data/images/16x16/add_icon.png"));
 			addRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -199,6 +180,11 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case FIREWALL:
+			/* set the node */
+			host = (AbstractHost) obj;
+			setUserObject(host.getName());
+			
+			/* create his popup menu */
 			JMenuItem addChain = new JMenuItem("Add Chain", new ImageIcon("data/images/16x16/add_icon.png"));
 			addChain.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -210,6 +196,11 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case CHAIN:
+			/* set the node */
+			chain = (AbstractChain) obj;
+			setUserObject(chain.getName());
+			
+			/* create his popup menu */
 			JMenuItem addRule = new JMenuItem("Add rule", new ImageIcon("data/images/16x16/add_icon.png"));
 			addRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -232,6 +223,12 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				}
 			});
 			menu.add(deleteChain);
+			break;
+			
+		case FOLDER:
+			/* set the node */
+			host = (AbstractHost) obj;
+			setUserObject(host.getName());
 			break;
 		}
 	}
@@ -328,6 +325,40 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		case ROUTE:
 			new RouteDialog( route );
 			break;
+		}
+	}
+
+	public void goDown() {
+		if( type == RULE ) {
+			GTreeNode parent = (GTreeNode) this.getParent();
+			GTreeNode next = (GTreeNode) parent.getChildAfter(this);
+			if( next != null ) {
+				rule.getChain().ruleDown(rule);
+				int index = parent.getIndex(this);
+				parent.remove(index);
+				parent.remove(index);
+				tree.getTreeModel().insertNodeInto(this, parent, index);
+				tree.getTreeModel().insertNodeInto(next, parent, index);
+				tree.getTreeModel().nodeStructureChanged(parent);
+				tree.selectNode(this);
+			}
+		}
+	}
+
+	public void goUp() {
+		if( type == RULE ) {
+			GTreeNode parent = (GTreeNode) this.getParent();
+			GTreeNode previous = (GTreeNode) parent.getChildBefore(this);
+			if( previous != null ) {
+				rule.getChain().ruleUp(rule);
+				int previousIndex = parent.getIndex(previous);
+				parent.remove(previousIndex);
+				parent.remove(previousIndex);
+				tree.getTreeModel().insertNodeInto(previous, parent, previousIndex);
+				tree.getTreeModel().insertNodeInto(this, parent, previousIndex);
+				tree.getTreeModel().nodeStructureChanged(parent);
+				tree.selectNode(this);
+			}
 		}
 	}
 }

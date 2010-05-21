@@ -86,4 +86,24 @@ public class Chain implements AbstractChain {
 		return command;
 	}
 
+	@Override
+	public void ruleDown(AbstractRule rule) {
+		int index = rules.indexOf(rule);
+		AbstractRule nextRule = rules.get(index + 1);
+		rules.remove(index);
+		rules.remove(index);
+		rules.add(index, rule);
+		rules.add(index, nextRule);
+	}
+
+	@Override
+	public void ruleUp(AbstractRule rule) {
+		int index = rules.indexOf(rule) - 1;
+		AbstractRule previousRule = rules.get(index);
+		rules.remove(index);
+		rules.remove(index);
+		rules.add(index, previousRule);
+		rules.add(index, rule);
+	}
+
 }

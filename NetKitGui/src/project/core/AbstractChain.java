@@ -25,4 +25,8 @@ public interface AbstractChain {
 	public void delete();
 
 	public String getConfCommand();
+
+	public void ruleUp(AbstractRule rule);
+
+	public void ruleDown(AbstractRule rule);
 }
