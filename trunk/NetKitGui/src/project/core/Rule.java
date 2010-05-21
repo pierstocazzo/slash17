@@ -106,7 +106,7 @@ public class Rule implements AbstractRule {
 
 	public String getRule() {
 		if( userRule != null )
-			return userRule;
+			return userRule + "\n";
 		
 		rule = "iptables -A " + chain.getName();
 		if( !source.equals("") )
@@ -124,8 +124,8 @@ public class Rule implements AbstractRule {
 		if( destPort != 0 )
 			rule += " --dport " + destPort;
 		if( !target.equals("") ) 
-			rule += " -j " + target + "\n";
-		return rule;
+			rule += " -j " + target;
+		return rule + "\n";
 	}
 
 	public void setRule(String rule) {

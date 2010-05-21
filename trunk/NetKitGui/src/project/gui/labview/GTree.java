@@ -37,6 +37,30 @@ public class GTree extends JPanel {
 		
 		Dimension size = new Dimension(20, 20);
 		
+		JButton up = new JButton(new ImageIcon("data/images/16x16/up_icon.png"));
+		up.setPreferredSize(size);
+		up.setToolTipText("Collapse All");
+		up.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GTreeNode node = getSelectedNode();
+				if( node != null ) {
+					node.goUp();
+				}
+			}
+		});
+		
+		JButton down = new JButton(new ImageIcon("data/images/16x16/down_icon.png"));
+		down.setPreferredSize(size);
+		down.setToolTipText("Collapse All");
+		down.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GTreeNode node = getSelectedNode();
+				if( node != null ) {
+					node.goDown();
+				}
+			}
+		});
+		
 		JButton coll = new JButton(new ImageIcon("data/images/16x16/collapse_icon.png"));
 		coll.setPreferredSize(size);
 		coll.setToolTipText("Collapse All");
@@ -57,6 +81,9 @@ public class GTree extends JPanel {
 		
 		JToolBar buttonsBar = new JToolBar();
 		buttonsBar.setFloatable(false);
+		buttonsBar.add(up);
+		buttonsBar.add(down);
+		buttonsBar.addSeparator();
 		buttonsBar.add(coll);
 		buttonsBar.add(exp);
 		
@@ -105,32 +132,65 @@ public class GTree extends JPanel {
     	}
     }
     
-    /** set the name of this tree's root node */
+    /** set the name of this tree's root node
+     */
     public void setName( String name ) {
 		rootNode.setUserObject( name );
 	}
 
-    /** Remove all nodes except the root node. */
+    /** Remove all nodes except the root node.
+     */
     public void clear() {
         rootNode.removeAllChildren();
         treeModel.reload();
     }
-
-    /** Remove the currently selected node. */
-    public void removeCurrentNode() {
+    
+    /**
+     * Return the current selected node, or null if nothing is selected
+     * 
+     * @return GTreeNode
+     */
+    public GTreeNode getSelectedNode() {
     	TreePath currentSelection = tree.getSelectionPath();
-    	if( currentSelection != null ) {
-    		GTreeNode currentNode = (GTreeNode) currentSelection.getLastPathComponent();
-    		treeModel.removeNodeFromParent(currentNode);
-    	}
+    	GTreeNode selectedNode = null;
+    	if( currentSelection != null )
+    		selectedNode = (GTreeNode) currentSelection.getLastPathComponent();
+    	return selectedNode;
+    }
+    
+    /**
+     * Select this node
+     * 
+     * @param node 
+     */
+    public void selectNode( GTreeNode node ) {
+    	TreePath path = new TreePath(node.getPath());
+    	tree.setSelectionPath(path);
     }
 
-    /** Add child to the root node. */
+    /** Remove the currently selected node.
+     */
+    public void removeCurrentNode() {
+   		treeModel.removeNodeFromParent(getSelectedNode());
+    }
+
+    /** Add child to the root node.
+     * 
+     * @param child
+     * @param type
+     * @return GTreeNode - the added node
+     */
     public GTreeNode addNode( Object child, int type ) {
         return addNode( rootNode, child, type );
     }
 
-    /** Add child to the parent node. */
+    /** Add child to the parent node.
+     * 
+     * @param parent
+     * @param obj
+     * @param type
+     * @return GTreeNode - the added node
+     */
     public GTreeNode addNode( GTreeNode parent, Object obj, int type ) {
     	GTreeNode node = new GTreeNode(obj, type, this);
     	
@@ -141,8 +201,17 @@ public class GTree extends JPanel {
         
     	return node;
     }
+    
+    public DefaultTreeModel getTreeModel() {
+		return treeModel;
+	}
+    
+    
 
-    /** the mouse listeners for the tree nodes */
+    /** the mouse listeners for the tree nodes
+     * 
+     * @author sal
+     */
     private class TreeListener extends MouseAdapter {
     	@Override
     	public void mousePressed(MouseEvent e) {
