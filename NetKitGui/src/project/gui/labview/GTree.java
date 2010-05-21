@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -39,7 +40,7 @@ public class GTree extends JPanel {
 		
 		JButton up = new JButton(new ImageIcon("data/images/16x16/up_icon.png"));
 		up.setPreferredSize(size);
-		up.setToolTipText("Collapse All");
+		up.setToolTipText("Bring the selected node up");
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GTreeNode node = getSelectedNode();
@@ -51,7 +52,7 @@ public class GTree extends JPanel {
 		
 		JButton down = new JButton(new ImageIcon("data/images/16x16/down_icon.png"));
 		down.setPreferredSize(size);
-		down.setToolTipText("Collapse All");
+		down.setToolTipText("Bring the selected node down");
 		down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GTreeNode node = getSelectedNode();
@@ -98,10 +99,12 @@ public class GTree extends JPanel {
         tree.setEditable(false);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree.addMouseListener( new TreeListener() );
-        tree.setCellRenderer( new CellRenderer() );
+        tree.setCellRenderer( new TreeNodeRenderer() );
 
         JScrollPane scrollPane = new JScrollPane(tree);
-        add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
+        
+        ToolTipManager.sharedInstance().registerComponent(tree);
     }
     
     public void collapseAll() {
@@ -209,35 +212,26 @@ public class GTree extends JPanel {
     
 
     /** the mouse listeners for the tree nodes
-     * 
-     * @author sal
      */
     private class TreeListener extends MouseAdapter {
     	@Override
     	public void mousePressed(MouseEvent e) {
-    		int selRow = tree.getRowForLocation(e.getX(), e.getY());
-    		if( selRow < 0 )
-    			return;
-
-    		// get the selected node
-    		TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
-    		tree.setSelectionPath(selPath); 
-    		
-			GTreeNode node = (GTreeNode) selPath.getLastPathComponent();
-
-			if (e.isPopupTrigger())
-				node.showMenu(e);
-			
-			if( e.getClickCount() >= 2 )
-				node.showConfDialog();
+			GTreeNode node = getSelectedNode();
+			if( node != null ) {
+				if (e.isPopupTrigger())
+					node.showMenu(e);
+				
+				if( e.getClickCount() >= 2 )
+					node.viewNode();
+			}
 		}
     }
 
     /** Renderer for the tree */
-    private class CellRenderer extends DefaultTreeCellRenderer {
+    private class TreeNodeRenderer extends DefaultTreeCellRenderer {
     	private static final long serialVersionUID = 1L;
 
-    	public CellRenderer() {
+    	public TreeNodeRenderer() {
     		super();
     	}
 
@@ -248,6 +242,7 @@ public class GTree extends JPanel {
 
     		GTreeNode node = (GTreeNode) value;
     		setIcon( node.getIcon() );
+    		setToolTipText( node.getInfo() );
 
     		return this;
     	}
