@@ -1,6 +1,16 @@
 package project.core;
 
 import project.common.ItemType;
+import project.core.nodes.AbstractCollisionDomain;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.AbstractLink;
+import project.core.nodes.CollisionDomain;
+import project.core.nodes.Host;
+import project.core.nodes.Link;
+import project.core.nodes.components.AbstractInterface;
+import project.core.project.AbstractProject;
+import project.core.project.Project;
+import project.core.util.NameGenerator;
 
 public class Factory implements AbstractFactory {
 

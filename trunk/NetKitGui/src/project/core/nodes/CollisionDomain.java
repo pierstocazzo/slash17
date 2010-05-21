@@ -1,8 +1,9 @@
-package project.core;
+package project.core.nodes;
 
 import java.util.ArrayList;
 
 import project.common.IpAddress;
+import project.core.nodes.components.AbstractInterface;
 
 
 /** 
@@ -49,7 +50,7 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	 * 
 	 * @param name - (String) collision domain's name
 	 */
-	CollisionDomain( String name ) {
+	public CollisionDomain( String name ) {
 		this.name = name;
 		this.hostsInterfaces = new ArrayList<AbstractInterface>();
 	}

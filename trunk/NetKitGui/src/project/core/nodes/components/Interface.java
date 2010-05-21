@@ -1,9 +1,13 @@
 /**
  * 
  */
-package project.core;
+package project.core.nodes.components;
 
 import project.common.IpAddress;
+import project.core.nodes.AbstractCollisionDomain;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.CollisionDomain;
+import project.core.nodes.Host;
 
 /**
  * Class representing a network interface 
@@ -67,7 +71,7 @@ public class Interface implements AbstractInterface {
 	 * @param collisionDomain - (String) Interface's collision domain (e.g. CD1)
 	 * @param host - (String) host (e.g. r1)
 	 */
-	Interface( String id, CollisionDomain collisionDomain, Host host ) {
+	public Interface( String id, CollisionDomain collisionDomain, Host host ) {
 		this.name = id;
 		this.collisionDomain = collisionDomain;
 		this.host = host;

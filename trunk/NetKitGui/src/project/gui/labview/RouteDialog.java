@@ -19,8 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import project.common.IpAddress;
-import project.core.AbstractHost;
-import project.core.AbstractRoute;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.components.AbstractRoute;
 import project.gui.GuiManager;
 
 public class RouteDialog extends JDialog {

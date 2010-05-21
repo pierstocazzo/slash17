@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import project.common.IpAddress;
-import project.core.AbstractInterface;
+import project.core.nodes.components.AbstractInterface;
 import project.gui.GuiManager;
 
 public class InterfaceDialog extends JDialog {

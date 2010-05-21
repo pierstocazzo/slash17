@@ -1,8 +1,11 @@
-package project.core;
+package project.core.nodes;
 
 import java.util.ArrayList;
 
 import project.common.ItemType;
+import project.core.nodes.components.AbstractChain;
+import project.core.nodes.components.AbstractInterface;
+import project.core.nodes.components.AbstractRoute;
 
 public interface AbstractHost {
 

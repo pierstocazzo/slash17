@@ -1,6 +1,10 @@
 package project.core;
 
 import project.common.ItemType;
+import project.core.nodes.AbstractCollisionDomain;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.AbstractLink;
+import project.core.project.AbstractProject;
 
 public interface AbstractFactory {
 

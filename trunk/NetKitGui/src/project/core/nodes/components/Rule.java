@@ -1,4 +1,5 @@
-package project.core;
+package project.core.nodes.components;
+
 
 
 public class Rule implements AbstractRule {

@@ -1,6 +1,8 @@
-package project.core;
+package project.core.nodes.components;
 
 import java.util.ArrayList;
+
+import project.core.nodes.AbstractHost;
 
 public interface AbstractChain {
 

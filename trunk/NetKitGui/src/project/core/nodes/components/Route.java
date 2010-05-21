@@ -1,4 +1,6 @@
-package project.core;
+package project.core.nodes.components;
+
+import project.core.nodes.AbstractHost;
 
 public class Route implements AbstractRoute {
 

@@ -1,7 +1,12 @@
-package project.core;
+package project.core.project;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import project.core.nodes.AbstractCollisionDomain;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.AbstractLink;
+import project.core.nodes.components.AbstractInterface;
 
 /** Class representig a netkit project
  * 
@@ -42,7 +47,7 @@ public class Project implements AbstractProject {
 	 * @param name (String) - the project's name
 	 * @param directory (String) - the project's directory
 	 */
-	Project( String directory, String name ) {
+	public Project( String directory, String name ) {
 		hosts = new ArrayList<AbstractHost>();
 		collisionDomains = new ArrayList<AbstractCollisionDomain>();
 		this.directory = directory;

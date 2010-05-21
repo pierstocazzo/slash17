@@ -2,9 +2,9 @@ package project.gui;
 
 import project.common.ItemType;
 import project.core.AbstractFactory;
-import project.core.AbstractHost;
-import project.core.AbstractLink;
-import project.core.AbstractProject;
+import project.core.nodes.AbstractHost;
+import project.core.nodes.AbstractLink;
+import project.core.project.AbstractProject;
 import edu.umd.cs.piccolo.PLayer;
 
 public class GFactory {
