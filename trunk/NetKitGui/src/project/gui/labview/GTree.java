@@ -216,6 +216,8 @@ public class GTree extends JPanel {
     private class TreeListener extends MouseAdapter {
     	@Override
     	public void mousePressed(MouseEvent e) {
+    		TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+			tree.setSelectionPath(path);
 			GTreeNode node = getSelectedNode();
 			if( node != null ) {
 				if (e.isPopupTrigger())
