@@ -69,6 +69,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	private void createNode( Object obj ) {
 		menu = new JPopupMenu();
 		
+		JMenuItem view = new JMenuItem("View", new ImageIcon("data/images/16x16/viewfile_icon.png"));
+	    view.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), getInfo(), 
+						"View..", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
 		switch (type) {
 		case PROJECTFOLDER:
 			setUserObject(obj);
@@ -81,13 +89,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			setUserObject(iface.getName() + " : " + iface.getCollisionDomain().getName());
 			
 			/* create his popup menu */
-			JMenuItem set = new JMenuItem("Set interface", new ImageIcon("data/images/16x16/configure_icon.png"));
-		    set.addActionListener(new ActionListener() {
+			menu.add(view);
+			JMenuItem configureIface = new JMenuItem("Configure", new ImageIcon("data/images/16x16/configure_icon.png"));
+		    configureIface.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new InterfaceDialog(iface);
 				}
 			});
-		    menu.add(set);
+		    menu.add(configureIface);
 		    break;
 		    
 		case FILE:
@@ -99,13 +108,13 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				setUserObject(obj);
 			}
 			/* create his popup menu */
-			JMenuItem view = new JMenuItem("View file", new ImageIcon("data/images/16x16/viewfile_icon.png"));
-		    view.addActionListener(new ActionListener() {
+			JMenuItem viewFile = new JMenuItem("View file", new ImageIcon("data/images/16x16/viewfile_icon.png"));
+			viewFile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new FileDialog(host);
 				}
 			});
-		    menu.add(view);
+		    menu.add(viewFile);
 			break;
 			
 		case RULE:
@@ -114,14 +123,28 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			setUserObject(rule.getName());
 			
 			/* create his popup menu */
-			JMenuItem editRule = new JMenuItem("Set rule", new ImageIcon("data/images/16x16/configure_icon.png"));
+			menu.add(view);
+			JMenuItem renameRule = new JMenuItem("Rename", new ImageIcon("data/images/16x16/text_icon.png"));
+			renameRule.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String r = (String) JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), 
+							"New name of this rule:", "Rename Rule", JOptionPane.PLAIN_MESSAGE, 
+							new ImageIcon("data/images/big/fw.png"), null, rule.getName() );
+					if( r != null && !r.equals("") ) {
+						rule.setName(r);
+						setUserObject(r);
+					}
+				}
+			});
+			menu.add(renameRule);
+			JMenuItem editRule = new JMenuItem("Edit", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					new IptablesDialog(rule);
 				}
 			});
 			menu.add(editRule);
-			JMenuItem manualeditRule = new JMenuItem("Manual set", new ImageIcon("data/images/16x16/configure_icon.png"));
+			JMenuItem manualeditRule = new JMenuItem("Manual edit", new ImageIcon("data/images/16x16/configure_icon.png"));
 			manualeditRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String r = (String) JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), 
@@ -132,7 +155,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				}
 			});
 			menu.add(manualeditRule);
-			JMenuItem removeRule = new JMenuItem("Remove rule", new ImageIcon("data/images/16x16/remove_icon.png"));
+			JMenuItem removeRule = new JMenuItem("Remove", new ImageIcon("data/images/16x16/remove_icon.png"));
 			removeRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					rule.delete();
@@ -145,9 +168,10 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		case ROUTE:
 			/* set the node */
 			route = (AbstractRoute) obj;
-			setUserObject(route.getNet());
+			setUserObject(route.getNet() + " gw " + route.getGw());
 			
 			/* create his popup menu */
+			menu.add(view);
 			JMenuItem editRoute = new JMenuItem("Set route", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRoute.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -308,10 +332,11 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		return type;
 	}
 
-	public void showConfDialog() {
+	public void viewNode() {
 		switch (type) {
 		case IFACE:
-			new InterfaceDialog( iface );
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), getInfo(), 
+					"View..", JOptionPane.INFORMATION_MESSAGE);
 		    break;
 		    
 		case FILE:
@@ -319,15 +344,35 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			break;
 			
 		case RULE:
-			new IptablesDialog(rule);
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), getInfo(), 
+					"View..", JOptionPane.INFORMATION_MESSAGE);
 			break;
 			
 		case ROUTE:
-			new RouteDialog( route );
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), getInfo(), 
+					"View..", JOptionPane.INFORMATION_MESSAGE);
 			break;
 		}
 	}
 
+	public String getInfo() {
+		String s = "";
+		switch (type) {
+		case IFACE:
+			s = iface.getConfCommand();
+		    break;
+		    
+		case RULE:
+			s = rule.getRule();
+			break;
+			
+		case ROUTE:
+			s = route.getConfCommand();
+			break;
+		}
+		return s;
+	}
+	
 	public void goDown() {
 		if( type == RULE ) {
 			GTreeNode parent = (GTreeNode) this.getParent();

@@ -62,7 +62,7 @@ public class ConfigurationPanel extends JPanel {
 	
 	@Override
 	public Dimension getMinimumSize() {
-		return new Dimension(220, 400);
+		return new Dimension(250, 400);
 	}
 	
 	public void update() {
