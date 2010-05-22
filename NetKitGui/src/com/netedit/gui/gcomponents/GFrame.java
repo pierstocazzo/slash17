@@ -67,7 +67,7 @@ public class GFrame extends JFrame {
 	JToolBar verticalToolbar;
 	/** vertical tool bar button */
 	JButton router, firewall, pc, collisionDomain, server, 
-			nattedServer, area, tap, link, delete;
+			nattedServer, area, tap, link, delete, clear;
 	
 	/** state bar's components */
 	JLabel stateLabel;
@@ -252,6 +252,7 @@ public class GFrame extends JFrame {
 		tap = new GButton("Tap", "Add TAP interface", "data/images/22x22/tap_icon.png");
 		link = new GButton("Link", "Add a link", "data/images/22x22/link_icon.png");
 		delete = new GButton("Delete", "Delete a node", "data/images/22x22/delete_icon.png");
+		clear = new GButton("Clear All", "Clear all", "data/images/22x22/clear_icon.png");
 		
 		verticalToolbar.add( pc );
 		verticalToolbar.add( server );
@@ -264,6 +265,7 @@ public class GFrame extends JFrame {
 		verticalToolbar.add( link );
 		verticalToolbar.addSeparator();
 		verticalToolbar.add( delete );
+		verticalToolbar.add( clear );
 		
 		add( verticalToolbar, BorderLayout.WEST );
 	}
@@ -351,6 +353,7 @@ public class GFrame extends JFrame {
 		tap.addActionListener( new GActionListener(ActionType.addTap) );
 		area.addActionListener( new GActionListener(ActionType.addArea) );
 		delete.addActionListener( new GActionListener(ActionType.delete) );
+		clear.addActionListener( new GActionListener(ActionType.clear) );
 		
 		start.addActionListener( new GActionListener(ActionType.startLab) );
 		stop.addActionListener( new GActionListener(ActionType.stopLab) );

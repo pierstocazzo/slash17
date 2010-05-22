@@ -47,90 +47,73 @@ public class GActionListener implements ActionListener {
 		case newProject:
 			ProjectHandler.getInstance().newProject();
 			break;
-			
 		case openProject:
 			ProjectHandler.getInstance().openProject();
 			break;
-			
 		case saveProject:
 			ProjectHandler.getInstance().saveProject();
 			break;
-			
 		case startLab:
 			Shell.startLab( GuiManager.getInstance().getProject() );
 			break;
-			
 		case stopLab:
 			Shell.stopLab( GuiManager.getInstance().getProject(), true );
 			break;
-			
 		case addPc:
 			manager.adding(ItemType.PC);
 			break;
-			
 		case addRouter:
 			manager.adding(ItemType.ROUTER);
 			break;
-			
 		case addFirewall:
 			manager.adding(ItemType.FIREWALL);
 			break;
-			
 		case addArea:
 			manager.adding(ItemType.AREA);
 			break;
-			
 		case addCollisionDomain:
 			manager.adding(ItemType.COLLISIONDOMAIN);
 			break;
-			
 		case addTap:
 			manager.adding(ItemType.TAP);
 			break;
-			
 		case addLink:
 			manager.adding(ItemType.LINK);
 			break;
-			
 		case addNattedServer:
 			manager.adding(ItemType.NATTEDSERVER);
 			break;
-			
 		case addServer: 
 			manager.adding(ItemType.SERVER);
 			break;
 		case delete:
 			manager.deleting();
 			break;
-			
+		case clear:
+			manager.getCanvas().clear();
+			break;
 		case showInfo:
 			showInfo();
 			break;
-		
 		case showLicence:
 			showLicence();
 			break;
-			
 		case exportImage:
 			if( manager.getCanvas() != null ) 
 				manager.getCanvas().export();
 			break;
-		
 		case zoomIn:
 			if( manager.getCanvas() != null ) 
 				manager.getCanvas().zoomIn();
 			break;
-		
 		case zoomOut:
 			if( manager.getCanvas() != null ) 
 				manager.getCanvas().zoomOut();
 			break;
-			
 		case zoomOriginal:
 			if( manager.getCanvas() != null ) 
 				manager.getCanvas().zoomOriginal();
 			break;
-			
 		case exit:
 			manager.getFrame().closeApplication();
 			break;
@@ -203,7 +186,8 @@ public class GActionListener implements ActionListener {
 		addCollisionDomain,
 		addArea,
 		addTap,
-		delete,
+		delete, 
+		clear,
 		showInfo,
 		showLicence,
 		exportImage,

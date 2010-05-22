@@ -11,6 +11,7 @@ import javax.swing.JPopupMenu;
 
 import com.netedit.common.ItemType;
 import com.netedit.core.nodes.AbstractHost;
+import com.netedit.gui.GuiManager;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -144,6 +145,8 @@ public class GHost extends GNode {
 		}
 		
 		super.delete();
+		GuiManager.getInstance().getProject().removeHost( absHost );
+		GuiManager.getInstance().update();
 	}
 
 	public void removeLink(GLink gLink) {

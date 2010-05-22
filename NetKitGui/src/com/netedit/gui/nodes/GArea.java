@@ -133,6 +133,6 @@ public class GArea extends GNode {
 	}
 	
 	public void delete() {
-		layer.removeChild(this);
+		//TODO delete area
 	}
 }

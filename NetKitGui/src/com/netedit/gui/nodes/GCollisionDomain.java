@@ -10,6 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import com.netedit.core.nodes.AbstractCollisionDomain;
+import com.netedit.gui.GuiManager;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -126,6 +127,8 @@ public class GCollisionDomain extends GNode {
 			links.get(0).delete();
 		}
 		super.delete();
+		GuiManager.getInstance().getProject().removeCollisionDomain( absCollisionDomain );
+		GuiManager.getInstance().update();
 	}
 
 	public void removeLink(GLink gLink) {
