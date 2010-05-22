@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.geom.Point2D;
 
 import com.netedit.core.nodes.AbstractLink;
+import com.netedit.gui.GuiManager;
 
 
 import edu.umd.cs.piccolo.PLayer;
@@ -103,5 +104,7 @@ public class GLink extends GNode {
 		super.delete();
 		collisionDomain.removeLink( this );
 		host.removeLink( this );
+		GuiManager.getInstance().getProject().removeLink( absLink );
+		GuiManager.getInstance().update();
 	}
 }

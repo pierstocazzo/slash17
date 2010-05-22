@@ -47,7 +47,7 @@ public class GNode extends PNode {
 	}
 	
 	public void delete() {
-		this.removeFromParent();
+		removeFromParent();
 		if( text != null )
 			text.removeFromParent();
 	}

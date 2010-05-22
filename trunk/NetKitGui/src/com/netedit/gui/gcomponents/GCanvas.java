@@ -22,6 +22,7 @@ import com.netedit.gui.input.AddNodeInputHandler;
 import com.netedit.gui.input.DefaultInputHandler;
 import com.netedit.gui.input.DeleteInputHandler;
 import com.netedit.gui.input.MouseWheelZoomEventHandler;
+import com.netedit.gui.nodes.GArea;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GLink;
@@ -87,6 +88,23 @@ public class GCanvas extends PCanvas {
 		originalScale = getCamera().getViewScale();
 	}
 	
+	/** 
+	 * Clear the canvas deleting everything
+	 */
+	public void clear() {
+		for( Object node : nodeLayer.getAllNodes() )
+			if( node instanceof GNode ) 
+				((GNode) node).delete();
+		for( Object node : linkLayer.getAllNodes() )
+			if( node instanceof GNode ) 
+				((GNode) node).delete();
+		for( Object node : areaLayer.getAllNodes() )
+			if( node instanceof GNode ) 
+				((GNode) node).delete();
+
+		GuiManager.getInstance().update();
+	}
+	
 	public void zoomIn() {
 		zoom( 1.2 );
 	}
@@ -119,6 +137,9 @@ public class GCanvas extends PCanvas {
 		camera.scaleViewAboutPoint(delta, p.x, p.y);
 	}
 	
+	/**
+	 * Export the canvas as an image
+	 */
 	public void export() {
 		int width = getWidth();
 		int height = getHeight();
@@ -215,28 +236,26 @@ public class GCanvas extends PCanvas {
 	public void delete( GNode node ) {
 		try {
 			switch( node.getType() ) {
-			
 			case GNode.host:
-				GHost host = ((GHost) node);
+				GHost host = (GHost) node;
 				host.delete();
-				GuiManager.getInstance().getProject().removeHost( host.getLogic() );
 				break;
-				
 			case GNode.domain:
-				GCollisionDomain cd = ((GCollisionDomain) node);
-				GuiManager.getInstance().getProject().removeCollisionDomain( cd.getLogic() );
+				GCollisionDomain cd = (GCollisionDomain) node;
+				cd.delete();
 				break;
-				
 			case GNode.area:
-				// TODO delete area..
+				GArea area = (GArea) node;
+				area.delete();
 				break;
-				
 			case GNode.link:
-				GLink link = ((GLink) node);
-				GuiManager.getInstance().getProject().removeLink( link.getLogic() );
+				GLink link = (GLink) node;
+				link.delete();
+				break;
+			default:
+				node.delete();
 				break;
 			}
-			node.delete();
 				
 		} catch (Exception e) {
 			e.printStackTrace();
