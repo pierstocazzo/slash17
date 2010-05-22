@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -31,26 +32,67 @@ public class IptablesDialog extends JDialog {
 	AbstractHost host;
 	AbstractChain chain;
 	
-	public IptablesDialog( final AbstractRule rule ) {
+	boolean manualEdit;
+	
+	public IptablesDialog( final AbstractRule rule, boolean manual ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Rule" );
 		this.rule = rule;
 		this.chain = rule.getChain();
 		host = chain.getHost();
 		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		manualEdit = manual;
 		showDialog(null);
 	}
 	
-	public IptablesDialog( final AbstractRule rule, String message ) {
+	public IptablesDialog( final AbstractRule rule, String message, boolean manual ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Rule" );
 		this.rule = rule;
 		this.chain = rule.getChain();
 		host = chain.getHost();
 		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		manualEdit = manual;
 		showDialog(message);
 	}	
 
 	private void showDialog( String message ) {
 		setLayout(new BorderLayout());
+		
+		String chname = chain.getName();
+		
+		// show a input dialog
+		if( manualEdit ) {
+			String r;
+			
+			JOptionPane pane = new JOptionPane(message + 
+					"Add a rule to the " + chname + " chain of " + host.getName(), 
+					JOptionPane.PLAIN_MESSAGE,
+					JOptionPane.OK_CANCEL_OPTION, 
+					new ImageIcon("data/images/big/fw.png"), null, null);
+			
+			Dimension d = new Dimension(600, 150);
+			pane.setSize(d);
+			pane.setPreferredSize(d);
+			pane.setMinimumSize(d);
+			pane.setMaximumSize(d);
+
+			pane.setWantsInput(true);
+			pane.setInitialSelectionValue(rule.getRule());
+
+			JDialog dialog = pane.createDialog("Config");
+
+			pane.selectInitialValue();
+			dialog.setVisible(true);
+			dialog.dispose();
+			
+			r = (String) pane.getInputValue();
+
+			if( r != null && !r.equals("") ) {
+				rule.setRule(r);
+			}
+			return;
+		}
+		
+		// if manual edit is false...
 		
 		String src = rule.getSource();
 		String dst = rule.getDestination();
@@ -60,7 +102,6 @@ public class IptablesDialog extends JDialog {
 		String out = rule.getOutputIface();
 		String prot = rule.getProtocol();
 		String target = rule.getTarget();
-		String chname = chain.getName();
 		
 		final JLabel label;
 		if( message == null ) 

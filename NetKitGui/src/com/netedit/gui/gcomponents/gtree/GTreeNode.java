@@ -145,18 +145,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			JMenuItem editRule = new JMenuItem("Edit", new ImageIcon("data/images/16x16/configure_icon.png"));
 			editRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new IptablesDialog(rule);
+					new IptablesDialog(rule, false);
 				}
 			});
 			menu.add(editRule);
 			JMenuItem manualeditRule = new JMenuItem("Manual edit", new ImageIcon("data/images/16x16/configure_icon.png"));
 			manualeditRule.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String r = (String) JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), 
-							"Write the iptables rule to add", "Iptables Rule", JOptionPane.PLAIN_MESSAGE, 
-							new ImageIcon("data/images/big/fw.png"), null, rule.getRule() );
-					if( r != null && !r.equals("") )
-						rule.setRule(r);
+					new IptablesDialog(rule, true);
 				}
 			});
 			menu.add(manualeditRule);
@@ -366,13 +362,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		case IFACE:
 			s = iface.getConfCommand();
 		    break;
-		    
 		case RULE:
 			s = rule.getRule();
 			break;
-			
 		case ROUTE:
 			s = route.getConfCommand();
+			break;
+		default:
+			s = (String) getUserObject();
 			break;
 		}
 		return s;
