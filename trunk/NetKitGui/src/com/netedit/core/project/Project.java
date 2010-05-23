@@ -42,6 +42,9 @@ public class Project implements AbstractProject {
 	/** Collision Domains */
 	protected ArrayList<AbstractCollisionDomain> collisionDomains;
 	
+	/** the tap */
+	protected AbstractCollisionDomain tap;
+	
 	/**
 	 * Create a new empty netkit project with this name in this directory
 	 * 
@@ -68,7 +71,11 @@ public class Project implements AbstractProject {
 	 * @param cd (CollisionDomain) the new collisiondomain
 	 */
 	public void addCollisionDomain( AbstractCollisionDomain cd ) {
-		collisionDomains.add( cd );
+		if( cd.isTap() ) {
+			this.tap = cd;
+		} else {
+			collisionDomains.add( cd );
+		}
 	}
 	
 	/** Remove the host with this name

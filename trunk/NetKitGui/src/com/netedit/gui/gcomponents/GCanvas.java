@@ -27,6 +27,7 @@ import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GLink;
 import com.netedit.gui.nodes.GNode;
+import com.netedit.gui.nodes.GTap;
 
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
@@ -205,7 +206,14 @@ public class GCanvas extends PCanvas {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
 			GCollisionDomain cd = GFactory.getInstance().createCollisionDomain( pos.getX(), pos.getY(), nodeLayer );
 			GuiManager.getInstance().getProject().addCollisionDomain(cd.getLogic());
-			
+		} else if( nodeType == ItemType.TAP ) {
+			GTap tap = GFactory.getInstance().createTap( pos.getX(), pos.getY(), nodeLayer );
+			if( tap == null ) {
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
+						"Can't add more than one tap", "", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			GuiManager.getInstance().getProject().addCollisionDomain(tap.getLogic());
 		} else if( nodeType == ItemType.AREA ) {
 			GFactory.getInstance().createArea( pos.getX(), pos.getY(), areaLayer );
 			switchToDefaultHandler();

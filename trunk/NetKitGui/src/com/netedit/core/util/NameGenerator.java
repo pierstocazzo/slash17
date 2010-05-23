@@ -18,7 +18,7 @@ public class NameGenerator implements Serializable {
 	private static int tapNumber = 0;
 	
 	public static String getNextName( ItemType type ) {
-		String name = "";
+		String name = null;
 		
 		switch (type) {
 		case SERVER:
@@ -37,7 +37,10 @@ public class NameGenerator implements Serializable {
 			name = "R" + ++routerNumber;
 			break;
 		case TAP:
-			name = "TAP" + ++tapNumber;
+			if( tapNumber < 1 ) {
+				name = "TAP";
+				tapNumber++;
+			}
 			break;
 		case COLLISIONDOMAIN:
 			name = "CD" + ++cdNumber;

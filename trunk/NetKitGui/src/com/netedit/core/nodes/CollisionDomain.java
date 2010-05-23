@@ -140,4 +140,9 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	public void removeConnection(AbstractInterface hostInterface) {
 		this.hostsInterfaces.remove(hostInterface);
 	}
+
+	@Override
+	public boolean isTap() {
+		return false;
+	}
 }

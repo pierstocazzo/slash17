@@ -17,9 +17,8 @@ import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.nodes.PImage;
 
 public class GCollisionDomain extends GNode {
-
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -5648625660569308724L;
+	
 	protected PImage defaultImage;
 	protected PImage selectedImage;
 	protected PImage mouseOverImage;
@@ -51,7 +50,7 @@ public class GCollisionDomain extends GNode {
 		update();
 	}
 	
-	private void createPopupMenu() {
+	protected void createPopupMenu() {
 		menu = new JPopupMenu();
 		
 		JMenuItem delete = new JMenuItem("Delete", new ImageIcon("data/images/16x16/delete_icon.png"));
@@ -69,7 +68,7 @@ public class GCollisionDomain extends GNode {
 		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
 	}
 	
-	private void setImage( PImage newImage ) {
+	protected void setImage( PImage newImage ) {
 		if( currentImage != null ) {
 			removeChild(currentImage);
 		}
