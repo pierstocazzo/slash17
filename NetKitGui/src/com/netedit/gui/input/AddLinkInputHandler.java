@@ -9,6 +9,7 @@ import com.netedit.gui.gcomponents.GCanvas;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GNode;
+import com.netedit.gui.nodes.GTap;
 
 import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -18,6 +19,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	
 	GHost host;
 	GCollisionDomain collisionDomain;
+	GTap tap;
 	
 	GCanvas canvas;
 	
@@ -43,7 +45,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 			} else if( node.getType() == GNode.domain ) {
 				collisionDomain = (GCollisionDomain) node;
 				createLink();
-			}
+			} 
 			
 			if( host != null && collisionDomain != null ) {
 				canvas.addLink( host, collisionDomain );

@@ -2,6 +2,7 @@ package com.netedit.gui;
 
 import com.netedit.common.ItemType;
 import com.netedit.core.AbstractFactory;
+import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.nodes.AbstractLink;
 import com.netedit.core.project.AbstractProject;
@@ -9,6 +10,7 @@ import com.netedit.gui.nodes.GArea;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GLink;
+import com.netedit.gui.nodes.GTap;
 
 import edu.umd.cs.piccolo.PLayer;
 
@@ -81,6 +83,13 @@ public class GFactory {
 	
 	public GCollisionDomain createCollisionDomain( double x, double y, PLayer layer ) {
 		return new GCollisionDomain(x, y, absFactory.createCollisionDomain(), layer);
+	}
+	
+	public GTap createTap( double x, double y, PLayer layer ) {
+		AbstractCollisionDomain tap = absFactory.createTap();
+		if( tap != null )
+			return new GTap(x, y, tap, layer);
+		return null;
 	}
 	
 	public GLink createLink( GHost host, GCollisionDomain collisionDomain, PLayer layer ) {

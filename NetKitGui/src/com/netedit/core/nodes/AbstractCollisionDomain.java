@@ -13,4 +13,6 @@ public interface AbstractCollisionDomain {
 	public void addConnection( AbstractInterface hostInterface );
 	
 	public void removeConnection( AbstractInterface hostInterface );
+
+	public boolean isTap();
 }
