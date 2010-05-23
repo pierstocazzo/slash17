@@ -13,10 +13,7 @@ public interface AbstractFactory {
 	public AbstractHost createHost( ItemType type );
 	
 	/** create a collision domain */
-	public AbstractCollisionDomain createCollisionDomain();
-	
-	/** create the tap */
-	public AbstractCollisionDomain createTap();
+	public AbstractCollisionDomain createCollisionDomain( boolean isTap );
 	
 	/** connect this host to this collision domain */
 	public AbstractLink createLink( AbstractHost host, AbstractCollisionDomain collisionDomain ); 

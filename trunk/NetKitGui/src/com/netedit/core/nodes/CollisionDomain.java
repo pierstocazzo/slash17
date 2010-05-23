@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.netedit.common.IpAddress;
 import com.netedit.core.nodes.components.AbstractInterface;
 
-
-
 /** 
  * Class representing a collision domain
  * 
@@ -34,6 +32,9 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	/** hosts interfaces on this collision domain */
 	protected ArrayList<AbstractInterface> hostsInterfaces;
 	
+	/** a boolean indicating if this collision domain is the tap domain */
+	protected boolean isTap;
+	
 	/** 
 	 * Create a collision domain with a minimum ip addresses required
 	 * 
@@ -44,6 +45,7 @@ public class CollisionDomain implements AbstractCollisionDomain {
 		this.minIpAddr = minIpAddr;
 		this.name = name;
 		this.hostsInterfaces = new ArrayList<AbstractInterface>();
+		this.isTap = false;
 	}
 
 	/** 
@@ -54,15 +56,13 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	public CollisionDomain( String name ) {
 		this.name = name;
 		this.hostsInterfaces = new ArrayList<AbstractInterface>();
+		this.isTap = false;
 	}
 	
+	/** connect a host's interface to this domain */
 	public void addConnection( AbstractInterface hostInterface ) {
 		hostsInterfaces.add(hostInterface);
 	}
-	
-	/*******************************
-	 * Getter and setter methods
-	 ******************************/
 	
 	public String getArea() {
 		return area;
@@ -142,7 +142,12 @@ public class CollisionDomain implements AbstractCollisionDomain {
 	}
 
 	@Override
+	public void setIsTap( boolean isTap ) {
+		this.isTap = isTap;
+	}
+	
+	@Override
 	public boolean isTap() {
-		return false;
+		return isTap;
 	}
 }

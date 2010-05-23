@@ -7,7 +7,6 @@ import com.netedit.core.nodes.AbstractLink;
 import com.netedit.core.nodes.CollisionDomain;
 import com.netedit.core.nodes.Host;
 import com.netedit.core.nodes.Link;
-import com.netedit.core.nodes.Tap;
 import com.netedit.core.nodes.components.AbstractInterface;
 import com.netedit.core.project.AbstractProject;
 import com.netedit.core.project.Project;
@@ -30,16 +29,18 @@ public class Factory implements AbstractFactory {
 	}
 	
 	@Override
-	public AbstractCollisionDomain createCollisionDomain() {
-		return new CollisionDomain( NameGenerator.getNextName( ItemType.COLLISIONDOMAIN ) );
-	}
-
-	@Override
-	public AbstractCollisionDomain createTap() {
-		String name = NameGenerator.getNextName( ItemType.TAP );
-		if( name != null ) 
-			return new Tap(name);
-		return null;
+	public AbstractCollisionDomain createCollisionDomain( boolean isTap ) {
+		if( isTap ) {
+			String name = NameGenerator.getNextName( ItemType.TAP );
+			if( name != null ) {
+				AbstractCollisionDomain cd = new CollisionDomain(name);
+				cd.setIsTap(true);
+				return cd;
+			}
+			return null;
+		} else {
+			return new CollisionDomain( NameGenerator.getNextName( ItemType.COLLISIONDOMAIN ) );
+		}
 	}
 
 	@Override
