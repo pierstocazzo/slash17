@@ -182,7 +182,7 @@ public class Interface implements AbstractInterface {
 				ifconfig += "ifconfig " + name + " up # not configured \n";
 			}
 		} else {
-			ifconfig = "# " + name + " connected to TAP.";
+			ifconfig = "# " + name + " connected to TAP.\n";
 		}
 		return ifconfig;
 	}
