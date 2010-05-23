@@ -26,8 +26,8 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import com.netedit.gui.ProjectHandler;
-import com.netedit.gui.listeners.GActionListener;
-import com.netedit.gui.listeners.GActionListener.ActionType;
+import com.netedit.gui.input.GActionListener;
+import com.netedit.gui.input.GActionListener.ActionType;
 
 
 public class GFrame extends JFrame {
