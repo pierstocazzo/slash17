@@ -52,9 +52,6 @@ public class GNode extends PNode {
 			text.removeFromParent();
 	}
 	
-	public void showMenu( PInputEvent e ) {
-	}
-	
 	public int getType() {
 		return type;
 	}
@@ -75,11 +72,15 @@ public class GNode extends PNode {
 		this.selected = selected;
 	}
 	
+	public void showMenu( PInputEvent e ) {
+		// to override
+	}
+	
 	public void setMouseOver( boolean mouseOver ) {
-		
+		// to override
 	}
 	
 	public void setConnecting( boolean connecting ) {
-		
+		// to override
 	}
 }
