@@ -17,7 +17,6 @@ import com.netedit.gui.GFactory;
 import com.netedit.gui.GuiManager;
 import com.netedit.gui.input.HandlerManager;
 import com.netedit.gui.input.MouseWheelZoomEventHandler;
-import com.netedit.gui.nodes.GArea;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GLink;
@@ -42,15 +41,14 @@ public class GCanvas extends PCanvas {
 	
 	double originalScale;
 	
+	/** 
+	 * Create the canvas
+	 */
 	public GCanvas() {
-		this.frame = GuiManager.getInstance().getFrame();
-		this.confPanel = GuiManager.getInstance().getConfPanel();
-		this.handler = GuiManager.getInstance().getHandler();
+		frame = GuiManager.getInstance().getFrame();
+		confPanel = GuiManager.getInstance().getConfPanel();
+		handler = GuiManager.getInstance().getHandler();
 		
-		createCanvas();
-	}
-	
-	public void createCanvas() {
 		// init layers
 		nodeLayer = getLayer();
 		linkLayer = new PLayer();
@@ -163,10 +161,13 @@ public class GCanvas extends PCanvas {
 	}
 
 	public void addNode( ItemType nodeType, Point2D pos ) {
-		if( nodeType == ItemType.COLLISIONDOMAIN ) {
+		switch( nodeType ) {
+		case COLLISIONDOMAIN:
 			GCollisionDomain cd = GFactory.getInstance().createCollisionDomain( pos.getX(), pos.getY(), nodeLayer );
 			GuiManager.getInstance().getProject().addCollisionDomain(cd.getLogic());
-		} else if( nodeType == ItemType.TAP ) {
+			break;
+			
+		case TAP:
 			GCollisionDomain tap = GFactory.getInstance().createTap( pos.getX(), pos.getY(), nodeLayer );
 			if( tap == null ) {
 				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
@@ -174,12 +175,17 @@ public class GCanvas extends PCanvas {
 				return;
 			}
 			GuiManager.getInstance().getProject().addCollisionDomain(tap.getLogic());
-		} else if( nodeType == ItemType.AREA ) {
+			break;
+			
+		case AREA:
 			GFactory.getInstance().createArea( pos.getX(), pos.getY(), areaLayer );
 			handler.switchToDefaultHandler();
-		} else {
+			break;
+			
+		default:
 			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), nodeLayer );
 			GuiManager.getInstance().getProject().addHost(host.getLogic());
+			break;
 		}
 	}
 	
@@ -191,36 +197,6 @@ public class GCanvas extends PCanvas {
 		} else {
 			host.addLink(link);
 			collisionDomain.addLink(link);
-		}
-	}
-	
-	public void delete( GNode node ) {
-		try {
-			switch( node.getType() ) {
-			case GNode.host:
-				GHost host = (GHost) node;
-				host.delete();
-				break;
-			case GNode.domain:
-				GCollisionDomain cd = (GCollisionDomain) node;
-				cd.delete();
-				break;
-			case GNode.area:
-				GArea area = (GArea) node;
-				area.delete();
-				break;
-			case GNode.link:
-				GLink link = (GLink) node;
-				link.delete();
-				break;
-			default:
-				node.delete();
-				break;
-			}
-				
-		} catch (Exception e) {
-			e.printStackTrace();
-			handler.switchToDefaultHandler();
 		}
 	}
 

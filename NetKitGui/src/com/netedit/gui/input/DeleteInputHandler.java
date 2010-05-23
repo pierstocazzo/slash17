@@ -13,7 +13,7 @@ public class DeleteInputHandler extends PBasicInputEventHandler {
 		super.mousePressed(event);
 		
 		if( event.getPickedNode() instanceof GNode ) {
-			GuiManager.getInstance().getCanvas().delete( (GNode) event.getPickedNode() );
+			((GNode) event.getPickedNode()).delete();
 			GuiManager.getInstance().update();
 		}
 	}
