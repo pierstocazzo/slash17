@@ -1,4 +1,4 @@
-package com.netedit.gui.listeners;
+package com.netedit.gui.input;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;
