@@ -66,6 +66,10 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 	
 	@Override
 	public void mousePressed(PInputEvent event) {
+		if( event.getPickedNode() instanceof GNode ) {
+			GNode node = (GNode) event.getPickedNode();
+			node.setMouseOver(true);
+		}
 		pressedButton = event.getButton();
 	}
 	
@@ -90,6 +94,7 @@ public class DefaultInputHandler extends PBasicInputEventHandler {
 			node.offset(d.getWidth(), d.getHeight());
 			
 			node.setSelected(false);
+			node.setMouseOver(true);
 			node.update();
 		}
 	}
