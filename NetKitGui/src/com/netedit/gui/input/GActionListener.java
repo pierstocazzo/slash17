@@ -60,34 +60,34 @@ public class GActionListener implements ActionListener {
 			Shell.stopLab( GuiManager.getInstance().getProject(), true );
 			break;
 		case addPc:
-			manager.adding(ItemType.PC);
+			manager.getHandler().adding(ItemType.PC);
 			break;
 		case addRouter:
-			manager.adding(ItemType.ROUTER);
+			manager.getHandler().adding(ItemType.ROUTER);
 			break;
 		case addFirewall:
-			manager.adding(ItemType.FIREWALL);
+			manager.getHandler().adding(ItemType.FIREWALL);
 			break;
 		case addArea:
-			manager.adding(ItemType.AREA);
+			manager.getHandler().adding(ItemType.AREA);
 			break;
 		case addCollisionDomain:
-			manager.adding(ItemType.COLLISIONDOMAIN);
+			manager.getHandler().adding(ItemType.COLLISIONDOMAIN);
 			break;
 		case addTap:
-			manager.adding(ItemType.TAP);
+			manager.getHandler().adding(ItemType.TAP);
 			break;
 		case addLink:
-			manager.adding(ItemType.LINK);
+			manager.getHandler().adding(ItemType.LINK);
 			break;
 		case addNattedServer:
-			manager.adding(ItemType.NATTEDSERVER);
+			manager.getHandler().adding(ItemType.NATTEDSERVER);
 			break;
 		case addServer: 
-			manager.adding(ItemType.SERVER);
+			manager.getHandler().adding(ItemType.SERVER);
 			break;
 		case delete:
-			manager.deleting();
+			manager.getHandler().deleting();
 			break;
 		case clear:
 			manager.getCanvas().clear();

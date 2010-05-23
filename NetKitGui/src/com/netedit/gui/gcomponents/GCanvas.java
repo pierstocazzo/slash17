@@ -1,6 +1,5 @@
 package com.netedit.gui.gcomponents;
 
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.InputEvent;
@@ -14,66 +13,50 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.netedit.common.ItemType;
-import com.netedit.core.project.AbstractProject;
 import com.netedit.gui.GFactory;
 import com.netedit.gui.GuiManager;
-import com.netedit.gui.input.AddLinkInputHandler;
-import com.netedit.gui.input.AddNodeInputHandler;
-import com.netedit.gui.input.DefaultInputHandler;
-import com.netedit.gui.input.DeleteInputHandler;
+import com.netedit.gui.input.HandlerManager;
 import com.netedit.gui.input.MouseWheelZoomEventHandler;
 import com.netedit.gui.nodes.GArea;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GLink;
 import com.netedit.gui.nodes.GNode;
+import com.netedit.gui.util.ImgFileFilter;
 
 import edu.umd.cs.piccolo.PCamera;
 import edu.umd.cs.piccolo.PCanvas;
 import edu.umd.cs.piccolo.PLayer;
-import edu.umd.cs.piccolo.event.PBasicInputEventHandler;
 import edu.umd.cs.piccolo.event.PInputEventFilter;
-import edu.umd.cs.piccolo.nodes.PPath;
 
 public class GCanvas extends PCanvas {
 	private static final long serialVersionUID = 1L;
 	
-	PLayer nodeLayer;
-	PLayer linkLayer;
-	PLayer areaLayer;
+	PLayer nodeLayer, linkLayer, areaLayer;
 	
 	GFrame frame;
-	
-	DefaultInputHandler defaultHandler;
-	DeleteInputHandler deleteHandler;
-	AddNodeInputHandler addNodeHandler;
-	AddLinkInputHandler addLinkHandler;
-	
-	PBasicInputEventHandler currentHandler;
-	
+	HandlerManager handler;
 	ConfigurationPanel confPanel;
 
 	MouseWheelZoomEventHandler zoomEventHandler;
 	
 	double originalScale;
 	
-	public GCanvas( GFrame gFrame, AbstractProject project, ConfigurationPanel confPanel ) {
-		this.frame = gFrame;
-		this.confPanel = confPanel;
+	public GCanvas() {
+		this.frame = GuiManager.getInstance().getFrame();
+		this.confPanel = GuiManager.getInstance().getConfPanel();
+		this.handler = GuiManager.getInstance().getHandler();
 		
 		createCanvas();
 	}
 	
-	public void createCanvas() {	
+	public void createCanvas() {
+		// init layers
 		nodeLayer = getLayer();
 		linkLayer = new PLayer();
 		areaLayer = new PLayer();
 		nodeLayer.addChild(linkLayer);
 		linkLayer.addChild(areaLayer);
-		
-		defaultHandler = new DefaultInputHandler();
-		deleteHandler = new DeleteInputHandler(this);
-		addLinkHandler = new AddLinkInputHandler(this);
 		
 		/* replace the default zoom event handler with the mouse wheel zoom event handler */
 		removeInputEventListener(getZoomEventHandler());
@@ -82,8 +65,6 @@ public class GCanvas extends PCanvas {
 
 		/* use the right mouse button for the pan event handler, instead of the left button */
 		getPanEventHandler().setEventFilter(new PInputEventFilter(InputEvent.BUTTON3_MASK));
-		
-		switchToDefaultHandler();
 		
 		originalScale = getCamera().getViewScale();
 	}
@@ -156,7 +137,7 @@ public class GCanvas extends PCanvas {
 		
 		JFileChooser saveImg = new JFileChooser();
 		saveImg.setMultiSelectionEnabled(false);
-		
+		saveImg.setFileFilter(new ImgFileFilter(extension));
 		saveImg.showSaveDialog(frame);
 		
 		File f = saveImg.getSelectedFile();
@@ -181,26 +162,6 @@ public class GCanvas extends PCanvas {
 		}
 	}
 
-	public void adding( ItemType type ) {
-		if( (currentHandler == addNodeHandler && addNodeHandler.getNodeType() == type) ||
-				(currentHandler == addLinkHandler && type == ItemType.LINK) ) {
-			switchToDefaultHandler();
-			return;
-		}
-		
-		if( type != ItemType.LINK ) {
-			// remove previously created addhandler
-			if( currentHandler.equals(addNodeHandler) ) {
-				removeInputEventListener(addNodeHandler);
-			}
-			
-			// create a new addhandler for this node type
-			addNodeHandler = new AddNodeInputHandler(this, type);
-		}
-		
-		switchToAddHandler( type );
-	}
-
 	public void addNode( ItemType nodeType, Point2D pos ) {
 		if( nodeType == ItemType.COLLISIONDOMAIN ) {
 			GCollisionDomain cd = GFactory.getInstance().createCollisionDomain( pos.getX(), pos.getY(), nodeLayer );
@@ -215,7 +176,7 @@ public class GCanvas extends PCanvas {
 			GuiManager.getInstance().getProject().addCollisionDomain(tap.getLogic());
 		} else if( nodeType == ItemType.AREA ) {
 			GFactory.getInstance().createArea( pos.getX(), pos.getY(), areaLayer );
-			switchToDefaultHandler();
+			handler.switchToDefaultHandler();
 		} else {
 			GHost host = GFactory.getInstance().createGHost( nodeType, pos.getX(), pos.getY(), nodeLayer );
 			GuiManager.getInstance().getProject().addHost(host.getLogic());
@@ -233,13 +194,6 @@ public class GCanvas extends PCanvas {
 		}
 	}
 	
-	public void deleting() {
-		if( currentHandler == deleteHandler )
-			switchToDefaultHandler();
-		else 
-			switchToDeleteHandler();
-	}
-
 	public void delete( GNode node ) {
 		try {
 			switch( node.getType() ) {
@@ -266,58 +220,8 @@ public class GCanvas extends PCanvas {
 				
 		} catch (Exception e) {
 			e.printStackTrace();
-			switchToDefaultHandler();
+			handler.switchToDefaultHandler();
 		}
-	}
-
-	public void switchToAddHandler( ItemType type ) {
-		removeCurrentHandler();
-		
-		if( type == ItemType.LINK ) {
-			addInputEventListener(addLinkHandler);
-			currentHandler = addLinkHandler;
-		} else {
-			addInputEventListener(addNodeHandler);
-			currentHandler = addNodeHandler;
-		}
-	}
-	
-	public void switchToDeleteHandler() {
-		removeCurrentHandler();
-		
-		frame.setCursor( new Cursor(Cursor.CROSSHAIR_CURSOR));
-		addInputEventListener(deleteHandler);
-		currentHandler = deleteHandler;
-	}
-	
-	public void switchToDefaultHandler() {
-		removeCurrentHandler();
-		
-		frame.setCursor( new Cursor(Cursor.DEFAULT_CURSOR));
-		addInputEventListener(defaultHandler);
-		currentHandler = defaultHandler;
-	}
-	
-	private void removeCurrentHandler() {
-//		nodeLayer.removeInputEventListener(currentHandler);
-//		linkLayer.removeInputEventListener(currentHandler);
-//		areaLayer.removeInputEventListener(currentHandler);
-		removeInputEventListener(currentHandler);
-	}
-
-	public void addLine( PPath line ) {
-		linkLayer.addChild(line);
-	}
-
-	public void deleteLink(PPath link) {
-		try {
-			linkLayer.removeChild(link);
-		} catch (Exception e) {
-		}
-	}
-
-	public void setConfPanel(ConfigurationPanel confpanel) {
-		this.confPanel = confpanel;
 	}
 
 	public PLayer getNodeLayer() {
