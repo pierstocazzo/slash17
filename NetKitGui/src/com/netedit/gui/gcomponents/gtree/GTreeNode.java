@@ -101,6 +101,9 @@ public class GTreeNode extends DefaultMutableTreeNode {
 					new InterfaceDialog(iface);
 				}
 			});
+		    if( iface.isConnectedToTap() ) {
+		    	configureIface.setEnabled(false);
+		    }
 		    menu.add(configureIface);
 		    break;
 		    

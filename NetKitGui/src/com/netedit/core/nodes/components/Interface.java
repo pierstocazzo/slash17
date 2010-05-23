@@ -40,6 +40,8 @@ public class Interface implements AbstractInterface {
 	
 	/** the ifconfig command for this interface's configuration */
 	protected String confCommand;
+
+	private boolean connectedToTap;
 	
 	
 	/** Interface constructor<br>
@@ -63,6 +65,7 @@ public class Interface implements AbstractInterface {
 		this.broadcast = broadcast;
 		this.collisionDomain = collisionDomain;
 		this.host = host;
+		this.connectedToTap = false;
 	}
 
 	/** Interface constructor<br>
@@ -171,12 +174,26 @@ public class Interface implements AbstractInterface {
 	
 	public String getConfCommand() {
 		String ifconfig = "";
-		if( ip != null && netmask != null && broadcast != null ) {
-			ifconfig += "ifconfig " + name + " " + ip + " netmask " + 
-							netmask + " broadcast " + broadcast + " up\n";
+		if( !isConnectedToTap() ) {
+			if( ip != null && netmask != null && broadcast != null ) {
+				ifconfig += "ifconfig " + name + " " + ip + " netmask " + 
+								netmask + " broadcast " + broadcast + " up\n";
+			} else {
+				ifconfig += "ifconfig " + name + " up # not configured \n";
+			}
 		} else {
-			ifconfig += "ifconfig " + name + " up # not configured \n";
+			ifconfig = "# " + name + " connected to TAP.";
 		}
 		return ifconfig;
+	}
+
+	@Override
+	public void setConnectedToTap( boolean connected ) {
+		this.connectedToTap = connected;
+	}
+	
+	@Override
+	public boolean isConnectedToTap() {
+		return connectedToTap;
 	}
 }

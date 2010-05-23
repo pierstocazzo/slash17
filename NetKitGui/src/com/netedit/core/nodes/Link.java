@@ -2,6 +2,7 @@ package com.netedit.core.nodes;
 
 import com.netedit.core.nodes.components.AbstractInterface;
 import com.netedit.core.nodes.components.Interface;
+import com.netedit.core.util.IpGenerator;
 
 public class Link implements AbstractLink {
 
@@ -9,10 +10,10 @@ public class Link implements AbstractLink {
 	protected String id;
 	
 	/** Host's interface */
-	protected Interface hostInterface;
+	protected AbstractInterface hostInterface;
 	
 	/** collision domain */
-	protected CollisionDomain collisionDomain;
+	protected AbstractCollisionDomain collisionDomain;
 	
 	/** Connect an host to a collision domain
 	 * 
@@ -20,8 +21,12 @@ public class Link implements AbstractLink {
 	 * @param collisionDomain
 	 */
 	public Link( AbstractInterface hostInterface, AbstractCollisionDomain collisionDomain ) {
-		this.hostInterface = (Interface) hostInterface;
-		this.collisionDomain = (CollisionDomain) collisionDomain;
+		this.hostInterface = hostInterface;
+		this.collisionDomain = collisionDomain;
+		if( this.collisionDomain.isTap() ) {
+			this.hostInterface.setIp(IpGenerator.getNextTapIp());
+			this.hostInterface.setConnectedToTap(true);
+		}
 	}
 	
 	
@@ -29,7 +34,7 @@ public class Link implements AbstractLink {
 	 * Getter and Setter methods
 	 ****************************/
 
-	public CollisionDomain getCollisionDomain() {
+	public AbstractCollisionDomain getCollisionDomain() {
 		return collisionDomain;
 	}
 
@@ -37,7 +42,7 @@ public class Link implements AbstractLink {
 		this.collisionDomain = collisionDomain;
 	}
 	
-	public Interface getHostInterface() {
+	public AbstractInterface getHostInterface() {
 		return hostInterface;
 	}
 
