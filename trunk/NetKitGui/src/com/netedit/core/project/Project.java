@@ -183,9 +183,13 @@ public class Project implements AbstractProject {
 			
 			for( AbstractInterface iface : host.getInterfaces() ) {
 				String ifaceName =  iface.getName();
-				String cdName = iface.getCollisionDomain().getName();
-				
-				text += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
+				AbstractCollisionDomain cd = iface.getCollisionDomain();
+				if( cd.isTap() ) {
+					text += hostName + "[" + ifaceName + "]=tap,200.0.0.1," + iface.getIp() + "\n";
+				} else {
+					String cdName = iface.getCollisionDomain().getName();
+					text += hostName + "[" + ifaceName + "]=\"" + cdName + "\"\n";
+				}
 			}
 			text += "\n";
 		}

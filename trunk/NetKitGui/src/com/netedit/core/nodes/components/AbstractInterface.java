@@ -34,4 +34,8 @@ public interface AbstractInterface {
 	public void delete();
 	
 	public String getConfCommand();
+
+	public void setConnectedToTap(boolean locked);
+
+	public boolean isConnectedToTap();
 }
