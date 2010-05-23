@@ -6,15 +6,14 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
-import com.netedit.common.ItemType;
 import com.netedit.core.project.AbstractProject;
 import com.netedit.gui.gcomponents.ConfigurationPanel;
 import com.netedit.gui.gcomponents.GCanvas;
 import com.netedit.gui.gcomponents.GFrame;
+import com.netedit.gui.input.HandlerManager;
 
 
 public class GuiManager {
@@ -27,6 +26,7 @@ public class GuiManager {
 	GCanvas canvas;
 	JSplitPane splitPane;
 	AbstractProject project;
+	HandlerManager handler;
 	
 	/** Singleton implementation */
 	private GuiManager() {}
@@ -60,7 +60,9 @@ public class GuiManager {
 		this.project = project;
 		confPanel.setProject( project );
 		
-		canvas = new GCanvas(frame, project, confPanel);
+		handler = new HandlerManager();
+		canvas = new GCanvas();
+		handler.start();
 		canvas.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		canvas.setPreferredSize(new Dimension((int) (frame.getSize().getWidth()*0.8), (int) (frame.getSize().getHeight()*0.8)));
 		
@@ -96,20 +98,8 @@ public class GuiManager {
 	public AbstractProject getProject() {
 		return project;
 	}
-
-	public void adding(ItemType type) {
-		if( canvas != null ) 
-			canvas.adding(type);
-		else 
-			JOptionPane.showMessageDialog( frame, "Create the project before", 
-					"Error: no project", JOptionPane.ERROR_MESSAGE);
-	}
 	
-	public void deleting() {
-		if( canvas != null ) 
-			canvas.deleting();
-		else 
-			JOptionPane.showMessageDialog( frame, "Create the project before", 
-					"Error: no project", JOptionPane.ERROR_MESSAGE);
+	public HandlerManager getHandler() {
+		return handler;
 	}
 }

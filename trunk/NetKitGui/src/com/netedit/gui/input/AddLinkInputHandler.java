@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import com.netedit.gui.GuiManager;
-import com.netedit.gui.gcomponents.GCanvas;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GNode;
@@ -19,13 +18,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	GHost host;
 	GCollisionDomain collisionDomain;
 	
-	GCanvas canvas;
-	
 	PPath link;	
-	
-	public AddLinkInputHandler( GCanvas canvas ) {
-		this.canvas = canvas;
-	}
 	
 	@Override
 	public void mousePressed( PInputEvent event ) {
@@ -46,7 +39,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 			} 
 			
 			if( host != null && collisionDomain != null ) {
-				canvas.addLink( host, collisionDomain );
+				GuiManager.getInstance().getCanvas().addLink( host, collisionDomain );
 				GuiManager.getInstance().update();
 				reset();
 			} else {
@@ -54,7 +47,7 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 			}
 		} else if( event.getButton() == MouseEvent.BUTTON3 ) {
 			reset();
-			canvas.switchToDefaultHandler();
+			GuiManager.getInstance().getHandler().switchToDefaultHandler();
 		}
 	}
 	
@@ -70,14 +63,14 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 		if( event.getKeyCode() == KeyEvent.VK_DELETE ||
 			event.getKeyCode() == KeyEvent.VK_CANCEL ) {
 			reset();
-			canvas.switchToDefaultHandler();
+			GuiManager.getInstance().getHandler().switchToDefaultHandler();
 		}
 	}
 	
 	private void createLink() {
 		if( link == null ) {
 			link = PPath.createLine(0, 0, 0, 0);
-			canvas.addLine(link);
+			GuiManager.getInstance().getCanvas().getLinkLayer().addChild(link);
 		}
 	}
 
