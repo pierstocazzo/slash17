@@ -46,7 +46,10 @@ public class Route implements AbstractRoute {
 	public String getConfCommand() {
 		String command = "";
 		if( net != null && gw != null ) {
-			command += "route add -net " + net + " gw " + gw + "\n";
+			if( net.equals("0.0.0.0/0") )
+				command += "route add default gw " + gw + "\n";
+			else
+				command += "route add -net " + net + " gw " + gw + "\n";
 		}
 		return command;
 	}

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.netedit.common.IpAddress;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.nodes.components.AbstractChain;
 import com.netedit.core.nodes.components.AbstractInterface;
@@ -205,6 +206,13 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				}
 			});
 		    menu.add(addRoute);
+		    JMenuItem addDefaultRoute = new JMenuItem("Default route", new ImageIcon("data/images/16x16/route_icon.png"));
+		    addDefaultRoute.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					addDefaultRoute();
+				}
+			});
+		    menu.add(addDefaultRoute);
 			break;
 			
 		case FIREWALL:
@@ -267,6 +275,17 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		if( route.getNet() != null && route.getGw() != null )
 			tree.addNode(this, route, ROUTE);
 		tree.repaint();
+	}
+	
+	private void addDefaultRoute() {
+		String gw = JOptionPane.showInputDialog("Default Gateway");
+		if( gw != null && gw.matches(IpAddress.ipRx )) {
+			AbstractRoute route = host.addRoute();
+			route.setNet("0.0.0.0/0");
+			route.setGw(gw);
+			tree.addNode(this, route, ROUTE);
+			tree.repaint();
+		}
 	}
 	
 	private void addChain() {
