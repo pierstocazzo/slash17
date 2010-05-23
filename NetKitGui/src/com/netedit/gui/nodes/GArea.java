@@ -106,6 +106,7 @@ public class GArea extends GNode {
 		return result;
 	}
 	
+	@Override
 	public void setSelected( boolean selected ) {
 		super.setSelected(selected);
 		if( selected )
@@ -114,6 +115,7 @@ public class GArea extends GNode {
 			PBoundsHandle.removeBoundsHandlesFrom(this);
 	}
 	
+	@Override
 	public void setMouseOver( boolean mouseOver ) {
 		if( !selected ) {
 			if( mouseOver )
@@ -123,6 +125,7 @@ public class GArea extends GNode {
 		}
 	}
 
+	@Override
 	public void showMenu( PInputEvent e ) {
 		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
 	}
@@ -130,9 +133,5 @@ public class GArea extends GNode {
 	@Override
 	public void setPaint(Paint newPaint) {
 		shape.setPaint(newPaint);
-	}
-	
-	public void delete() {
-		//TODO delete area
 	}
 }
