@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.project.AbstractProject;
@@ -38,6 +39,14 @@ public class ProjectHandler {
 	/****************************************************/
 	
 	public boolean newProject() {
+		if( !saved ) {
+			int choose = JOptionPane.showConfirmDialog(GuiManager.getInstance().getFrame(), 
+					"Are you sure you want to exit without save the project?", 
+					"Project not saved", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if( choose == JOptionPane.NO_OPTION ) {
+				return false;
+			}
+		}
 		
 		String projectName = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
 		
@@ -139,8 +148,8 @@ public class ProjectHandler {
 		return dir;
 	}
 
-	public void setSaved(boolean saved) {
-		ProjectHandler.saved = saved;
+	public void setSaved(boolean b) {
+		saved = b;
 	}
 
 	public boolean isSaved() {
@@ -148,7 +157,29 @@ public class ProjectHandler {
 	}
 
 	public void openProject() {
+		if( !saved ) {
+			int choose = JOptionPane.showConfirmDialog(GuiManager.getInstance().getFrame(), 
+					"Are you sure you want to exit without save the project?", 
+					"Project not saved", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if( choose == JOptionPane.NO_OPTION ) {
+				return;
+			}
+		}
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "jNetEdit file - .jne";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+				if( f.isDirectory() ) 
+					return true;
+				return f.getName().endsWith(".jne");
+			}
+		});
 		int choose = fileChooser.showOpenDialog(GuiManager.getInstance().getFrame());
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			File file = fileChooser.getSelectedFile();
