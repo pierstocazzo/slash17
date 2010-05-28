@@ -81,7 +81,9 @@ public class GCanvas extends PCanvas {
 				domain.addLink(newLink);
 				break;
 			case GNode.area:
-				new GArea(labNode.getX(), labNode.getY(), areaLayer);
+				GArea area = new GArea(labNode.getX(), labNode.getY(), areaLayer);
+				area.setBounds(labNode.getBounds());
+				area.setColor(labNode.getColor());
 				break;
 			case GNode.domain:
 				new GCollisionDomain(labNode.getX(), labNode.getY(), (AbstractCollisionDomain) labNode.getAbsNode(), nodeLayer);

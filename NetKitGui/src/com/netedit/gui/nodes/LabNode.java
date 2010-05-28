@@ -1,31 +1,36 @@
 package com.netedit.gui.nodes;
 
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
+
+import edu.umd.cs.piccolo.util.PBounds;
 
 /** Utility class to store node's informations for saving
  */
 public class LabNode implements Serializable {
 	private static final long serialVersionUID = 2877077749467465200L;
 
-	double x, y;
-	
 	Object absNode;
 	
 	int type;
 	
-	public LabNode( double x, double y, int type, Object absNode ) {
-		this.x = x;
-		this.y = y;
+	Rectangle2D bounds;
+	
+	Color color;
+	
+	public LabNode( Rectangle2D bounds, int type, Object absNode ) {
 		this.absNode = absNode;
 		this.type = type;
+		this.bounds = bounds;
 	}
 	
 	public double getX() {
-		return x;
+		return bounds.getCenterX();
 	}
 
 	public double getY() {
-		return y;
+		return bounds.getCenterY();
 	}
 	
 	public int getType() {
@@ -37,6 +42,22 @@ public class LabNode implements Serializable {
 	}
 	
 	public boolean equals( LabNode node ) {
-		return ( node.x == this.x && node.y == this.y && node.absNode == this.absNode && node.type == this.type );
+		return ( node.bounds == this.bounds && node.absNode == this.absNode && node.type == this.type );
+	}
+
+	public Rectangle2D getBounds() {
+		return bounds;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public void setBounds(PBounds bounds) {
+		this.bounds = bounds;
 	}
 }

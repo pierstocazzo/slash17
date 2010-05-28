@@ -94,7 +94,7 @@ public class GHost extends GNode {
 	
 	public LabNode getLabNode() {
 		if( labNode == null )
-			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.host, absHost);
+			labNode = new LabNode(getFullBoundsReference(), GNode.host, absHost);
 		return labNode;
 	}
 	

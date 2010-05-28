@@ -93,7 +93,7 @@ public class GLink extends GNode {
 	
 	public LabNode getLabNode() {
 		if( labNode == null )
-			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.link, absLink);
+			labNode = new LabNode(getFullBoundsReference(), GNode.link, absLink);
 		return labNode;
 	}
 	

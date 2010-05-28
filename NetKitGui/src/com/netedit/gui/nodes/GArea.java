@@ -3,7 +3,6 @@ package com.netedit.gui.nodes;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +17,6 @@ import javax.swing.JPopupMenu;
 import com.netedit.gui.GuiManager;
 import com.netedit.gui.Lab;
 
-
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -29,8 +27,6 @@ public class GArea extends GNode {
 	private static final long serialVersionUID = 3492362844970509196L;
 	
 	PPath shape;
-	Paint paint;
-	String name;
 	
 	public GArea( double x, double y, PLayer layer ) {
 		super(GNode.area, layer);
@@ -58,7 +54,7 @@ public class GArea extends GNode {
 			public void actionPerformed(ActionEvent e) {
 				Color color = JColorChooser.showDialog(GuiManager.getInstance().getFrame(), "Area Color", Color.cyan);
 				if( color != null )
-					setPaint( color );
+					setColor( color );
 			}
 		});
 		menu.add(selectcolor);
@@ -76,12 +72,13 @@ public class GArea extends GNode {
 		if( shape != null ) {
 			removeChild(shape);
 		}
+		getLabNode();
 		shape = new PPath(new Rectangle((int)x, (int)y, 100, 100));
 		addChild(shape);
 		setBounds(shape.getBounds());
 		shape.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
 		shape.setPickable(false);
-		shape.setPaint(Color.cyan);
+		setColor(Color.cyan);
 	}
 
 	protected void setText() {
@@ -101,6 +98,7 @@ public class GArea extends GNode {
 	public void update() {
 		if( text != null )
 			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
+		labNode.setBounds(getFullBoundsReference());
 	}
 
 	@Override
@@ -135,19 +133,14 @@ public class GArea extends GNode {
 		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
 	}
 	
-	@Override
-	public void setPaint(Paint newPaint) {
-		paint = newPaint;
-		shape.setPaint(newPaint);
-	}
-
-	public Paint getPaint() {
-		return paint;
+	public void setColor(Color newColor) {
+		labNode.setColor(newColor);
+		shape.setPaint(newColor);
 	}
 	
 	public LabNode getLabNode() {
 		if( labNode == null )
-			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.area, null);
+			labNode = new LabNode(getFullBoundsReference(), GNode.area, null);
 		return labNode;
 	}
 }
