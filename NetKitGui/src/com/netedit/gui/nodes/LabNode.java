@@ -19,6 +19,8 @@ public class LabNode implements Serializable {
 	
 	Color color;
 	
+	String text;
+	
 	public LabNode( Rectangle2D bounds, int type, Object absNode ) {
 		this.absNode = absNode;
 		this.type = type;
@@ -42,7 +44,7 @@ public class LabNode implements Serializable {
 	}
 	
 	public boolean equals( LabNode node ) {
-		return ( node.bounds == this.bounds && node.absNode == this.absNode && node.type == this.type );
+		return ( node.absNode == this.absNode );
 	}
 
 	public Rectangle2D getBounds() {
@@ -59,5 +61,13 @@ public class LabNode implements Serializable {
 
 	public void setBounds(PBounds bounds) {
 		this.bounds = bounds;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getText() {
+		return text;
 	}
 }

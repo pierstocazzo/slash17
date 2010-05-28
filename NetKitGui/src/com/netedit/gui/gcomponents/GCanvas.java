@@ -64,7 +64,7 @@ public class GCanvas extends PCanvas {
 		nodeLayer.addChild(linkLayer);
 		linkLayer.addChild(areaLayer);
 		
-		// try
+		// load the lab's topology if opening
 		ArrayList<LabNode> nodes = Lab.getInstance().getNodes();
 		int size = nodes.size();
 		for( int i = 0; i < size; i++ ) {
@@ -84,6 +84,7 @@ public class GCanvas extends PCanvas {
 				GArea area = new GArea(labNode.getX(), labNode.getY(), areaLayer);
 				area.setBounds(labNode.getBounds());
 				area.setColor(labNode.getColor());
+				area.setText(labNode.getText());
 				break;
 			case GNode.domain:
 				new GCollisionDomain(labNode.getX(), labNode.getY(), (AbstractCollisionDomain) labNode.getAbsNode(), nodeLayer);

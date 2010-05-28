@@ -16,6 +16,7 @@ import javax.swing.JPopupMenu;
 
 import com.netedit.gui.GuiManager;
 import com.netedit.gui.Lab;
+import com.netedit.gui.ProjectHandler;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -81,7 +82,7 @@ public class GArea extends GNode {
 		setColor(Color.cyan);
 	}
 
-	protected void setText() {
+	public void setText() {
 		String name = JOptionPane.showInputDialog("Insert the name:");
 		if( name != null && !name.equals("") ) {
 			if( text == null )
@@ -90,8 +91,24 @@ public class GArea extends GNode {
 			text.setPickable(false);
 			text.setFont(new Font("SansSerif", Font.BOLD, 16));
 			addChild(text);
+			labNode.setText(name);
 			update();
 		}
+		ProjectHandler.getInstance().setSaved(false);
+	}
+	
+	public void setText(String name) {
+		if( name != null && !name.equals("") ) {
+			if( text == null )
+				text = new PText();
+			text.setText(name);
+			text.setPickable(false);
+			text.setFont(new Font("SansSerif", Font.BOLD, 16));
+			addChild(text);
+			labNode.setText(name);
+			update();
+		}
+		ProjectHandler.getInstance().setSaved(false);
 	}
 	
 	@Override
@@ -99,6 +116,7 @@ public class GArea extends GNode {
 		if( text != null )
 			text.centerFullBoundsOnPoint( getX() + getWidth() - text.getWidth(), getY() + text.getHeight() );
 		labNode.setBounds(getFullBoundsReference());
+		ProjectHandler.getInstance().setSaved(false);
 	}
 
 	@Override
@@ -106,6 +124,7 @@ public class GArea extends GNode {
 		boolean result = super.setBounds(newBounds);
 		shape.setBounds(newBounds);
 		update();
+		ProjectHandler.getInstance().setSaved(false);
 		return result;
 	}
 	
@@ -136,6 +155,7 @@ public class GArea extends GNode {
 	public void setColor(Color newColor) {
 		labNode.setColor(newColor);
 		shape.setPaint(newColor);
+		ProjectHandler.getInstance().setSaved(false);
 	}
 	
 	public LabNode getLabNode() {

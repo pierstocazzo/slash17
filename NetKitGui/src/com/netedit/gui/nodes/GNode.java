@@ -3,6 +3,7 @@ package com.netedit.gui.nodes;
 import javax.swing.JPopupMenu;
 
 import com.netedit.gui.Lab;
+import com.netedit.gui.ProjectHandler;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
@@ -36,18 +37,22 @@ public class GNode extends PNode {
 		selected = false;
 		
 		layer.addChild(this);
+		
+		ProjectHandler.getInstance().setSaved(false);
 	}
 	
 	public void setText( String aText ) {
 		text = new PText( aText );
 		text.setPickable(false);
 		layer.addChild(text);
+		ProjectHandler.getInstance().setSaved(false);
 	}
 	
 	public void update() {
 		double x = getGlobalTranslation().getX();
 		double y = getGlobalTranslation().getY();
 		text.centerFullBoundsOnPoint(x + getWidth()/2, y + getHeight() + 10);
+		ProjectHandler.getInstance().setSaved(false);
 	}
 	
 	public void delete() {
@@ -56,6 +61,7 @@ public class GNode extends PNode {
 			text.removeFromParent();
 		if( labNode != null )
 			Lab.getInstance().removeNode(labNode);
+		ProjectHandler.getInstance().setSaved(false);
 	}
 	
 	public LabNode getLabNode() {
