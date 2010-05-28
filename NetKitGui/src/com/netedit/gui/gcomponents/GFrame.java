@@ -44,9 +44,11 @@ public class GFrame extends JFrame {
 	/** lab menu */
 	JMenu labMenu;
 	/** lab menu item */
-	JMenuItem 	startLabItem, stopLabItem, addRouterItem, addFirewallItem,
+	JMenuItem 	addRouterItem, addFirewallItem,
 				addLinkItem, addPcItem, addServerItem, addNattedServerItem, 
 				addCollisionDomainItem, addAreaItem, addTapItem;
+	JMenu startLabMenu, stopLabMenu;
+	JMenuItem startsItem, startpItem, haltItem, crashItem;
 		
 	/** view menu */
 	JMenu viewMenu;
@@ -157,10 +159,21 @@ public class GFrame extends JFrame {
 		// creating the project menu
 		labMenu = new JMenu("Laboratory");
 		labMenu.setMnemonic(KeyEvent.VK_L);
-		startLabItem = new GMenuItem("Start lab", new ImageIcon("data/images/16x16/start_icon.png"));
-		startLabItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F11, InputEvent.CTRL_DOWN_MASK));
-		stopLabItem = new GMenuItem("Stop lab", new ImageIcon("data/images/16x16/stop_icon.png"));
-		stopLabItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F12, InputEvent.CTRL_DOWN_MASK));
+		
+		startLabMenu = new JMenu("Start Lab");
+		startLabMenu.setIcon(new ImageIcon("data/images/16x16/start_icon.png"));
+		startsItem = new GMenuItem("Sequential Startup", new ImageIcon("data/images/16x16/start_icon.png"));
+		startpItem = new GMenuItem("Parallel Startup", new ImageIcon("data/images/16x16/start_icon.png"));
+		startLabMenu.add(startsItem);
+		startLabMenu.add(startpItem);
+		
+		stopLabMenu = new JMenu("Stop Lab");	
+		stopLabMenu.setIcon(new ImageIcon("data/images/16x16/stop_icon.png"));
+		haltItem = new GMenuItem("Halt Lab", new ImageIcon("data/images/16x16/stop_icon.png"));
+		crashItem = new GMenuItem("Crash Lab", new ImageIcon("data/images/16x16/stop_icon.png"));
+		stopLabMenu.add(haltItem);
+		stopLabMenu.add(crashItem);
+		
 		addRouterItem = new GMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
 		addCollisionDomainItem = new GMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
 		addLinkItem = new GMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
@@ -170,8 +183,8 @@ public class GFrame extends JFrame {
 		addFirewallItem = new GMenuItem("Add firewall", new ImageIcon("data/images/16x16/firewall_icon.png"));
 		addAreaItem = new GMenuItem("Add area", new ImageIcon("data/images/16x16/area_icon.png"));
 		addTapItem = new GMenuItem("Add tap", new ImageIcon("data/images/16x16/tap_icon.png"));
-		labMenu.add(startLabItem);
-		labMenu.add(stopLabItem);
+		labMenu.add(startLabMenu);
+		labMenu.add(stopLabMenu);
 		labMenu.addSeparator();
 		labMenu.add(addRouterItem);
 		labMenu.add(addCollisionDomainItem);
@@ -341,8 +354,11 @@ public class GFrame extends JFrame {
 		zoomOutItem.addActionListener( new GActionListener(ActionType.zoomOut) );
 		zoomOriginalItem.addActionListener( new GActionListener(ActionType.zoomOriginal) );
 		
-		startLabItem.addActionListener( new GActionListener(ActionType.sequentialStartup) );
-		stopLabItem.addActionListener( new GActionListener(ActionType.lcrashStop) );
+		startsItem.addActionListener( new GActionListener(ActionType.sequentialStartup) );
+		startpItem.addActionListener( new GActionListener(ActionType.parallelStartup) );
+		haltItem.addActionListener( new GActionListener(ActionType.lhaltStop) );
+		crashItem.addActionListener( new GActionListener(ActionType.lcrashStop) );
+		
 		addPcItem.addActionListener( new GActionListener(ActionType.addPc) );
 		addRouterItem.addActionListener( new GActionListener(ActionType.addRouter) );
 		addFirewallItem.addActionListener( new GActionListener(ActionType.addFirewall) );
