@@ -3,6 +3,8 @@
  */
 package com.netedit.core.nodes.components;
 
+import java.io.Serializable;
+
 import com.netedit.common.IpAddress;
 import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
@@ -15,8 +17,9 @@ import com.netedit.core.nodes.Host;
  * 
  * @author sal
  */
-public class Interface implements AbstractInterface {
-	
+public class Interface implements AbstractInterface, Serializable {
+	private static final long serialVersionUID = -4007503042572046779L;
+
 	/** Interface's name (e.g. eht0) */
 	protected String name;
 	

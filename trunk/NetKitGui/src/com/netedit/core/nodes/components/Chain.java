@@ -1,11 +1,13 @@
 package com.netedit.core.nodes.components;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.netedit.core.nodes.AbstractHost;
 
 
-public class Chain implements AbstractChain {
+public class Chain implements AbstractChain, Serializable {
+	private static final long serialVersionUID = -1472226693901733359L;
 
 	AbstractHost host;
 	

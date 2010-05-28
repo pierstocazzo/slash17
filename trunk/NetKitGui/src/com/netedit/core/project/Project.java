@@ -1,5 +1,6 @@
 package com.netedit.core.project;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,8 +14,9 @@ import com.netedit.core.nodes.components.AbstractInterface;
  * 
  * @author sal
  */
-public class Project implements AbstractProject {
-	
+public class Project implements AbstractProject, Serializable {
+	private static final long serialVersionUID = 4304623857846861337L;
+
 	/** project's name */
 	protected String name;
 	

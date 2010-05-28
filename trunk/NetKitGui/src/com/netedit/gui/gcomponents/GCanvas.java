@@ -7,20 +7,28 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.netedit.common.ItemType;
+import com.netedit.core.nodes.AbstractCollisionDomain;
+import com.netedit.core.nodes.AbstractHost;
+import com.netedit.core.nodes.AbstractLink;
 import com.netedit.gui.GFactory;
 import com.netedit.gui.GuiManager;
+import com.netedit.gui.Lab;
 import com.netedit.gui.input.HandlerManager;
 import com.netedit.gui.input.MouseWheelZoomEventHandler;
+import com.netedit.gui.nodes.GArea;
 import com.netedit.gui.nodes.GCollisionDomain;
 import com.netedit.gui.nodes.GHost;
 import com.netedit.gui.nodes.GLink;
 import com.netedit.gui.nodes.GNode;
+import com.netedit.gui.nodes.LabNode;
 import com.netedit.gui.util.ImgFileFilter;
 
 import edu.umd.cs.piccolo.PCamera;
@@ -56,6 +64,31 @@ public class GCanvas extends PCanvas {
 		nodeLayer.addChild(linkLayer);
 		linkLayer.addChild(areaLayer);
 		
+		// try
+		ArrayList<LabNode> nodes = Lab.getInstance().getNodes();
+		int size = nodes.size();
+		for( int i = 0; i < size; i++ ) {
+			LabNode labNode = nodes.get(i);
+			switch (labNode.getType()) {
+			case GNode.host:
+				new GHost(labNode.getX(), labNode.getY(), (AbstractHost) labNode.getAbsNode(), nodeLayer);
+				break;
+			case GNode.link:
+				GHost host = searchHost(((AbstractLink) labNode.getAbsNode()).getInterface().getHost());
+				GCollisionDomain domain = searchDomain(((AbstractLink) labNode.getAbsNode()).getInterface().getCollisionDomain());
+				GLink newLink = new GLink(host, domain, (AbstractLink) labNode.getAbsNode(), linkLayer);
+				host.addLink(newLink);
+				domain.addLink(newLink);
+				break;
+			case GNode.area:
+				new GArea(labNode.getX(), labNode.getY(), areaLayer);
+				break;
+			case GNode.domain:
+				new GCollisionDomain(labNode.getX(), labNode.getY(), (AbstractCollisionDomain) labNode.getAbsNode(), nodeLayer);
+				break;
+			}
+		}
+		
 		/* replace the default zoom event handler with the mouse wheel zoom event handler */
 		removeInputEventListener(getZoomEventHandler());
 		zoomEventHandler = new MouseWheelZoomEventHandler();
@@ -65,6 +98,32 @@ public class GCanvas extends PCanvas {
 		getPanEventHandler().setEventFilter(new PInputEventFilter(InputEvent.BUTTON3_MASK));
 		
 		originalScale = getCamera().getViewScale();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private GHost searchHost(AbstractHost logic) {
+		for( Iterator it = nodeLayer.getAllNodes().iterator(); it.hasNext(); ) {
+			Object node = it.next();
+			if( node instanceof GHost ) {
+				GHost host = (GHost) node;
+				if( host.getLogic().equals(logic) ) 
+					return host;
+			}
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	private GCollisionDomain searchDomain(AbstractCollisionDomain logic) {
+		for( Iterator it = nodeLayer.getAllNodes().iterator(); it.hasNext(); ) {
+			Object node = it.next();
+			if( node instanceof GCollisionDomain ) {
+				GCollisionDomain domain = (GCollisionDomain) node;
+				if( domain.getLogic().equals(logic) ) 
+					return domain;
+			}
+		}
+		return null;
 	}
 	
 	/** 

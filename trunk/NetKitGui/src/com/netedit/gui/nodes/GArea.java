@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import com.netedit.gui.GuiManager;
+import com.netedit.gui.Lab;
 
 
 import edu.umd.cs.piccolo.PLayer;
@@ -28,13 +29,17 @@ public class GArea extends GNode {
 	private static final long serialVersionUID = 3492362844970509196L;
 	
 	PPath shape;
+	Paint paint;
+	String name;
 	
-	public GArea( int x, int y, PLayer layer ) {
+	public GArea( double x, double y, PLayer layer ) {
 		super(GNode.area, layer);
 		
 		setShape(x, y);
 		
 		createPopupMenu();
+		
+		Lab.getInstance().addNode(getLabNode());
 	}
 
 	private void createPopupMenu() {
@@ -67,11 +72,11 @@ public class GArea extends GNode {
 		menu.add(delete);
 	}
 
-	private void setShape( int x, int y ) {
+	private void setShape( double x, double y ) {
 		if( shape != null ) {
 			removeChild(shape);
 		}
-		shape = new PPath(new Rectangle(x, y, 100, 100));
+		shape = new PPath(new Rectangle((int)x, (int)y, 100, 100));
 		addChild(shape);
 		setBounds(shape.getBounds());
 		shape.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
@@ -132,6 +137,17 @@ public class GArea extends GNode {
 	
 	@Override
 	public void setPaint(Paint newPaint) {
+		paint = newPaint;
 		shape.setPaint(newPaint);
+	}
+
+	public Paint getPaint() {
+		return paint;
+	}
+	
+	public LabNode getLabNode() {
+		if( labNode == null )
+			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.area, null);
+		return labNode;
 	}
 }

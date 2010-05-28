@@ -1,10 +1,13 @@
 package com.netedit.core.nodes;
 
+import java.io.Serializable;
+
 import com.netedit.core.nodes.components.AbstractInterface;
 import com.netedit.core.nodes.components.Interface;
 import com.netedit.core.util.IpGenerator;
 
-public class Link implements AbstractLink {
+public class Link implements AbstractLink, Serializable {
+	private static final long serialVersionUID = 6811160844126481939L;
 
 	/** link's id */
 	protected String id;

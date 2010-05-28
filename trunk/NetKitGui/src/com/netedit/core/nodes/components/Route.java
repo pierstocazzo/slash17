@@ -1,8 +1,11 @@
 package com.netedit.core.nodes.components;
 
+import java.io.Serializable;
+
 import com.netedit.core.nodes.AbstractHost;
 
-public class Route implements AbstractRoute {
+public class Route implements AbstractRoute, Serializable {
+	private static final long serialVersionUID = -7428572014762107691L;
 
 	AbstractHost host;
 	

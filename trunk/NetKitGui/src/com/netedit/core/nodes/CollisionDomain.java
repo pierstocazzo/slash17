@@ -1,5 +1,6 @@
 package com.netedit.core.nodes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.netedit.common.IpAddress;
@@ -10,8 +11,9 @@ import com.netedit.core.nodes.components.AbstractInterface;
  * 
  * @author sal
  */
-public class CollisionDomain implements AbstractCollisionDomain {
-	
+public class CollisionDomain implements AbstractCollisionDomain, Serializable {
+	private static final long serialVersionUID = -3392516789233618944L;
+
 	protected String name;
 	
 	/** network area of this domain */

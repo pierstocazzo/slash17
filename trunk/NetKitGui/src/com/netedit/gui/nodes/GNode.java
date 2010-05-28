@@ -2,6 +2,8 @@ package com.netedit.gui.nodes;
 
 import javax.swing.JPopupMenu;
 
+import com.netedit.gui.Lab;
+
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -24,6 +26,8 @@ public class GNode extends PNode {
 	JPopupMenu menu;
 	
 	boolean selected;
+	
+	LabNode labNode;
 	
 	public GNode( int type, PLayer layer ) {
 		this.type = type;
@@ -50,6 +54,12 @@ public class GNode extends PNode {
 		removeFromParent();
 		if( text != null )
 			text.removeFromParent();
+		if( labNode != null )
+			Lab.getInstance().removeNode(labNode);
+	}
+	
+	public LabNode getLabNode() {
+		return labNode;
 	}
 	
 	public int getType() {

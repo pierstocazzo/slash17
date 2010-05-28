@@ -15,14 +15,6 @@ import edu.umd.cs.piccolo.PLayer;
 
 public class GFactory {
 
-	protected static final String serverImage = "data/images/big/server.png";
-	protected static final String nattedServerImage = "data/images/big/nattedserver.png";
-	protected static final String pcImage = "data/images/big/pc.png";
-	protected static final String routerImage = "data/images/big/router.png";
-	protected static final String firewallImage = "data/images/big/firewall.png";
-	protected static final String tapImage = "data/images/big/tap.png";
-	protected static final String collisionDomainImage = "data/images/big/collisionDomain.png";
-	
 	protected static int serverCounter = 0;
 	protected static int nattedServerCounter = 0;
 	protected static int pcCounter = 0;
@@ -52,32 +44,9 @@ public class GFactory {
 	}
 	
 	public GHost createGHost( ItemType type, double x, double y, PLayer layer ) {
-		GHost host = null;
-		
 		AbstractHost absHost = absFactory.createHost(type);
 		
-		switch (type) {
-		case SERVER:
-			host = new GHost( x, y, serverImage, absHost, layer );
-			break;
-		case FIREWALL:
-			host = new GHost( x, y, firewallImage, absHost, layer );
-			break;
-		case NATTEDSERVER:
-			host = new GHost( x, y, nattedServerImage, absHost, layer );
-			break;
-		case PC:
-			host = new GHost( x, y, pcImage, absHost, layer );
-			break;
-		case ROUTER:
-			host = new GHost( x, y, routerImage, absHost, layer );
-			break;
-		case TAP:
-			host = new GHost( x, y, tapImage, absHost, layer );
-			break;
-		}
-		
-		return host;
+		return new GHost( x, y, absHost, layer );
 	}
 	
 	public GCollisionDomain createCollisionDomain( double x, double y, PLayer layer ) {

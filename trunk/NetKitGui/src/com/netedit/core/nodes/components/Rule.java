@@ -1,8 +1,11 @@
 package com.netedit.core.nodes.components;
 
+import java.io.Serializable;
 
 
-public class Rule implements AbstractRule {
+
+public class Rule implements AbstractRule, Serializable {
+	private static final long serialVersionUID = 3778843695341065384L;
 
 	String name;
 	
