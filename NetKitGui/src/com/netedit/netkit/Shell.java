@@ -19,13 +19,13 @@ public class Shell {
 	static BufferedReader in;
 	static PrintWriter out;
 	
-	public static void startLab( AbstractProject project ) {
+	public static void startLab( AbstractProject project, boolean parallel ) {
 		try {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
 			if( project != null && isDirectory( project.getDirectory() ) ) 
-				rnt.exec("sh startlab " + project.getDirectory() );
+				rnt.exec("sh startlab " + project.getDirectory() + " " + parallel);
 			else 
 				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
 						"Save the project before start", "Error", JOptionPane.ERROR_MESSAGE);

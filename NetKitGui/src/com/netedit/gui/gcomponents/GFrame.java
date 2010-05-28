@@ -61,7 +61,13 @@ public class GFrame extends JFrame {
 	/** horizontal tool bar */
 	JToolBar horizontalToolbar;
 	/** horizontal tool bar's button */
-	JButton newFile, open, save, start, stop, saveAs, zoomIn, zoomOut, zoomOriginal;
+	JButton newFile, open, save, saveAs, zoomIn, zoomOut, zoomOriginal;
+
+	DropDownButton start;
+	JMenuItem startp, starts;
+	
+	DropDownButton stop;
+	JMenuItem lhalt, lcrash;
 	
 	/** vertical tool bar */
 	JToolBar verticalToolbar;
@@ -213,8 +219,21 @@ public class GFrame extends JFrame {
 		open = new GButton("Open", "Open a Project", "data/images/16x16/open_icon.png", GButton.standard);
 		save = new GButton("Save", "Save the Project", "data/images/16x16/save_icon.png", GButton.standard);
 		saveAs = new GButton("Save as...", "Save as..", "data/images/16x16/saveAs_icon.png", GButton.standard);
-		start = new GButton("Start", "Start the lab", "data/images/16x16/start_icon.png", GButton.standard);
-		stop = new GButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png", GButton.standard);
+		
+		start = new DropDownButton("Start", "Start the lab", "data/images/16x16/start_icon.png");
+		starts = new JMenuItem("Sequetial startup");
+		startp = new JMenuItem("Parallel startup");
+		start.getMenu().add(starts);
+		start.getMenu().add(startp);
+		start.setSelectedItem(starts);
+		
+		stop = new DropDownButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png");
+		lhalt = new JMenuItem("Stop - lhalt");
+		lcrash = new JMenuItem("Stop - lcrash");
+		stop.getMenu().add(lhalt);
+		stop.getMenu().add(lcrash);
+		stop.setSelectedItem(lcrash);
+		
 		zoomIn = new GButton("", "Zoom in", "data/images/22x22/zoom_in.png", GButton.standard);
 		zoomOut = new GButton("", "Zoom out", "data/images/22x22/zoom_out.png", GButton.standard);
 		zoomOriginal = new GButton("", "Default zoom", "data/images/22x22/zoom_original.png", GButton.standard);
@@ -322,8 +341,8 @@ public class GFrame extends JFrame {
 		zoomOutItem.addActionListener( new GActionListener(ActionType.zoomOut) );
 		zoomOriginalItem.addActionListener( new GActionListener(ActionType.zoomOriginal) );
 		
-		startLabItem.addActionListener( new GActionListener(ActionType.startLab) );
-		stopLabItem.addActionListener( new GActionListener(ActionType.stopLab) );
+		startLabItem.addActionListener( new GActionListener(ActionType.sequentialStartup) );
+		stopLabItem.addActionListener( new GActionListener(ActionType.lcrashStop) );
 		addPcItem.addActionListener( new GActionListener(ActionType.addPc) );
 		addRouterItem.addActionListener( new GActionListener(ActionType.addRouter) );
 		addFirewallItem.addActionListener( new GActionListener(ActionType.addFirewall) );
@@ -355,8 +374,10 @@ public class GFrame extends JFrame {
 		delete.addActionListener( new GActionListener(ActionType.delete) );
 		clear.addActionListener( new GActionListener(ActionType.clear) );
 		
-		start.addActionListener( new GActionListener(ActionType.startLab) );
-		stop.addActionListener( new GActionListener(ActionType.stopLab) );
+		starts.addActionListener( new GActionListener(ActionType.sequentialStartup) );
+		startp.addActionListener( new GActionListener(ActionType.parallelStartup) );
+		lcrash.addActionListener( new GActionListener(ActionType.lcrashStop) );
+		lhalt.addActionListener( new GActionListener(ActionType.lhaltStop) );
 		
 		zoomIn.addActionListener( new GActionListener(ActionType.zoomIn) );
 		zoomOut.addActionListener( new GActionListener(ActionType.zoomOut) );

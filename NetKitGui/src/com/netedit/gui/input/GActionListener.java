@@ -53,11 +53,17 @@ public class GActionListener implements ActionListener {
 		case saveProject:
 			ProjectHandler.getInstance().saveProject();
 			break;
-		case startLab:
-			Shell.startLab( GuiManager.getInstance().getProject() );
+		case parallelStartup:
+			Shell.startLab( GuiManager.getInstance().getProject(), true );
 			break;
-		case stopLab:
+		case sequentialStartup:
+			Shell.startLab( GuiManager.getInstance().getProject(), false );
+			break;
+		case lcrashStop:
 			Shell.stopLab( GuiManager.getInstance().getProject(), true );
+			break;
+		case lhaltStop:
+			Shell.stopLab( GuiManager.getInstance().getProject(), false );
 			break;
 		case addPc:
 			manager.getHandler().adding(ItemType.PC);
@@ -175,8 +181,6 @@ public class GActionListener implements ActionListener {
 		newProject,
 		saveProject,
 		openProject,
-		startLab,
-		stopLab,
 		addPc,
 		addRouter,
 		addFirewall,
@@ -194,6 +198,10 @@ public class GActionListener implements ActionListener {
 		zoomIn,
 		zoomOut,
 		zoomOriginal,
-		exit;
+		exit, 
+		lhaltStop, 
+		lcrashStop,
+		sequentialStartup, 
+		parallelStartup;
 	}
 }

@@ -6,7 +6,12 @@ if [ -z $NETKIT_HOME ] ; then
 fi
 
 DIR=$1
+PARALLEL=$2
 
-lstart -p -d $DIR
+if $PARALLEL ; then
+	lstart -p -d $DIR
+else
+	lstart -d $DIR
+fi
 
 exit;
