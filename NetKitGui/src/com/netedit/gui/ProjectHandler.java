@@ -1,8 +1,11 @@
 package com.netedit.gui;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
@@ -10,6 +13,8 @@ import javax.swing.JOptionPane;
 
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.project.AbstractProject;
+
+import edu.umd.cs.piccolo.util.PObjectOutputStream;
 
 
 public class ProjectHandler {
@@ -65,6 +70,7 @@ public class ProjectHandler {
 	}
 	
 	public void saveProject() {
+		project = GuiManager.getInstance().getProject();
 		if( project != null ) {
 			String projDir = project.getDirectory();
 			
@@ -84,7 +90,16 @@ public class ProjectHandler {
 			createFile( "lab.conf", project.getDirectory(), labConfcontent );
 			
 			saved = true;
-		
+			
+			try {
+				PObjectOutputStream out = new PObjectOutputStream( 
+						new FileOutputStream(projDir + "/" + project.getName() + ".jne", false)); 
+				out.writeObjectTree(Lab.getInstance());
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Project Saved");
 		} else {
 			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Unable to save the project", 
@@ -133,8 +148,21 @@ public class ProjectHandler {
 	}
 
 	public void openProject() {
-		// TODO open project
-		
+		JFileChooser fileChooser = new JFileChooser();
+		int choose = fileChooser.showOpenDialog(GuiManager.getInstance().getFrame());
+		if( choose == JFileChooser.APPROVE_OPTION ) {
+			File file = fileChooser.getSelectedFile();
+			try {
+				ObjectInputStream in = new ObjectInputStream( 
+						new FileInputStream(file)); 
+				Lab lab = (Lab) in.readObject();
+				Lab.setInstance(lab);
+				GuiManager.getInstance().setProject(Lab.getInstance().getProject());
+				in.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
 

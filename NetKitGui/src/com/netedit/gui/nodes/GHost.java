@@ -12,6 +12,7 @@ import javax.swing.JPopupMenu;
 import com.netedit.common.ItemType;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.gui.GuiManager;
+import com.netedit.gui.Lab;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -20,6 +21,14 @@ import edu.umd.cs.piccolo.nodes.PImage;
 public class GHost extends GNode {
 	private static final long serialVersionUID = 1L;
 
+	protected static final String serverImage = "data/images/big/server.png";
+	protected static final String nattedServerImage = "data/images/big/nattedserver.png";
+	protected static final String pcImage = "data/images/big/pc.png";
+	protected static final String routerImage = "data/images/big/router.png";
+	protected static final String firewallImage = "data/images/big/firewall.png";
+	protected static final String tapImage = "data/images/big/tap.png";
+	protected static final String collisionDomainImage = "data/images/big/collisionDomain.png";
+	
 	protected PImage defaultImage;
 	protected PImage selectedImage;
 	protected PImage mouseOverImage;
@@ -31,11 +40,30 @@ public class GHost extends GNode {
 	
 	AbstractHost absHost;
 	
-	public GHost( double x, double y, String imagePath, AbstractHost host, PLayer layer ) {
+	public GHost( double x, double y, AbstractHost host, PLayer layer ) {
 		super( GNode.host, layer );
 		
 		this.links = new ArrayList<GLink>();
 		this.absHost = host;
+		
+		String imagePath = "";
+		switch (host.getType()) {
+		case PC:
+			imagePath = pcImage;
+			break;
+		case ROUTER:
+			imagePath = routerImage;
+			break;
+		case FIREWALL:
+			imagePath = firewallImage;
+			break;
+		case SERVER:
+			imagePath = serverImage;
+			break;
+		case NATTEDSERVER:
+			imagePath = nattedServerImage;
+			break;
+		}
 		
 		/* get the images needed */
 		int index = imagePath.lastIndexOf(".");
@@ -60,6 +88,14 @@ public class GHost extends GNode {
 		createPopupMenu();
 		
 		update();
+		
+		Lab.getInstance().addNode(getLabNode());
+	}
+	
+	public LabNode getLabNode() {
+		if( labNode == null )
+			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.host, absHost);
+		return labNode;
 	}
 	
 	private void createPopupMenu() {

@@ -6,6 +6,7 @@ import java.awt.geom.Point2D;
 
 import com.netedit.core.nodes.AbstractLink;
 import com.netedit.gui.GuiManager;
+import com.netedit.gui.Lab;
 
 
 import edu.umd.cs.piccolo.PLayer;
@@ -45,6 +46,8 @@ public class GLink extends GNode {
 		setText(absLink.getInterface().getName());
 		
 		update();
+		
+		Lab.getInstance().addNode(getLabNode());
 	}
 
 	public void update() {
@@ -86,6 +89,12 @@ public class GLink extends GNode {
 			else
 				link.setTransparency(1.0f);
 		}
+	}
+	
+	public LabNode getLabNode() {
+		if( labNode == null )
+			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.link, absLink);
+		return labNode;
 	}
 	
 	public GHost getHost() {

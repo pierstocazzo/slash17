@@ -11,6 +11,7 @@ import javax.swing.JPopupMenu;
 
 import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.gui.GuiManager;
+import com.netedit.gui.Lab;
 
 import edu.umd.cs.piccolo.PLayer;
 import edu.umd.cs.piccolo.event.PInputEvent;
@@ -54,6 +55,8 @@ public class GCollisionDomain extends GNode {
 		createPopupMenu();
 		
 		update();
+		
+		Lab.getInstance().addNode(getLabNode());
 	}
 	
 	protected void createPopupMenu() {
@@ -111,6 +114,12 @@ public class GCollisionDomain extends GNode {
 		}
 	}
 		
+	public LabNode getLabNode() {
+		if( labNode == null )
+			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.domain, absCollisionDomain);
+		return labNode;
+	}
+	
 	public GLink getLink( int index ) {
 		return links.get( index );
 	}

@@ -1,5 +1,7 @@
 package com.netedit.core;
 
+import java.io.Serializable;
+
 import com.netedit.common.ItemType;
 import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
@@ -13,8 +15,9 @@ import com.netedit.core.project.Project;
 import com.netedit.core.util.NameGenerator;
 
 
-public class Factory implements AbstractFactory {
-
+public class Factory implements AbstractFactory, Serializable {
+	private static final long serialVersionUID = -4123193508601850436L;
+	
 	private static Factory factory;
 	
 	private Factory() {

@@ -15,8 +15,8 @@ import com.netedit.gui.gcomponents.GCanvas;
 import com.netedit.gui.gcomponents.GFrame;
 import com.netedit.gui.input.HandlerManager;
 
-
 public class GuiManager {
+	private static final long serialVersionUID = 7422535360161172027L;
 
 	private static GuiManager gmanager;
 	
@@ -58,7 +58,8 @@ public class GuiManager {
 	
 	public void setProject( AbstractProject project ) {
 		this.project = project;
-		confPanel.setProject( project );
+		Lab.getInstance().setProject(project);
+		confPanel.setProject(project);
 		
 		handler = new HandlerManager();
 		canvas = new GCanvas();
@@ -68,8 +69,7 @@ public class GuiManager {
 		
 		splitPane.setLeftComponent(canvas);
 		frame.setCanvas(canvas);
-		
-		
+		confPanel.update();
 		frame.validate();
 	}
 	

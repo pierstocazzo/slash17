@@ -1,5 +1,6 @@
 package com.netedit.core.nodes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.netedit.common.ItemType;
@@ -18,7 +19,8 @@ import com.netedit.core.nodes.components.Route;
  * 
  * @author sal
  */
-public class Host implements AbstractHost {
+public class Host implements AbstractHost, Serializable {
+	private static final long serialVersionUID = -8160550272638451472L;
 
 	protected String name;
 	
