@@ -116,7 +116,7 @@ public class GCollisionDomain extends GNode {
 		
 	public LabNode getLabNode() {
 		if( labNode == null )
-			labNode = new LabNode(getFullBounds().getCenterX(), getFullBounds().getCenterY(), GNode.domain, absCollisionDomain);
+			labNode = new LabNode(getFullBoundsReference(), GNode.domain, absCollisionDomain);
 		return labNode;
 	}
 	
