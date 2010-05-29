@@ -241,8 +241,9 @@ public class GFrame extends JFrame {
 		start.setSelectedItem(starts);
 		
 		stop = new DropDownButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png");
-		lhalt = new JMenuItem("Stop - lhalt");
-		lcrash = new JMenuItem("Stop - lcrash");
+		lhalt = new JMenuItem("Halt the lab - lhalt");
+		lcrash = new JMenuItem("Crash the lab - lcrash");
+		lcrash.setSelected(true);
 		stop.getMenu().add(lhalt);
 		stop.getMenu().add(lcrash);
 		stop.setSelectedItem(lcrash);
