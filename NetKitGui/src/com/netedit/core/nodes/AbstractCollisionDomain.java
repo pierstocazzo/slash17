@@ -17,4 +17,8 @@ public interface AbstractCollisionDomain {
 	public boolean isTap();
 
 	public void setIsTap(boolean isTap);
+	
+	public void setArea( String area );
+	
+	public String getArea();
 }
