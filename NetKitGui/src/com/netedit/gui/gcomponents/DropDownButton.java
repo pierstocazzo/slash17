@@ -14,13 +14,19 @@ public class DropDownButton extends GButton {
 	private static final long serialVersionUID = 8106596726298999650L;
 	
 	JButton dropDownButton;
-	JMenu menu;
+	GMenu menu;
 	JMenuItem selectedItem;
 
 	public DropDownButton(String text, String toolTip, String icon) { 
 		super(text + " ▾", toolTip, icon, GButton.standard); 
-		setPreferredSize(new Dimension(75, 30));
-		menu = new JMenu();
+		
+		Dimension size = new Dimension(75, 30);
+		setPreferredSize(size);
+		setSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
+		
+		menu = new GMenu();
 		JMenuBar bar = new JMenuBar();
 		bar.add(menu);
 		bar.setMaximumSize(new Dimension(0,100));
@@ -33,14 +39,17 @@ public class DropDownButton extends GButton {
 				Point p = e.getPoint();
 				if( p.x > 55 )
 					menu.doClick(0);
-				else
-					if( selectedItem != null )
+				else {
+					setSelectedItem(menu.getSelectedItem());
+					if( selectedItem != null ) {
 						selectedItem.doClick(0);
+					}
+				}
 			}
 		});
 	}
 
-	public JMenu getMenu() { 
+	public GMenu getMenu() { 
 		return menu; 
 	}
 
@@ -48,7 +57,29 @@ public class DropDownButton extends GButton {
 		return (menu.getItemCount() == 0);
 	}
 
-	public void setSelectedItem( JMenuItem item ) {
-		this.selectedItem = item;
+	public void setSelectedItem(JMenuItem item) {
+		selectedItem = item;
+	}
+	
+	public class GMenu extends JMenu {
+		private static final long serialVersionUID = 7322259617999175980L;
+		JMenuItem selectedItem;
+		
+		public GMenu() {
+			super();
+		}
+		
+		public void setSelectedItem(JMenuItem it) {
+			selectedItem = it;
+		}
+		
+		public JMenuItem getSelectedItem() {
+			for( int i = 0; i < getItemCount(); i++ ) {
+				if( getItem(i).isSelected() ) {
+					selectedItem = getItem(i);
+				}
+			}
+			return selectedItem;
+		}
 	}
 }

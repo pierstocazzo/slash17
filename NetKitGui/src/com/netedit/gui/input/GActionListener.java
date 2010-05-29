@@ -1,6 +1,7 @@
 package com.netedit.gui.input;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,8 +16,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.HyperlinkEvent;
@@ -54,15 +57,39 @@ public class GActionListener implements ActionListener {
 			ProjectHandler.getInstance().saveProject();
 			break;
 		case parallelStartup:
+			JMenuItem it = (JMenuItem) e.getSource();
+			Component[] children = ((JPopupMenu) it.getParent()).getComponents();
+			for( int i = 0; i < children.length; i++ )
+				((JMenuItem) children[i]).setSelected(false);
+			it.setSelected(true);
+			System.out.println("Parallel Startup");
 			Shell.startLab( GuiManager.getInstance().getProject(), true );
 			break;
 		case sequentialStartup:
+			JMenuItem it1 = (JMenuItem) e.getSource();
+			Component[] children1 = ((JPopupMenu) it1.getParent()).getComponents();
+			for( int i = 0; i < children1.length; i++ )
+				((JMenuItem) children1[i]).setSelected(false);
+			it1.setSelected(true);
+			System.out.println("Sequential Startup");
 			Shell.startLab( GuiManager.getInstance().getProject(), false );
 			break;
 		case lcrashStop:
+			JMenuItem it11 = (JMenuItem) e.getSource();
+			Component[] children11 = ((JPopupMenu) it11.getParent()).getComponents();
+			for( int i = 0; i < children11.length; i++ )
+				((JMenuItem) children11[i]).setSelected(false);
+			it11.setSelected(true);
+			System.out.println("lcrash");
 			Shell.stopLab( GuiManager.getInstance().getProject(), true );
 			break;
 		case lhaltStop:
+			JMenuItem it111 = (JMenuItem) e.getSource();
+			Component[] children111 = ((JPopupMenu) it111.getParent()).getComponents();
+			for( int i = 0; i < children111.length; i++ )
+				((JMenuItem) children111[i]).setSelected(false);
+			it111.setSelected(true);
+			System.out.println("lhalt");
 			Shell.stopLab( GuiManager.getInstance().getProject(), false );
 			break;
 		case addPc:

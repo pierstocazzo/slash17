@@ -220,10 +220,10 @@ public class GTree extends JPanel {
 			tree.setSelectionPath(path);
 			GTreeNode node = getSelectedNode();
 			if( node != null ) {
-				if (e.isPopupTrigger())
+				if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)
 					node.showMenu(e);
 				
-				if( e.getClickCount() >= 2 )
+				if (e.getClickCount() >= 2)
 					node.viewNode();
 			}
 		}
