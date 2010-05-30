@@ -14,6 +14,7 @@ import com.netedit.gui.gcomponents.ConfigurationPanel;
 import com.netedit.gui.gcomponents.GCanvas;
 import com.netedit.gui.gcomponents.GFrame;
 import com.netedit.gui.input.HandlerManager;
+import com.netedit.gui.nodes.GLink;
 
 public class GuiManager {
 	private static final long serialVersionUID = 7422535360161172027L;
@@ -79,6 +80,11 @@ public class GuiManager {
 		canvas.validate();
 		
 		if( canvas != null ) {
+			for( Object o : canvas.getLinkLayer().getChildrenReference() ) {
+				if( o instanceof GLink ) {
+					((GLink) o).update();
+				}
+			}
 			confPanel.update();
 		}
 	}

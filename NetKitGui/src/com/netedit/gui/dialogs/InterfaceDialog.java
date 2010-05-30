@@ -143,6 +143,7 @@ public class InterfaceDialog extends JDialog {
 					iface.setIp(ip);
 					iface.setMask(mask);
 					iface.setBCast(bcast);
+					GuiManager.getInstance().update();
 					dispose();
 				} else {
 					label.setText("Format incorrect. Correct example: 192.168.123.254");
