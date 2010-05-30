@@ -57,8 +57,12 @@ public class GLink extends GNode {
 		link.moveTo((float)start.getX(), (float)start.getY());
 		link.lineTo((float)end.getX(), (float)end.getY());
 		setBounds(link.getBounds());
-		if( text != null ) 
+		if( text != null ) {
+			if( absLink.getInterface().getIp() != null ) {
+				text.setText(absLink.getInterface().getName() + "\n" + absLink.getInterface().getIp());
+			}
 			text.centerFullBoundsOnPoint( link.getBounds().getCenterX(), link.getBounds().getCenterY() + 10 );
+		}
 	}
 	
 	public void setText( String aText ) {
@@ -68,6 +72,7 @@ public class GLink extends GNode {
 		text = new PText(aText);
 		text.setPickable(false);
 		text.setFont(new Font("", Font.BOLD, 14));
+		text.setJustification(0.5f);
 		layer.addChild(text);
 		update();
 	}
