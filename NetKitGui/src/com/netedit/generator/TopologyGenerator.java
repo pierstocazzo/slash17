@@ -1,6 +1,7 @@
 package com.netedit.generator;
 
 import java.awt.Rectangle;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -13,7 +14,7 @@ import com.netedit.core.Factory;
 import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.nodes.AbstractLink;
-import com.netedit.core.nodes.components.AbstractInterface;
+import com.netedit.core.project.AbstractProject;
 import com.netedit.gui.Lab;
 import com.netedit.gui.ProjectHandler;
 import com.netedit.gui.gcomponents.GCanvas;
@@ -46,20 +47,18 @@ public class TopologyGenerator {
 	
 	ArrayList<Topology> topologies;
 	Topology currentTopology;
-	GCanvas canvas;
 	
 	/** MAIN **/
 	public static void main(String[] args) {
-		new TopologyGenerator(Factory.getInstance(), null).execute();
+		new TopologyGenerator(Factory.getInstance()).execute();
 	}
 	
-	public static void start(GCanvas canvas) {
-		new TopologyGenerator(Factory.getInstance(), canvas).execute();
+	public static void start() {
+		new TopologyGenerator(Factory.getInstance()).execute();
 	}
 	
-	public TopologyGenerator(AbstractFactory factory, GCanvas canvas) {
+	public TopologyGenerator(AbstractFactory factory) {
 		this.factory = factory;
-		this.canvas = canvas;
 		topologies = new ArrayList<Topology>();
 		areas = new LinkedList<String>();
 		r = new Random(System.currentTimeMillis());
@@ -98,7 +97,8 @@ public class TopologyGenerator {
 	public void execute() {
 		currentTopology = new Topology();
 		topologies.add(currentTopology);
-		
+		currentTopology.project = factory.createProject("Proj"+topologies.size(), "/home/sal/lab/top");
+		Lab.getInstance().setProject(currentTopology.project);
 		createTopology();
 	}
 	
@@ -111,6 +111,7 @@ public class TopologyGenerator {
 				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, mainGateway));
 		currentTopology.setMainGateway(mainGateway);
 		System.out.println("Main Gateway: " + mainGateway.getName());
+		currentTopology.firewallsNumber++;
 		
 		Lab.getInstance().addNode(new LabNode(
 				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, currentTopology.TAP));
@@ -126,6 +127,7 @@ public class TopologyGenerator {
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
 		cd1.setArea(getRandomArea());
 		cd1.setMinimumIp(r.nextInt(512));
+		popolate(cd1);
 		
 		// 
 		AbstractCollisionDomain cd2 = factory.createCollisionDomain(false);
@@ -133,10 +135,13 @@ public class TopologyGenerator {
 				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd2));
 		AbstractLink link3 = factory.createLink(mainGateway, cd2);
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link3));
-		AbstractHost host1 = factory.createHost(ItemType.ROUTER);
+		AbstractHost router = factory.createHost(ItemType.ROUTER);
 		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, host1));
+				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
 		currentTopology.routersNumber++;
+		AbstractLink link5 = factory.createLink(router, cd2);
+		Lab.getInstance().addNode(new LabNode(null, GNode.link, link5));
+		expandRouter(router);
 		
 		//
 		AbstractCollisionDomain cd3 = factory.createCollisionDomain(false);
@@ -151,24 +156,16 @@ public class TopologyGenerator {
 				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, host2));
 		if( host2.getType() == ItemType.FIREWALL ) {
 			currentTopology.firewallsNumber++;
+			expandFirewall(host2);
 		} else {
 			currentTopology.routersNumber++;
+			expandRouter(host2);
 		}
+		AbstractLink link6 = factory.createLink(host2, cd3);
+		Lab.getInstance().addNode(new LabNode(null, GNode.link, link6));
 		
-		if( r.nextBoolean() ) {
-			cd3.setArea(getRandomArea());
-			cd3.setMinimumIp(r.nextInt(256));
-			popolate(cd3);
-		}
-		
-		popolate(cd1);
-		expand(host1);
-		expand(host2);
-		
-		System.out.println("\nRouterNumber " + currentTopology.routersNumber + 
-				" firewall number " + currentTopology.firewallsNumber);
-		
-		ProjectHandler.getInstance().saveProject();
+		File file = ProjectHandler.getInstance().saveProject();
+		ProjectHandler.getInstance().openProject(file);
 	} 
 	
 	private void popolate(AbstractCollisionDomain cd) {
@@ -189,15 +186,7 @@ public class TopologyGenerator {
 				}
 				host.setName(host.getName() + " - " + getRandomService());
 			} else {
-				if( random < 90 ) {
-					host = factory.createHost(ItemType.PC);
-				} else if( random > 98 ) {
-					host = factory.createHost(ItemType.NATTEDSERVER);
-					host.setName(host.getName() + " - " + getRandomService());
-				} else {
-					host = factory.createHost(ItemType.SERVER);
-					host.setName(host.getName() + " - " + getRandomService());
-				}
+				host = factory.createHost(ItemType.PC);
 			}
 			Lab.getInstance().addNode(new LabNode(
 					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, host));
@@ -218,124 +207,114 @@ public class TopologyGenerator {
 	private String getRandomArea() {
 		int nAreas = areas.size();
 		if( nAreas == 0 ) 
-			return null;
+			return "NewArea";
 		return areas.remove(r.nextInt(nAreas));
 	}
 
-	private void expand(AbstractHost gw) {
-		System.out.println("Expand " + gw.getName());
-		
-		if( gw.getType() == ItemType.FIREWALL ) {
-			if( currentTopology.routersNumber < maxRouters ) {
-				AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-				Lab.getInstance().addNode(new LabNode(
-						new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
-				AbstractLink link = factory.createLink(gw, cd);
-				Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
-				AbstractHost router = factory.createHost(ItemType.ROUTER);
-				Lab.getInstance().addNode(new LabNode(
-						new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
-				currentTopology.routersNumber++;
-				AbstractLink link2 = factory.createLink(router, cd);
-				Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
-				expand(router);
-			}
-			
-			int fwIfaces = r.nextInt(2) + 1;
-			for( int i = 0; i < fwIfaces; i++ ) {
-				AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-				Lab.getInstance().addNode(new LabNode(
-						new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
-				AbstractLink link = factory.createLink(gw, cd);
-				Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
-				if( currentTopology.routersNumber < maxRouters ) {
-					int prob = r.nextInt(100);
-					if( prob < 40 ) {
-						AbstractHost router = factory.createHost(ItemType.ROUTER);
-						Lab.getInstance().addNode(new LabNode(
-								new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
-						currentTopology.routersNumber++;
-						AbstractLink link2 = factory.createLink(router, cd);
-						Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
-						expand(router);
-					} else {
-						String area = getRandomArea();
-						if( area != null ) {
-							cd.setArea(area);
-							popolate(cd);
-						} else
-							cd.delete();
-					}
-				} else {
-					String area = getRandomArea();
-					if( area != null ) {
-						cd.setArea(area);
-						popolate(cd);
-					} else
-						cd.delete();
-				}
-			}
-		} else {
+	private void expandFirewall(AbstractHost fw) {
+		currentTopology.firewallsNumber++;
+		if( currentTopology.routersNumber < maxRouters ) {
+			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
+			Lab.getInstance().addNode(new LabNode(
+					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
+			AbstractLink link = factory.createLink(fw, cd);
+			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
+			AbstractHost router = factory.createHost(ItemType.ROUTER);
+			Lab.getInstance().addNode(new LabNode(
+					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
 			currentTopology.routersNumber++;
-			if( currentTopology.firewallsNumber < maxFirewalls ) {
-				AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-				Lab.getInstance().addNode(new LabNode(
-						new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
-				AbstractLink link = factory.createLink(gw, cd);
-				Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
-				AbstractHost fw = factory.createHost(ItemType.FIREWALL);
-				Lab.getInstance().addNode(new LabNode(
-						new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, fw));
-				currentTopology.firewallsNumber++;
-				AbstractLink link2 = factory.createLink(fw, cd);
-				Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
-				expand(fw);
-			}
-			
-			int routerIfaces = r.nextInt(2) + 1;
-			for( int i = 0; i < routerIfaces; i++ ) {
-				AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-				Lab.getInstance().addNode(new LabNode(
-						new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
-				AbstractLink link = factory.createLink(gw, cd);
-				Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
-				if( currentTopology.routersNumber < maxRouters ) {
-					int prob = r.nextInt(100);
-					if( prob < 40 ) {
-						AbstractHost router = factory.createHost(ItemType.ROUTER);
-						Lab.getInstance().addNode(new LabNode(
-								new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
-						currentTopology.routersNumber++;
-						AbstractLink link2 = factory.createLink(router, cd);
-						Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
-						expand(router);
-					} else {
-						String area = getRandomArea();
-						if( area != null ) {
-							cd.setArea(area);
-							popolate(cd);
-						} else
-							cd.delete();
-					}
+			AbstractLink link2 = factory.createLink(router, cd);
+			Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
+			expandRouter(router);
+		}
+		
+		int fwIfaces = r.nextInt(2) + 1;
+		for( int i = 0; i < fwIfaces; i++ ) {
+			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
+			LabNode labNode = new LabNode(new Rectangle(r.nextInt(600), r.nextInt(600), 
+					64, 64), GNode.domain, cd);
+			Lab.getInstance().addNode(labNode);
+			AbstractLink link = factory.createLink(fw, cd);
+			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
+			if( currentTopology.routersNumber < maxRouters ) {
+				int prob = r.nextInt(100);
+				if( prob < 40 ) {
+					AbstractHost router = factory.createHost(ItemType.ROUTER);
+					Lab.getInstance().addNode(new LabNode(
+							new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
+					currentTopology.routersNumber++;
+					AbstractLink link2 = factory.createLink(router, cd);
+					Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
+					expandRouter(router);
 				} else {
 					String area = getRandomArea();
 					if( area != null ) {
 						cd.setArea(area);
 						popolate(cd);
-					} else
-						cd.delete();
+					}
+				}
+			} else {
+				String area = getRandomArea();
+				if( area != null ) {
+					cd.setArea(area);
+					popolate(cd);
 				}
 			}
 		}
 	}
 
-	public class Topology {
-		/** the main gateway, connected to the TAP
-		 */
-		private AbstractHost mainGateway; 
+	private void expandRouter(AbstractHost router) {
+		String area = getRandomArea();
+		currentTopology.routersNumber++;
+		if( currentTopology.firewallsNumber < maxFirewalls ) {
+			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
+			Lab.getInstance().addNode(new LabNode(
+					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
+			AbstractLink link = factory.createLink(router, cd);
+			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
+			AbstractHost fw = factory.createHost(ItemType.FIREWALL);
+			Lab.getInstance().addNode(new LabNode(
+					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, fw));
+			currentTopology.firewallsNumber++;
+			AbstractLink link2 = factory.createLink(fw, cd);
+			Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
+			expandFirewall(fw);
+		}
 		
-		/** the TAP 
-		 */
+		int routerIfaces = r.nextInt(2) + 1;
+		for( int i = 0; i < routerIfaces; i++ ) {
+			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
+			LabNode labNode = new LabNode(new Rectangle(r.nextInt(600), r.nextInt(600), 
+					64, 64), GNode.domain, cd);
+			Lab.getInstance().addNode(labNode);
+			AbstractLink link = factory.createLink(router, cd);
+			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
+			if( currentTopology.routersNumber < maxRouters ) {
+				int prob = r.nextInt(100);
+				if( prob < 40 ) {
+					AbstractHost router1 = factory.createHost(ItemType.ROUTER);
+					Lab.getInstance().addNode(new LabNode(
+							new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router1));
+					currentTopology.routersNumber++;
+					AbstractLink link2 = factory.createLink(router1, cd);
+					Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
+					expandRouter(router1);
+				} else {
+					cd.setArea(area);
+					popolate(cd);
+				}
+			} else {
+				cd.setArea(area);
+				popolate(cd);
+			}
+		}
+	}
+
+	public class Topology {
+		AbstractProject project;
+		
+		AbstractHost mainGateway; 
+		
 		AbstractCollisionDomain TAP;
 
 		int firewallsNumber;

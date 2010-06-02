@@ -72,6 +72,7 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 
 	public void setArea(String area) {
 		this.area = area;
+		this.name = name + " (" + area + ")";
 	}
 
 	public int getMinIpAddr() {
