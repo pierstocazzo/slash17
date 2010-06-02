@@ -21,4 +21,8 @@ public interface AbstractCollisionDomain {
 	public void setArea( String area );
 	
 	public String getArea();
+
+	public void setMinimumIp(int min);
+
+	public int getMinimumIp();
 }
