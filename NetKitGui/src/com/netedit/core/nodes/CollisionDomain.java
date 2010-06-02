@@ -152,4 +152,14 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 	public boolean isTap() {
 		return isTap;
 	}
+	
+	@Override
+	public void setMinimumIp( int min ) {
+		this.minIpAddr = min;
+	}
+
+	@Override
+	public int getMinimumIp() {
+		return minIpAddr;
+	}
 }

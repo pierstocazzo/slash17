@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.InputEvent;
@@ -25,6 +27,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
+import com.netedit.generator.TopologyGenerator;
 import com.netedit.gui.ProjectHandler;
 import com.netedit.gui.input.GActionListener;
 import com.netedit.gui.input.GActionListener.ActionType;
@@ -44,7 +47,7 @@ public class GFrame extends JFrame {
 	/** lab menu */
 	JMenu labMenu;
 	/** lab menu item */
-	JMenuItem 	addRouterItem, addFirewallItem,
+	JMenuItem 	randomTopology, addRouterItem, addFirewallItem,
 				addLinkItem, addPcItem, addServerItem, addNattedServerItem, 
 				addCollisionDomainItem, addAreaItem, addTapItem;
 	JMenu startLabMenu, stopLabMenu;
@@ -174,6 +177,8 @@ public class GFrame extends JFrame {
 		stopLabMenu.add(haltItem);
 		stopLabMenu.add(crashItem);
 		
+		randomTopology = new GMenuItem("Generate topology", new ImageIcon("data/images/16x16/area_icon.png"));
+		
 		addRouterItem = new GMenuItem("Add router", new ImageIcon("data/images/16x16/router_icon.png"));
 		addCollisionDomainItem = new GMenuItem("Add collision domain", new ImageIcon("data/images/16x16/collisionDomain_icon.png"));
 		addLinkItem = new GMenuItem("Add link", new ImageIcon("data/images/16x16/link_icon.png"));
@@ -185,6 +190,8 @@ public class GFrame extends JFrame {
 		addTapItem = new GMenuItem("Add tap", new ImageIcon("data/images/16x16/tap_icon.png"));
 		labMenu.add(startLabMenu);
 		labMenu.add(stopLabMenu);
+		labMenu.addSeparator();
+		labMenu.add(randomTopology);
 		labMenu.addSeparator();
 		labMenu.add(addRouterItem);
 		labMenu.add(addCollisionDomainItem);
@@ -359,6 +366,14 @@ public class GFrame extends JFrame {
 		startpItem.addActionListener( new GActionListener(ActionType.parallelStartup) );
 		haltItem.addActionListener( new GActionListener(ActionType.lhaltStop) );
 		crashItem.addActionListener( new GActionListener(ActionType.lcrashStop) );
+		
+		randomTopology.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TopologyGenerator.start(canvas);
+			}
+		});
 		
 		addPcItem.addActionListener( new GActionListener(ActionType.addPc) );
 		addRouterItem.addActionListener( new GActionListener(ActionType.addRouter) );
