@@ -78,8 +78,8 @@ public class ProjectHandler {
 		return false;
 	}
 	
-	public void saveProject() {
-		project = GuiManager.getInstance().getProject();
+	public File saveProject() {
+		project = Lab.getInstance().getProject();
 		if( project != null ) {
 			String projDir = project.getDirectory();
 			
@@ -110,9 +110,11 @@ public class ProjectHandler {
 			}
 			
 			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Project Saved");
+			return new File(projDir + "/" + project.getName() + ".jne");
 		} else {
 			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Unable to save the project", 
 					"Error", JOptionPane.ERROR_MESSAGE);
+			return null;
 		}
 	}
 
@@ -193,6 +195,27 @@ public class ProjectHandler {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public void openProject(File projectFile) {
+		if( !saved ) {
+			int choose = JOptionPane.showConfirmDialog(GuiManager.getInstance().getFrame(), 
+					"Are you sure you want to exit without save the project?", 
+					"Project not saved", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if( choose == JOptionPane.NO_OPTION ) {
+				return;
+			}
+		}
+		try {
+			ObjectInputStream in = new ObjectInputStream( 
+					new FileInputStream(projectFile)); 
+			Lab lab = (Lab) in.readObject();
+			Lab.setInstance(lab);
+			GuiManager.getInstance().setProject(Lab.getInstance().getProject());
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -31,6 +31,10 @@ public class Factory implements AbstractFactory, Serializable {
 		return factory;
 	}
 	
+	public static AbstractFactory getNewInstance() {
+		return new Factory();
+	}
+	
 	@Override
 	public AbstractCollisionDomain createCollisionDomain( boolean isTap ) {
 		if( isTap ) {
