@@ -1,4 +1,4 @@
-package com.netedit.generator;
+package com.netedit.core;
 
 import java.awt.Rectangle;
 import java.io.File;
@@ -9,8 +9,6 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 
 import com.netedit.common.ItemType;
-import com.netedit.core.AbstractFactory;
-import com.netedit.core.Factory;
 import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.nodes.AbstractLink;
@@ -69,29 +67,6 @@ public class TopologyGenerator {
 		areas.add("RED");
 		areas.add("Green1");
 		areas.add("Green2");
-	}
-	
-	public boolean getInput() {
-		// get the number of topologies to create
-		String givenNumber = JOptionPane.showInputDialog("Number of topologies");
-		if( givenNumber == null )
-			return false;
-		if( givenNumber.matches("[1-9][0-9]*") ) {
-			numberOfTopologies = Integer.parseInt(givenNumber);
-			System.out.println("Creation of " + numberOfTopologies + " topologies");
-		}
-		// get the network areas to create
-		String givenAreas = JOptionPane.showInputDialog("Network Areas, separated by space. (eg: DMZ RED GREEN)");
-		if( givenAreas == null ) 
-			return false;
-		while( !givenAreas.matches("[aA-zZ]+[0-9]*( [aA-zZ]+[0-9]*)+") ) {
-			givenAreas = JOptionPane.showInputDialog("Incorrect format.\nNetwork Areas, separated by space. (eg: DMZ RED GREEN)");
-		}
-		System.out.println("Network areas to use: " + givenAreas);
-		String[] ss = givenAreas.split(" ");
-		for( String s : ss ) 
-			areas.add(s);
-		return true;
 	}
 	
 	public void execute() {
