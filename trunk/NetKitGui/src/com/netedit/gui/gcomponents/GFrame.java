@@ -27,7 +27,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import com.netedit.TopologyGenerator;
+import com.netedit.generator.TopologyGenerator;
 import com.netedit.gui.ProjectHandler;
 import com.netedit.gui.input.GActionListener;
 import com.netedit.gui.input.GActionListener.ActionType;
