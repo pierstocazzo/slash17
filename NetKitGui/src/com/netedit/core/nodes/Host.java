@@ -72,9 +72,9 @@ public class Host implements AbstractHost, Serializable {
 
 	@Override
 	public AbstractInterface addInterface( AbstractCollisionDomain cd ) {
-		if( ifaceNumber < 4 ) {
+		if( ifaceNumber < 8 ) {
 			String ifaceName = "eth" + ifaceNumber++;
-			Interface iface = new Interface( ifaceName, (CollisionDomain) cd, this);
+			Interface iface = new Interface( ifaceName, cd, this );
 			interfaces.add(iface);
 			return iface;
 		} else {
@@ -125,7 +125,7 @@ public class Host implements AbstractHost, Serializable {
 	@Override
 	public boolean isConnectedTo(AbstractCollisionDomain collisionDomain) {
 		for( AbstractInterface iface : interfaces ) {
-			if( iface.getCollisionDomain().equals(collisionDomain)) 
+			if( collisionDomain.equals(iface.getCollisionDomain())) 
 				return true;
 		}
 		return false;

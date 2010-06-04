@@ -36,10 +36,10 @@ public class Interface implements AbstractInterface, Serializable {
 	protected String broadcast;
 	
 	/** Interface's collision domain (e.g. CD1) */
-	protected CollisionDomain collisionDomain;
+	protected AbstractCollisionDomain collisionDomain;
 	
 	/** host owner of this interface */
-	protected Host host;
+	protected AbstractHost host;
 	
 	/** the ifconfig command for this interface's configuration */
 	protected String confCommand;
@@ -75,12 +75,12 @@ public class Interface implements AbstractInterface, Serializable {
 	 * Create a new Interface
 	 * 
 	 * @param id - (String) interface's name (e.g. eht0)
-	 * @param collisionDomain - (String) Interface's collision domain (e.g. CD1)
+	 * @param cd - (String) Interface's collision domain (e.g. CD1)
 	 * @param host - (String) host (e.g. r1)
 	 */
-	public Interface( String id, CollisionDomain collisionDomain, Host host ) {
+	public Interface( String id, AbstractCollisionDomain cd, AbstractHost host ) {
 		this.name = id;
-		this.collisionDomain = collisionDomain;
+		this.collisionDomain = cd;
 		this.host = host;
 	}
 	

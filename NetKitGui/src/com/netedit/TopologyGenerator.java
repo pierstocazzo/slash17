@@ -1,21 +1,22 @@
-package com.netedit.core;
+package com.netedit;
 
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 import com.netedit.common.ItemType;
+import com.netedit.core.AbstractFactory;
+import com.netedit.core.Factory;
 import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.nodes.AbstractLink;
+import com.netedit.core.nodes.components.AbstractInterface;
 import com.netedit.core.project.AbstractProject;
 import com.netedit.gui.Lab;
 import com.netedit.gui.ProjectHandler;
-import com.netedit.gui.gcomponents.GCanvas;
 import com.netedit.gui.nodes.GNode;
 import com.netedit.gui.nodes.LabNode;
 
@@ -26,6 +27,8 @@ public class TopologyGenerator {
 	int maxRouters = 4;
 	
 	LinkedList<String> areas;
+	
+	boolean[][] matrix;
 	
 	ArrayList<String> services = new ArrayList<String>();
 	{
@@ -46,13 +49,8 @@ public class TopologyGenerator {
 	ArrayList<Topology> topologies;
 	Topology currentTopology;
 	
-	/** MAIN **/
-	public static void main(String[] args) {
-		new TopologyGenerator(Factory.getInstance()).execute();
-	}
-	
 	public static void start() {
-		new TopologyGenerator(Factory.getInstance()).execute();
+		new TopologyGenerator( new Factory() ).execute();
 	}
 	
 	public TopologyGenerator(AbstractFactory factory) {
@@ -60,13 +58,13 @@ public class TopologyGenerator {
 		topologies = new ArrayList<Topology>();
 		areas = new LinkedList<String>();
 		r = new Random(System.currentTimeMillis());
-//		if( getInput() == false )
-//			return;
-		
+
 		areas.add("DMZ");
 		areas.add("RED");
 		areas.add("Green1");
 		areas.add("Green2");
+		
+		init();
 	}
 	
 	public void execute() {
@@ -82,37 +80,36 @@ public class TopologyGenerator {
 		
 		// create main gateway (connected to tap)
 		AbstractHost mainGateway = factory.createHost(ItemType.FIREWALL);
-		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, mainGateway));
+		Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, mainGateway));
+		currentTopology.project.addHost(mainGateway);
 		currentTopology.setMainGateway(mainGateway);
 		System.out.println("Main Gateway: " + mainGateway.getName());
 		currentTopology.firewallsNumber++;
-		
-		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, currentTopology.TAP));
 		// connect the main gateway to the tap (eth0)
+		Lab.getInstance().addNode(new LabNode(getBounds(), GNode.domain, currentTopology.TAP));
+		currentTopology.project.addCollisionDomain(currentTopology.TAP);
 		AbstractLink link1 = factory.createLink(mainGateway, currentTopology.TAP);
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link1));
 		
-		// create a collision domain for the first interface of the gateway
+		// eth1 - cd1
 		AbstractCollisionDomain cd1 = factory.createCollisionDomain(false);
-		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd1));
+		currentTopology.project.addCollisionDomain(cd1);
+		Lab.getInstance().addNode(new LabNode(getBounds(), GNode.domain, cd1));
 		AbstractLink link2 = factory.createLink(mainGateway, cd1);
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
 		cd1.setArea(getRandomArea());
-		cd1.setMinimumIp(r.nextInt(512));
+		cd1.setMinimumIp(getMinIp());
 		popolate(cd1);
 		
 		// 
 		AbstractCollisionDomain cd2 = factory.createCollisionDomain(false);
-		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd2));
+		currentTopology.project.addCollisionDomain(cd2);
+		Lab.getInstance().addNode(new LabNode(getBounds(), GNode.domain, cd2));
 		AbstractLink link3 = factory.createLink(mainGateway, cd2);
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link3));
 		AbstractHost router = factory.createHost(ItemType.ROUTER);
-		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
+		currentTopology.project.addHost(router);
+		Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, router));
 		currentTopology.routersNumber++;
 		AbstractLink link5 = factory.createLink(router, cd2);
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link5));
@@ -120,15 +117,16 @@ public class TopologyGenerator {
 		
 		//
 		AbstractCollisionDomain cd3 = factory.createCollisionDomain(false);
-		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd3));
+		currentTopology.project.addCollisionDomain(cd3);
+		Lab.getInstance().addNode(new LabNode(getBounds(), GNode.domain, cd3));
 		AbstractLink link4 = factory.createLink(mainGateway, cd3);
 		Lab.getInstance().addNode(new LabNode(null, GNode.link, link4));
 		AbstractHost host2 = factory.createHost(
 				r.nextBoolean() ? ItemType.FIREWALL : ItemType.ROUTER
 		);
+		currentTopology.project.addHost(host2);
 		Lab.getInstance().addNode(new LabNode(
-				new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, host2));
+				getBounds(), GNode.host, host2));
 		if( host2.getType() == ItemType.FIREWALL ) {
 			currentTopology.firewallsNumber++;
 			expandFirewall(host2);
@@ -163,8 +161,8 @@ public class TopologyGenerator {
 			} else {
 				host = factory.createHost(ItemType.PC);
 			}
-			Lab.getInstance().addNode(new LabNode(
-					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, host));
+			currentTopology.project.addHost(host);
+			Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, host));
 			AbstractLink link = factory.createLink(host, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
 			
@@ -172,31 +170,17 @@ public class TopologyGenerator {
 		}
 	}
 
-	private String getRandomService() {
-		int nServices = services.size();
-		if( nServices == 0 ) 
-			return null;
-		return services.remove(r.nextInt(nServices));
-	}
-
-	private String getRandomArea() {
-		int nAreas = areas.size();
-		if( nAreas == 0 ) 
-			return "NewArea";
-		return areas.remove(r.nextInt(nAreas));
-	}
-
 	private void expandFirewall(AbstractHost fw) {
 		currentTopology.firewallsNumber++;
 		if( currentTopology.routersNumber < maxRouters ) {
 			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-			Lab.getInstance().addNode(new LabNode(
-					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
+			currentTopology.project.addCollisionDomain(cd);
+			Lab.getInstance().addNode(new LabNode(getBounds(), GNode.domain, cd));
 			AbstractLink link = factory.createLink(fw, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
 			AbstractHost router = factory.createHost(ItemType.ROUTER);
-			Lab.getInstance().addNode(new LabNode(
-					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
+			currentTopology.project.addHost(router);
+			Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, router));
 			currentTopology.routersNumber++;
 			AbstractLink link2 = factory.createLink(router, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
@@ -206,8 +190,8 @@ public class TopologyGenerator {
 		int fwIfaces = r.nextInt(2) + 1;
 		for( int i = 0; i < fwIfaces; i++ ) {
 			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-			LabNode labNode = new LabNode(new Rectangle(r.nextInt(600), r.nextInt(600), 
-					64, 64), GNode.domain, cd);
+			currentTopology.project.addCollisionDomain(cd);
+			LabNode labNode = new LabNode(getBounds(), GNode.domain, cd);
 			Lab.getInstance().addNode(labNode);
 			AbstractLink link = factory.createLink(fw, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
@@ -215,25 +199,21 @@ public class TopologyGenerator {
 				int prob = r.nextInt(100);
 				if( prob < 40 ) {
 					AbstractHost router = factory.createHost(ItemType.ROUTER);
-					Lab.getInstance().addNode(new LabNode(
-							new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router));
+					currentTopology.project.addHost(router);
+					Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, router));
 					currentTopology.routersNumber++;
 					AbstractLink link2 = factory.createLink(router, cd);
 					Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
 					expandRouter(router);
 				} else {
 					String area = getRandomArea();
-					if( area != null ) {
-						cd.setArea(area);
-						popolate(cd);
-					}
-				}
-			} else {
-				String area = getRandomArea();
-				if( area != null ) {
 					cd.setArea(area);
 					popolate(cd);
 				}
+			} else {
+				String area = getRandomArea();
+				cd.setArea(area);
+				popolate(cd);
 			}
 		}
 	}
@@ -243,13 +223,13 @@ public class TopologyGenerator {
 		currentTopology.routersNumber++;
 		if( currentTopology.firewallsNumber < maxFirewalls ) {
 			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-			Lab.getInstance().addNode(new LabNode(
-					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.domain, cd));
+			currentTopology.project.addCollisionDomain(cd);
+			Lab.getInstance().addNode(new LabNode(getBounds(), GNode.domain, cd));
 			AbstractLink link = factory.createLink(router, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
 			AbstractHost fw = factory.createHost(ItemType.FIREWALL);
-			Lab.getInstance().addNode(new LabNode(
-					new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, fw));
+			currentTopology.project.addHost(fw);
+			Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, fw));
 			currentTopology.firewallsNumber++;
 			AbstractLink link2 = factory.createLink(fw, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
@@ -259,8 +239,8 @@ public class TopologyGenerator {
 		int routerIfaces = r.nextInt(2) + 1;
 		for( int i = 0; i < routerIfaces; i++ ) {
 			AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-			LabNode labNode = new LabNode(new Rectangle(r.nextInt(600), r.nextInt(600), 
-					64, 64), GNode.domain, cd);
+			currentTopology.project.addCollisionDomain(cd);
+			LabNode labNode = new LabNode(getBounds(), GNode.domain, cd);
 			Lab.getInstance().addNode(labNode);
 			AbstractLink link = factory.createLink(router, cd);
 			Lab.getInstance().addNode(new LabNode(null, GNode.link, link));
@@ -268,8 +248,8 @@ public class TopologyGenerator {
 				int prob = r.nextInt(100);
 				if( prob < 40 ) {
 					AbstractHost router1 = factory.createHost(ItemType.ROUTER);
-					Lab.getInstance().addNode(new LabNode(
-							new Rectangle(r.nextInt(600), r.nextInt(600), 64, 64), GNode.host, router1));
+					currentTopology.project.addHost(router1);
+					Lab.getInstance().addNode(new LabNode(getBounds(), GNode.host, router1));
 					currentTopology.routersNumber++;
 					AbstractLink link2 = factory.createLink(router1, cd);
 					Lab.getInstance().addNode(new LabNode(null, GNode.link, link2));
@@ -284,7 +264,58 @@ public class TopologyGenerator {
 			}
 		}
 	}
+	
+	/** return an int between 4 and 512 */
+	private int getMinIp() {
+		return r.nextInt(508) + 4;
+	}
 
+	private String getRandomService() {
+		int nServices = services.size();
+		if( nServices == 0 ) 
+			return "port: " + r.nextInt(6000) + 1024;
+		return services.remove(r.nextInt(nServices));
+	}
+
+	private String getRandomArea() {
+		int nAreas = areas.size();
+		if( nAreas == 0 ) 
+			return "NewArea";
+		return areas.remove(r.nextInt(nAreas));
+	}
+	
+	private void initIfaces(AbstractHost host, int number) {
+		for( int i = 0; i < number; i++ ) {
+			host.addInterface(null);
+		}
+	}
+	
+	private AbstractInterface getRandomIface(AbstractHost host) {
+		ArrayList<AbstractInterface> ifaces = host.getInterfaces();
+		return ifaces.get(r.nextInt(ifaces.size()));
+	}
+	
+	private void init() {
+		matrix = new boolean[8][8];
+		for( int i = 0; i < 8; i++ ) {
+			for( int j = 0; j < 8; j++ ) {
+				matrix[i][j] = false;
+			}
+		}
+	}
+
+	private Rectangle2D getBounds() {
+		for( int i = 0; i < 8; i++ ) {
+			for( int j = 0; j < 8; j++ ) {
+				if( matrix[i][j] == false ) {
+					matrix[i][j] = true;
+					return new Rectangle(j*120, i*120, 64, 64);
+				}
+			}
+		}
+		return null;
+	}
+	
 	public class Topology {
 		AbstractProject project;
 		
