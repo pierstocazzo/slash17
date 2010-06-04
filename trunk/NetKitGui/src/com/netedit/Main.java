@@ -6,7 +6,7 @@ import com.netedit.gui.GuiManager;
 
 public class Main {
 	public static void main(String[] args) {
-		GFactory.init( Factory.getInstance() );
+		GFactory.init( new Factory() );
 		GuiManager.getInstance().startGui();
 	}
 }

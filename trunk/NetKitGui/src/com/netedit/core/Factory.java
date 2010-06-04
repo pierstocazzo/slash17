@@ -18,21 +18,7 @@ import com.netedit.core.util.NameGenerator;
 public class Factory implements AbstractFactory, Serializable {
 	private static final long serialVersionUID = -4123193508601850436L;
 	
-	private static Factory factory;
-	
-	private Factory() {
-	}
-	
-	public static AbstractFactory getInstance() {
-		if( factory == null ) {
-			factory = new Factory();
-		}
-		
-		return factory;
-	}
-	
-	public static AbstractFactory getNewInstance() {
-		return new Factory();
+	public Factory() {
 	}
 	
 	@Override
