@@ -1,5 +1,7 @@
 package com.netedit.core.nodes;
 
+import java.util.ArrayList;
+
 import com.netedit.core.nodes.components.AbstractInterface;
 
 public interface AbstractCollisionDomain {
@@ -25,4 +27,6 @@ public interface AbstractCollisionDomain {
 	public void setMinimumIp(int min);
 
 	public int getMinimumIp();
+	
+	public ArrayList<AbstractInterface> getConnectedInterfaces();
 }

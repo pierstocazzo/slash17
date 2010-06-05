@@ -24,7 +24,7 @@ public class Topology {
 	
 	LinkedList<String> areas = new LinkedList<String>();
 	{
-		areas.add("DMZ-A");
+		areas.add("DMZ");
 		areas.add("RED");
 		areas.add("Green1");
 		areas.add("Green2");
@@ -64,22 +64,22 @@ public class Topology {
 		this.r = new Random(System.currentTimeMillis());
 		this.firewallsNumber = 0;
 		this.routersNumber = 0;
-		this.project = factory.createProject(name, "/home/sal/lab/top");
+		this.project = factory.createProject(name, "topologies");
 		this.lab = Lab.getInstance();
 		this.lab.clear();
+		this.lab.setProject(project);
 		
 		initMatrix();
 		
-		Lab.getInstance().setProject(project);
 		createTopology();
 	}
 	
 	private void createTopology() {
+		// create the tap
+		addTap();
 		// create main gateway (connected to tap)
 		AbstractHost mainGateway = addFirewall();
 		setMainGateway(mainGateway);
-		// create the tap
-		addTap();
 		// connect the main gateway to the tap (eth0)
 		connect(mainGateway, TAP);
 		
@@ -90,15 +90,15 @@ public class Topology {
 			popolate(cd1);
 		}
 		
-		// eth2 - cd2 (subnet with a router as gateway)
+		// eth2 - cd2 (subnet with a firewall or a router as gateway)
 		AbstractCollisionDomain cd2 = addDomain(false);
 		connect(mainGateway, cd2);
-		AbstractHost router = addHost(ItemType.ROUTER);
+		AbstractHost gateway = r.nextBoolean() ? addFirewall() : addRouter();
 		
-		// eth3 - cd3 (subnet with a firewall or a router as gateway)
+		// eth3 - cd3 (subnet with a router as gateway)
 		AbstractCollisionDomain cd3 = addDomain(false);
 		connect(mainGateway, cd3);
-		AbstractHost gateway = r.nextBoolean() ? addFirewall() : addRouter();
+		AbstractHost router = addHost(ItemType.ROUTER);
 		
 		// expand and populate the subnets
 		if( gateway != null ) {
@@ -107,16 +107,16 @@ public class Topology {
 			} else {
 				expandRouter(gateway);
 			}
-			connect(gateway, cd3);
+			connect(gateway, cd2);
 		} else {
 			String area = getRandomArea();
 			if( area != null ) {
 				cd3.setArea(area);
-				popolate(cd3);
+				popolate(cd2);
 			}
 		}
 		if( router != null ) {
-			connect(router, cd2);
+			connect(router, cd3);
 			expandRouter(router);
 		}
 		
@@ -152,10 +152,20 @@ public class Topology {
 	}
 
 	private void expandFirewall(AbstractHost fw) {
-		String area = getRandomArea();
+		// try to connect a router to the fw
+		AbstractHost router = addRouter();
+		if( router != null ) {
+			AbstractCollisionDomain cd = addDomain(false);
+			connect(fw, cd);
+			connect(router, cd);
+			expandRouter(router);
+		}
 		
+		String area = getRandomArea();
+		boolean areaUsed = false;
 		int fwIfaces = r.nextInt(2) + 1;
-		for( int i = 0; i < fwIfaces; i++ ) {
+		for( int i = 0; i < fwIfaces; i++ ) { 
+			// 40% of probabilty to connect another router to the fw
 			if( r.nextInt(100) < 40 ) {
 				AbstractHost anotherRouter = addRouter();
 				if( anotherRouter != null ) {
@@ -167,43 +177,19 @@ public class Topology {
 			} else {
 				AbstractCollisionDomain domainInArea = addDomain(area);
 				if( domainInArea != null ) {
+					areaUsed = true;
 					connect(fw, domainInArea);
 					popolate(domainInArea);
 				}
 			}
 		}
-		AbstractHost router = addRouter();
-		if( router != null ) {
-			AbstractCollisionDomain cd = addDomain(false);
-			connect(fw, cd);
-			connect(router, cd);
-			expandRouter(router);
-		}
+		if( !areaUsed )
+			areas.add(area);
 	}
 
 	private void expandRouter(AbstractHost router) {
 		String area = getRandomArea();
 		
-		int routerIfaces = r.nextInt(2) + 2;
-		for( int i = 0; i < routerIfaces; i++ ) {
-			if( r.nextInt(100) < 40 ) {
-				AbstractHost anotherRouter = addRouter();
-				if( anotherRouter != null ) {
-					AbstractCollisionDomain routerToRouter = addDomain(false);
-					connect(router, routerToRouter);
-					connect(anotherRouter, routerToRouter);
-					expandFirewall(anotherRouter);
-				}
-			} else {
-				if( area != null ) {
-					AbstractCollisionDomain domain = addDomain(area);
-					if( domain != null ) {
-						connect(router, domain);
-						popolate(domain);
-					}
-				}
-			}
-		}
 		// create a subnet with a firewall if possible
 		AbstractHost fw = addFirewall();
 		if( fw != null ) {
@@ -211,6 +197,21 @@ public class Topology {
 			connect(router, routerToFw);
 			connect(fw, routerToFw);
 			expandFirewall(fw);
+		}
+		
+		if( area != null ) {
+			int routerIfaces = 2;
+			for( int i = 0; i < routerIfaces; i++ ) {
+				AbstractCollisionDomain domain = addDomain(area);
+				if( domain != null ) {
+					connect(router, domain);
+					popolate(domain);
+				}
+			}
+		}
+		
+		if( router.getInterfaces().size() == 1 ) {
+			removeHost(router);
 		}
 	}
 	
@@ -247,7 +248,7 @@ public class Topology {
 			for( int j = 0; j < 8; j++ ) {
 				if( matrix[i][j] == false ) {
 					matrix[i][j] = true;
-					return new Rectangle(j*120, i*120, 64, 64);
+					return new Rectangle(j*120, i*180, 64, 64);
 				}
 			}
 		}
@@ -294,10 +295,10 @@ public class Topology {
 			if( area == null ) 
 				return null;
 			cd = factory.createCollisionDomain(false);
-			project.addCollisionDomain(cd);
 			lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
 			cd.setArea(area);
 			cd.setMinimumIp(getMinIp());
+			project.addCollisionDomain(cd);
 		} else {
 			cd = factory.createCollisionDomain(false);
 			project.addCollisionDomain(cd);
@@ -310,16 +311,55 @@ public class Topology {
 		if( area == null ) 
 			return null;
 		AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-		project.addCollisionDomain(cd);
 		lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
 		cd.setArea(area);
 		cd.setMinimumIp(getMinIp());
+		project.addCollisionDomain(cd);
 		return cd;
 	}
 	
 	private void connect( AbstractHost host, AbstractCollisionDomain cd ) {
 		AbstractLink link = factory.createLink(host, cd);
+		if( link != null ) 
+			project.addLink(link);
 		lab.addNode(new LabNode(null, GNode.link, link));
+	}
+	
+	private void removeHost( AbstractHost host ) {
+		for( int i = 0; i < project.getLinks().size(); i++ ) {
+			AbstractLink link = project.getLinks().get(i);
+			if( link.getInterface().getHost() == host ) {
+				AbstractCollisionDomain cd = link.getInterface().getCollisionDomain();
+				lab.removeNode(link);
+				project.removeLink(link);
+				link.delete();
+				i--;
+				if( cd.getConnectedInterfaces().size() <= 2 ) 
+					removeDomain(cd);
+			}
+		}
+		lab.removeNode(host);
+		project.removeHost(host);
+		host.delete();
+	}
+	
+	private void removeDomain( AbstractCollisionDomain cd ) {
+		for( int i = 0; i < project.getLinks().size(); i++ ) {
+			AbstractLink link = project.getLinks().get(i);
+			if( link.getInterface().getCollisionDomain() == cd ) {
+				AbstractHost host = link.getInterface().getHost();
+				link.getInterface().delete();
+				lab.removeNode(link);
+				project.removeLink(link);
+				link.delete();
+				i--;
+				if( host.getInterfaces().size() <= 1 ) 
+					removeHost(host);
+			}
+		}
+		lab.removeNode(cd);
+		project.removeCollisionDomain(cd);
+		cd.delete();
 	}
 	
 	public AbstractCollisionDomain getTAP() {

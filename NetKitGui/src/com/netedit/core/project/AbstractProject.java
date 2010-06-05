@@ -1,5 +1,6 @@
 package com.netedit.core.project;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.netedit.core.nodes.AbstractCollisionDomain;
@@ -32,6 +33,8 @@ public interface AbstractProject {
 	
 	public void addCollisionDomain( AbstractCollisionDomain cd );
 	
+	public void addLink( AbstractLink link );
+	
 	
 	public void removeHost( AbstractHost abstractHost );
 	
@@ -45,4 +48,6 @@ public interface AbstractProject {
 	public Collection<AbstractCollisionDomain> getCollisionDomains();
 
 	public String getLabConfFile();
+
+	public ArrayList<AbstractLink> getLinks();
 }

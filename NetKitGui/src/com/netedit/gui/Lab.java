@@ -61,4 +61,13 @@ public class Lab implements Serializable {
 	public void removeNode( LabNode node ) {
 		nodes.remove(node);
 	}
+	
+	public void removeNode( Object absNode ) {
+		for( LabNode node : nodes ) {
+			if( node.getAbsNode() == absNode ) {
+				nodes.remove(node);
+				return;
+			}
+		}
+	}
 }
