@@ -24,13 +24,10 @@ public class Factory implements AbstractFactory, Serializable {
 	@Override
 	public AbstractCollisionDomain createCollisionDomain( boolean isTap ) {
 		if( isTap ) {
-			String name = NameGenerator.getNextName( ItemType.TAP );
-			if( name != null ) {
-				AbstractCollisionDomain cd = new CollisionDomain(name);
-				cd.setIsTap(true);
-				return cd;
-			}
-			return null;
+			String name = "TAP";
+			AbstractCollisionDomain cd = new CollisionDomain(name);
+			cd.setIsTap(true);
+			return cd;
 		} else {
 			return new CollisionDomain( NameGenerator.getNextName( ItemType.COLLISIONDOMAIN ) );
 		}
