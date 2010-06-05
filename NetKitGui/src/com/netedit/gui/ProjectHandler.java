@@ -78,10 +78,19 @@ public class ProjectHandler {
 		return false;
 	}
 	
-	public File saveProject() {
+	public void saveProject() {
+		File f = saveProjectSilent();
+		if( f != null ) 
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Project Saved");
+		else 
+			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Unable to save the project", 
+					"Error", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public File saveProjectSilent() {
 		project = Lab.getInstance().getProject();
 		if( project != null ) {
-			String projDir = project.getDirectory();
+			String projDir = project.getDirectory() + "/" + project.getName();
 			
 			createDirectory(projDir);
 			
@@ -96,7 +105,7 @@ public class ProjectHandler {
 				createFile( hostName + ".startup", projDir, startupContent );
 			}
 			
-			createFile( "lab.conf", project.getDirectory(), labConfcontent );
+			createFile( "lab.conf", projDir, labConfcontent );
 			
 			saved = true;
 			
@@ -109,7 +118,6 @@ public class ProjectHandler {
 				e.printStackTrace();
 			}
 			
-			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Project Saved");
 			return new File(projDir + "/" + project.getName() + ".jne");
 		} else {
 			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Unable to save the project", 

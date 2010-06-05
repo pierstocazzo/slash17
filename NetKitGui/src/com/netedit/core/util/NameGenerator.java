@@ -49,4 +49,14 @@ public class NameGenerator implements Serializable {
 		
 		return name;
 	}
+
+	public static void reset() {
+		cdNumber = 0;
+		pcNumber = 0;
+		routerNumber = 0;
+		serverNumber = 0;
+		nattedServerNumber = 0;
+		firewallNumber = 0;
+		tapNumber = 0;
+	}
 }

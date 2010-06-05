@@ -2,7 +2,6 @@ package com.netedit.generator;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -13,6 +12,7 @@ import com.netedit.core.nodes.AbstractCollisionDomain;
 import com.netedit.core.nodes.AbstractHost;
 import com.netedit.core.nodes.AbstractLink;
 import com.netedit.core.project.AbstractProject;
+import com.netedit.core.util.NameGenerator;
 import com.netedit.gui.Lab;
 import com.netedit.gui.ProjectHandler;
 import com.netedit.gui.nodes.GNode;
@@ -22,13 +22,7 @@ public class Topology {
 	int maxFirewalls = 2;
 	int maxRouters = 4;
 	
-	LinkedList<String> areas = new LinkedList<String>();
-	{
-		areas.add("DMZ");
-		areas.add("RED");
-		areas.add("Green1");
-		areas.add("Green2");
-	}
+	LinkedList<String> areas;
 	
 	boolean[][] matrix;
 	
@@ -59,15 +53,20 @@ public class Topology {
 	int firewallsNumber;
 	int routersNumber;
 	
-	public Topology(String name, AbstractFactory factory) {
+	public Topology(String name, String directory, LinkedList<String> areas, AbstractFactory factory) {
 		this.factory = factory;
-		this.r = new Random(System.currentTimeMillis());
+		this.areas = new LinkedList<String>();
+		this.areas.addAll(areas);
+		this.r = new Random();
 		this.firewallsNumber = 0;
 		this.routersNumber = 0;
-		this.project = factory.createProject(name, "topologies");
-		this.lab = Lab.getInstance();
-		this.lab.clear();
-		this.lab.setProject(project);
+		
+		NameGenerator.reset();
+		
+		project = factory.createProject(name, directory);
+		lab = Lab.getInstance();
+		lab.clear();
+		lab.setProject(project);
 		
 		initMatrix();
 		
@@ -75,6 +74,8 @@ public class Topology {
 	}
 	
 	private void createTopology() {
+		System.out.println(project.getName() + " generation started");
+		
 		// create the tap
 		addTap();
 		// create main gateway (connected to tap)
@@ -121,8 +122,9 @@ public class Topology {
 		}
 		
 		// save and open the project
-		File file = ProjectHandler.getInstance().saveProject();
-		ProjectHandler.getInstance().openProject(file);
+		ProjectHandler.getInstance().saveProjectSilent();
+		System.err.println("Done " + project.getName());
+//		ProjectHandler.getInstance().openProject(file);
 	} 
 	
 	private void popolate(AbstractCollisionDomain cd) {
@@ -130,12 +132,12 @@ public class Topology {
 				" (" + cd.getArea() + ") min Ip " + cd.getMinimumIp());
 		
 		String area = cd.getArea();
-		int hosts = r.nextInt(2) + (area.matches(".*DMZ.*") ? 2 : 1);
+		int hosts = r.nextInt(2) + (area.matches(".*(DMZ|dmz).*") ? 2 : 1);
 		// connect one or two host to this domain
 		for( int i = 0; i < hosts; i++ ) {
 			AbstractHost host;
 			int random = r.nextInt(100);
-			if( area.matches(".*DMZ.*") ) {
+			if( area.matches(".*(DMZ|dmz).*") ) {
 				if( random < 70 ) {
 					host = addHost(ItemType.SERVER);
 				} else {
@@ -262,6 +264,7 @@ public class Topology {
 		project.addHost(fw);
 		lab.addNode(new LabNode(getBounds(), GNode.host, fw));
 		firewallsNumber++;
+		System.out.println("Added fw");
 		return fw;
 	}
 
@@ -272,6 +275,7 @@ public class Topology {
 		project.addHost(router);
 		lab.addNode(new LabNode(getBounds(), GNode.host, router));
 		routersNumber++;
+		System.out.println("Added router");
 		return router;
 	}
 	
@@ -279,10 +283,12 @@ public class Topology {
 		AbstractHost host = factory.createHost(type);
 		project.addHost(host);
 		lab.addNode(new LabNode(getBounds(), GNode.host, host));
+		System.out.println("Added host");
 		return host;
 	}
 	
 	private void addTap() {
+		System.out.println("Adding tap");
 		TAP = factory.createCollisionDomain(true);
 		lab.addNode(new LabNode(getBounds(), GNode.domain, TAP));
 		project.addCollisionDomain(TAP);
@@ -304,6 +310,7 @@ public class Topology {
 			project.addCollisionDomain(cd);
 			lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
 		}
+		System.out.println("Added cd ");
 		return cd;
 	}
 	
@@ -315,6 +322,7 @@ public class Topology {
 		cd.setArea(area);
 		cd.setMinimumIp(getMinIp());
 		project.addCollisionDomain(cd);
+		System.out.println("Added cd ");
 		return cd;
 	}
 	
