@@ -44,6 +44,9 @@ public class Project implements AbstractProject, Serializable {
 	/** Collision Domains */
 	protected ArrayList<AbstractCollisionDomain> collisionDomains;
 	
+	/** links */
+	protected ArrayList<AbstractLink> links;
+	
 	/** the tap */
 	protected AbstractCollisionDomain tap;
 	
@@ -56,6 +59,7 @@ public class Project implements AbstractProject, Serializable {
 	public Project( String directory, String name ) {
 		hosts = new ArrayList<AbstractHost>();
 		collisionDomains = new ArrayList<AbstractCollisionDomain>();
+		links = new ArrayList<AbstractLink>();
 		this.directory = directory;
 		this.name = name;
 	}
@@ -80,6 +84,10 @@ public class Project implements AbstractProject, Serializable {
 		}
 	}
 	
+	public void addLink( AbstractLink link ) {
+		links.add(link);
+	}
+	
 	/** Remove the host with this name
 	 * 
 	 * @param host (Host) the host to remove
@@ -98,10 +106,9 @@ public class Project implements AbstractProject, Serializable {
 			cd.delete();
 	}
 	
-	/** 
-	 * topology example TODO random topology
-	 */
-	public void createTopology() {
+	public void removeLink( AbstractLink link ) {
+		if( links.remove(link) ) 
+			link.delete();
 	}
 	
 	/*******************************
@@ -171,11 +178,6 @@ public class Project implements AbstractProject, Serializable {
 	public void setWeb(String web) {
 		this.web = web;
 	}
-
-	@Override
-	public void removeLink(AbstractLink link) {
-		link.delete();
-	}
 	
 	public String getLabConfFile() {
 		String text = "# 'lab.conf' created by NetKit GUI\n\n";
@@ -196,6 +198,11 @@ public class Project implements AbstractProject, Serializable {
 			text += "\n";
 		}
 		return text;
+	}
+
+	@Override
+	public ArrayList<AbstractLink> getLinks() {
+		return links;
 	}
 }
 

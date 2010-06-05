@@ -143,6 +143,10 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 	public void removeConnection(AbstractInterface hostInterface) {
 		this.hostsInterfaces.remove(hostInterface);
 	}
+	
+	public ArrayList<AbstractInterface> getConnectedInterfaces() {
+		return hostsInterfaces;
+	}
 
 	@Override
 	public void setIsTap( boolean isTap ) {
