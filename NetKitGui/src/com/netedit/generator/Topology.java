@@ -2,7 +2,6 @@ package com.netedit.generator;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -136,9 +135,9 @@ public class Topology {
 		}
 		
 		// save and open the project
-		File f = ProjectHandler.getInstance().saveProjectSilent();
+		ProjectHandler.getInstance().saveProjectSilent();
 		System.err.println("Done " + project.getName());
-		ProjectHandler.getInstance().openProject(f);
+//		ProjectHandler.getInstance().openProject(f);
 	} 
 	
 	/** Popolate a collision domain with some hosts
