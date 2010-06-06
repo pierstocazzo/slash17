@@ -85,10 +85,10 @@ def inject_files( directory ):
             if os.path.isfile( directory + "/" + f ):
                 if is_valid_extension( f ):
                     # open file
-                    #fh = open( directory + "/" + f , 'r' )
-                    #new_content = text_to_inject + "\n" + fh.read()
-                    #fh = open( directory + "/" + f , 'w' )
-                    #fh.write( new_content )
+                    fh = open( directory + "/" + f , 'r' )
+                    new_content = text_to_inject + "\n" + fh.read()
+                    fh = open( directory + "/" + f , 'w' )
+                    fh.write( new_content )
                     
                     if be_verbose:
                         print "Injected file: " + directory + "/" + f
