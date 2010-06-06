@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -35,7 +36,7 @@ public class TopologyGenerator {
 	public TopologyGenerator() {
 		createDialog();
 		
-		LinkedList<String> areas = new LinkedList<String>();
+		final LinkedList<String> areas = new LinkedList<String>();
 		String[] areasStrings = areasString.split(" ");
 		for( String area : areasStrings ) {
 			areas.add(area);
@@ -52,15 +53,46 @@ public class TopologyGenerator {
 		int choose = fc.showDialog( GuiManager.getInstance().getFrame(), "Select" );
 		
 		if( choose == JFileChooser.APPROVE_OPTION ) {
-			String directory = fc.getSelectedFile().getAbsolutePath();
-
-			int n = Integer.parseInt(number);
-			for( int i = 0; i < n; i++ ) {
-				new Topology("proj" + i, directory, areas, new Factory() );
+			File dir = fc.getSelectedFile();
+			final String directory = dir.getAbsolutePath();
+			if( dir.isDirectory() ) {
+				choose = JOptionPane.showConfirmDialog(GuiManager.getInstance().getFrame(), 
+						"This directory is not empty. Delete all contents of this directory?");
+				if( choose == JOptionPane.OK_OPTION ) 
+					rmDirContent(dir);
+				else
+					return;
 			}
-			
-			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), number + " topologies generated in " + directory);
+			final int n = Integer.parseInt(number);
+			Thread t = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					for( int i = 0; i < n; i++ ) {
+						new Topology("proj" + i, directory, areas, new Factory() );
+						try {
+							Thread.sleep(10);
+						}catch (Exception e) {
+						}
+					}
+					JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(),
+							number + " topologies generated in " + directory);
+				}
+			});
+			t.start();
 		} 
+	}
+	
+	private void rmDirContent(File dir) {
+		if( !dir.isDirectory() ) 
+			return;
+		File[] files = dir.listFiles();
+		for( File f : files ) {
+			if( f.isDirectory() ) {
+				rmDirContent(f);
+			}
+			f.delete();
+		}
 	}
 
 	private void createDialog() {
@@ -119,7 +151,7 @@ public class TopologyGenerator {
 		
 		JPanel buttonPanel = new JPanel();
 		
-		JButton go = new JButton("Go");
+		final JButton go = new JButton("Go");
 		go.setPreferredSize(size);
 		buttonPanel.add( go );
 		
@@ -130,7 +162,6 @@ public class TopologyGenerator {
 		panel.add( buttonPanel, labelConstraint );
 		
 		dialog.add(panel, BorderLayout.CENTER);
-		
 		
 		go.addActionListener( new ActionListener() {
 			@Override
