@@ -2,6 +2,7 @@ package com.netedit.generator;
 
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -23,6 +24,9 @@ public class Topology {
 	int maxRouters = 4;
 	
 	LinkedList<String> areas;
+	
+	ArrayList<AbstractHost> hostsToRemove = new ArrayList<AbstractHost>();
+	ArrayList<AbstractCollisionDomain> domainToRemove = new ArrayList<AbstractCollisionDomain>();
 	
 	boolean[][] matrix;
 	
@@ -99,7 +103,7 @@ public class Topology {
 		// eth3 - cd3 (subnet with a router as gateway)
 		AbstractCollisionDomain cd3 = addDomain(false);
 		connect(mainGateway, cd3);
-		AbstractHost router = addHost(ItemType.ROUTER);
+		AbstractHost router = addRouter();
 		
 		// expand and populate the subnets
 		if( gateway != null ) {
@@ -112,7 +116,7 @@ public class Topology {
 		} else {
 			String area = getRandomArea();
 			if( area != null ) {
-				cd3.setArea(area);
+				cd2.setArea(area);
 				popolate(cd2);
 			}
 		}
@@ -121,18 +125,31 @@ public class Topology {
 			expandRouter(router);
 		}
 		
+		// remove unused hosts and domains 
+		while( !hostsToRemove.isEmpty() || !domainToRemove.isEmpty() ) {
+			while( !hostsToRemove.isEmpty() ) {
+				removeHost(hostsToRemove.remove(0));
+			}
+			while( !domainToRemove.isEmpty() ) {
+				removeDomain(domainToRemove.remove(0));
+			}
+		}
+		
 		// save and open the project
-		ProjectHandler.getInstance().saveProjectSilent();
+		File f = ProjectHandler.getInstance().saveProjectSilent();
 		System.err.println("Done " + project.getName());
-//		ProjectHandler.getInstance().openProject(file);
+		ProjectHandler.getInstance().openProject(f);
 	} 
 	
+	/** Popolate a collision domain with some hosts
+	 * @param cd the domain to popolate with some hosts
+	 */
 	private void popolate(AbstractCollisionDomain cd) {
-		System.out.println("Popolating " + cd.getName() +
-				" (" + cd.getArea() + ") min Ip " + cd.getMinimumIp());
-		
+//		System.out.println("Popolating " + cd.getName() +
+//				" (" + cd.getArea() + ") min Ip " + cd.getMinimumIp());
+//		
 		String area = cd.getArea();
-		int hosts = r.nextInt(2) + (area.matches(".*(DMZ|dmz).*") ? 2 : 1);
+		int hosts = r.nextInt(2) + 1;
 		// connect one or two host to this domain
 		for( int i = 0; i < hosts; i++ ) {
 			AbstractHost host;
@@ -148,11 +165,12 @@ public class Topology {
 				host = addHost(ItemType.PC);
 			}
 			connect(host, cd);
-			
-			System.out.println(host.getName() + " connected to " + cd.getName());
 		}
 	}
 
+	/** Create a subnet with this fw as gateway
+	 * @param fw the fw from witch to create a subnet
+	 */
 	private void expandFirewall(AbstractHost fw) {
 		// try to connect a router to the fw
 		AbstractHost router = addRouter();
@@ -189,9 +207,12 @@ public class Topology {
 			areas.add(area);
 	}
 
+	/** Create a subnet with this router as gateway
+	 * @param router the router from witch to create a subnet
+	 */
 	private void expandRouter(AbstractHost router) {
 		String area = getRandomArea();
-		
+		boolean areaUsed = false;
 		// create a subnet with a firewall if possible
 		AbstractHost fw = addFirewall();
 		if( fw != null ) {
@@ -206,6 +227,7 @@ public class Topology {
 			for( int i = 0; i < routerIfaces; i++ ) {
 				AbstractCollisionDomain domain = addDomain(area);
 				if( domain != null ) {
+					areaUsed = true;
 					connect(router, domain);
 					popolate(domain);
 				}
@@ -215,13 +237,18 @@ public class Topology {
 		if( router.getInterfaces().size() == 1 ) {
 			removeHost(router);
 		}
+		if( !areaUsed )
+			areas.add(area);
 	}
-	
+
 	/** return an int between 4 and 512 */
 	private int getMinIp() {
 		return r.nextInt(508) + 4;
 	}
 
+	/**
+	 * @return String a service (eg. http,ssh,ftp) or a port number >1024
+	 */
 	private String getRandomService() {
 		int nServices = services.size();
 		if( nServices == 0 ) 
@@ -229,6 +256,9 @@ public class Topology {
 		return services.remove(r.nextInt(nServices));
 	}
 
+	/**
+	 * @return String one (random) of the areas or null if there aren't
+	 */
 	private String getRandomArea() {
 		int nAreas = areas.size();
 		if( nAreas == 0 ) 
@@ -236,6 +266,7 @@ public class Topology {
 		return areas.remove(r.nextInt(nAreas));
 	}
 	
+	// temp
 	private void initMatrix() {
 		matrix = new boolean[8][8];
 		for( int i = 0; i < 8; i++ ) {
@@ -244,7 +275,7 @@ public class Topology {
 			}
 		}
 	}
-
+	// temp
 	private Rectangle2D getBounds() {
 		for( int i = 0; i < 8; i++ ) {
 			for( int j = 0; j < 8; j++ ) {
@@ -257,6 +288,9 @@ public class Topology {
 		return null;
 	}
 	
+	/**
+	 * @return the added firewall or null if it's not possibile to add another one
+	 */
 	private AbstractHost addFirewall() {
 		if( firewallsNumber >= maxFirewalls ) 
 			return null;
@@ -264,10 +298,12 @@ public class Topology {
 		project.addHost(fw);
 		lab.addNode(new LabNode(getBounds(), GNode.host, fw));
 		firewallsNumber++;
-		System.out.println("Added fw");
 		return fw;
 	}
 
+	/**
+	 * @return the added router or null if it's not possibile to add another one
+	 */
 	private AbstractHost addRouter() {
 		if( routersNumber >= maxRouters ) 
 			return null;
@@ -275,25 +311,34 @@ public class Topology {
 		project.addHost(router);
 		lab.addNode(new LabNode(getBounds(), GNode.host, router));
 		routersNumber++;
-		System.out.println("Added router");
 		return router;
 	}
 	
+	/**
+	 * @param type the type of the host to add (ItemType)
+	 * @return the added host
+	 */
 	private AbstractHost addHost(ItemType type) {
 		AbstractHost host = factory.createHost(type);
 		project.addHost(host);
 		lab.addNode(new LabNode(getBounds(), GNode.host, host));
-		System.out.println("Added host");
 		return host;
 	}
 	
+	/**
+	 * add the tap to this lab
+	 */
 	private void addTap() {
-		System.out.println("Adding tap");
 		TAP = factory.createCollisionDomain(true);
 		lab.addNode(new LabNode(getBounds(), GNode.domain, TAP));
 		project.addCollisionDomain(TAP);
 	}
 	
+	/**
+	 * 
+	 * @param withArea true if this domain is into an area
+	 * @return the added domain or null if is not possibile to add another domain (no more area) 
+	 */
 	private AbstractCollisionDomain addDomain(boolean withArea) {
 		AbstractCollisionDomain cd;
 		if( withArea ) {
@@ -310,10 +355,13 @@ public class Topology {
 			project.addCollisionDomain(cd);
 			lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
 		}
-		System.out.println("Added cd ");
 		return cd;
 	}
 	
+	/**
+	 * @param area the area 
+	 * @return the added domain or null if this area is null
+	 */
 	private AbstractCollisionDomain addDomain(String area) {
 		if( area == null ) 
 			return null;
@@ -322,10 +370,14 @@ public class Topology {
 		cd.setArea(area);
 		cd.setMinimumIp(getMinIp());
 		project.addCollisionDomain(cd);
-		System.out.println("Added cd ");
 		return cd;
 	}
 	
+	/** Connect this host to this collision domain, adding an interface 
+	 * to the host and a link from it to the domain
+	 * @param host the host to connect to the collision domain
+	 * @param cd the collision domain
+	 */
 	private void connect( AbstractHost host, AbstractCollisionDomain cd ) {
 		AbstractLink link = factory.createLink(host, cd);
 		if( link != null ) 
@@ -333,17 +385,21 @@ public class Topology {
 		lab.addNode(new LabNode(null, GNode.link, link));
 	}
 	
+	/**
+	 * Remove this host, all links started from it and eventually
+	 * all the collision domains become empty
+	 * @param host the host to remove 
+	 */
 	private void removeHost( AbstractHost host ) {
 		for( int i = 0; i < project.getLinks().size(); i++ ) {
 			AbstractLink link = project.getLinks().get(i);
-			if( link.getInterface().getHost() == host ) {
+			if( link.getInterface().getHost().getName().equals(host.getName()) ) {
 				AbstractCollisionDomain cd = link.getInterface().getCollisionDomain();
+				domainToRemove.add(cd);
 				lab.removeNode(link);
-				project.removeLink(link);
+				project.getLinks().remove(i);
 				link.delete();
 				i--;
-				if( cd.getConnectedInterfaces().size() <= 2 ) 
-					removeDomain(cd);
 			}
 		}
 		lab.removeNode(host);
@@ -351,24 +407,31 @@ public class Topology {
 		host.delete();
 	}
 	
+	/**
+	 * Remove this domain, all links ended in it and all hosts previusly 
+	 * connected to it with no more interfaces
+	 * @param cd the domain to remove
+	 */
 	private void removeDomain( AbstractCollisionDomain cd ) {
 		for( int i = 0; i < project.getLinks().size(); i++ ) {
 			AbstractLink link = project.getLinks().get(i);
-			if( link.getInterface().getCollisionDomain() == cd ) {
+			if( link.getInterface().getCollisionDomain().getName().equals(cd.getName()) ) {
 				AbstractHost host = link.getInterface().getHost();
 				link.getInterface().delete();
 				lab.removeNode(link);
-				project.removeLink(link);
+				project.getLinks().remove(i);
 				link.delete();
 				i--;
-				if( host.getInterfaces().size() <= 1 ) 
-					removeHost(host);
+				if( host.getInterfaces().size() == 0 ) 
+					hostsToRemove.add(host);
 			}
 		}
 		lab.removeNode(cd);
 		project.removeCollisionDomain(cd);
 		cd.delete();
 	}
+	
+	/** GETTER AND SETTER METHODS */
 	
 	public AbstractCollisionDomain getTAP() {
 		return TAP;

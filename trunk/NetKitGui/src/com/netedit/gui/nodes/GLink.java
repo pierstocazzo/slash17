@@ -51,6 +51,9 @@ public class GLink extends GNode {
 	}
 
 	public void update() {
+		if( host == null ) {
+			System.out.println(this);
+		}
 		Point2D start = host.getFullBoundsReference().getCenter2D();
 		Point2D end = collisionDomain.getFullBoundsReference().getCenter2D();
 		link.reset();
@@ -120,5 +123,10 @@ public class GLink extends GNode {
 		host.removeLink( this );
 		GuiManager.getInstance().getProject().removeLink( absLink );
 		GuiManager.getInstance().update();
+	}
+	
+	@Override
+	public String toString() {
+		return "GLink - from " + host + " to " + collisionDomain.getLogic().getName();
 	}
 }
