@@ -27,6 +27,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Date;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -72,15 +73,7 @@ public class TopologyGenerator {
 		
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			File dir = fc.getSelectedFile();
-			final String directory = dir.getAbsolutePath();
-			if( dir.isDirectory() ) {
-				choose = JOptionPane.showConfirmDialog(GuiManager.getInstance().getFrame(), 
-						"This directory is not empty. Delete all contents of this directory?");
-				if( choose == JOptionPane.OK_OPTION ) 
-					rmDirContent(dir);
-				else
-					return;
-			}
+			final String directory = dir.getPath()+"/topologies-"+new Date();
 			final int n = Integer.parseInt(number);
 			Thread t = new Thread(new Runnable() {
 				
@@ -101,18 +94,6 @@ public class TopologyGenerator {
 		} 
 	}
 	
-	private void rmDirContent(File dir) {
-		if( !dir.isDirectory() ) 
-			return;
-		File[] files = dir.listFiles();
-		for( File f : files ) {
-			if( f.isDirectory() ) {
-				rmDirContent(f);
-			}
-			f.delete();
-		}
-	}
-
 	private void createDialog() {
 		final JDialog dialog = new JDialog(GuiManager.getInstance().getFrame());
 		dialog.setTitle("Topologies generation");
