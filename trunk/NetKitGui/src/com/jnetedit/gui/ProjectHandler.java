@@ -108,7 +108,7 @@ public class ProjectHandler {
 	public File saveProjectSilent() {
 		project = Lab.getInstance().getProject();
 		if( project != null ) {
-			String projDir = project.getDirectory() + "/" + project.getName();
+			String projDir = project.getDirectory();
 			
 			createDirectory(projDir);
 			
@@ -143,6 +143,18 @@ public class ProjectHandler {
 			return null;
 		}
 	}
+	
+	private void rmDirContent(File dir) {
+		if( !dir.isDirectory() ) 
+			return;
+		File[] files = dir.listFiles();
+		for( File f : files ) {
+			if( f.isDirectory() ) {
+				rmDirContent(f);
+			}
+			f.delete();
+		}
+	}
 
 	private void createFile( String fileName, String projDir, String content ) {
 		File f = new File( projDir + "/" + fileName );
@@ -171,6 +183,8 @@ public class ProjectHandler {
 		File proj = new File( directory );
 		if( !proj.exists() ) 
 			proj.mkdirs();
+		else
+			rmDirContent(proj);
 		
 		String dir = proj.getAbsolutePath();
 		return dir;

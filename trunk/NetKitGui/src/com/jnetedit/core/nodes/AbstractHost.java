@@ -33,6 +33,11 @@ public interface AbstractHost {
 	public void setName( String name );
 	
 	
+	public String getLabel();
+	
+	public void setLabel(String label);
+	
+	
 	public AbstractInterface addInterface( AbstractCollisionDomain cd );
 	
 	public AbstractInterface getInterface( String name );

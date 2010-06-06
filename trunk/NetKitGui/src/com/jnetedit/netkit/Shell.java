@@ -42,9 +42,10 @@ public class Shell {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
-			if( project != null && isDirectory( project.getDirectory() ) ) 
+			if( project != null && isDirectory( project.getDirectory() ) ) {
 				rnt.exec("sh startlab " + project.getDirectory() + " " + parallel);
-			else 
+				System.out.println(project.getDirectory());
+			} else 
 				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
 						"Save the project before start", "Error", JOptionPane.ERROR_MESSAGE);
 			

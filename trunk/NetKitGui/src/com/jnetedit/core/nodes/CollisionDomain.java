@@ -34,6 +34,8 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 
 	protected String name;
 	
+	protected String label;
+	
 	/** network area of this domain */
 	protected String area;
 	
@@ -64,6 +66,7 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 	CollisionDomain( String name, int minIpAddr ) {
 		this.minIpAddr = minIpAddr;
 		this.name = name;
+		this.label = "" + name;
 		this.hostsInterfaces = new ArrayList<AbstractInterface>();
 		this.isTap = false;
 	}
@@ -75,6 +78,7 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 	 */
 	public CollisionDomain( String name ) {
 		this.name = name;
+		this.label = "" + name;
 		this.hostsInterfaces = new ArrayList<AbstractInterface>();
 		this.isTap = false;
 	}
@@ -90,7 +94,7 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 
 	public void setArea(String area) {
 		this.area = area;
-		this.name = name + " (" + area + ")";
+		this.label = label+ " (" + area + ")";
 	}
 
 	public int getMinIpAddr() {
@@ -185,4 +189,13 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 	public int getMinimumIp() {
 		return minIpAddr;
 	}
+	
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
 }
+
