@@ -66,7 +66,7 @@ public class GCollisionDomain extends GNode {
 		
 		setImage(defaultImage);
 		
-		setText(absCollisionDomain.getName());
+		setText(absCollisionDomain.getLabel());
 		
 		centerFullBoundsOnPoint(x, y);
 		

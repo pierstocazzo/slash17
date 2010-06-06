@@ -42,6 +42,8 @@ public class Host implements AbstractHost, Serializable {
 
 	protected String name;
 	
+	protected String label;
+	
 	/** host's network interfaces */
 	protected ArrayList<AbstractInterface> interfaces;
 	/** host's routes */
@@ -61,6 +63,7 @@ public class Host implements AbstractHost, Serializable {
 	public Host(String name, ItemType type) {
 		this.name = name;
 		this.type = type;
+		this.label = "" + name;
 		
 		interfaces = new ArrayList<AbstractInterface>();
 		routes = new ArrayList<AbstractRoute>();
@@ -227,5 +230,13 @@ public class Host implements AbstractHost, Serializable {
 		}
 		
 		return text;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+	
+	public void setLabel( String label ) {
+		this.label = label;
 	}
 }

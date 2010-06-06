@@ -84,7 +84,7 @@ public class Topology {
 		
 		NameGenerator.reset();
 		
-		project = factory.createProject(name, directory);
+		project = factory.createProject(name, directory+"/"+name);
 		lab = Lab.getInstance();
 		lab.clear();
 		lab.setProject(project);
@@ -177,7 +177,7 @@ public class Topology {
 				} else {
 					host = addHost(ItemType.NATTEDSERVER);
 				}
-				host.setName(host.getName() + " - " + getRandomService());
+				host.setLabel(host.getLabel() + " - " + getRandomService());
 			} else {
 				host = addHost(ItemType.PC);
 			}

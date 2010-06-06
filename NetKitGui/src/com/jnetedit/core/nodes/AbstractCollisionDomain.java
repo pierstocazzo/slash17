@@ -28,6 +28,10 @@ public interface AbstractCollisionDomain {
 	
 	public void setName( String name );
 	
+	public String getLabel();
+	
+	public void setLabel(String label);
+	
 	public boolean delete();
 	
 	public void addConnection( AbstractInterface hostInterface );

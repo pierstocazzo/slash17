@@ -99,7 +99,7 @@ public class GHost extends GNode {
 		
 		setImage( defaultImage );
 		
-		setText(host.getName());
+		setText(host.getLabel());
 		
 		centerFullBoundsOnPoint(x, y);
 		
