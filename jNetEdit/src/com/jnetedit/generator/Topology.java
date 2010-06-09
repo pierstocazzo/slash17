@@ -18,8 +18,6 @@
 
 package com.jnetedit.generator;
 
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -45,7 +43,7 @@ public class Topology {
 	ArrayList<AbstractHost> hostsToRemove = new ArrayList<AbstractHost>();
 	ArrayList<AbstractCollisionDomain> domainToRemove = new ArrayList<AbstractCollisionDomain>();
 	
-	boolean[][] matrix;
+	AbstractLayout layout;
 	
 	ArrayList<String> services = new ArrayList<String>();
 	{
@@ -74,8 +72,10 @@ public class Topology {
 	int firewallsNumber;
 	int routersNumber;
 	
-	public Topology(String name, String directory, LinkedList<String> areas, AbstractFactory factory) {
+	public Topology(String name, String directory, LinkedList<String> areas, 
+			AbstractFactory factory, AbstractLayout layout) {
 		this.factory = factory;
+		this.layout = layout;
 		this.areas = new LinkedList<String>();
 		this.areas.addAll(areas);
 		this.r = new Random();
@@ -88,8 +88,6 @@ public class Topology {
 		lab = Lab.getInstance();
 		lab.clear();
 		lab.setProject(project);
-		
-		initMatrix();
 		
 		createTopology();
 	}
@@ -283,28 +281,6 @@ public class Topology {
 		return areas.remove(r.nextInt(nAreas));
 	}
 	
-	// temp
-	private void initMatrix() {
-		matrix = new boolean[8][8];
-		for( int i = 0; i < 8; i++ ) {
-			for( int j = 0; j < 8; j++ ) {
-				matrix[i][j] = false;
-			}
-		}
-	}
-	// temp
-	private Rectangle2D getBounds() {
-		for( int i = 0; i < 8; i++ ) {
-			for( int j = 0; j < 8; j++ ) {
-				if( matrix[i][j] == false ) {
-					matrix[i][j] = true;
-					return new Rectangle(j*120, i*180, 64, 64);
-				}
-			}
-		}
-		return null;
-	}
-	
 	/**
 	 * @return the added firewall or null if it's not possibile to add another one
 	 */
@@ -313,7 +289,7 @@ public class Topology {
 			return null;
 		AbstractHost fw = factory.createHost(ItemType.FIREWALL);
 		project.addHost(fw);
-		lab.addNode(new LabNode(getBounds(), GNode.host, fw));
+		lab.addNode(new LabNode(layout.getBounds(fw), GNode.host, fw));
 		firewallsNumber++;
 		return fw;
 	}
@@ -326,7 +302,7 @@ public class Topology {
 			return null;
 		AbstractHost router = factory.createHost(ItemType.ROUTER);
 		project.addHost(router);
-		lab.addNode(new LabNode(getBounds(), GNode.host, router));
+		lab.addNode(new LabNode(layout.getBounds(router), GNode.host, router));
 		routersNumber++;
 		return router;
 	}
@@ -338,7 +314,7 @@ public class Topology {
 	private AbstractHost addHost(ItemType type) {
 		AbstractHost host = factory.createHost(type);
 		project.addHost(host);
-		lab.addNode(new LabNode(getBounds(), GNode.host, host));
+		lab.addNode(new LabNode(layout.getBounds(host), GNode.host, host));
 		return host;
 	}
 	
@@ -347,7 +323,7 @@ public class Topology {
 	 */
 	private void addTap() {
 		TAP = factory.createCollisionDomain(true);
-		lab.addNode(new LabNode(getBounds(), GNode.domain, TAP));
+		lab.addNode(new LabNode(layout.getBounds(TAP), GNode.domain, TAP));
 		project.addCollisionDomain(TAP);
 	}
 	
@@ -363,14 +339,14 @@ public class Topology {
 			if( area == null ) 
 				return null;
 			cd = factory.createCollisionDomain(false);
-			lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
+			lab.addNode(new LabNode(layout.getBounds(cd), GNode.domain, cd));
 			cd.setArea(area);
 			cd.setMinimumIp(getMinIp());
 			project.addCollisionDomain(cd);
 		} else {
 			cd = factory.createCollisionDomain(false);
 			project.addCollisionDomain(cd);
-			lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
+			lab.addNode(new LabNode(layout.getBounds(cd), GNode.domain, cd));
 		}
 		return cd;
 	}
@@ -383,7 +359,7 @@ public class Topology {
 		if( area == null ) 
 			return null;
 		AbstractCollisionDomain cd = factory.createCollisionDomain(false);
-		lab.addNode(new LabNode(getBounds(), GNode.domain, cd));
+		lab.addNode(new LabNode(layout.getBounds(cd), GNode.domain, cd));
 		cd.setArea(area);
 		cd.setMinimumIp(getMinIp());
 		project.addCollisionDomain(cd);
