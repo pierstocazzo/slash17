@@ -183,6 +183,7 @@ public class CollisionDomain implements AbstractCollisionDomain, Serializable {
 	@Override
 	public void setMinimumIp( int min ) {
 		this.minIpAddr = min;
+		label = label + " minIP: " + minIpAddr;
 	}
 
 	@Override
