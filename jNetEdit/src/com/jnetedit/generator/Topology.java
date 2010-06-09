@@ -175,7 +175,7 @@ public class Topology {
 				} else {
 					host = addHost(ItemType.NATTEDSERVER);
 				}
-				host.setLabel(host.getLabel() + " - " + getRandomService());
+				host.setLabel(host.getLabel() + " ("+getRandomService()+")");
 			} else {
 				host = addHost(ItemType.PC);
 			}
