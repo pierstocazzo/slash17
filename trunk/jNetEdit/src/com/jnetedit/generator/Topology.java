@@ -88,11 +88,9 @@ public class Topology {
 		lab = Lab.getInstance();
 		lab.clear();
 		lab.setProject(project);
-		
-		createTopology();
 	}
 	
-	private void createTopology() {
+	public Topology createTopology() {
 		System.out.println(project.getName() + " generation started");
 		
 		// create the tap
@@ -154,6 +152,8 @@ public class Topology {
 		ProjectHandler.getInstance().saveProjectSilent();
 		System.err.println("Done " + project.getName());
 //		ProjectHandler.getInstance().openProject(f);
+		
+		return this;
 	} 
 	
 	/** Popolate a collision domain with some hosts

@@ -82,7 +82,9 @@ public class TopologyGenerator {
 				@Override
 				public void run() {
 					for( int i = 0; i < n; i++ ) {
-						new Topology("proj" + i, directory, areas, new Factory(), new VeryBasicLayouting() );
+						Topology t = new Topology("proj" + i, directory, areas, 
+								new Factory(), new VeryBasicLayouting() );
+						t.createTopology();
 						try {
 							Thread.sleep(10);
 						}catch (Exception e) {
