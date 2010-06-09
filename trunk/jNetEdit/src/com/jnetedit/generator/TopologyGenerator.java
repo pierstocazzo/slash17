@@ -27,6 +27,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -73,14 +74,15 @@ public class TopologyGenerator {
 		
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			File dir = fc.getSelectedFile();
-			final String directory = dir.getPath()+"/topologies-"+new Date();
+			String date = DateFormat.getDateTimeInstance().format(new Date());
+			final String directory = dir.getPath()+System.getProperty("file.separator")+"topologies-"+date;
 			final int n = Integer.parseInt(number);
 			Thread t = new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
 					for( int i = 0; i < n; i++ ) {
-						new Topology("proj" + i, directory, areas, new Factory() );
+						new Topology("proj" + i, directory, areas, new Factory(), new VeryBasicLayouting() );
 						try {
 							Thread.sleep(10);
 						}catch (Exception e) {
