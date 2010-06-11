@@ -6,7 +6,7 @@ import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 
 /**
- * Interface witch define an automatic layouting for jNetEdit nodes
+ * Interface which define an automatic layouting for jNetEdit nodes
  */
 public interface AbstractLayout {
 

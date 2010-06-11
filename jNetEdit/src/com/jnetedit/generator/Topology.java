@@ -28,6 +28,7 @@ import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 import com.jnetedit.core.nodes.AbstractLink;
 import com.jnetedit.core.project.AbstractProject;
+import com.jnetedit.core.util.IpGenerator;
 import com.jnetedit.core.util.NameGenerator;
 import com.jnetedit.gui.Lab;
 import com.jnetedit.gui.ProjectHandler;
@@ -83,6 +84,7 @@ public class Topology {
 		this.routersNumber = 0;
 		
 		NameGenerator.reset();
+		IpGenerator.reset();
 		
 		project = factory.createProject(name, directory+"/"+name);
 		lab = Lab.getInstance();
@@ -148,10 +150,9 @@ public class Topology {
 			}
 		}
 		
-		// save and open the project
+		// save the project
 		ProjectHandler.getInstance().saveProjectSilent();
-		System.err.println("Done " + project.getName());
-//		ProjectHandler.getInstance().openProject(f);
+		System.out.println(project.getName() + " generated");
 		
 		return this;
 	} 
@@ -160,9 +161,6 @@ public class Topology {
 	 * @param cd the domain to popolate with some hosts
 	 */
 	private void popolate(AbstractCollisionDomain cd) {
-//		System.out.println("Popolating " + cd.getName() +
-//				" (" + cd.getArea() + ") min Ip " + cd.getMinimumIp());
-//		
 		String area = cd.getArea();
 		int hosts = r.nextInt(2) + 1;
 		// connect one or two host to this domain
@@ -328,7 +326,6 @@ public class Topology {
 	}
 	
 	/**
-	 * 
 	 * @param withArea true if this domain is into an area
 	 * @return the added domain or null if is not possibile to add another domain (no more area) 
 	 */

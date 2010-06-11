@@ -198,7 +198,7 @@ public class Project implements AbstractProject, Serializable {
 	}
 	
 	public String getLabConfFile() {
-		String text = "# 'lab.conf' created by NetKit GUI\n\n";
+		String text = "# 'lab.conf' created by jNetEdit\n\n";
 		
 		for( AbstractHost host : hosts ) {
 			String hostName = host.getName();
