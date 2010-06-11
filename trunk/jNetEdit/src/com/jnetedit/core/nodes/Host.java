@@ -206,7 +206,7 @@ public class Host implements AbstractHost, Serializable {
 	
 	public String getStartupFile() {
 		String text = "";
-		text = "# '" + name + ".startup' created by NetKit GUI\n\n";
+		text = "# '" + name + ".startup' created by jNetEdit\n\n";
 		
 		text += "# Interfaces configuration\n";
 		for( AbstractInterface iface : interfaces ) {

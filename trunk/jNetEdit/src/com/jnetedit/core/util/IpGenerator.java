@@ -26,4 +26,8 @@ public class IpGenerator {
 	public static String getNextTapIp() {
 		return tapNet + n++;
 	}
+	
+	public static void reset() {
+		n = 2;
+	}
 }
