@@ -46,6 +46,16 @@ public interface AbstractProject {
 
 	public void setDirectory(String string);
 	
+	public void setDescription(String description);
+	
+	public void setAuthor(String author);
+	
+	public void setEmail(String email);
+	
+	public void setWeb(String web);
+	
+	public void setVersion(String version);
+	
 	
 	public void addHost( AbstractHost host );
 	

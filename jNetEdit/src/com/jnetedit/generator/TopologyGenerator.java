@@ -92,7 +92,7 @@ public class TopologyGenerator {
 		
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			File dir = fc.getSelectedFile();
-			String date = DateFormat.getDateTimeInstance().format(new Date());
+			String date = DateFormat.getDateInstance().format(new Date());
 			final String directory = dir.getPath()+System.getProperty("file.separator")+"topologies-"+date;
 			final int n = Integer.parseInt(number);
 			Thread t = new Thread(new Runnable() {
