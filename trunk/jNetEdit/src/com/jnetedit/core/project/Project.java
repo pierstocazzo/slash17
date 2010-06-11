@@ -80,6 +80,7 @@ public class Project implements AbstractProject, Serializable {
 		links = new ArrayList<AbstractLink>();
 		this.directory = directory;
 		this.name = name;
+		this.description = name + "; ";
 	}
 	
 	/** Add a new host to the project
@@ -198,8 +199,20 @@ public class Project implements AbstractProject, Serializable {
 	}
 	
 	public String getLabConfFile() {
-		String text = "# 'lab.conf' created by jNetEdit\n\n";
+		String text = "# 'lab.conf' created by jNetEdit <http://slash17.googlecode.com/>\n\n";
 		
+		if( description != null )
+			text += "LAB_DESCRIPTION=" + description + "\n";
+		if( version != null ) 
+			text += "LAB_VERSION=" + version + "\n";
+		if( author != null )
+			text += "LAB_AUTHOR=" + author + "\n";
+		if( email != null ) 
+			text += "LAB_EMAIL=" + email + "\n";
+		if( web != null ) 
+			text += "LAB_WEB=" + web + "\n";
+		
+		text += "\n";
 		for( AbstractHost host : hosts ) {
 			String hostName = host.getName();
 			
