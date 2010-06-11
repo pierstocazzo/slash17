@@ -451,4 +451,8 @@ public class Topology {
 	public AbstractHost getMainGateway() {
 		return mainGateway;
 	}
+	
+	public AbstractProject getProject() {
+		return project;
+	}
 }
