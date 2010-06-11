@@ -43,11 +43,11 @@ public class TestTopology extends TestCase {
 		assertNotNull(t.getTAP());
 		assertNotNull(t.getMainGateway());
 		
-		/* Assert the number of firewalls in the topology is exaclty 2
+		/* Assert the number of firewalls in the topology is exactly 2
 		 */
 		assertEquals(2, t.getFirewallsNumber());
 		
-		/* Assert the number of interfaces of the host is more 
+		/* Assert the number of interfaces of each host is more 
 		 * then a minimum and lesser then a maximum 
 		 * (no isolated host, no useless router)
 		 */
@@ -67,7 +67,7 @@ public class TestTopology extends TestCase {
 						"A " + type + " must have lesser then " + maxIfaces + " interfaces.");
 			
 			// assert there's a path from the main gateway (rootNode) to this host
-			// (the topology must be connected graph)
+			// (the topology must be connected)
 			if( !existsPath(t.getMainGateway(), host, null) ) 
 				fail(host.getName() + " is not reacheable from the main gateway.\n" +
 						"The topology must be connected.");
