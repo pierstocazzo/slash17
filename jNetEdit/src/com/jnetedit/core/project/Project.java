@@ -80,7 +80,11 @@ public class Project implements AbstractProject, Serializable {
 		links = new ArrayList<AbstractLink>();
 		this.directory = directory;
 		this.name = name;
-		this.description = name + "; ";
+		description = name + "; ";
+		version = "0.1v";
+		author = "jNetEdit";
+		email = "deadlyomen17@gmail.it";
+		web = "http://slash17.googlecode.com/";
 	}
 	
 	/** Add a new host to the project
