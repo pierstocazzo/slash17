@@ -172,7 +172,7 @@ public class GActionListener implements ActionListener {
 	}
 	
 	public void showInfo() {
-		String credits = "<html><center><b><font size=6>NetKit GUI</font></b></center><br>" +
+		String credits = "<html><center><b><font size=6>jNetEdit</font></b></center><br>" +
 			"Released under GNU General Public License version 3. " +
 			"<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GPLv3</a><br><br>" +
 			"Copyright © 2010 <i>Loria Salvatore</i><br>" +
@@ -192,7 +192,7 @@ public class GActionListener implements ActionListener {
 			}
 		});
 
-		JOptionPane.showMessageDialog( GuiManager.getInstance().getFrame(), editorPane, "Abaut...", 
+		JOptionPane.showMessageDialog( GuiManager.getInstance().getFrame(), editorPane, "About...", 
 				JOptionPane.INFORMATION_MESSAGE, new ImageIcon("data/images/big/GNU.png"));
 	}
 	
@@ -211,7 +211,7 @@ public class GActionListener implements ActionListener {
 		JDialog d = new JDialog(manager.getFrame());
 		d.setTitle("Licence");
 		d.setContentPane(new JPanel(new BorderLayout()));
-		JLabel title = new JLabel("NetKit GUI Licence", JLabel.CENTER);
+		JLabel title = new JLabel("jNetEdit Licence", JLabel.CENTER);
 		title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		title.setFont(new Font("Times New Roman", Font.BOLD, 24));
 		d.add(title, BorderLayout.NORTH);
