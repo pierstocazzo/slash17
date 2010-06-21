@@ -109,7 +109,7 @@ public class GFrame extends JFrame {
 	 * Create the NetKit GUI window
 	 */
 	public GFrame() {
-		super("NetKit GUI");
+		super("jNetEdit");
 		
 		createFrame();
 	}
