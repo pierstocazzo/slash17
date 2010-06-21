@@ -36,10 +36,10 @@ import com.jnetedit.core.nodes.components.AbstractInterface;
 import com.jnetedit.core.nodes.components.AbstractRoute;
 import com.jnetedit.core.nodes.components.AbstractRule;
 import com.jnetedit.gui.GuiManager;
-import com.jnetedit.gui.dialogs.FileDialog;
-import com.jnetedit.gui.dialogs.InterfaceDialog;
-import com.jnetedit.gui.dialogs.IptablesDialog;
-import com.jnetedit.gui.dialogs.RouteDialog;
+import com.jnetedit.gui.gcomponents.dialogs.FileDialog;
+import com.jnetedit.gui.gcomponents.dialogs.InterfaceDialog;
+import com.jnetedit.gui.gcomponents.dialogs.IptablesDialog;
+import com.jnetedit.gui.gcomponents.dialogs.RouteDialog;
 
 
 public class GTreeNode extends DefaultMutableTreeNode {

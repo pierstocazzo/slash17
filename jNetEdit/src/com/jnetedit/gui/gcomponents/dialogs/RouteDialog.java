@@ -16,9 +16,10 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.jnetedit.gui.dialogs;
+package com.jnetedit.gui.gcomponents.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -36,49 +37,49 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.jnetedit.common.IpAddress;
-import com.jnetedit.core.nodes.components.AbstractInterface;
+import com.jnetedit.core.nodes.AbstractHost;
+import com.jnetedit.core.nodes.components.AbstractRoute;
 import com.jnetedit.gui.GuiManager;
 
 
-public class InterfaceDialog extends JDialog {
-	private static final long serialVersionUID = -9193720585561385320L;
-
-	AbstractInterface iface;
+public class RouteDialog extends JDialog {
+	private static final long serialVersionUID = -4280244546799009674L;
 	
-	public InterfaceDialog( final AbstractInterface iface ) {
-		super( (Frame) GuiManager.getInstance().getFrame(), "Interface configuration" );
-		this.iface = iface;
-		
-		createDialog( null );
-	}	
+	AbstractRoute route;
+	AbstractHost host;
 	
-	public InterfaceDialog( final AbstractInterface iface, String message ) {
-		super( (Frame) GuiManager.getInstance().getFrame(), "Interface configuration" );
-		this.iface = iface;
-		
-		createDialog( message );
+	public RouteDialog( final AbstractRoute route ) {
+		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
+		this.route = route;
+		host = route.getHost();
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		showDialog(null);
 	}
+	
+	public RouteDialog( final AbstractRoute route, String message ) {
+		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
+		this.route = route;
+		host = route.getHost();
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		showDialog(message);
+	}	
 
-	private void createDialog( String message ) {
+	private void showDialog( String message ) {
 		setLayout(new BorderLayout());
 		
-		String name = iface.getName();
-		String ip = iface.getIp();
-		String mask = iface.getMask();
-		String bcast = iface.getBCast();
-		String host = iface.getHost().getName();
+		String net = route.getNet();
+		String gw = route.getGw();
 		
-		if( ip == null || mask == null || bcast == null ) {
-			ip = "";
-			mask = "";
-			bcast = "";
+		if( net == null || gw == null ) {
+			net = "";
+			gw = "";
 		}
 		
 		final JLabel label;
 		if( message == null ) 
-			label = new JLabel("Set the interface " + name + " of " + host );
+			label = new JLabel("Add a routing table row to " + host.getName() );
 		else 
-			label = new JLabel(message + "\nSet the interface " + name + " of " + host );
+			label = new JLabel(message + "\nAdd a routing table row to " + host.getName() );
 		
 		label.setFont( new Font("Serif", Font.BOLD, 14) );
 		label.setBorder( BorderFactory.createEmptyBorder(5, 5, 5, 5) );
@@ -96,39 +97,30 @@ public class InterfaceDialog extends JDialog {
 		textFieldConstraint.gridwidth = 3;
 		textFieldConstraint.anchor = GridBagConstraints.EAST;
 
-		JLabel icon = new JLabel(new ImageIcon("data/images/big/nic.png"));
+		JLabel icon = new JLabel(new ImageIcon("data/images/big/route.png"));
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 0;
-		labelConstraint.gridheight = 4;
+		labelConstraint.gridheight = 3;
 		panel.add( icon, labelConstraint );
 		labelConstraint.gridheight = 1;
 		
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 1;
-		panel.add( new JLabel("IP:"), labelConstraint );
+		panel.add( new JLabel("Net:"), labelConstraint );
 		
-		final JTextField ipField = new JTextField(ip, 15);
+		final JTextField netField = new JTextField(net, 15);
 		textFieldConstraint.gridy = 0;
 		textFieldConstraint.gridx = 2; //fino a 5
-		panel.add( ipField, textFieldConstraint );
+		panel.add( netField, textFieldConstraint );
 		
 		labelConstraint.gridy = 1;
 		labelConstraint.gridx = 1;
-		panel.add( new JLabel("NetMask:"), labelConstraint );
+		panel.add( new JLabel("Gateway:"), labelConstraint );
 		
-		final JTextField maskField = new JTextField(mask, 15);
+		final JTextField gwField = new JTextField(gw, 15);
 		textFieldConstraint.gridy = 1;
 		textFieldConstraint.gridx = 2;
-		panel.add( maskField, textFieldConstraint );
-		
-		labelConstraint.gridy = 2;
-		labelConstraint.gridx = 1;
-		panel.add(new JLabel("BroadCast:"), labelConstraint );
-		
-		final JTextField bcastField = new JTextField(bcast, 15);
-		textFieldConstraint.gridy = 2;
-		textFieldConstraint.gridx = 2;
-		panel.add( bcastField, textFieldConstraint );
+		panel.add( gwField, textFieldConstraint );
 		
 		Dimension size = new Dimension(60,30);
 		
@@ -153,18 +145,15 @@ public class InterfaceDialog extends JDialog {
 		set.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String ip = ipField.getText();
-				String mask = maskField.getText();
-				String bcast = bcastField.getText();
+				String net = netField.getText();
+				String gw = gwField.getText();
 				
-				if( ip.matches(IpAddress.ipRx) && mask.matches(IpAddress.ipRx) && bcast.matches(IpAddress.ipRx) ) {
-					iface.setIp(ip);
-					iface.setMask(mask);
-					iface.setBCast(bcast);
-					GuiManager.getInstance().update();
+				if( net.matches(IpAddress.netRx) && gw.matches(IpAddress.ipRx) ) {
+					route.setNet(net);
+					route.setGw(gw);
 					dispose();
 				} else {
-					label.setText("Format incorrect. Correct example: 192.168.123.254");
+					label.setText("Format incorrect. Correct example: 10.0.0.0/8");
 					repaint();
 				}
 			}
