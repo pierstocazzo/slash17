@@ -16,7 +16,7 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.jnetedit.gui.dialogs;
+package com.jnetedit.gui.gcomponents.dialogs;
 
 import java.awt.Color;
 import java.awt.Frame;
