@@ -18,7 +18,20 @@
 
 package com.jnetedit.generator.test;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
+
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.jnetedit.common.ItemType;
 import com.jnetedit.core.Factory;
@@ -29,17 +42,28 @@ import com.jnetedit.core.project.AbstractProject;
 import com.jnetedit.generator.Topology;
 import com.jnetedit.generator.VeryBasicLayouting;
 
-import junit.framework.TestCase;
-
-public class TestTopology extends TestCase {
+@RunWith(Parameterized.class)
+public class TestTopology {
 
 	Topology t;
 	
-	public TestTopology(String name) {
-		super(name);
+	static final int numberOfTests = 1000;
+	
+	@Parameters
+	public static Collection<Object[]> configure() {
+		Object[][] objs = new Object[numberOfTests][1];
+		for( int i = 0; i < numberOfTests; i++ ) {
+			objs[i][0] = i;
+		}
+		return Arrays.asList(objs);
+	}
+	
+	public TestTopology(int param) {
+		
 	}
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		LinkedList<String> areas = new LinkedList<String>();
 		areas.add("red");
 		areas.add("dmz");
@@ -48,11 +72,12 @@ public class TestTopology extends TestCase {
 			.createTopology();
 	}
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@After
+	public void tearDown() throws Exception {
 		t = null;
 	}
 
+	@Test
 	public void testCreateTopology() {
 		AbstractProject proj = t.getProject();
 		
