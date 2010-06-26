@@ -90,6 +90,11 @@ public class TestTopology {
 		 */
 		assertEquals(2, t.getFirewallsNumber());
 		
+		/* Assert the number of routers in the topology is less than the maximum 
+		 */
+		if (t.getMaxRouters() < t.getRoutersNumer()) 
+			fail("Max routers: "+t.getMaxRouters()+"; Topology's routers: "+t.getRoutersNumer());
+		
 		/* Assert the number of interfaces of each host is more 
 		 * then a minimum and lesser then a maximum 
 		 * (no isolated host, no useless router)
