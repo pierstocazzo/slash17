@@ -92,7 +92,8 @@ public class Topology {
 	int routersNumber;
 	
 	public Topology(String name, String directory, LinkedList<String> areas, 
-			AbstractFactory factory, AbstractLayout layout) {
+			int maxRouters, AbstractFactory factory, AbstractLayout layout) {
+		this.maxRouters = maxRouters;
 		this.factory = factory;
 		this.layout = layout;
 		this.areas = new LinkedList<String>();
