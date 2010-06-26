@@ -126,7 +126,7 @@ public class Topology {
 		AbstractCollisionDomain cd1 = addDomain(true);
 		if( cd1 != null ) {
 			connect(mainGateway, cd1);
-			popolate(cd1);
+			populate(cd1);
 		}
 		
 		// eth2 - cd2 (subnet with a firewall or a router as gateway)
@@ -151,7 +151,7 @@ public class Topology {
 			String area = getRandomArea();
 			if( area != null ) {
 				cd2.setArea(area);
-				popolate(cd2);
+				populate(cd2);
 			}
 		}
 		if( router != null ) {
@@ -179,7 +179,7 @@ public class Topology {
 	/** Popolate a collision domain with some hosts
 	 * @param cd the domain to popolate with some hosts
 	 */
-	private void popolate(AbstractCollisionDomain cd) {
+	private void populate(AbstractCollisionDomain cd) {
 		String area = cd.getArea();
 		int hosts = r.nextInt(2) + 1;
 		// connect one or two host to this domain
@@ -231,7 +231,7 @@ public class Topology {
 				if( domainInArea != null ) {
 					areaUsed = true;
 					connect(fw, domainInArea);
-					popolate(domainInArea);
+					populate(domainInArea);
 				}
 			}
 		}
@@ -261,7 +261,7 @@ public class Topology {
 				if( domain != null ) {
 					areaUsed = true;
 					connect(router, domain);
-					popolate(domain);
+					populate(domain);
 				}
 			}
 		}
