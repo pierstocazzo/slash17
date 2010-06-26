@@ -471,4 +471,12 @@ public class Topology {
 	public AbstractProject getProject() {
 		return project;
 	}
+
+	public int getMaxRouters() {
+		return maxRouters;
+	}
+
+	public int getRoutersNumer() {
+		return routersNumber;
+	}
 }
