@@ -68,7 +68,7 @@ public class TestTopology {
 		areas.add("red");
 		areas.add("dmz");
 		areas.add("green");
-		t = new Topology("test", "tests", areas, new Factory(), new VeryBasicLayouting())
+		t = new Topology("test", "tests", areas, 4, new Factory(), new VeryBasicLayouting())
 			.createTopology();
 	}
 

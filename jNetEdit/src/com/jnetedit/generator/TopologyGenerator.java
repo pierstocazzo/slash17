@@ -66,6 +66,7 @@ public class TopologyGenerator {
 
 	String number = "";
 	String areasString = "";
+	String maxRouterString = "4";
 	
 	public static void start() {
 		new TopologyGenerator();
@@ -80,7 +81,7 @@ public class TopologyGenerator {
 			areas.add(area);
 		}
 		
-		if( number.equals("") || areasStrings.equals("") ) {
+		if( number.equals("") || areasStrings.equals("") || maxRouterString.equals("") ) {
 			return;
 		}
 		
@@ -95,12 +96,13 @@ public class TopologyGenerator {
 			String date = DateFormat.getDateInstance().format(new Date());
 			final String directory = dir.getPath()+System.getProperty("file.separator")+"topologies-"+date;
 			final int n = Integer.parseInt(number);
+			final int routers = Integer.parseInt(maxRouterString);
 			Thread t = new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
 					for( int i = 0; i < n; i++ ) {
-						Topology t = new Topology("proj" + i, directory, areas, 
+						Topology t = new Topology("proj" + i, directory, areas, routers, 
 								new Factory(), new VeryBasicLayouting() );
 						t.createTopology();
 						try {
@@ -143,7 +145,7 @@ public class TopologyGenerator {
 		JLabel icon = new JLabel(new ImageIcon("data/images/big/route.png"));
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 0;
-		labelConstraint.gridheight = 3;
+		labelConstraint.gridheight = 4;
 		panel.add( icon, labelConstraint );
 		labelConstraint.gridheight = 1;
 		
@@ -153,7 +155,7 @@ public class TopologyGenerator {
 		
 		final JTextField numberField = new JTextField(number, 15);
 		textFieldConstraint.gridy = 0;
-		textFieldConstraint.gridx = 2; //fino a 5
+		textFieldConstraint.gridx = 2; 
 		panel.add( numberField, textFieldConstraint );
 		
 		labelConstraint.gridy = 1;
@@ -165,7 +167,16 @@ public class TopologyGenerator {
 		textFieldConstraint.gridx = 2;
 		panel.add( areasField, textFieldConstraint );
 		
-		Dimension size = new Dimension(60,30);
+		labelConstraint.gridy = 2;
+		labelConstraint.gridx = 1;
+		panel.add( new JLabel("Max routers:"), labelConstraint );
+		
+		final JTextField maxRoutersField = new JTextField(maxRouterString, 15);
+		textFieldConstraint.gridy = 2;
+		textFieldConstraint.gridx = 2;
+		panel.add( maxRoutersField, textFieldConstraint );
+		
+		Dimension size = new Dimension(65,30);
 		
 		labelConstraint.gridy = 3;
 		labelConstraint.gridx = 4;
