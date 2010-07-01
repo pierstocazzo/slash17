@@ -5,7 +5,7 @@
 Download del pacchetto *[http://slash17.googlecode.com/files/jNetEdit.zip jNetEdit.zip]*:<br>
 URL: _http://slash17.googlecode.com/files/jNetEdit.zip_
 
-Estrarlo in un directory a piacere: <br>
+Estrarlo in una directory a piacere: <br>
 es. `# unzip jNetEdit.zip -d /home/user/jNetEdit`
 
 Avviare jNetEdit:<br>
