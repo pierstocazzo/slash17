@@ -10,7 +10,7 @@ es. `# unzip jNetEdit.zip -d /home/user/jNetEdit`
 
 Avviare jNetEdit:<br>
   * GNU/Linux: # sh /home/user/jNetEdit.sh
-  * Windows: double click on jNetEdit.bat in the main directory
+  * Windows: doppio click su jNetEdit.bat nella directory principale
 
 
 ===== Eclipse =====
