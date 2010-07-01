@@ -1,0 +1,42 @@
+= jNetEdit =
+
+=== Installazione ===
+
+Download del pacchetto *[http://slash17.googlecode.com/files/jNetEdit.zip jNetEdit.zip]*:<br>
+URL: _http://slash17.googlecode.com/files/jNetEdit.zip_
+
+Estrarlo in un directory a piacere: <br>
+es. `# unzip jNetEdit.zip -d /home/user/jNetEdit`
+
+Avviare jNetEdit:<br>
+  * GNU/Linux: # sh /home/user/jNetEdit.sh
+  * Windows: double click on jNetEdit.bat in the main directory
+
+
+===== Eclipse =====
+
+Il pacchetto contiene il codice sorgente e le librerie necessarie, ed è possibile importarlo in Eclipse;<br>
+Per importare il progetto in Eclipse:
+
+  * New → Java Projet
+  * Project Name: jNetEdit
+  * Create project from existing source
+  * “Browse” fino alla directory in cui è stato estratto jNetEdit (es. /home/user/jNetEdit)
+  * “Finish”
+
+Per importare il progetto via SVN con Subclipse: 
+
+  * New → Other → SVN → Checkout Project from SVN
+  * Create a new repository location 
+  * URL: _http://slash17.googlecode.com/svn/trunk/jNetEdit_
+  * Selezionare l'ultima revision: “HEAD” 
+  * Next → Next → Finish
+
+
+Per importare il progetto via SVN con Subversive:
+
+  * New → Other → SVN → Project from SVN
+  * Create a new repository location
+  * URL: _http://slash17.googlecode.com/svn/_
+  * “Browse” e selezionare “trunk/jNetEdit”
+  * “finish”
