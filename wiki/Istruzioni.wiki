@@ -10,7 +10,7 @@ Estrarlo in una directory a piacere: <br>
 es. `# unzip jNetEdit.zip -d /home/user/jNetEdit`
 
 Avviare jNetEdit:<br>
-  * GNU/Linux: # sh /home/user/jNetEdit/jNetEdit.sh
+  * GNU/Linux: `# sh /home/user/jNetEdit/jNetEdit.sh`
   * Windows: doppio click su jNetEdit.bat nella directory principale
 
 
