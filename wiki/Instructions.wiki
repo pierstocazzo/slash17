@@ -10,7 +10,7 @@ Extract it in your directory: <br>
 es. `# unzip jNetEdit.zip -d /home/user/jNetEdit`
 
 Start jNetEdit:<br>
-  * GNU/Linux: # sh /home/user/jNetEdit.sh
+  * GNU/Linux: # sh /home/user/jNetEdit/jNetEdit.sh
   * Windows: double click on jNetEdit.bat in the main directory
 
 
