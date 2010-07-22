@@ -18,12 +18,26 @@
 
 package com.jnetedit;
 
+import javax.swing.JOptionPane;
+
 import com.jnetedit.core.Factory;
 import com.jnetedit.gui.GFactory;
 import com.jnetedit.gui.GuiManager;
+import com.jnetedit.netkit.Shell;
 
 public class Main {
 	public static void main(String[] args) {
+		if( args.length == 0 || args[0] == null || args[0].isEmpty() || args[0].equals("NULL") ) {
+			JOptionPane.showMessageDialog(null, 
+					"jNetkit - version 0.1\n" +
+					"Copyright 2010 Salvatore Loria\n\n" +
+					"WARNING: No Netkit installation founded, some features wont be available.\n" +
+					"You can get a free copy of Netkit here: <http://wiki.netkit.org>\n", 
+					"No Netkit installation", JOptionPane.WARNING_MESSAGE);
+			Shell.setNetkitHome(null);
+		} else {
+			Shell.setNetkitHome(args[0]);
+		}
 		GFactory.init( new Factory() );
 		GuiManager.getInstance().startGui();
 	}

@@ -36,15 +36,22 @@ public class Shell {
 	static File currentDir;
 	static BufferedReader in;
 	static PrintWriter out;
+	static String netkit_home;
 	
 	public static void startLab( AbstractProject project, boolean parallel ) {
+		if( netkit_home == null ) {
+			JOptionPane.showMessageDialog(null, 
+					"WARNING: No Netkit installation founded; starting laboratory is not available\n" +
+					"You can get a free copy of Netkit here: <http://wiki.netkit.org>\n", 
+					"No Netkit installation", JOptionPane.WARNING_MESSAGE);
+		}
 		try {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
 			if( project != null && isDirectory( project.getDirectory() ) ) {
-				rnt.exec("sh startlab " + project.getDirectory() + " " + parallel);
-				System.out.println(project.getDirectory());
+				rnt.exec("sh startlab " + project.getDirectory() + " " + parallel + " " + netkit_home);
+				System.out.println(netkit_home);
 			} else 
 				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
 						"Save the project before start", "Error", JOptionPane.ERROR_MESSAGE);
@@ -55,12 +62,18 @@ public class Shell {
 	}
 	
 	public static void stopLab( AbstractProject project, boolean crash ) {
+		if( netkit_home == null ) {
+			JOptionPane.showMessageDialog(null, 
+					"WARNING: No Netkit installation founded; stopping laboratory is not available\n" +
+					"You can get a free copy of Netkit here: <http://wiki.netkit.org>\n", 
+					"No Netkit installation", JOptionPane.WARNING_MESSAGE);
+		}
 		try {
 			if( rnt == null ) {
 				rnt = Runtime.getRuntime();
 			} 
 			if( project != null && isDirectory( project.getDirectory() ) )
-				rnt.exec("sh stoplab " + project.getDirectory() + " " + crash);
+				rnt.exec("sh stoplab " + project.getDirectory() + " " + crash + " " + netkit_home);
 			else 
 				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
 						"Save the project before stop", "Error", JOptionPane.ERROR_MESSAGE);
@@ -73,5 +86,9 @@ public class Shell {
 	private static boolean isDirectory(String directory) {
 		File f = new File(directory);
 		return f.isDirectory();
+	}
+
+	public static void setNetkitHome(String netkitHome) {
+		netkit_home = netkitHome;
 	}
 }
