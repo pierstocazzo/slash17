@@ -1,12 +1,11 @@
 #! /bin/bash
 
-if [ -z $NETKIT_HOME ] ; then
-	export NETKIT_HOME=/home/sal/netkit
-	export PATH=$PATH:$NETKIT_HOME/bin
-fi
-
 DIR=$1
 PARALLEL=$2
+NETHOME=$3
+
+export NETKIT_HOME="$NETHOME"
+export PATH=$PATH:$NETKIT_HOME/bin
 
 if $PARALLEL ; then
 	lstart -p -d $DIR
