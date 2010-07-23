@@ -266,12 +266,11 @@ public class GFrame extends JFrame {
 		start.setSelectedItem(starts);
 		
 		stop = new DropDownButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png");
-		lhalt = new JMenuItem("Halt the lab - lhalt");
-		lcrash = new JMenuItem("Crash the lab - lcrash");
-		lcrash.setSelected(true);
+		lhalt = new JMenuItem("Halt the lab ");
+		lcrash = new JMenuItem("Crash the lab ");
 		stop.getMenu().add(lhalt);
 		stop.getMenu().add(lcrash);
-		stop.setSelectedItem(lcrash);
+		stop.setSelectedItem(lhalt);
 		
 		zoomIn = new GButton("", "Zoom in", "data/images/22x22/zoom_in.png", GButton.standard);
 		zoomOut = new GButton("", "Zoom out", "data/images/22x22/zoom_out.png", GButton.standard);
