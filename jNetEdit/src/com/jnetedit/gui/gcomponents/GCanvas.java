@@ -33,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.jnetedit.common.ItemType;
+import com.jnetedit.common.NameGenerator;
 import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 import com.jnetedit.core.nodes.AbstractLink;
@@ -121,7 +122,7 @@ public class GCanvas extends PCanvas {
 		originalScale = getCamera().getViewScale();
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private GHost searchHost(AbstractHost logic) {
 		for( Iterator it = nodeLayer.getAllNodes().iterator(); it.hasNext(); ) {
 			Object node = it.next();
@@ -134,7 +135,7 @@ public class GCanvas extends PCanvas {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private GCollisionDomain searchDomain(AbstractCollisionDomain logic) {
 		for( Iterator it = nodeLayer.getAllNodes().iterator(); it.hasNext(); ) {
 			Object node = it.next();
@@ -150,7 +151,7 @@ public class GCanvas extends PCanvas {
 	/** 
 	 * Clear the canvas deleting everything
 	 */
-	public void clear() {
+	public void clearAll() {
 		for( Object node : nodeLayer.getAllNodes() )
 			if( node instanceof GNode ) 
 				((GNode) node).delete();
@@ -162,6 +163,7 @@ public class GCanvas extends PCanvas {
 				((GNode) node).delete();
 
 		GuiManager.getInstance().update();
+		NameGenerator.reset();
 	}
 	
 	public void zoomIn() {

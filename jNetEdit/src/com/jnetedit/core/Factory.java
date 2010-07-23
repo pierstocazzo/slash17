@@ -21,6 +21,7 @@ package com.jnetedit.core;
 import java.io.Serializable;
 
 import com.jnetedit.common.ItemType;
+import com.jnetedit.common.NameGenerator;
 import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 import com.jnetedit.core.nodes.AbstractLink;
@@ -30,7 +31,6 @@ import com.jnetedit.core.nodes.Link;
 import com.jnetedit.core.nodes.components.AbstractInterface;
 import com.jnetedit.core.project.AbstractProject;
 import com.jnetedit.core.project.Project;
-import com.jnetedit.core.util.NameGenerator;
 
 
 public class Factory implements AbstractFactory, Serializable {

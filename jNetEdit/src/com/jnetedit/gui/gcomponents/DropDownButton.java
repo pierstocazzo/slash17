@@ -36,7 +36,7 @@ public class DropDownButton extends GButton {
 	JMenuItem selectedItem;
 
 	public DropDownButton(String text, String toolTip, String icon) { 
-		super(text + " ▾", toolTip, icon, GButton.standard); 
+		super(text + " v", toolTip, icon, GButton.standard); 
 		
 		Dimension size = new Dimension(75, 30);
 		setPreferredSize(size);

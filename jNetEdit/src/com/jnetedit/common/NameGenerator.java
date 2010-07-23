@@ -16,11 +16,10 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package com.jnetedit.core.util;
+package com.jnetedit.common;
 
 import java.io.Serializable;
 
-import com.jnetedit.common.ItemType;
 
 
 

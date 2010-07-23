@@ -41,13 +41,13 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import com.jnetedit.common.ItemType;
+import com.jnetedit.common.NameGenerator;
 import com.jnetedit.core.AbstractFactory;
 import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 import com.jnetedit.core.nodes.AbstractLink;
 import com.jnetedit.core.project.AbstractProject;
 import com.jnetedit.core.util.IpGenerator;
-import com.jnetedit.core.util.NameGenerator;
 import com.jnetedit.gui.Lab;
 import com.jnetedit.gui.ProjectHandler;
 import com.jnetedit.gui.nodes.GNode;
