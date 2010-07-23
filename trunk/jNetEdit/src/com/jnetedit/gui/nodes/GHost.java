@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import com.jnetedit.common.ItemType;
@@ -119,6 +120,23 @@ public class GHost extends GNode {
 	private void createPopupMenu() {
 		menu = new JPopupMenu();
 		
+		JMenuItem rename = new JMenuItem("Rename", new ImageIcon("data/images/16x16/text_icon.png"));
+		rename.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = JOptionPane.showInputDialog("New name");
+				while( GuiManager.getInstance().getProject().existsHost(name) ) {
+					name = JOptionPane.showInputDialog("Another host with this name exists. New name");
+				}
+				if( name != null && !name.isEmpty() ) {
+					absHost.setName(name);
+					absHost.setLabel(name);
+					text.setText(name);
+					GuiManager.getInstance().getConfPanel().update();
+				}
+			}
+		});
+		menu.add(rename);
+		
 		JMenuItem delete = new JMenuItem("Delete", new ImageIcon("data/images/16x16/delete_icon.png"));
 		delete.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,7 +149,7 @@ public class GHost extends GNode {
 	@Override
 	public void showMenu(PInputEvent e) {
 		super.showMenu(e);
-		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
+		menu.show((Component) e.getComponent(), (int) e.getCanvasPosition().getX(), (int) e.getCanvasPosition().getY());
 	}
 	
 	private void setImage( PImage newImage ) {

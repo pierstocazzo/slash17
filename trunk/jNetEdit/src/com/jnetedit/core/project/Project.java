@@ -239,5 +239,29 @@ public class Project implements AbstractProject, Serializable {
 	public ArrayList<AbstractLink> getLinks() {
 		return links;
 	}
+
+	@Override
+	public boolean existsHost(String name) {
+		if( name == null || name.isEmpty() ) 
+			return false;
+		for( AbstractHost host : hosts ) {
+			if( host.getName().equalsIgnoreCase(name) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean existsCD(String name) {
+		if( name == null || name.isEmpty() ) 
+			return false;
+		for( AbstractCollisionDomain cd : collisionDomains ) {
+			if( cd.getName().equalsIgnoreCase(name) ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 

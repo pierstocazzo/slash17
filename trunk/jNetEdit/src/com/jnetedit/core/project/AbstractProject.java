@@ -78,4 +78,8 @@ public interface AbstractProject {
 	public String getLabConfFile();
 
 	public ArrayList<AbstractLink> getLinks();
+
+	public boolean existsHost(String name);
+
+	public boolean existsCD(String name);
 }
