@@ -56,6 +56,12 @@ public class GArea extends GNode {
 		
 		Lab.getInstance().addNode(getLabNode());
 	}
+	
+	public LabNode getLabNode() {
+		if( labNode == null )
+			labNode = new LabNode(shape.getFullBoundsReference(), GNode.area, null);
+		return labNode;
+	}
 
 	private void createPopupMenu() {
 		menu = new JPopupMenu();
@@ -91,12 +97,12 @@ public class GArea extends GNode {
 		if( shape != null ) {
 			removeChild(shape);
 		}
-		getLabNode();
 		shape = new PPath(new Rectangle((int)x, (int)y, 100, 100));
 		addChild(shape);
-		setBounds(shape.getBounds());
-		shape.centerFullBoundsOnPoint(getBounds().getCenterX(), getBounds().getCenterY());
+//		shape.centerFullBoundsOnPoint(x, y/*getBounds().getCenterX(), getBounds().getCenterY()*/);
 		shape.setPickable(false);
+		getLabNode();
+		setBounds(shape.getBounds());
 		setColor(Color.cyan);
 	}
 
@@ -174,11 +180,5 @@ public class GArea extends GNode {
 		labNode.setColor(newColor);
 		shape.setPaint(newColor);
 		ProjectHandler.getInstance().setSaved(false);
-	}
-	
-	public LabNode getLabNode() {
-		if( labNode == null )
-			labNode = new LabNode(getFullBoundsReference(), GNode.area, null);
-		return labNode;
 	}
 }

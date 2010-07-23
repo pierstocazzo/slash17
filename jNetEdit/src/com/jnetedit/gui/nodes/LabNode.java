@@ -62,6 +62,8 @@ public class LabNode implements Serializable {
 	}
 	
 	public boolean equals( LabNode node ) {
+		if( node.absNode == null ) 
+			return false;
 		return ( node.absNode == this.absNode );
 	}
 
