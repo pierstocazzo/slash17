@@ -148,13 +148,16 @@ public class RouteDialog extends JDialog {
 				String net = netField.getText();
 				String gw = gwField.getText();
 				
-				if( net.matches(IpAddress.netRx) && gw.matches(IpAddress.ipRx) ) {
+				if( !net.matches(IpAddress.netRx) ) {
+					label.setText("Not valid net address. E.g. 192.168.0.0/24");
+					repaint();
+				} else if( !gw.matches(IpAddress.ipRx) ) {
+					label.setText("Not valid gateway ip address.");
+					repaint();
+				} else {
 					route.setNet(net);
 					route.setGw(gw);
 					dispose();
-				} else {
-					label.setText("Format incorrect. Correct example: 10.0.0.0/8");
-					repaint();
 				}
 			}
 		});
