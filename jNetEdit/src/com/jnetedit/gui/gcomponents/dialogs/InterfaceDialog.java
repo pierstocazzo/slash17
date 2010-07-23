@@ -157,15 +157,21 @@ public class InterfaceDialog extends JDialog {
 				String mask = maskField.getText();
 				String bcast = bcastField.getText();
 				
-				if( ip.matches(IpAddress.ipRx) && mask.matches(IpAddress.ipRx) && bcast.matches(IpAddress.ipRx) ) {
+				if( !ip.matches(IpAddress.ipRx) ) {
+					label.setText("Not valid IP Address.");
+					repaint();
+				} else if ( !mask.matches(IpAddress.maskRx) ) {
+					label.setText("Not valid subnet mask.");
+					repaint();
+				} else if ( !bcast.matches(IpAddress.ipRx) ) {
+					label.setText("Not valid broadcast IP Address.");
+					repaint();
+				} else {
 					iface.setIp(ip);
 					iface.setMask(mask);
 					iface.setBCast(bcast);
 					GuiManager.getInstance().update();
 					dispose();
-				} else {
-					label.setText("Format incorrect. Correct example: 192.168.123.254");
-					repaint();
 				}
 			}
 		});
@@ -176,7 +182,6 @@ public class InterfaceDialog extends JDialog {
 				dispose();
 			}
 		});
-		
 		
 		pack();
 		// center the dialog
