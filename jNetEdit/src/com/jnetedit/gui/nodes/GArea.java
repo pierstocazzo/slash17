@@ -167,7 +167,7 @@ public class GArea extends GNode {
 
 	@Override
 	public void showMenu( PInputEvent e ) {
-		menu.show((Component) e.getComponent(), (int) e.getPosition().getX(), (int) e.getPosition().getY());
+		menu.show((Component) e.getComponent(), (int) e.getCanvasPosition().getX(), (int) e.getCanvasPosition().getY());
 	}
 	
 	public void setColor(Color newColor) {
