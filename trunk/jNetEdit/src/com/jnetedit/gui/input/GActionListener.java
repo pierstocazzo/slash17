@@ -141,7 +141,7 @@ public class GActionListener implements ActionListener {
 			manager.getHandler().deleting();
 			break;
 		case clear:
-			manager.getCanvas().clear();
+			manager.getCanvas().clearAll();
 			break;
 		case showInfo:
 			showInfo();

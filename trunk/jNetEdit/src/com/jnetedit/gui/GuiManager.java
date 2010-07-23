@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
+import com.jnetedit.common.NameGenerator;
 import com.jnetedit.core.project.AbstractProject;
 import com.jnetedit.gui.gcomponents.ConfigurationPanel;
 import com.jnetedit.gui.gcomponents.GCanvas;
@@ -79,6 +80,12 @@ public class GuiManager {
 		this.project = project;
 		Lab.getInstance().setProject(project);
 		confPanel.setProject(project);
+		
+		NameGenerator.reset();
+		
+		if( canvas != null ) {
+			canvas.clearAll();
+		}
 		
 		handler = new HandlerManager();
 		canvas = new GCanvas();
