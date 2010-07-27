@@ -106,7 +106,7 @@ public class Chain implements AbstractChain, Serializable {
 		String command = "";
 		if( !name.matches("(INPUT|OUTPUT|FORWARD)") )
 			command += "iptables -N " + name + "\n";
-		command += "iptables -A " + name + " -P " + policy + "\n";
+		command += "iptables -P " + name + " " + policy + "\n";
 		return command;
 	}
 
