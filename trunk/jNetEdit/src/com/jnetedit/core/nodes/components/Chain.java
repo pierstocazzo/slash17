@@ -104,7 +104,8 @@ public class Chain implements AbstractChain, Serializable {
 	
 	public String getConfCommand() {
 		String command = "";
-		command += "iptables -N " + name + "\n";
+		if( !name.matches("(INPUT|OUTPUT|FORWARD)") )
+			command += "iptables -N " + name + "\n";
 		command += "iptables -A " + name + " -P " + policy + "\n";
 		return command;
 	}

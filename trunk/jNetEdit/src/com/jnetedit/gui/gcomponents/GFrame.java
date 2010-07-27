@@ -259,15 +259,15 @@ public class GFrame extends JFrame {
 		saveAs = new GButton("Save as...", "Save as..", "data/images/16x16/saveAs_icon.png", GButton.standard);
 		
 		start = new DropDownButton("Start", "Start the lab", "data/images/16x16/start_icon.png");
-		starts = new JMenuItem("Sequetial startup");
-		startp = new JMenuItem("Parallel startup");
+		starts = new JMenuItem("Sequetial startup", new ImageIcon("data/images/16x16/start_icon.png"));
+		startp = new JMenuItem("Parallel startup", new ImageIcon("data/images/16x16/start_icon.png"));
 		start.getMenu().add(starts);
 		start.getMenu().add(startp);
 		start.setSelectedItem(starts);
 		
 		stop = new DropDownButton("Stop", "Stop the lab", "data/images/16x16/stop_icon.png");
-		lhalt = new JMenuItem("Halt the lab ");
-		lcrash = new JMenuItem("Crash the lab ");
+		lhalt = new JMenuItem("Halt the lab ", new ImageIcon("data/images/16x16/stop_icon.png"));
+		lcrash = new JMenuItem("Crash the lab ", new ImageIcon("data/images/16x16/stop_icon.png"));
 		stop.getMenu().add(lhalt);
 		stop.getMenu().add(lcrash);
 		stop.setSelectedItem(lhalt);

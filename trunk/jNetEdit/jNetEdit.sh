@@ -1,12 +1,18 @@
 #! /bin/bash
 
+#! /bin/bash
+
 if [ $NETKIT_HOME = NULL ]; then
-	echo "jNetkit - version 0.1\n
-		  Copyright 2010 Salvatore Loria\n\n
-		  WARNING: No Netkit installation founded, some features wont be available.\n
-		  You can get a free copy of Netkit here: <http://wiki.netkit.org>\n"
+	echo "jNetEdit - version 0.2.1"
+	echo "Copyright 2010 Salvatore Loria"
+	echo ""
+	echo "WARNING: No Netkit installation founded, some features wont be available."
+	echo "You can get a free copy of Netkit here: <http://wiki.netkit.org>"
 else
-	echo "Starting jNetEdit v0.1"
+	echo "jNetEdit - version 0.2.1"
+	echo "Copyright 2010 Salvatore Loria"
+	echo ""
+	echo "Starting jNetEdit..."
 fi
 
-sudo java -cp ./bin:./lib/piccolo.jar:./lib/piccolox.jar com.jnetedit.Main $NETKIT_HOME
+java -cp ./bin:./lib/piccolo.jar:./lib/piccolox.jar com.jnetedit.Main $NETKIT_HOME
