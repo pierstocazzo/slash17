@@ -49,7 +49,7 @@ public class DropDownButton extends GButton {
 			public void mousePressed(MouseEvent e) {
 				Point p = e.getPoint();
 				if( p.x > 55 )
-					menu.show(e.getComponent(), (int) p.getX(), (int) p.getY());
+					menu.show(e.getComponent(), 0, (int) e.getComponent().getBounds().getHeight());
 				else {
 					setSelectedItem(menu.getSelectedItem());
 					if( selectedItem != null ) {

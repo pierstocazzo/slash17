@@ -277,6 +277,8 @@ public class GTreeNode extends DefaultMutableTreeNode {
 				}
 			});
 			menu.add(deleteChain);
+			if( chain.getName().matches("(INPUT|OUTPUT|FORWARD)") )
+				deleteChain.setEnabled(false);
 			break;
 			
 		case FOLDER:
