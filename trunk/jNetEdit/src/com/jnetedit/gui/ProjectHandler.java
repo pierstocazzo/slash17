@@ -254,7 +254,6 @@ public class ProjectHandler {
 			Lab.setInstance(lab);
 			GuiManager.getInstance().setProject(Lab.getInstance().getProject());
 			in.close();
-			System.out.println("OPENED " + projectFile.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

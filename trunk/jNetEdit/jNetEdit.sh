@@ -8,8 +8,15 @@ echo ""
 echo "Starting jNetEdit..."
 
 if test "${NETKIT_HOME+set}" != set ; then
-	echo "WARNING: No Netkit installation founded, some features wont be available."
-	echo "You can get a free copy of Netkit here: <http://wiki.netkit.org>"
+	if [ -d $1 ] && [ -f "$1/netkit-version" ] ; then
+		NETKIT_HOME=$1
+		echo "NETKIT_HOME=$NETKIT_HOME"
+	else
+		echo "WARNING: No Netkit installation founded, some features wont be available."
+		echo "Download a free copy of Netkit from here: <http://wiki.netkit.org>"
+		echo "or tell me the path of your nekit installation: "
+		echo "	sh jNetEdit.sh /path/to/netkit"
+	fi
 else
  	echo "NETKIT_HOME=$NETKIT_HOME"
 fi

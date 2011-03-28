@@ -51,7 +51,6 @@ public class Shell {
 			} 
 			if( project != null && isDirectory( project.getDirectory() ) ) {
 				rnt.exec("sh startlab " + project.getDirectory() + " " + parallel + " " + netkit_home);
-				System.out.println(netkit_home);
 			} else 
 				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
 						"Save the project before start", "Error", JOptionPane.ERROR_MESSAGE);
