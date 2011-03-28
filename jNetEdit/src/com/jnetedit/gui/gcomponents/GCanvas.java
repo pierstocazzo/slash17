@@ -101,7 +101,6 @@ public class GCanvas extends PCanvas {
 				break;
 			case GNode.area:
 				GArea area = new GArea(labNode.getX(), labNode.getY(), areaLayer);
-				System.out.println("trovata area: " + labNode.getText());
 				area.setBounds(labNode.getBounds());
 				area.setColor(labNode.getColor());
 				area.setText(labNode.getText());

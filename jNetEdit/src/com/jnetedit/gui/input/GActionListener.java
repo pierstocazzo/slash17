@@ -76,25 +76,21 @@ public class GActionListener implements ActionListener {
 		case parallelStartup:
 			JMenuItem item = (JMenuItem) e.getSource();
 			((GMenu) item.getParent()).setSelectedItem(item);
-			System.out.println("Parallel Startup");
 			Shell.startLab( GuiManager.getInstance().getProject(), true );
 			break;
 		case sequentialStartup:
 			JMenuItem item1 = (JMenuItem) e.getSource();
 			((GMenu) item1.getParent()).setSelectedItem(item1);
-			System.out.println("Sequential Startup");
 			Shell.startLab( GuiManager.getInstance().getProject(), false );
 			break;
 		case lcrashStop:
 			JMenuItem item2 = (JMenuItem) e.getSource();
 			((GMenu) item2.getParent()).setSelectedItem(item2);
-			System.out.println("lcrash");
 			Shell.stopLab( GuiManager.getInstance().getProject(), true );
 			break;
 		case lhaltStop:
 			JMenuItem item3 = (JMenuItem) e.getSource();
 			((GMenu) item3.getParent()).setSelectedItem(item3);
-			System.out.println("lhalt");
 			Shell.stopLab( GuiManager.getInstance().getProject(), false );
 			break;
 		case addPc:

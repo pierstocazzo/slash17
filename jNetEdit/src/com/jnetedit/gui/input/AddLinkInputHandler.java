@@ -77,7 +77,6 @@ public class AddLinkInputHandler extends PBasicInputEventHandler {
 	
 	@Override
 	public void keyPressed(PInputEvent event) {
-		System.out.println("key pressed");
 		if( event.getKeyCode() == KeyEvent.VK_DELETE ||
 			event.getKeyCode() == KeyEvent.VK_CANCEL ) {
 			reset();
