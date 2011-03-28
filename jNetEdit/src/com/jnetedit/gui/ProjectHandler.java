@@ -115,12 +115,18 @@ public class ProjectHandler {
 			String labConfcontent = project.getLabConfFile();
 			
 			for( AbstractHost host : project.getHosts() ) {
-				String hostName = host.getName();
-				createDirectory( projDir + "/" + hostName );
-				
-				String startupContent = host.getStartupFile();
-				
-				createFile( hostName + ".startup", projDir, startupContent );
+				boolean startup = false;
+				if (startup) {
+					String hostName = host.getName();
+					createDirectory( projDir + "/" + hostName );
+					String startupContent = host.getStartupFile();
+					createFile( hostName + ".startup", projDir, startupContent );
+				} else {
+					String hostName = host.getName();
+					createDirectory( projDir + "/" + hostName + "/etc/network" );
+					String interfacesContent = host.getInterfacesFile();
+					createFile( hostName+"/etc/network/interfaces", projDir, interfacesContent );
+				}
 			}
 			
 			createFile( "lab.conf", projDir, labConfcontent );

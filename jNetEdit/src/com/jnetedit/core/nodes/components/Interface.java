@@ -217,4 +217,40 @@ public class Interface implements AbstractInterface, Serializable {
 	public boolean isConnectedToTap() {
 		return connectedToTap;
 	}
+
+	@Override
+	public String getNet() {
+		return network;
+	}
+
+	@Override
+	public boolean setNet( String net ) {
+		if( net.matches(IpAddress.ipRx) ) {
+			this.network = net;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public String getDebianConf() {
+		String text = "";
+		if( !isConnectedToTap() ) {
+			if( ip != null && netmask != null && broadcast != null ) {
+				text += 
+					"auto " + name + "\n" + 
+					"iface " + name + "inet static\n" +
+						"\taddress " + ip + "\n" +
+						"\tnetwork " + network + "\n" +
+						"\tnetmask " + netmask + "\n" +
+						"\tbroadcast " + broadcast + "\n";
+			} else {
+				text += "auto " + name + "\n";
+			}
+		} else {
+			text = "# " + name + " connected to TAP.\n";
+		}
+		return text;
+	}
 }

@@ -90,7 +90,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		createNode(obj);
 	}
 
-	private void createNode( Object obj ) {
+	private void createNode( final Object obj ) {
 		menu = new JPopupMenu();
 		
 		JMenuItem view = new JMenuItem("View", new ImageIcon("data/images/16x16/viewfile_icon.png"));
@@ -138,7 +138,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			JMenuItem viewFile = new JMenuItem("View file", new ImageIcon("data/images/16x16/viewfile_icon.png"));
 			viewFile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new FileDialog(host);
+					new FileDialog(obj);
 				}
 			});
 		    menu.add(viewFile);
@@ -283,8 +283,12 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			
 		case FOLDER:
 			/* set the node */
-			host = (AbstractHost) obj;
-			setUserObject(host.getName());
+			if (obj instanceof AbstractHost) {
+				host = (AbstractHost) obj;
+				setUserObject(host.getName());
+			} else {
+				setUserObject(obj);
+			}
 			break;
 		}
 	}

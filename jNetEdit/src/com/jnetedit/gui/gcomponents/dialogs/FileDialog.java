@@ -32,18 +32,21 @@ import com.jnetedit.gui.GuiManager;
 public class FileDialog extends JDialog {
 	private static final long serialVersionUID = 2855449568360456412L;
 
-	AbstractHost host;
+	Object obj;
 	String text;
 	
-	public FileDialog( AbstractHost host ) {
+	public FileDialog( Object obj ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Bash script" );
 		
-		this.host = host;
+		this.obj = obj;
 		
-		if( host == null ) {
-			text = GuiManager.getInstance().getProject().getLabConfFile();
+		if( obj instanceof AbstractHost ) {
+			text = ((AbstractHost) obj).getStartupFile();
 		} else {
-			text = host.getStartupFile();
+			String s = (String) obj;
+			if (s != null && s.equals("lab.conf"))
+				text = GuiManager.getInstance().getProject().getLabConfFile();
+			// TODO open text files like /etc/network/interfaces
 		}
 		
 		JTextArea pane = new JTextArea(text);

@@ -239,4 +239,33 @@ public class Host implements AbstractHost, Serializable {
 	public void setLabel( String label ) {
 		this.label = label;
 	}
+
+	@Override
+	public String getInterfacesFile() {
+		String text = "";
+		text = "# '/etc/network/interfaces' created by jNetEdit\n\n";
+		
+		text += "# Interfaces configuration\n";
+		for( AbstractInterface iface : interfaces ) {
+			text += iface.getDebianConf();
+		}
+		text += "\n\n";
+		
+//		text += "# Routing configuration\n";
+//		for( AbstractRoute route : routes ) {
+//			text += route.getConfCommand();
+//		}
+//		text += "\n\n";
+//		
+//		text += "# Firewalling configuration\n";
+//		for( AbstractChain chain : chains ) {
+//			text += chain.getConfCommand();
+//			for( AbstractRule rule : chain.getRules() ) {
+//				text += rule.getRule();
+//			}
+//			text += "\n\n";
+//		}
+		
+		return text;
+	}
 }
