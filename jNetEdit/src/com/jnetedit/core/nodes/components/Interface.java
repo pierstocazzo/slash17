@@ -237,10 +237,10 @@ public class Interface implements AbstractInterface, Serializable {
 	public String getDebianConf() {
 		String text = "";
 		if( !isConnectedToTap() ) {
-			if( ip != null && netmask != null && broadcast != null ) {
+			if( ip != null && network != null && netmask != null && broadcast != null ) {
 				text += 
 					"auto " + name + "\n" + 
-					"iface " + name + "inet static\n" +
+					"iface " + name + " inet static\n" +
 						"\taddress " + ip + "\n" +
 						"\tnetwork " + network + "\n" +
 						"\tnetmask " + netmask + "\n" +
