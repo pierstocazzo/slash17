@@ -8,7 +8,7 @@ export NETKIT_HOME="$NETHOME"
 export PATH=$PATH:$NETKIT_HOME/bin
 
 if $PARALLEL ; then
-	lstart -p -d $DIR
+	lstart -f -d $DIR
 else
 	lstart -d $DIR
 fi

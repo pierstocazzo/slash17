@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.jnetedit.Main;
 import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 import com.jnetedit.core.nodes.AbstractLink;
@@ -81,7 +82,7 @@ public class Project implements AbstractProject, Serializable {
 		this.directory = directory;
 		this.name = name;
 		description = name + "; ";
-		version = "0.1v";
+		version = Main.version;
 		author = "jNetEdit";
 		email = "deadlyomen17@gmail.it";
 		web = "http://slash17.googlecode.com/";
