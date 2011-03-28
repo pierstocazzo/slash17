@@ -27,6 +27,8 @@ public interface AbstractInterface {
 	
 	public String getIp();
 	
+	public String getNet();
+	
 	public String getMask();
 	
 	public String getBCast();
@@ -38,6 +40,8 @@ public interface AbstractInterface {
 	public void setName( String name );
 	
 	public boolean setIp( String ip );
+	
+	public boolean setNet( String net );
 	
 	public boolean setMask( String mask );
 	
@@ -53,6 +57,8 @@ public interface AbstractInterface {
 	
 	public String getConfCommand();
 
+	public String getDebianConf();
+	
 	public void setConnectedToTap(boolean locked);
 
 	public boolean isConnectedToTap();

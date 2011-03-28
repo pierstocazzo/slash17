@@ -21,6 +21,7 @@ package com.jnetedit.gui.gcomponents;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -124,11 +125,25 @@ public class ConfigurationPanel extends JPanel {
 				}
 			}
 			
-			labStructure.addNode( host, GTreeNode.FOLDER );
-			labStructure.addNode( host, GTreeNode.FILE );
+			GTreeNode pc = labStructure.addNode( host, GTreeNode.FOLDER );
+			String fileName = project.getDirectory() + "/" + host.getName();
+			File f = new File(fileName);
+			addFiles(f, pc);
+//			labStructure.addNode( host, GTreeNode.FILE );
 		}
 		
 		this.repaint();
+	}
+	
+	private void addFiles (File f, GTreeNode t) {
+		if (f.isDirectory()) {
+			File files[] = f.listFiles();
+			for (File file : files) {
+				int type = file.isDirectory() ? GTreeNode.FOLDER : GTreeNode.FILE;
+				GTreeNode tnode = labStructure.addNode( t, file.getName(), type );
+				addFiles(file, tnode);
+			}
+		}
 	}
 
 	public void setProject( AbstractProject project ) {

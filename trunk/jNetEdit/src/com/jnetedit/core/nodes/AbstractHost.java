@@ -72,4 +72,6 @@ public interface AbstractHost {
 	public boolean isConnectedTo( AbstractCollisionDomain collisionDomain );
 	
 	public String getStartupFile();
+
+	public String getInterfacesFile();
 }

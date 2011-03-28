@@ -64,12 +64,14 @@ public class InterfaceDialog extends JDialog {
 		
 		String name = iface.getName();
 		String ip = iface.getIp();
+		String net = iface.getNet();
 		String mask = iface.getMask();
 		String bcast = iface.getBCast();
 		String host = iface.getHost().getName();
 		
 		if( ip == null || mask == null || bcast == null ) {
 			ip = "";
+			net = "";
 			mask = "";
 			bcast = "";
 		}
@@ -99,14 +101,13 @@ public class InterfaceDialog extends JDialog {
 		JLabel icon = new JLabel(new ImageIcon("data/images/big/nic.png"));
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 0;
-		labelConstraint.gridheight = 4;
+		labelConstraint.gridheight = 5;
 		panel.add( icon, labelConstraint );
 		labelConstraint.gridheight = 1;
 		
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 1;
 		panel.add( new JLabel("IP:"), labelConstraint );
-		
 		final JTextField ipField = new JTextField(ip, 15);
 		textFieldConstraint.gridy = 0;
 		textFieldConstraint.gridx = 2; //fino a 5
@@ -114,25 +115,31 @@ public class InterfaceDialog extends JDialog {
 		
 		labelConstraint.gridy = 1;
 		labelConstraint.gridx = 1;
-		panel.add( new JLabel("NetMask:"), labelConstraint );
-		
-		final JTextField maskField = new JTextField(mask, 15);
+		panel.add( new JLabel("Network:"), labelConstraint );
+		final JTextField netField = new JTextField(net, 15);
 		textFieldConstraint.gridy = 1;
 		textFieldConstraint.gridx = 2;
-		panel.add( maskField, textFieldConstraint );
+		panel.add( netField, textFieldConstraint );
 		
 		labelConstraint.gridy = 2;
 		labelConstraint.gridx = 1;
-		panel.add(new JLabel("BroadCast:"), labelConstraint );
-		
-		final JTextField bcastField = new JTextField(bcast, 15);
+		panel.add( new JLabel("NetMask:"), labelConstraint );
+		final JTextField maskField = new JTextField(mask, 15);
 		textFieldConstraint.gridy = 2;
+		textFieldConstraint.gridx = 2;
+		panel.add( maskField, textFieldConstraint );
+		
+		labelConstraint.gridy = 3;
+		labelConstraint.gridx = 1;
+		panel.add(new JLabel("BroadCast:"), labelConstraint );
+		final JTextField bcastField = new JTextField(bcast, 15);
+		textFieldConstraint.gridy = 3;
 		textFieldConstraint.gridx = 2;
 		panel.add( bcastField, textFieldConstraint );
 		
 		Dimension size = new Dimension(60,30);
 		
-		labelConstraint.gridy = 3;
+		labelConstraint.gridy = 4;
 		labelConstraint.gridx = 4;
 		
 		JPanel buttonPanel = new JPanel();
@@ -154,6 +161,7 @@ public class InterfaceDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String ip = ipField.getText();
+				String net = netField.getText();
 				String mask = maskField.getText();
 				String bcast = bcastField.getText();
 				
@@ -163,11 +171,15 @@ public class InterfaceDialog extends JDialog {
 				} else if ( !mask.matches(IpAddress.maskRx) ) {
 					label.setText("Not valid subnet mask.");
 					repaint();
+				} else if ( !net.matches(IpAddress.ipRx) ) {
+					label.setText("Not valid network.");
+					repaint();
 				} else if ( !bcast.matches(IpAddress.ipRx) ) {
 					label.setText("Not valid broadcast IP Address.");
 					repaint();
 				} else {
 					iface.setIp(ip);
+					iface.setNet(net);
 					iface.setMask(mask);
 					iface.setBCast(bcast);
 					GuiManager.getInstance().update();
