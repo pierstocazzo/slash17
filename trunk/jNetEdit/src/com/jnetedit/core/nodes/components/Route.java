@@ -74,4 +74,15 @@ public class Route implements AbstractRoute, Serializable {
 		}
 		return command;
 	}
+	
+	public String getDebianConf() {
+		String text = "";
+		if( net != null && gw != null ) {
+			if( net.equals("0.0.0.0/0") )
+				text += "post-up route add default gw " + gw + "\n";
+			else
+				text += "post-up route add -net " + net + " gw " + gw + "\n";
+		}
+		return text;
+	}
 }

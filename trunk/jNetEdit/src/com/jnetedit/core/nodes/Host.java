@@ -251,11 +251,11 @@ public class Host implements AbstractHost, Serializable {
 		}
 		text += "\n\n";
 		
-//		text += "# Routing configuration\n";
-//		for( AbstractRoute route : routes ) {
-//			text += route.getConfCommand();
-//		}
-//		text += "\n\n";
+		text += "# Routing configuration\n";
+		for( AbstractRoute route : routes ) {
+			text += route.getDebianConf();
+		}
+		text += "\n\n";
 //		
 //		text += "# Firewalling configuration\n";
 //		for( AbstractChain chain : chains ) {

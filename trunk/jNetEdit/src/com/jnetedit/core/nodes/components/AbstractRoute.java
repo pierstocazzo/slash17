@@ -35,4 +35,6 @@ public interface AbstractRoute {
 	public void delete();
 	
 	public String getConfCommand();
+
+	public String getDebianConf();
 }
