@@ -51,7 +51,7 @@ public class ConfigurationPanel extends JPanel {
 	
 	JTabbedPane tab;
 	
-	GTree labStructure;
+	GTree fileSystemView;
 	
 	public ConfigurationPanel() {
 		super(new GridLayout(1,0));
@@ -74,10 +74,10 @@ public class ConfigurationPanel extends JPanel {
 		tab.addTab("Routing", routingTree);
 		tab.addTab("Firewalling", firewallingTree);
 		
-		labStructure = new GTree("Lab structure", projName);
-		labStructure.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		fileSystemView = new GTree("Filesystem View", projName);
+		fileSystemView.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		
-		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, labStructure);
+		JSplitPane splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, tab, fileSystemView);
 		splitpane.setResizeWeight(0.5D);
 		add(splitpane);
 	}
@@ -94,9 +94,10 @@ public class ConfigurationPanel extends JPanel {
 		interfacesTree.clear();
 		routingTree.clear();
 		firewallingTree.clear();
-		labStructure.clear();
+		fileSystemView.clear();
 		
-		labStructure.addNode( "lab.conf", GTreeNode.FILE );
+		File projDir = new File(project.getDirectory());
+		addFiles (projDir, null);
 		
 		for( AbstractHost host : project.getHosts() ) {
 			// add a folder for each host in the interfaces tree
@@ -124,25 +125,20 @@ public class ConfigurationPanel extends JPanel {
 					}
 				}
 			}
-			
-			GTreeNode pc = labStructure.addNode( host, GTreeNode.FOLDER );
-			String fileName = project.getDirectory() + "/" + host.getName();
-			File f = new File(fileName);
-			addFiles(f, pc);
-//			labStructure.addNode( host, GTreeNode.FILE );
 		}
 		
 		this.repaint();
 	}
 	
 	private void addFiles (File f, GTreeNode t) {
-		if (f.isDirectory()) {
-			File files[] = f.listFiles();
-			for (File file : files) {
-				int type = file.isDirectory() ? GTreeNode.FOLDER : GTreeNode.FILE;
-				GTreeNode tnode = labStructure.addNode( t, file.getName(), type );
-				addFiles(file, tnode);
-			}
+		if (!f.isDirectory()) 
+			return;
+		
+		File files[] = f.listFiles();
+		for (File file : files) {
+			int type = file.isDirectory() ? GTreeNode.FOLDER : GTreeNode.FILE;
+			GTreeNode tnode = fileSystemView.addNode( t, file.getPath(), type );
+			addFiles (file, tnode);
 		}
 	}
 
@@ -151,7 +147,7 @@ public class ConfigurationPanel extends JPanel {
 		interfacesTree.setName(project.getName());
 		routingTree.setName(project.getName());
 		firewallingTree.setName(project.getName());
-		labStructure.setName(project.getName());
+		fileSystemView.setName(project.getName());
 	}
 	
 	public void selectHost( String hostName ) {

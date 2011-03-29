@@ -142,6 +142,7 @@ public class ProjectHandler {
 				e.printStackTrace();
 			}
 			
+			GuiManager.getInstance().getConfPanel().update();
 			return new File(projDir + "/" + project.getName() + ".jne");
 		} else {
 			JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), "Unable to save the project", 
@@ -150,17 +151,17 @@ public class ProjectHandler {
 		}
 	}
 	
-	private void rmDirContent(File dir) {
-		if( !dir.isDirectory() ) 
-			return;
-		File[] files = dir.listFiles();
-		for( File f : files ) {
-			if( f.isDirectory() ) {
-				rmDirContent(f);
-			}
-			f.delete();
-		}
-	}
+//	private void rmDirContent(File dir) {
+//		if( !dir.isDirectory() ) 
+//			return;
+//		File[] files = dir.listFiles();
+//		for( File f : files ) {
+//			if( f.isDirectory() ) {
+//				rmDirContent(f);
+//			}
+//			f.delete();
+//		}
+//	}
 
 	private void createFile( String fileName, String projDir, String content ) {
 		File f = new File( projDir + "/" + fileName );
@@ -189,8 +190,6 @@ public class ProjectHandler {
 		File proj = new File( directory );
 		if( !proj.exists() ) 
 			proj.mkdirs();
-		else
-			rmDirContent(proj);
 		
 		String dir = proj.getAbsolutePath();
 		return dir;

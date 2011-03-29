@@ -64,6 +64,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 
 	private int type;
 	
+	private String path;
 	private AbstractHost host;
 	private AbstractInterface iface;
 	private AbstractChain chain;
@@ -130,18 +131,32 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			/* set the node */
 			if( obj instanceof AbstractHost ) {
 				host = (AbstractHost) obj;
-				setUserObject(host.getName() + ".startup");
+				setUserObject (host.getName() + ".startup");
 			} else {
-				setUserObject(obj);
+				path = (String) obj;
+				String fileName = path.substring(path.lastIndexOf("/")+1);
+				setUserObject (fileName);
 			}
 			/* create his popup menu */
 			JMenuItem viewFile = new JMenuItem("View file", new ImageIcon("data/images/16x16/viewfile_icon.png"));
 			viewFile.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					new FileDialog(obj);
+					new FileDialog(path);
 				}
 			});
 		    menu.add(viewFile);
+			break;
+			
+		case FOLDER:
+			/* set the node */
+			if (obj instanceof AbstractHost) {
+				host = (AbstractHost) obj;
+				setUserObject(host.getName());
+			} else {
+				path = (String) obj;
+				String fileName = path.substring(path.lastIndexOf("/")+1);
+				setUserObject (fileName);
+			}
 			break;
 			
 		case RULE:
@@ -280,16 +295,6 @@ public class GTreeNode extends DefaultMutableTreeNode {
 			if( chain.getName().matches("(INPUT|OUTPUT|FORWARD)") )
 				deleteChain.setEnabled(false);
 			break;
-			
-		case FOLDER:
-			/* set the node */
-			if (obj instanceof AbstractHost) {
-				host = (AbstractHost) obj;
-				setUserObject(host.getName());
-			} else {
-				setUserObject(obj);
-			}
-			break;
 		}
 	}
 	
@@ -387,7 +392,7 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		    break;
 		    
 		case FILE:
-			new FileDialog(host);
+			new FileDialog(path);
 			break;
 			
 		case RULE:
