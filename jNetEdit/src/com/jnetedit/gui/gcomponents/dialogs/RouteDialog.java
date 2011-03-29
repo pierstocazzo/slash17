@@ -69,10 +69,12 @@ public class RouteDialog extends JDialog {
 		
 		String net = route.getNet();
 		String gw = route.getGw();
+		String dev = route.getDev();
 		
 		if( net == null || gw == null ) {
 			net = "";
 			gw = "";
+			dev = "";
 		}
 		
 		final JLabel label;
@@ -100,7 +102,7 @@ public class RouteDialog extends JDialog {
 		JLabel icon = new JLabel(new ImageIcon("data/images/big/route.png"));
 		labelConstraint.gridy = 0;
 		labelConstraint.gridx = 0;
-		labelConstraint.gridheight = 3;
+		labelConstraint.gridheight = 4;
 		panel.add( icon, labelConstraint );
 		labelConstraint.gridheight = 1;
 		
@@ -122,9 +124,18 @@ public class RouteDialog extends JDialog {
 		textFieldConstraint.gridx = 2;
 		panel.add( gwField, textFieldConstraint );
 		
+		labelConstraint.gridy = 2;
+		labelConstraint.gridx = 1;
+		panel.add( new JLabel("Device:"), labelConstraint );
+		
+		final JTextField devField = new JTextField(dev, 15);
+		textFieldConstraint.gridy = 2;
+		textFieldConstraint.gridx = 2;
+		panel.add( devField, textFieldConstraint );
+		
 		Dimension size = new Dimension(60,30);
 		
-		labelConstraint.gridy = 3;
+		labelConstraint.gridy = 4;
 		labelConstraint.gridx = 4;
 		
 		JPanel buttonPanel = new JPanel();
@@ -147,6 +158,7 @@ public class RouteDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				String net = netField.getText();
 				String gw = gwField.getText();
+				String dev = devField.getText();
 				
 				if( !net.matches(IpAddress.netRx) ) {
 					label.setText("Not valid net address. E.g. 192.168.0.0/24");
@@ -157,6 +169,7 @@ public class RouteDialog extends JDialog {
 				} else {
 					route.setNet(net);
 					route.setGw(gw);
+					route.setDev(dev);
 					dispose();
 				}
 			}

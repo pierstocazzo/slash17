@@ -29,6 +29,7 @@ public class Route implements AbstractRoute, Serializable {
 	
 	String net;
 	String gw;
+	String dev;
 	
 	public Route( AbstractHost host ) {
 		this.host = host;
@@ -81,8 +82,19 @@ public class Route implements AbstractRoute, Serializable {
 			if( net.equals("0.0.0.0/0") )
 				text += "post-up route add default gw " + gw + "\n";
 			else
-				text += "post-up route add -net " + net + " gw " + gw + "\n";
+				text += "post-up route add -net " + net + " gw " + gw 
+					 + (dev.isEmpty() ? "\n" : " dev " + dev + "\n");
 		}
 		return text;
+	}
+
+	@Override
+	public String getDev() {
+		return dev;
+	}
+
+	@Override
+	public void setDev(String dev) {
+		this.dev = dev;
 	}
 }

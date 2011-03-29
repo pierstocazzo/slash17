@@ -28,13 +28,18 @@ public interface AbstractRoute {
 	
 	public String getGw();
 	
+	public String getDev();
+	
 	public void setNet( String net );
 	
 	public void setGw( String gw );
+
+	public void setDev( String dev );
 	
 	public void delete();
 	
 	public String getConfCommand();
 
 	public String getDebianConf();
+
 }
