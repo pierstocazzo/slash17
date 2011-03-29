@@ -27,39 +27,30 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.jnetedit.core.nodes.AbstractHost;
 import com.jnetedit.gui.GuiManager;
 
 
 public class FileDialog extends JDialog {
 	private static final long serialVersionUID = 2855449568360456412L;
 
-	Object obj;
+	String filePath;
 	String text;
 	
-	public FileDialog( Object obj ) {
-		super( (Frame) GuiManager.getInstance().getFrame(), "Bash script" );
+	public FileDialog( String filePath ) {
+		super( (Frame) GuiManager.getInstance().getFrame(), filePath );
 		
-		this.obj = obj;
+		this.filePath = filePath;
 		this.text = "";
-		
-		if( obj instanceof AbstractHost ) {
-			text = ((AbstractHost) obj).getStartupFile();
-		} else {
-			String s = (String) obj;
-			if (s.matches(".*lab.conf.*"))
-				text = GuiManager.getInstance().getProject().getLabConfFile();
-			else if (s.matches(".*\\.(txt|sh|conf)") || !s.matches(".*\\w\\.\\w.*")) {
-				try {
-					BufferedReader b = new BufferedReader(new FileReader(s));
-					String line;
-					while ((line = b.readLine()) != null) {
-						text += line + "\n";
-					}
-				} catch (Exception e) {}
-			} else 
-				text = "Cannot read file";
-		}
+	}
+	
+	public void showDialog () {
+		try {
+			BufferedReader b = new BufferedReader(new FileReader(filePath));
+			String line;
+			while ((line = b.readLine()) != null) {
+				text += line + "\n";
+			}
+		} catch (Exception e) {}
 		
 		JTextArea pane = new JTextArea(text);
 		pane.setEditable(false);
