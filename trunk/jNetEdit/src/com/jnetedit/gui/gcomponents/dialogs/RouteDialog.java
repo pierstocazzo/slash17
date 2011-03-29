@@ -152,7 +152,6 @@ public class RouteDialog extends JDialog {
 		
 		add(panel, BorderLayout.CENTER);
 		
-		
 		set.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -161,10 +160,13 @@ public class RouteDialog extends JDialog {
 				String dev = devField.getText();
 				
 				if( !net.matches(IpAddress.netRx) ) {
-					label.setText("Not valid net address. E.g. 192.168.0.0/24");
+					label.setText("Invalid network address. E.g. 192.168.0.0/24");
 					repaint();
 				} else if( !gw.matches(IpAddress.ipRx) ) {
-					label.setText("Not valid gateway ip address.");
+					label.setText("Invalid gateway address.");
+					repaint();
+				} else if( !dev.isEmpty() && !dev.matches("eth[0-9]") ) {
+					label.setText("Invalid device name. E.g. eth0");
 					repaint();
 				} else {
 					route.setNet(net);
