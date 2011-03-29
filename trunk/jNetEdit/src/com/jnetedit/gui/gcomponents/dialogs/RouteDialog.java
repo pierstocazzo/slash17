@@ -79,7 +79,7 @@ public class RouteDialog extends JDialog {
 		
 		final JLabel label;
 		if( message == null ) 
-			label = new JLabel("Add a routing table row to " + host.getName() );
+			label = new JLabel("Add a routing table row to " + host.getName());
 		else 
 			label = new JLabel(message + "\nAdd a routing table row to " + host.getName() );
 		
@@ -112,7 +112,7 @@ public class RouteDialog extends JDialog {
 		
 		final JTextField netField = new JTextField(net, 15);
 		textFieldConstraint.gridy = 0;
-		textFieldConstraint.gridx = 2; //fino a 5
+		textFieldConstraint.gridx = 2; 
 		panel.add( netField, textFieldConstraint );
 		
 		labelConstraint.gridy = 1;
