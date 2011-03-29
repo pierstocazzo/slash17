@@ -392,7 +392,13 @@ public class GTreeNode extends DefaultMutableTreeNode {
 		    break;
 		    
 		case FILE:
-			new FileDialog(path);
+			// show only if it is a txt,sh,conf file or a file without extension
+			if (path.matches(".*\\.(txt|sh|conf)") || !path.matches(".*\\w\\.\\w.*")) {
+				new FileDialog(path).showDialog();
+			} else {
+				JOptionPane.showMessageDialog(GuiManager.getInstance().getFrame(), 
+						"Cannot read the file", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 			break;
 			
 		case RULE:
