@@ -20,6 +20,8 @@ package com.jnetedit.gui.gcomponents.dialogs;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -39,14 +41,24 @@ public class FileDialog extends JDialog {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Bash script" );
 		
 		this.obj = obj;
+		this.text = "";
 		
 		if( obj instanceof AbstractHost ) {
 			text = ((AbstractHost) obj).getStartupFile();
 		} else {
 			String s = (String) obj;
-			if (s != null && s.equals("lab.conf"))
+			if (s.matches(".*lab.conf.*"))
 				text = GuiManager.getInstance().getProject().getLabConfFile();
-			// TODO open text files like /etc/network/interfaces
+			else if (s.matches(".*\\.(txt|sh|conf)") || !s.matches(".*\\w\\.\\w.*")) {
+				try {
+					BufferedReader b = new BufferedReader(new FileReader(s));
+					String line;
+					while ((line = b.readLine()) != null) {
+						text += line + "\n";
+					}
+				} catch (Exception e) {}
+			} else 
+				text = "Cannot read file";
 		}
 		
 		JTextArea pane = new JTextArea(text);

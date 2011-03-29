@@ -214,7 +214,8 @@ public class GTree extends JPanel {
      */
     public GTreeNode addNode( GTreeNode parent, Object obj, int type ) {
     	GTreeNode node = new GTreeNode(obj, type, this);
-    	
+    	if (parent == null) 
+    		parent = rootNode;
         treeModel.insertNodeInto(node, parent, parent.getChildCount());
         
         collapseAll();
