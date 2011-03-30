@@ -21,6 +21,7 @@ package com.jnetedit.core.nodes;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.jnetedit.common.IpAddress;
 import com.jnetedit.common.ItemType;
 import com.jnetedit.core.nodes.components.AbstractChain;
 import com.jnetedit.core.nodes.components.AbstractInterface;
@@ -28,7 +29,6 @@ import com.jnetedit.core.nodes.components.AbstractRoute;
 import com.jnetedit.core.nodes.components.AbstractRule;
 import com.jnetedit.core.nodes.components.Chain;
 import com.jnetedit.core.nodes.components.Interface;
-import com.jnetedit.core.nodes.components.Route;
 
 
 
@@ -46,8 +46,7 @@ public class Host implements AbstractHost, Serializable {
 	
 	/** host's network interfaces */
 	protected ArrayList<AbstractInterface> interfaces;
-	/** host's routes */
-	protected ArrayList<AbstractRoute> routes;
+
 	/** host's iptables chains */
 	protected ArrayList<AbstractChain> chains;
 
@@ -66,7 +65,6 @@ public class Host implements AbstractHost, Serializable {
 		this.label = "" + name;
 		
 		interfaces = new ArrayList<AbstractInterface>();
-		routes = new ArrayList<AbstractRoute>();
 		chains = new ArrayList<AbstractChain>();
 		
 		if( type == ItemType.FIREWALL ) {
@@ -109,7 +107,6 @@ public class Host implements AbstractHost, Serializable {
 			interfaces.get(0).delete();
 		}
 		interfaces.clear();
-		routes.clear();
 		return true;
 	}
 
@@ -153,32 +150,6 @@ public class Host implements AbstractHost, Serializable {
 	}
 
 	@Override
-	public AbstractRoute getRoute(String net) {
-		for( AbstractRoute route : routes ) {
-			if( route.getNet().equals(net) ) 
-				return route;
-		}
-		return null;
-	}
-
-	@Override
-	public ArrayList<AbstractRoute> getRoutes() {
-		return routes;
-	}
-
-	@Override
-	public AbstractRoute addRoute() {
-		AbstractRoute route = new Route(this);
-		routes.add(route);
-		return route;
-	}
-
-	@Override
-	public void deleteRoute(AbstractRoute route) {
-		routes.remove(route);
-	}
-
-	@Override
 	public AbstractChain addChain() {
 		AbstractChain chain = new Chain(this);
 		chains.add(chain);
@@ -211,12 +182,10 @@ public class Host implements AbstractHost, Serializable {
 		text += "# Interfaces configuration\n";
 		for( AbstractInterface iface : interfaces ) {
 			text += iface.getConfCommand();
-		}
-		text += "\n\n";
-		
-		text += "# Routing configuration\n";
-		for( AbstractRoute route : routes ) {
-			text += route.getConfCommand();
+			text += "# Routing configuration\n";
+			for( AbstractRoute route : iface.getRoutes() ) {
+				text += route.getConfCommand();
+			}
 		}
 		text += "\n\n";
 		
@@ -251,21 +220,39 @@ public class Host implements AbstractHost, Serializable {
 		}
 		text += "\n\n";
 		
-		text += "# Routing configuration\n";
-		for( AbstractRoute route : routes ) {
-			text += route.getDebianConf();
-		}
-		text += "\n\n";
-//		
-//		text += "# Firewalling configuration\n";
-//		for( AbstractChain chain : chains ) {
-//			text += chain.getConfCommand();
-//			for( AbstractRule rule : chain.getRules() ) {
-//				text += rule.getRule();
-//			}
-//			text += "\n\n";
-//		}
+		text += "# exec firewall config script\n";
+		text += "post-up /etc/network/myscript/firewall\n\n";
 		
 		return text;
+	}
+
+	@Override
+	public String getScript() {
+		String text = "";
+		text += "# Firewalling configuration\n";
+		for( AbstractChain chain : chains ) {
+			text += chain.getConfCommand();
+			for( AbstractRule rule : chain.getRules() ) {
+				text += rule.getRule();
+			}
+			text += "\n\n";
+		}
+		return text;
+	}
+
+	@Override
+	public AbstractRoute addDefaultGateway(String gw) {
+		AbstractRoute route = null;
+		for( AbstractInterface iface : interfaces ) {
+			String net = iface.getNet();
+			String mask = iface.getMask();
+			if( IpAddress.ipInNetwork(gw, net, mask)) {
+				route = iface.addRoute();
+				route.setGw(gw);
+				route.setNet("0.0.0.0/0");
+				route.setDev(iface.getName());
+			}
+		}
+		return route;
 	}
 }

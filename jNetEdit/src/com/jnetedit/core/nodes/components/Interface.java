@@ -22,6 +22,7 @@
 package com.jnetedit.core.nodes.components;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.jnetedit.common.IpAddress;
 import com.jnetedit.core.nodes.AbstractCollisionDomain;
@@ -61,6 +62,9 @@ public class Interface implements AbstractInterface, Serializable {
 	
 	/** the ifconfig command for this interface's configuration */
 	protected String confCommand;
+	
+	/** list of routes from this iface */
+	protected ArrayList<AbstractRoute> routes;
 
 	private boolean connectedToTap;
 	
@@ -87,6 +91,7 @@ public class Interface implements AbstractInterface, Serializable {
 		this.collisionDomain = collisionDomain;
 		this.host = host;
 		this.connectedToTap = false;
+		this.routes = new ArrayList<AbstractRoute>();
 	}
 
 	/** Interface constructor<br>
@@ -100,6 +105,7 @@ public class Interface implements AbstractInterface, Serializable {
 		this.name = id;
 		this.collisionDomain = cd;
 		this.host = host;
+		this.routes = new ArrayList<AbstractRoute>();
 	}
 	
 	
@@ -245,6 +251,9 @@ public class Interface implements AbstractInterface, Serializable {
 						"\tnetwork " + network + "\n" +
 						"\tnetmask " + netmask + "\n" +
 						"\tbroadcast " + broadcast + "\n";
+				for( AbstractRoute route : routes ) {
+					text += "\tpost-up " + route.getConfCommand();
+				}
 			} else {
 				text += "auto " + name + "\n";
 			}
@@ -252,5 +261,31 @@ public class Interface implements AbstractInterface, Serializable {
 			text = "# " + name + " connected to TAP.\n";
 		}
 		return text;
+	}
+	
+	@Override
+	public AbstractRoute getRoute(String net) {
+		for( AbstractRoute route : routes ) {
+			if( route.getNet().equals(net) ) 
+				return route;
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<AbstractRoute> getRoutes() {
+		return routes;
+	}
+
+	@Override
+	public AbstractRoute addRoute() {
+		AbstractRoute route = new Route(this);
+		routes.add(route);
+		return route;
+	}
+
+	@Override
+	public void deleteRoute(AbstractRoute route) {
+		routes.remove(route);
 	}
 }

@@ -299,9 +299,8 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	}
 	
 	private void addRoute() {
-		AbstractRoute route = host.addRoute();
-		new RouteDialog(route);
-		if( route.getNet() != null && route.getGw() != null )
+		AbstractRoute route = new RouteDialog(host).getRoute();
+		if( route != null && route.getNet() != null && route.getGw() != null )
 			tree.addNode(this, route, ROUTE);
 		tree.repaint();
 	}
@@ -309,11 +308,14 @@ public class GTreeNode extends DefaultMutableTreeNode {
 	private void addDefaultRoute() {
 		String gw = JOptionPane.showInputDialog("Default Gateway");
 		if( gw != null && gw.matches(IpAddress.ipRx )) {
-			AbstractRoute route = host.addRoute();
-			route.setNet("0.0.0.0/0");
-			route.setGw(gw);
-			tree.addNode(this, route, ROUTE);
-			tree.repaint();
+			AbstractRoute route = host.addDefaultGateway(gw);
+			if (route != null) {
+				tree.addNode(this, route, ROUTE);
+				tree.repaint();
+			} else {
+				JOptionPane.showMessageDialog(null, 
+						"Unreachable gateway", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	

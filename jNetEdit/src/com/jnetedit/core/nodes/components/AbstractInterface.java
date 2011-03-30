@@ -18,6 +18,8 @@
 
 package com.jnetedit.core.nodes.components;
 
+import java.util.ArrayList;
+
 import com.jnetedit.core.nodes.AbstractCollisionDomain;
 import com.jnetedit.core.nodes.AbstractHost;
 
@@ -62,4 +64,12 @@ public interface AbstractInterface {
 	public void setConnectedToTap(boolean locked);
 
 	public boolean isConnectedToTap();
+
+	void deleteRoute(AbstractRoute route);
+
+	AbstractRoute addRoute();
+
+	ArrayList<AbstractRoute> getRoutes();
+
+	AbstractRoute getRoute(String net);
 }

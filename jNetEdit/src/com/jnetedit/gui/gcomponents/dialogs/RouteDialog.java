@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 
 import com.jnetedit.common.IpAddress;
 import com.jnetedit.core.nodes.AbstractHost;
+import com.jnetedit.core.nodes.components.AbstractInterface;
 import com.jnetedit.core.nodes.components.AbstractRoute;
 import com.jnetedit.gui.GuiManager;
 
@@ -47,11 +48,26 @@ public class RouteDialog extends JDialog {
 	
 	AbstractRoute route;
 	AbstractHost host;
+	AbstractInterface iface;
+	
+	public RouteDialog( final AbstractHost host ) {
+		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
+		this.host = host;
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		showDialog(null);
+	}
+	
+	public RouteDialog( final AbstractHost host, String message ) {
+		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
+		this.host = host;
+		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+		showDialog(message);
+	}	
 	
 	public RouteDialog( final AbstractRoute route ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
 		this.route = route;
-		host = route.getHost();
+		this.host = route.getInterface().getHost();
 		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 		showDialog(null);
 	}
@@ -59,22 +75,26 @@ public class RouteDialog extends JDialog {
 	public RouteDialog( final AbstractRoute route, String message ) {
 		super( (Frame) GuiManager.getInstance().getFrame(), "Adding Route" );
 		this.route = route;
-		host = route.getHost();
+		this.host = route.getInterface().getHost();
 		this.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
 		showDialog(message);
 	}	
 
-	private void showDialog( String message ) {
+	private void showDialog( final String message ) {
 		setLayout(new BorderLayout());
 		
-		String net = route.getNet();
-		String gw = route.getGw();
-		String dev = route.getDev();
+		String net;
+		String gw;
+		String dev;
 		
-		if( net == null || gw == null ) {
+		if (route == null) {
 			net = "";
 			gw = "";
 			dev = "";
+		} else {
+			net = route.getNet();
+			gw = route.getGw();
+			dev = route.getDev();
 		}
 		
 		final JLabel label;
@@ -165,10 +185,15 @@ public class RouteDialog extends JDialog {
 				} else if( !gw.matches(IpAddress.ipRx) ) {
 					label.setText("Invalid gateway address.");
 					repaint();
-				} else if( !dev.isEmpty() && !dev.matches("eth[0-9]") ) {
+				} else if( !dev.matches("eth[0-9]") ) {
 					label.setText("Invalid device name. E.g. eth0");
 					repaint();
+				} else if( host.getInterface(dev) == null ) {
+					label.setText("This device does not exist");
+					repaint();
 				} else {
+					if (route == null)
+						route = host.getInterface(dev).addRoute();
 					route.setNet(net);
 					route.setGw(gw);
 					route.setDev(dev);
@@ -189,5 +214,9 @@ public class RouteDialog extends JDialog {
 		// center the dialog
 		setLocationRelativeTo(GuiManager.getInstance().getFrame());
 		setVisible(true);
+	}
+
+	public AbstractRoute getRoute() {
+		return route;
 	}
 }
