@@ -110,8 +110,10 @@ public class ConfigurationPanel extends JPanel {
 			// add a folder for each host in the routing tree
 			node = routingTree.addNode( host, GTreeNode.ROUTER );
 			// add the routes
-			for( AbstractRoute route : host.getRoutes() ) {
-				routingTree.addNode( node, route, GTreeNode.ROUTE );
+			for( AbstractInterface iface : host.getInterfaces() ) {
+				for( AbstractRoute route : iface.getRoutes() ) {
+					routingTree.addNode( node, route, GTreeNode.ROUTE );
+				}
 			}
 			
 			// add a folder for each firewall in the firewalling tree

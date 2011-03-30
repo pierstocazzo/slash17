@@ -113,6 +113,7 @@ public class ProjectHandler {
 			createDirectory(projDir);
 			
 			String labConfcontent = project.getLabConfFile();
+			createFile( "lab.conf", projDir, labConfcontent );
 			
 			for( AbstractHost host : project.getHosts() ) {
 				boolean startup = false;
@@ -123,13 +124,13 @@ public class ProjectHandler {
 					createFile( hostName + ".startup", projDir, startupContent );
 				} else {
 					String hostName = host.getName();
-					createDirectory( projDir + "/" + hostName + "/etc/network" );
+					createDirectory( projDir + "/" + hostName + "/etc/network/myscript" );
 					String interfacesContent = host.getInterfacesFile();
 					createFile( hostName+"/etc/network/interfaces", projDir, interfacesContent );
+					String firewallScript = host.getScript();
+					createFile( hostName+"/etc/network/myscript/firewall", projDir, firewallScript );
 				}
 			}
-			
-			createFile( "lab.conf", projDir, labConfcontent );
 			
 			saved = true;
 			
@@ -169,7 +170,13 @@ public class ProjectHandler {
 			f.delete();
 			try {
 				f.createNewFile();
+				f.setExecutable(true);
+				f.setReadable(true);
+				f.setWritable(true);
 			} catch (IOException e) {
+				JOptionPane.showMessageDialog(null,
+						"Error creating "+fileName, "ERROR", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
 		}
 		

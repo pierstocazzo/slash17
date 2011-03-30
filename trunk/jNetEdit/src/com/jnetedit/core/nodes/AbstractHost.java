@@ -47,15 +47,6 @@ public interface AbstractHost {
 	public boolean deleteInterface( AbstractInterface iface );
 	
 	
-	public AbstractRoute addRoute();
-	
-	public AbstractRoute getRoute( String net );
-	
-	public ArrayList<AbstractRoute> getRoutes();
-	
-	public void deleteRoute( AbstractRoute route );
-	
-	
 	public AbstractChain addChain();
 	
 	public AbstractChain getChain( String chain );
@@ -64,7 +55,6 @@ public interface AbstractHost {
 	
 	public void deleteChain( AbstractChain chain );
 	
-
 	public boolean delete();
 
 	public ItemType getType();
@@ -74,4 +64,8 @@ public interface AbstractHost {
 	public String getStartupFile();
 
 	public String getInterfacesFile();
+
+	public String getScript();
+
+	public AbstractRoute addDefaultGateway(String gw);
 }

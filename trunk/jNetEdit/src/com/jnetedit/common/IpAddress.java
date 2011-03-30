@@ -18,6 +18,9 @@
 
 package com.jnetedit.common;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class IpAddress {
 	
 	/** netmask regural expression */
@@ -88,5 +91,32 @@ public class IpAddress {
 	
 	public boolean equals( Object o ) {
 		return this.ip.equals( ((IpAddress) o).toString() );
+	}
+	
+	private static int[] ipToArray (String ip) {
+		String patternStr = "(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)";
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(ip);
+		boolean matchFound = matcher.find();
+		
+		int ipArray[] = new int[4];
+		if (matchFound) {
+		    for (int i = 1; i <= matcher.groupCount(); i++) {
+		    	String s = matcher.group(i);	
+		    	ipArray[i-1] = Integer.parseInt(s);
+		    }
+		}
+		return ipArray;
+	}
+	
+	public static boolean ipInNetwork (String ip, String net, String mask) {
+		int ipArray[] = ipToArray(ip);
+		int netArray[] = ipToArray(net);
+		int maskArray[] = ipToArray(mask);
+		for (int i = 0; i < 4; i++) {
+			if ((ipArray[i] & maskArray[i]) != (netArray[i] & maskArray[i]))
+				return false;
+		}
+		return true;
 	}
 }

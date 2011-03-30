@@ -18,11 +18,10 @@
 
 package com.jnetedit.core.nodes.components;
 
-import com.jnetedit.core.nodes.AbstractHost;
 
 public interface AbstractRoute {
 
-	public AbstractHost getHost();
+	public AbstractInterface getInterface();
 	
 	public String getNet();
 	
@@ -39,7 +38,4 @@ public interface AbstractRoute {
 	public void delete();
 	
 	public String getConfCommand();
-
-	public String getDebianConf();
-
 }
