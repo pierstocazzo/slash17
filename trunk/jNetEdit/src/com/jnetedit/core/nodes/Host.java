@@ -255,4 +255,21 @@ public class Host implements AbstractHost, Serializable {
 		}
 		return route;
 	}
+	
+	@Override
+	public AbstractRoute addRoute (String net, String gw) {
+		AbstractRoute route = null;
+		for( AbstractInterface iface : interfaces ) {
+			String inet = iface.getNet();
+			String mask = iface.getMask();
+			if( IpAddress.ipInNetwork(gw, inet, mask)) {
+				route = iface.addRoute();
+				route.setGw(gw);
+				route.setNet(net);
+				route.setDev(iface.getName());
+				return route;
+			}
+		}
+		return route;
+	}
 }

@@ -66,6 +66,9 @@ public interface AbstractHost {
 	public String getInterfacesFile();
 
 	public String getScript();
+	
 
 	public AbstractRoute addDefaultGateway(String gw);
+
+	public AbstractRoute addRoute(String net, String gw);
 }

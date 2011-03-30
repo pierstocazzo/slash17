@@ -185,18 +185,27 @@ public class RouteDialog extends JDialog {
 				} else if( !gw.matches(IpAddress.ipRx) ) {
 					label.setText("Invalid gateway address.");
 					repaint();
-				} else if( !dev.matches("eth[0-9]") ) {
+				} else if( !dev.isEmpty() && !dev.matches("eth[0-9]") ) {
 					label.setText("Invalid device name. E.g. eth0");
 					repaint();
-				} else if( host.getInterface(dev) == null ) {
+				} else if( !dev.isEmpty() && host.getInterface(dev) == null ) {
 					label.setText("This device does not exist");
 					repaint();
 				} else {
-					if (route == null)
-						route = host.getInterface(dev).addRoute();
-					route.setNet(net);
-					route.setGw(gw);
-					route.setDev(dev);
+					if (route == null) {
+						if (dev != null && !dev.isEmpty()) {
+							route = host.getInterface(dev).addRoute();
+							route.setNet(net);
+							route.setGw(gw);
+							route.setDev(dev); 
+						} else {
+							route = host.addRoute(net, gw);
+						}
+					} else {
+						route.setNet(net);
+						route.setGw(gw);
+						route.setDev(dev); 
+					}
 					dispose();
 				}
 			}
