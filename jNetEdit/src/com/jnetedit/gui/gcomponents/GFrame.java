@@ -129,7 +129,7 @@ public class GFrame extends JFrame {
 			}
 		} else {
 			String message = "WARNING: some features are not available on your system.\n" +
-							"Run NetKitGUI on a GNU/Linux system with a netkit installation.";
+							"Run jNetEdit on a GNU/Linux system with a netkit installation.";
 			String title = "WARNING: " + os + " is not fully supported";
 			
 			JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);

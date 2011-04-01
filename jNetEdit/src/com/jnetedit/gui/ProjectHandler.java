@@ -66,30 +66,16 @@ public class ProjectHandler {
 			}
 		}
 		
-		String projectName = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Insert the project's name:", "New Project", JOptionPane.QUESTION_MESSAGE);
-		
-		if( projectName == null ) {
-			return false;
-		}
-		
-		while( projectName.equals("") ) {
-			projectName = JOptionPane.showInputDialog(GuiManager.getInstance().getFrame(), "Insert a valid name:", "New Project", JOptionPane.QUESTION_MESSAGE);
-			if( projectName == null ) 
-				return false;
-		}
-		
 		JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle("Select the project's directory");
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.setAcceptAllFileFilterUsed(false);
-		int choose = fc.showDialog( GuiManager.getInstance().getFrame(), "Select" );
-		
+		int choose = fc.showOpenDialog( GuiManager.getInstance().getFrame() );
 		if( choose == JFileChooser.APPROVE_OPTION ) {
 			String dir = fc.getSelectedFile().getAbsolutePath();
-
-			project = GFactory.getInstance().createProject(projectName, dir + "/" + projectName);
+			String projectName = dir.substring(dir.lastIndexOf("/")+1);
+			project = GFactory.getInstance().createProject(projectName, dir);
 			GuiManager.getInstance().setProject(project);
-			
 			saved = false;
 			return true;
 		} 
