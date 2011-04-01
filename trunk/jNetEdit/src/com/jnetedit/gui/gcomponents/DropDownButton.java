@@ -32,12 +32,11 @@ public class DropDownButton extends GButton {
 	
 	JButton dropDownButton;
 	GMenu menu;
-	JMenuItem selectedItem;
 
 	public DropDownButton(String text, String toolTip, String icon) { 
-		super(text + "  v", toolTip, icon, GButton.standard); 
+		super(text + " | v", toolTip, icon, GButton.standard); 
 		
-		Dimension size = new Dimension(75, 30);
+		Dimension size = new Dimension(80, 30);
 		setPreferredSize(size);
 		setSize(size);
 		setMinimumSize(size);
@@ -48,14 +47,10 @@ public class DropDownButton extends GButton {
 		addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				Point p = e.getPoint();
-				if( p.x > 55 )
+				if( p.x > 60 )
 					menu.show(e.getComponent(), 0, (int) e.getComponent().getBounds().getHeight());
-				else {
-					setSelectedItem(menu.getSelectedItem());
-					if( selectedItem != null ) {
-						selectedItem.doClick(0);
-					}
-				}
+				else if( menu.getSelectedItem() != null )
+					menu.getSelectedItem().doClick(0);
 			}
 		});
 	}
@@ -65,7 +60,8 @@ public class DropDownButton extends GButton {
 	}
 
 	public void setSelectedItem(JMenuItem item) {
-		selectedItem = item;
+		menu.setSelectedItem(item);
+		this.setToolTipText(item.getText());
 	}
 	
 	public class GMenu extends JPopupMenu {
