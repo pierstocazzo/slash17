@@ -1,0 +1,22 @@
+Report 02-11-2011
+
+E' stata illustrata la struttura delle classi e le loro interazioni.
+
+Decisioni intraprese:
+
+Ogni gruppo deve studiare il codice del package 'vacuumCleaner'
+al fine di apprenderne il funzionamento
+e proporre eventuali modifiche semplificative/migliorative.
+
+Funzionalita' da implementare:
+
+Misura di prestazione - Ogni gruppo deve proporre la sua versione motivandola. 
+		Ogni proposta per comodita' può esser memorizzata in un file 
+		nella sezione 'arguments' del progetto svn su googlecode.com
+      
+Editor - Salvatore e Ida -- FATTO
+
+Import/Export ambientazione - Andrea C. si è offerto di realizzare le funzioni
+
+Javadoc - Servono volontari per scrivere la documentazione e vari utili commenti. 
+		E' un utile esercizio che può facilitare la comprensione [Non fondamentale]
