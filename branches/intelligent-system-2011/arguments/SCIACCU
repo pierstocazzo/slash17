@@ -1,0 +1,27 @@
+
+Abbiamo cambiato rotta, siamo tornati sul LINEARE (lineare, non NUCLEARE!!).
+
+Il problema che ci aveva indotti sul non lineare era questo:
+voglio una funzione di prestazione tale che
+	se avessi due configurazioni di pavimenti differenti, con lo stesso numero di celle sporche, -
+	vorrei ottenere a lavoro completo 2 risultati uguali dalla funzione di prestazione.
+In questo caso c'è da tener conto della sparsità delle celle sporche 
+e la funzione sarebbe di sicuro non lineare.
+Il problema però pensiamo sia trascurabile, perchè l'obiettivo non è confrontare due tipi di 
+configurazioni differenti ma due o piu agenti sulla stessa configurazione.
+
+Tornando al lineare invece, la funzione che proponiamo è questa:
+sia NC il numero di celle totali del pavimento,
+	
+	f=np+tp-t-s*10*NC
+
+ovvero:
+np			+1 per ogni cella che ho pulito io
+tp			+1 per ogni cella pulita presente sul pavimento
+t			-1 per ogni passo 
+s*10*NC	 	-10*NC per ogni cella ancora sporca sul pavimento
+
+Tenendo un valore di penalizzazione abbastanza grande per ogni cella ancora sporca 
+l'agente verrà sicuramente spinto a pulire invece di restare fermo per cercare di massimizzare la 
+funzione di prestazione 
+
