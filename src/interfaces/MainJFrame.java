@@ -132,7 +132,24 @@ public class MainJFrame extends javax.swing.JFrame {
 			settingsPanel.update();
 			System.out.println("-------------------");
 		}
-		settingsPanel.controlButton.setText("Start");
+		System.out.println("Num actions: " + agent.actionList.size());
+		agent.showActions();
+		System.out.println("Performance: " + env.performanceMeasure() );
+		System.out.println("-- End --");
+	}
+	
+	/**
+     * Execute only a loop
+     */
+	public void mainLoopOnes(){
+		env.show();
+		if(!agent.goalReached() && !stopped){
+			env.update();
+			env.show();
+			gridPanel.update();
+			settingsPanel.update();
+			System.out.println("-------------------");
+		}
 		System.out.println("Num actions: " + agent.actionList.size());
 		agent.showActions();
 		System.out.println("Performance: " + env.performanceMeasure() );
