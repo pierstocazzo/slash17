@@ -14,6 +14,7 @@ import java.awt.event.ItemListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -37,27 +38,27 @@ public class SettingsPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	public MainJFrame mainFrame;
-	
+
 	private JPanel dimensionPanel;
 	private JTextField sizeField;
 	private JLabel sizeLabel;
-	
+
 	private JPanel generationPanel;
 	private JTextField dirtField;
 	private JLabel dirtLabel;
 	private JTextField obstaclesField;
 	private JLabel obstaclesLabel;
-	
+
 	private JPanel agentPanel;
 	private JTextField agentEnergyField;
 	private JLabel agentEnergylabel;
 	private JLabel agentVisibilityLabel;
 	private JComboBox agentVisibilityCombobox;
-	
+
 	private JPanel commandPanel;
 	private JButton refreshButton;
 	JButton controlButton;
-	
+
 	private JPanel statusPanel;
 	private JLabel pmLabel;
 	private JLabel pmValueLabel;
@@ -65,12 +66,17 @@ public class SettingsPanel extends JPanel {
 	private JLabel stepsValueLabel;
 	private JLabel currEnergyLabel;
 	private JLabel currEnergyValueLabel;
-	
+
 	private int max_dim = 12;
 	private int min_dim = 2;
 
 	private JLabel envTypeLabel;
 	private JComboBox envTypeCombobox;
+
+	ImageIcon playIcon, stopIcon, nextIcon;
+
+	private JButton onesButton;
+
 	/**
 	 * 
 	 * @param mainFrame
@@ -78,44 +84,49 @@ public class SettingsPanel extends JPanel {
 	public SettingsPanel(final MainJFrame mainFrame) {
 		{
 			this.mainFrame = mainFrame;
+
+			playIcon = new ImageIcon( new ImageIcon("img/play.png").getImage().getScaledInstance(30,30,30));
+			stopIcon = new ImageIcon( new ImageIcon("img/stop.png").getImage().getScaledInstance(30,30,30));
+			nextIcon = new ImageIcon( new ImageIcon("img/next.png").getImage().getScaledInstance(30,30,30));
+
 			GridBagLayout jPanel2Layout = new GridBagLayout();
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1, 0.1};
 			jPanel2Layout.rowHeights = new int[] {1,1,1,1};
 			jPanel2Layout.columnWeights = new double[] {0.1};
 			jPanel2Layout.columnWidths = new int[] {1};
-			
+
 			DocumentListener refreshListener = (new DocumentListener() {
-				
+
 				@Override
 				public void removeUpdate(DocumentEvent arg0) {
 					refreshButton.setText("Refresh*");
 					refreshButton.setBackground(Color.YELLOW);
 				}
-				
+
 				@Override
 				public void insertUpdate(DocumentEvent arg0) {
 					refreshButton.setText("Refresh*");
 					refreshButton.setBackground(Color.YELLOW);
 				}
-				
+
 				@Override
 				public void changedUpdate(DocumentEvent arg0) {
 					refreshButton.setText("Refresh*");
 					refreshButton.setBackground(Color.YELLOW);
 				}
 			});
-			
+
 			setLayout(jPanel2Layout);
 			{
 				dimensionPanel = new JPanel();
 				dimensionPanel.setPreferredSize(new Dimension(300,100));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
-		        TitledBorder title = BorderFactory.createTitledBorder("Size Settings");
-		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
-		        Border marginInside = new EmptyBorder(10,10,10,10);
-		        dimensionPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
-				
-		        /*input field to set the size of the floor*/
+				TitledBorder title = BorderFactory.createTitledBorder("Size Settings");
+				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+				Border marginInside = new EmptyBorder(10,10,10,10);
+				dimensionPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+
+				/*input field to set the size of the floor*/
 				add(dimensionPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				sizeLabel = new JLabel();
 				dimensionPanel.add(sizeLabel);
@@ -125,36 +136,36 @@ public class SettingsPanel extends JPanel {
 				sizeField.setText("" + mainFrame.env.floor.length);
 				sizeField.setPreferredSize(new Dimension(30, 30));
 				sizeField.getDocument().addDocumentListener(refreshListener);
-				
+
 				envTypeLabel = new JLabel("Type");
 
-		        Vector<Environment.Type> envTypeVector = new Vector<Environment.Type>();
-		        envTypeVector.add(Environment.Type.DYNAMIC);
-		        envTypeVector.add(Environment.Type.STATIC);
-		        envTypeCombobox = new JComboBox(envTypeVector);
-		        envTypeCombobox.setSelectedItem(mainFrame.env.type);
-		        envTypeCombobox.addItemListener(new ItemListener() {
-					
+				Vector<Environment.Type> envTypeVector = new Vector<Environment.Type>();
+				envTypeVector.add(Environment.Type.DYNAMIC);
+				envTypeVector.add(Environment.Type.STATIC);
+				envTypeCombobox = new JComboBox(envTypeVector);
+				envTypeCombobox.setSelectedItem(mainFrame.env.type);
+				envTypeCombobox.addItemListener(new ItemListener() {
+
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
 						refreshButton.setText("Refresh*");
 						refreshButton.setBackground(Color.YELLOW);
 					}
 				});
-		        
-		        dimensionPanel.add(envTypeLabel);
-		        dimensionPanel.add(envTypeCombobox);
+
+				dimensionPanel.add(envTypeLabel);
+				dimensionPanel.add(envTypeCombobox);
 			}
 			{
 				/*setting input fields*/
 				generationPanel = new JPanel();
 				generationPanel.setPreferredSize(new Dimension(350,110));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
-		        TitledBorder title = BorderFactory.createTitledBorder("Build Settings");
-		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
-		        Border marginInside = new EmptyBorder(10,10,10,10);
-		        generationPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
-		        
+				TitledBorder title = BorderFactory.createTitledBorder("Build Settings");
+				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+				Border marginInside = new EmptyBorder(10,10,10,10);
+				generationPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+
 				add(generationPanel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{
 					/*number of obstacles*/
@@ -164,7 +175,7 @@ public class SettingsPanel extends JPanel {
 					obstaclesField.setText("7");
 					obstaclesField.setPreferredSize(new Dimension(30, 30));
 					obstaclesField.getDocument().addDocumentListener(refreshListener);
-					
+
 					/*number of dirty tiles*/
 					dirtLabel = new JLabel();
 					dirtLabel.setText("Dirt");
@@ -183,58 +194,58 @@ public class SettingsPanel extends JPanel {
 				agentPanel = new JPanel();
 				add(agentPanel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
-		        TitledBorder title = BorderFactory.createTitledBorder("Agent's settings");
-		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
-		        Border marginInside = new EmptyBorder(10,10,10,10);
-		        agentPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
-		        
-		        agentPanel.setLayout(new GridLayout(2,1));
-		        
-		        JPanel agentEnergyPanel = new JPanel();
-		        agentEnergyPanel.setLayout(new FlowLayout());
-		        agentPanel.add(agentEnergyPanel);
-		        
-		        agentEnergylabel = new JLabel("Energy");
-		        agentEnergyPanel.add(agentEnergylabel);
-		        agentEnergyField = new JTextField("" + mainFrame.agent.opBound);
-		        agentEnergyField.setPreferredSize(new Dimension(30, 30));
-		        agentEnergyField.getDocument().addDocumentListener(refreshListener);
-		        agentEnergyPanel.add(agentEnergyField);
-		        
-		        JPanel agentVisibilityPanel = new JPanel();
-		        
-		        agentPanel.add(agentVisibilityPanel);
-		        
-		        agentVisibilityLabel = new JLabel("Visibility");
+				TitledBorder title = BorderFactory.createTitledBorder("Agent's settings");
+				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+				Border marginInside = new EmptyBorder(10,10,10,10);
+				agentPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 
-		        Vector<VisibilityType> visTypeVector = new Vector<VisibilityType>();
-		        visTypeVector.add(VisibilityType.MY_CELL);
-		        visTypeVector.add(VisibilityType.MY_NEIGHBOURS);
-		        visTypeVector.add(VisibilityType.ALL);
-		        agentVisibilityCombobox = new JComboBox(visTypeVector);
-		        agentVisibilityCombobox.setSelectedItem(mainFrame.agent.visType);
-		        agentVisibilityCombobox.addItemListener(new ItemListener() {
-					
+				agentPanel.setLayout(new GridLayout(2,1));
+
+				JPanel agentEnergyPanel = new JPanel();
+				agentEnergyPanel.setLayout(new FlowLayout());
+				agentPanel.add(agentEnergyPanel);
+
+				agentEnergylabel = new JLabel("Energy");
+				agentEnergyPanel.add(agentEnergylabel);
+				agentEnergyField = new JTextField("" + mainFrame.agent.opBound);
+				agentEnergyField.setPreferredSize(new Dimension(30, 30));
+				agentEnergyField.getDocument().addDocumentListener(refreshListener);
+				agentEnergyPanel.add(agentEnergyField);
+
+				JPanel agentVisibilityPanel = new JPanel();
+
+				agentPanel.add(agentVisibilityPanel);
+
+				agentVisibilityLabel = new JLabel("Visibility");
+
+				Vector<VisibilityType> visTypeVector = new Vector<VisibilityType>();
+				visTypeVector.add(VisibilityType.MY_CELL);
+				visTypeVector.add(VisibilityType.MY_NEIGHBOURS);
+				visTypeVector.add(VisibilityType.ALL);
+				agentVisibilityCombobox = new JComboBox(visTypeVector);
+				agentVisibilityCombobox.setSelectedItem(mainFrame.agent.visType);
+				agentVisibilityCombobox.addItemListener(new ItemListener() {
+
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
 						refreshButton.setText("Refresh*");
 						refreshButton.setBackground(Color.YELLOW);
 					}
 				});
-		        
-		        agentVisibilityPanel.setLayout(new FlowLayout());
-		        agentVisibilityPanel.add(agentVisibilityLabel);
-		        agentVisibilityPanel.add(agentVisibilityCombobox);
+
+				agentVisibilityPanel.setLayout(new FlowLayout());
+				agentVisibilityPanel.add(agentVisibilityLabel);
+				agentVisibilityPanel.add(agentVisibilityCombobox);
 			}
 			{
 				commandPanel = new JPanel();
 				commandPanel.setPreferredSize(new Dimension(300,110));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
-		        TitledBorder title = BorderFactory.createTitledBorder("Commands");
-		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
-		        Border marginInside = new EmptyBorder(10,10,10,10);
-		        commandPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
-				
+				TitledBorder title = BorderFactory.createTitledBorder("Commands");
+				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+				Border marginInside = new EmptyBorder(10,10,10,10);
+				commandPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+
 				add(commandPanel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{   
 					/*Refresh current configuration*/
@@ -269,27 +280,42 @@ public class SettingsPanel extends JPanel {
 					/*Start simulation of agent*/
 					controlButton = new JButton();
 					commandPanel.add(controlButton);
-					controlButton.setText("Start");
+					controlButton.setIcon(playIcon);
 					controlButton.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							if(controlButton.getText().equals("Start")){
-								controlButton.setText("Stop");
+							if(mainFrame.stopped){
+								controlButton.setIcon(stopIcon);
 								mainFrame.stopped = false;
 								class myThread implements Runnable{
 									public void run() {
 										mainFrame.mainLoop();
-								    }
+									}
 								}
 								new Thread(new myThread()).start();
 							}
 							else{
+								controlButton.setIcon(playIcon);
 								mainFrame.stopped = true;
 								mainFrame.env.agent.x = 0;
 								mainFrame.env.agent.y = 0;
 								mainFrame.gridPanel.update();
-								controlButton.setText("Start");
 							}								
+						}
+					});
+					/*Start simulation of agent*/
+					onesButton = new JButton();
+					commandPanel.add(onesButton);
+					onesButton.setIcon(nextIcon);
+					onesButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							class myThread implements Runnable{
+								public void run() {
+									mainFrame.mainLoopOnes();
+								}
+							}
+							new Thread(new myThread()).start();
 						}
 					});
 				}
@@ -297,13 +323,13 @@ public class SettingsPanel extends JPanel {
 			{
 				statusPanel = new JPanel();
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
-		        TitledBorder title = BorderFactory.createTitledBorder("Status");
-		        CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
-		        Border marginInside = new EmptyBorder(10,10,10,10);
-		        statusPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
+				TitledBorder title = BorderFactory.createTitledBorder("Status");
+				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
+				Border marginInside = new EmptyBorder(10,10,10,10);
+				statusPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
 				statusPanel.setLayout(new GridLayout(3,1));
 				add(statusPanel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-				
+
 				JPanel pmPanel = new JPanel();
 				statusPanel.add(pmPanel);
 				{
