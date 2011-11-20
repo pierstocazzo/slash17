@@ -284,8 +284,8 @@ public class SettingsPanel extends JPanel {
 					controlButton.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
+							System.out.println("Clicked " + mainFrame.stopped);
 							if(mainFrame.stopped){
-								controlButton.setIcon(stopIcon);
 								mainFrame.stopped = false;
 								class myThread implements Runnable{
 									public void run() {
@@ -295,12 +295,12 @@ public class SettingsPanel extends JPanel {
 								new Thread(new myThread()).start();
 							}
 							else{
-								controlButton.setIcon(playIcon);
 								mainFrame.stopped = true;
 								mainFrame.env.agent.x = 0;
 								mainFrame.env.agent.y = 0;
 								mainFrame.gridPanel.update();
-							}								
+							}	
+							update();
 						}
 					});
 					/*Start simulation of agent*/
@@ -358,6 +358,11 @@ public class SettingsPanel extends JPanel {
 		}
 	}
 	public void update() {
+		if(mainFrame.stopped)
+			controlButton.setIcon(playIcon);
+		else
+			controlButton.setIcon(stopIcon);
+		
 		pmValueLabel.setText("" + mainFrame.env.performanceMeasure());
 		stepsValueLabel.setText("" + mainFrame.agent.actionList.size());
 		currEnergyValueLabel.setText("" + (mainFrame.agent.opBound - mainFrame.agent.actionList.size()));
