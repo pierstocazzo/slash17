@@ -34,7 +34,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	
 	public Environment env;
 	AbstractAgent agent;
-	protected boolean stopped;
+	protected boolean stopped = true;
 	private JMenuItem	saveMenuItem;
 	
 	public static void main(String[] args) {
@@ -132,6 +132,8 @@ public class MainJFrame extends javax.swing.JFrame {
 			settingsPanel.update();
 			System.out.println("-------------------");
 		}
+		stopped = true;
+		settingsPanel.update();
 		System.out.println("Num actions: " + agent.actionList.size());
 		agent.showActions();
 		System.out.println("Performance: " + env.performanceMeasure() );
@@ -143,7 +145,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
 	public void mainLoopOnes(){
 		env.show();
-		if(!agent.goalReached() && !stopped){
+		if(!agent.goalReached()){
 			env.update();
 			env.show();
 			gridPanel.update();
