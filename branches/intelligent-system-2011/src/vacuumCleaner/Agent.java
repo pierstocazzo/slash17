@@ -17,6 +17,8 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableDirectedGraph;
 import org.jgrapht.graph.ListenableUndirectedGraph;
 
+import vacuumCleaner.Action.Type;
+
 import demo.UndirectedWeightedGraph;
 
 
@@ -30,9 +32,12 @@ public class Agent extends AbstractAgent {
 	private UndirectedWeightedGraph walkableGraph;
 	private Floor myWorld;
 	private UndirectedWeightedGraph tspGraph;
+	
+	public ArrayList<Action> calculatedAction;
 
 	public Agent(int x, int y, VisibilityType visType, int opBound){
 		super(x, y, visType, opBound);
+		calculatedAction = new ArrayList<Action>();
 	}
 
 	/**
@@ -79,7 +84,10 @@ public class Agent extends AbstractAgent {
 		if(actionList.size() == 0)
 			calculateHC();
 		else{
-
+			if(myWorld.get(x, y) == Square.Type.DIRTY)
+				currAction = Action.Type.SUCK;
+			else
+				currAction = calculatedAction.remove(0).type;
 		}
 	}
 
@@ -111,7 +119,7 @@ public class Agent extends AbstractAgent {
 
 		ArrayList<String> removedVertex = new ArrayList<String>();
 
-		//Remove unreachable cells
+		//Remove unreachable cells from home
 		GraphPath<String, DefaultWeightedEdge> path = null;
 		for (int j = 1; j < dirtyCells.size(); j++) {
 			try{
@@ -185,14 +193,14 @@ public class Agent extends AbstractAgent {
 		// Convert Tour Solution in Cells's list
 		ArrayList<String> cellList = new ArrayList<String>();
 		for (int i = 0; i < list.size()-1; i++) {
-			if(!cellList.contains(list.get(i))){
+			if(cellList.isEmpty() || !cellList.get(cellList.size()-1).equals(list.get(i))){
 				cellList.add(list.get(i));
 				ArrayList<DefaultWeightedEdge> edgeList = 
 						new ArrayList<DefaultWeightedEdge>(
 								new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, list.get(i), list.get(i+1)).getPathEdgeList());
 				System.out.println(edgeList);
 				String curr = list.get(i);
-				for (int j = 0; j < edgeList.size(); j++) {
+				for (int j = 0; j < edgeList.size()-1; j++) {
 					DefaultEdge edge = edgeList.get(j);
 					Field sourceRef  = null, targetRef = null;
 					try {
@@ -202,8 +210,8 @@ public class Agent extends AbstractAgent {
 						targetRef.setAccessible(true);
 						String source = (String) sourceRef.get(edge);
 						String target = (String) targetRef.get(edge);
-						//						System.out.println("Source "+source);
-						//						System.out.println("Target "+target);
+						//System.out.println("Source "+source);
+						//System.out.println("Target "+target);
 						if(source.equals(curr)){
 							curr = target;
 							cellList.add(target);
@@ -212,7 +220,6 @@ public class Agent extends AbstractAgent {
 							curr = source;
 							cellList.add(source);
 						}
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -226,6 +233,25 @@ public class Agent extends AbstractAgent {
 		}
 		System.out.println();
 		// Convert Cell's list in operations's list
+		for (int i = 0; i < cellList.size()-1; i++) {
+			int i1 = Integer.parseInt(cellList.get(i).split("-")[0]);
+			int j1 = Integer.parseInt(cellList.get(i).split("-")[1]);
+			int i2 = Integer.parseInt(cellList.get(i+1).split("-")[0]);
+			int j2 = Integer.parseInt(cellList.get(i+1).split("-")[1]);
+			
+			if(i1!=i2){
+				if(i1<i2)
+					calculatedAction.add(new Action(Action.Type.SOUTH));
+				else
+					calculatedAction.add(new Action(Action.Type.NORTH));
+			}
+			if(j1!=j2){
+				if(j1<j2)
+					calculatedAction.add(new Action(Action.Type.EAST));
+				else
+					calculatedAction.add(new Action(Action.Type.WEST));
+			}
+		}
 	}
 
 	/**
@@ -288,11 +314,12 @@ public class Agent extends AbstractAgent {
 	}
 
 	/**
-	 * Add the current action to the agent action list
-	 * @return current action of the agent
-	 */
-	public Action.Type action(){
-		actionList.add(new Action(currAction, x, y));
-		return currAction;
-	}
+     * Add the current action to the agent action list
+     * @return current action of the agent
+     */
+    public Action.Type action(){
+            actionList.add(new Action(currAction));
+            return currAction;
+    }
+
 }

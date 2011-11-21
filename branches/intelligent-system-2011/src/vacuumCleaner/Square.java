@@ -1,10 +1,12 @@
 package vacuumCleaner;
 
+import java.io.Serializable;
+
 /**
  * This class implements a single square.
  * 
  */
-public class Square{
+public class Square implements Serializable{
 
 	public enum Type {
         CLEAN, DIRTY, OBSTACLE, UNKNOWN
