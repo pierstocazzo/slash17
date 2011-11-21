@@ -30,8 +30,6 @@ public class MainJFrame extends javax.swing.JFrame {
 	public GridPanel gridPanel;
 	private SettingsPanel settingsPanel;
 	
-	int size = 6;
-	
 	public Environment env;
 	AbstractAgent agent;
 	protected boolean stopped = true;
@@ -106,8 +104,9 @@ public class MainJFrame extends javax.swing.JFrame {
 				}
 			}
 		}
-		
-		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 20);
+
+		int size = 3;
+		agent = new Agent(0, 0, Agent.VisibilityType.ALL, 20);
 		env = new Environment(size, size, agent, Environment.Type.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);

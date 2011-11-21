@@ -99,19 +99,16 @@ public class SettingsPanel extends JPanel {
 
 				@Override
 				public void removeUpdate(DocumentEvent arg0) {
-					refreshButton.setText("Refresh*");
 					refreshButton.setBackground(Color.YELLOW);
 				}
 
 				@Override
 				public void insertUpdate(DocumentEvent arg0) {
-					refreshButton.setText("Refresh*");
 					refreshButton.setBackground(Color.YELLOW);
 				}
 
 				@Override
 				public void changedUpdate(DocumentEvent arg0) {
-					refreshButton.setText("Refresh*");
 					refreshButton.setBackground(Color.YELLOW);
 				}
 			});
@@ -148,7 +145,6 @@ public class SettingsPanel extends JPanel {
 
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
-						refreshButton.setText("Refresh*");
 						refreshButton.setBackground(Color.YELLOW);
 					}
 				});

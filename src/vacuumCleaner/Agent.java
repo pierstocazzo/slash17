@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
+import org.jgrapht.ListenableGraph;
+import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.alg.HamiltonianCycle;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.ListenableDirectedGraph;
+import org.jgrapht.graph.ListenableUndirectedGraph;
 
 import demo.UndirectedWeightedGraph;
 
@@ -17,8 +24,9 @@ import demo.UndirectedWeightedGraph;
 
 public class Agent extends AbstractAgent {
 
-	private UndirectedWeightedGraph graph;
+	private UndirectedWeightedGraph walkableGraph;
 	private Floor myWorld;
+	private UndirectedWeightedGraph tspGraph;
 
 	public Agent(int x, int y, VisibilityType visType, int opBound){
 		super(x, y, visType, opBound);
@@ -72,63 +80,79 @@ public class Agent extends AbstractAgent {
 		}
 	}
 
-	public int dist(int i1, int j1, int i2, int j2){
-		return Math.abs(i1-i2) + Math.abs(j1-j2);
-	}
-
-	public int dist(String v1, String v2){
-		int i1 = Integer.parseInt(v1.split(",")[0]);
-		int j1 = Integer.parseInt(v1.split(",")[1]);
-		int i2 = Integer.parseInt(v2.split(",")[0]);
-		int j2 = Integer.parseInt(v2.split(",")[1]);
-		return dist(i1, j1, i2, j2);
-	}
-
 	private void calculateHC() {
 		System.out.println("Calculate HC");
-		graph = new UndirectedWeightedGraph();
 
 		ArrayList<String> dirtyCells = new ArrayList<String>();
-
+		dirtyCells.add("0-0");
+		
+		// Create walkable cells's graph
+		walkableGraph = new UndirectedWeightedGraph();
 		for (int i = 0; i < myWorld.length; i++)
-			for (int j = 0; j < myWorld.length; j++)
-				if(myWorld.get(i, j) == Square.Type.DIRTY){
-					//					System.out.println("Added dirt");
-					dirtyCells.add(i + "," + j);
+			for (int j = 0; j < myWorld.length; j++){
+				if(myWorld.get(i, j) != Square.Type.OBSTACLE){
+					if( i-1 >= 0 && myWorld.get(i-1, j) != Square.Type.OBSTACLE){
+						String v1 = i + "-" + j;
+						String v2 = (i-1) + "-" + j;
+						walkableGraph.addWeightedEdge(v1, v2, 1);
+					}
+					if( j-1 >= 0 && myWorld.get(i, j-1) != Square.Type.OBSTACLE){
+						String v1 = i + "-" + j;
+						String v2 = i + "-" + (j-1);
+						walkableGraph.addWeightedEdge(v1, v2, 1);
+					}
 				}
-
+				if(myWorld.get(i, j) == Square.Type.DIRTY)
+					dirtyCells.add(i + "-" + j);
+			}
+		System.out.println("Walkable Graph");
+		System.out.println(walkableGraph);
+		
+//		Calculate TSp Graph which contains only dirty cells and the home cell
+		tspGraph = new UndirectedWeightedGraph();
+		
+		System.out.println("Dirty Cells");
+		for (int i = 0; i < dirtyCells.size(); i++) {
+			System.out.print(dirtyCells.get(i) + " ");
+		}
+		System.out.println();
+		
 		for (int i = 0; i < dirtyCells.size(); i++) {
 			for (int j = i+1; j < dirtyCells.size(); j++) {
-				int w = dist(dirtyCells.get(i), dirtyCells.get(j));
-				graph.addWeightedEdge(dirtyCells.get(i), dirtyCells.get(j), w);
-				//				System.out.println("Added edge");
+				System.out.println("Path da " + dirtyCells.get(i) + " a " + dirtyCells.get(j));
+				double weight = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, dirtyCells.get(i), dirtyCells.get(j)).getPathLength();
+				tspGraph.addWeightedEdge(dirtyCells.get(i), dirtyCells.get(j), weight);
 			}
 		}
-
-		for (int i = 0; i < dirtyCells.size(); i++) {
-			int w = dist("0,0", dirtyCells.get(i));
-			graph.addWeightedEdge("0,0", dirtyCells.get(i), w);
-		}
-
-		ArrayList<String> list = new ArrayList<String>(HamiltonianCycle.getApproximateOptimalForCompleteGraph(graph));
-
-		System.out.println("Solution");
-		//Set home as first element of solution
+		System.out.println("TSP Graph");
+		System.out.println(tspGraph);
+		
+//		ArrayList<String> list = new ArrayList<String>(HamiltonianCycle.getApproximateOptimalForCompleteGraph(graph));
+		
 //		for (int i = 0; i < list.size(); i++) {
-//			if(list.get(i).equals("0,0")){
-//				ArrayList<String> first = (ArrayList<String>) list.subList(i, list.size()-1);
-//				ArrayList<String> second = (ArrayList<String>) list.subList(0, i-1);
-//				list = first;
-//				list.addAll(second);
-//			}
+//			System.out.print(list.get(i) + " ");
 //		}
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
-		}
-
-		//		System.out.println(graph);
+//		System.out.println();
+//		System.out.println("Size " + list.size());
+		
+		//Set home as first element of solution
+//		int homeIndex = list.indexOf("0,0");
+//		if(homeIndex != 0){
+//			List<String> first = list.subList(homeIndex, list.size());
+//			List<String> second = list.subList(0, homeIndex);
+//			list = new ArrayList<String>(first);
+//			list.addAll(second);
+//		}
+//		
+//		System.out.println("Solution");
+//		for (int i = 0; i < list.size(); i++) {
+//			System.out.print(list.get(i) + " ");
+//		}
+//		System.out.println();
+//		System.out.println("Size " + list.size());
+		
+		
 	}
-
 
 	/**
 	 * Suck the tile if is dirty and moves around randomly if it is clean
@@ -168,6 +192,7 @@ public class Agent extends AbstractAgent {
 					cleanedSquare++;
 		return cleanedSquare;
 	}
+	
 	/**
 	 * Counts the number of dirty tiles in the floor
 	 * @return current number of dirty tiles
