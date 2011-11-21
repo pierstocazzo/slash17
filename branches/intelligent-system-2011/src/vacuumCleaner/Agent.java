@@ -1,5 +1,6 @@
 package vacuumCleaner;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -87,7 +88,7 @@ public class Agent extends AbstractAgent {
 
 		ArrayList<String> dirtyCells = new ArrayList<String>();
 		dirtyCells.add("0-0");
-		
+
 		// Create walkable cells's graph
 		walkableGraph = new UndirectedWeightedGraph();
 		for (int i = 0; i < myWorld.length; i++)
@@ -107,22 +108,24 @@ public class Agent extends AbstractAgent {
 				if(myWorld.get(i, j) == Square.Type.DIRTY)
 					dirtyCells.add(i + "-" + j);
 			}
-		
+
 		ArrayList<String> removedVertex = new ArrayList<String>();
-		
+
 		//Remove unreachable cells
-		for (int i = 0; i < dirtyCells.size(); i++) {
-			GraphPath<String, DefaultWeightedEdge> path = null;
-			for (int j = i+1; j < dirtyCells.size(); j++) {
-				try{
-					path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, dirtyCells.get(i), dirtyCells.get(j)).getPath();
-					if(path == null)
-						removedVertex.add(dirtyCells.get(j));
+		GraphPath<String, DefaultWeightedEdge> path = null;
+		for (int j = 1; j < dirtyCells.size(); j++) {
+			try{
+				System.out.println("Search Path "+dirtyCells.get(0) + "," +dirtyCells.get(j));
+				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, dirtyCells.get(0), dirtyCells.get(j)).getPath();
+				if(path == null){
+					removedVertex.add(dirtyCells.get(j));
+					System.out.println("Prepare Delete " + dirtyCells.get(j));
 				}
-				catch (Exception e) {
-					if(path == null)
-						removedVertex.add(dirtyCells.get(j));
-				}
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+				removedVertex.add(dirtyCells.get(j));
+				System.out.println("Prepare Delete " + dirtyCells.get(j));
 			}
 		}
 		for (int i = 0; i < removedVertex.size(); i++){
@@ -133,50 +136,96 @@ public class Agent extends AbstractAgent {
 		}
 		System.out.println("Walkable Graph");
 		System.out.println(walkableGraph);
-		
-//		Calculate TSp Graph which contains only dirty cells and the home cell
+
+		//		Calculate TSp Graph which contains only dirty cells and the home cell
 		tspGraph = new UndirectedWeightedGraph();
-		
+
 		System.out.println("Dirty Cells");
 		for (int i = 0; i < dirtyCells.size(); i++) {
 			System.out.print(dirtyCells.get(i) + " ");
 		}
 		System.out.println();
-		
+
 		for (int i = 0; i < dirtyCells.size(); i++) {
 			for (int j = i+1; j < dirtyCells.size(); j++) {
-				System.out.println("Path da " + dirtyCells.get(i) + " a " + dirtyCells.get(j));
+				//				System.out.println("Path da " + dirtyCells.get(i) + " a " + dirtyCells.get(j));
 				double weight = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, dirtyCells.get(i), dirtyCells.get(j)).getPathLength();
 				tspGraph.addWeightedEdge(dirtyCells.get(i), dirtyCells.get(j), weight);
 			}
 		}
-		System.out.println("TSP Graph");
-		System.out.println(tspGraph);
-		
+		//		System.out.println("TSP Graph");
+		//		System.out.println(tspGraph);
+
 		ArrayList<String> list = new ArrayList<String>(HamiltonianCycle.getApproximateOptimalForCompleteGraph(tspGraph));
-		
-//		System.out.println("Solution");
-//		for (int i = 0; i < list.size(); i++) {
-//			System.out.print(list.get(i) + " ");
-//		}
-//		System.out.println();
-//		System.out.println("Size " + list.size());
-		
+
+		//		System.out.println("Solution");
+		//		for (int i = 0; i < list.size(); i++) {
+		//			System.out.print(list.get(i) + " ");
+		//		}
+		//		System.out.println();
+		//		System.out.println("Size " + list.size());
+
 		//Set home as first element of solution
 		int homeIndex = list.indexOf("0-0");
-		if(homeIndex != 0){
+		if(homeIndex != 0 && list.size()>1){
 			List<String> first = list.subList(homeIndex, list.size());
 			List<String> second = list.subList(0, homeIndex);
 			list = new ArrayList<String>(first);
 			list.addAll(second);
+			list.add("0-0");
 		}
-		
-		System.out.println("Solution");
+
+		System.out.println("Tour Solution");
 		for (int i = 0; i < list.size(); i++) {
 			System.out.print(list.get(i) + " ");
 		}
 		System.out.println();
 		System.out.println("Size " + list.size());
+
+		// Convert Tour Solution in Cells's list
+		ArrayList<String> cellList = new ArrayList<String>();
+		for (int i = 0; i < list.size()-1; i++) {
+			if(!cellList.contains(list.get(i))){
+				cellList.add(list.get(i));
+				ArrayList<DefaultWeightedEdge> edgeList = 
+						new ArrayList<DefaultWeightedEdge>(
+								new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, list.get(i), list.get(i+1)).getPathEdgeList());
+				System.out.println(edgeList);
+				String curr = list.get(i);
+				for (int j = 0; j < edgeList.size(); j++) {
+					DefaultEdge edge = edgeList.get(j);
+					Field sourceRef  = null, targetRef = null;
+					try {
+						sourceRef = DefaultEdge.class.getSuperclass().getDeclaredField("source");
+						targetRef = DefaultEdge.class.getSuperclass().getDeclaredField("target");
+						sourceRef.setAccessible(true);
+						targetRef.setAccessible(true);
+						String source = (String) sourceRef.get(edge);
+						String target = (String) targetRef.get(edge);
+						//						System.out.println("Source "+source);
+						//						System.out.println("Target "+target);
+						if(source.equals(curr)){
+							curr = target;
+							cellList.add(target);
+						}
+						else{
+							curr = source;
+							cellList.add(source);
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		System.out.println("Cells's List");
+		for (int i = 0; i < cellList.size(); i++) {
+			System.out.print(cellList.get(i) + " ");
+		}
+		System.out.println();
+		// Convert Cell's list in operations's list
 	}
 
 	/**
@@ -217,7 +266,7 @@ public class Agent extends AbstractAgent {
 					cleanedSquare++;
 		return cleanedSquare;
 	}
-	
+
 	/**
 	 * Counts the number of dirty tiles in the floor
 	 * @return current number of dirty tiles
