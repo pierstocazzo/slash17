@@ -2,10 +2,12 @@ package vacuumCleaner;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jgrapht.GraphPath;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.alg.HamiltonianCycle;
@@ -105,6 +107,30 @@ public class Agent extends AbstractAgent {
 				if(myWorld.get(i, j) == Square.Type.DIRTY)
 					dirtyCells.add(i + "-" + j);
 			}
+		
+		ArrayList<String> removedVertex = new ArrayList<String>();
+		
+		//Remove unreachable cells
+		for (int i = 0; i < dirtyCells.size(); i++) {
+			GraphPath<String, DefaultWeightedEdge> path = null;
+			for (int j = i+1; j < dirtyCells.size(); j++) {
+				try{
+					path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, dirtyCells.get(i), dirtyCells.get(j)).getPath();
+					if(path == null)
+						removedVertex.add(dirtyCells.get(j));
+				}
+				catch (Exception e) {
+					if(path == null)
+						removedVertex.add(dirtyCells.get(j));
+				}
+			}
+		}
+		for (int i = 0; i < removedVertex.size(); i++){
+			if(walkableGraph.containsVertex(removedVertex.get(i)))
+				walkableGraph.removeVertex(removedVertex.get(i));
+			if(dirtyCells.contains(removedVertex.get(i)))
+				dirtyCells.remove(removedVertex.get(i));
+		}
 		System.out.println("Walkable Graph");
 		System.out.println(walkableGraph);
 		
@@ -127,23 +153,8 @@ public class Agent extends AbstractAgent {
 		System.out.println("TSP Graph");
 		System.out.println(tspGraph);
 		
-//		ArrayList<String> list = new ArrayList<String>(HamiltonianCycle.getApproximateOptimalForCompleteGraph(graph));
+		ArrayList<String> list = new ArrayList<String>(HamiltonianCycle.getApproximateOptimalForCompleteGraph(tspGraph));
 		
-//		for (int i = 0; i < list.size(); i++) {
-//			System.out.print(list.get(i) + " ");
-//		}
-//		System.out.println();
-//		System.out.println("Size " + list.size());
-		
-		//Set home as first element of solution
-//		int homeIndex = list.indexOf("0,0");
-//		if(homeIndex != 0){
-//			List<String> first = list.subList(homeIndex, list.size());
-//			List<String> second = list.subList(0, homeIndex);
-//			list = new ArrayList<String>(first);
-//			list.addAll(second);
-//		}
-//		
 //		System.out.println("Solution");
 //		for (int i = 0; i < list.size(); i++) {
 //			System.out.print(list.get(i) + " ");
@@ -151,7 +162,21 @@ public class Agent extends AbstractAgent {
 //		System.out.println();
 //		System.out.println("Size " + list.size());
 		
+		//Set home as first element of solution
+		int homeIndex = list.indexOf("0-0");
+		if(homeIndex != 0){
+			List<String> first = list.subList(homeIndex, list.size());
+			List<String> second = list.subList(0, homeIndex);
+			list = new ArrayList<String>(first);
+			list.addAll(second);
+		}
 		
+		System.out.println("Solution");
+		for (int i = 0; i < list.size(); i++) {
+			System.out.print(list.get(i) + " ");
+		}
+		System.out.println();
+		System.out.println("Size " + list.size());
 	}
 
 	/**
