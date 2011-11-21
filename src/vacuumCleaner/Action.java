@@ -24,7 +24,7 @@ public class Action {
 	 * @param sx
 	 * @param sy
 	 */
-	public Action(Action.Type type, int sx, int sy) {
+	public Action(Action.Type type) {
 		super();
 		this.type = type;
 	}
