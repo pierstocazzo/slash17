@@ -86,8 +86,12 @@ public class Agent extends AbstractAgent {
 		else{
 			if(myWorld.get(x, y) == Square.Type.DIRTY)
 				currAction = Action.Type.SUCK;
-			else
-				currAction = calculatedAction.remove(0).type;
+			else {
+				if(!calculatedAction.isEmpty())
+					currAction = calculatedAction.remove(0).type;
+				else
+					goalReached = true;
+			}
 		}
 	}
 
@@ -226,6 +230,7 @@ public class Agent extends AbstractAgent {
 				}
 			}
 		}
+		cellList.add("0-0");
 
 		System.out.println("Cells's List");
 		for (int i = 0; i < cellList.size(); i++) {
