@@ -1,0 +1,888 @@
+a0000_t_L'insieme degli esseri viventi e dell'ambiente fisico in cui essi vivono con le loro relazioni 
+a0000_f_Una disciplina economica applicata all'ambiente 
+a0000_f_La scienza che studia la natura 
+a0000_f_null
+a0001_f_Lo studio dell'inquinamento 
+a0001_t_Il ramo della biologia che studia le relazioni tra gli organismi viventi 
+a0001_f_La disciplina che studia la morfologia della Terra 
+a0001_f_null
+a0002_f_Kant
+a0002_t_Gandhi 
+a0002_f_Leonardo da Vinci 
+a0002_f_Galileo Galilei
+a0003_t_Valutazione Impatto Ambientale 
+a0003_f_Valutazione Inquinamento Aria 
+a0003_f_Valutazione Impatto Acustico. 
+a0003_f_null
+a0004_f_I diversi detersivi biodegradabili presenti in commercio 
+a0004_f_Rappresenta l'etichetta apposta sui prodotti provenienti da agricoltura biologica 
+a0004_t_La presenza nello stesso ecosistema di differenti specie vegetali e animali le quali, interagendo, producono una situazione di equilibrio dinamico in evoluzione nel tempo. (Fonte: Dizionario Italiano Hoepli) 
+a0004_f_null
+a0005_t_E' un fenomeno naturale di regolazione dell'equilibrio termico della Terra 
+a0005_f_Il termine che indica lo scioglimento dei ghiacciai 
+a0005_f_» l'aumento della temperatura del mare sulla Terra 
+a0005_f_null
+a0006_t_All'aumento della temperatura sulla Terra 
+a0006_f_All'aumento della attivita' dei vulcani sulla Terra 
+a0006_f_All'aumento delle malattie della pelle 
+a0006_f_null
+a0007_t_Gli organismi vegetali 
+a0007_f_Gli organismi animali 
+a0007_f_Tutti e due 
+a0007_f_null
+a0008_f_Quando ha almeno il 90% di acqua 
+a0008_t_Quando attraverso un insieme di processi chimici operati da microrganismi puo' essere trasformato in molecole semplici e non inquinanti 
+a0008_f_Se si scioglie solo quando e' a contatto con l'acqua 
+a0008_f_null
+a0009_f_Assorbimento salino 
+a0009_f_Semipermeabilita' capillare 
+a0009_t_Fotosintesi clorofilliana 
+a0009_f_null
+a0010_f_Polluzione 
+a0010_f_Bioproduzione acquatica 
+a0010_t_Eutrofizzazione 
+a0010_f_null
+a0011_t_L'anidride carbonica 
+a0011_f_L'elio 
+a0011_f_L'ozono 
+a0011_f_null
+a0012_f_Un processo che avviene in ambiente chiuso 
+a0012_f_Una attivita' svolta in ambiente aperto 
+a0012_t_Un processo che avviene in presenza di ossigeno 
+a0012_f_null
+a0013_t_Gli scarichi biologici dei centri urbani e gli scarichi industriali 
+a0013_f_La presenza di animali che vivono negli ambienti acquatici 
+a0013_f_La presenza di animali e piante che vivono negli ambienti acquatici 
+a0013_f_null
+a0014_f_L'aereo 
+a0014_f_La macchina 
+a0014_t_La bicicletta 
+a0014_f_null
+a0015_f_Sui prodotti derivanti da agricoltura biologica 
+a0015_t_Sulla carta riciclata 
+a0015_f_Su alcuni farmaci 
+a0015_f_null
+a0016_t_L'acqua di scarico con eventuali detergenti utilizzati 
+a0016_f_Carta, cotone, cotton-fioc 
+a0016_f_Oli di frittura, vernici, prodotti chimici 
+a0016_f_null
+a0017_f_Scrivere solo a matita 
+a0017_f_Scrivere su di un lato nel modo piu' piccolo possibile 
+a0017_t_Scrivere anche sul retro dei fogli 
+a0017_f_null
+a0018_f_Salvaguardare la biodiversita' della Terra 
+a0018_t_Diminuire le emissioni di gas ad effetto serra 
+a0018_f_Aumentare le produzioni agricole 
+a0018_f_null
+a0019_t_I Paesi in Via di Sviluppo 
+a0019_f_I Prodotti Sanitari Verificati 
+a0019_f_People Very Superior 
+a0019_f_null
+a0020_f_10 kg di anidride carbonica in un anno 
+a0020_f_15 kg di anidride carbonica in un anno 
+a0020_t_20 kg di anidride carbonica in un anno 
+a0020_f_35 kg di anidride carbonica in un anno
+a0021_t_11 kg di anidride carbonica all'anno 
+a0021_f_5 kg di anidride carbonica in un anno 
+a0021_f_20 kg di anidride carbonica in un anno 
+a0021_f_25 kg di anidride carbonica in un anno 
+a0022_f_0,5 kg di anidride carbonica per chilometro percorso 
+a0022_t_0,13 kg di anidride carbonica per chilometro percorso 
+a0022_f_Non si ha alcun risparmio 
+a0022_f_null
+a0023_f_Di carta perche' non si usano fogli di carta nuova 
+a0023_f_Di anidride carbonica immessa in atmosfera perche' si usano fogli di carta gia' prodotti 
+a0023_t_Sia di anidride carbonica sia di carta 
+a0023_f_null
+a0024_t_I Paesi Sviluppati perche' possono investire in processi produttivi a basse emissioni di CO2 e sostenere anche economicamente gli altri Paesi 
+a0024_f_I Paesi Emergenti ed i Paesi Poveri nel loro processo di sviluppo devono inquinare di meno 
+a0024_f_Devono impegnarsi tutti allo stesso modo 
+a0024_f_null
+a0025_f_Dal petrolio 
+a0025_t_Dai vegetali 
+a0025_f_Da una miscela di silice, c calcare e acqua 
+a0025_f_null
+a0026_t_Qualsiasi condizione che superi il limite di tolleranza in quell'ambiente 
+a0026_f_La crescita limitata delle piante in un ecosistema acquatico 
+a0026_f_Il poco spazio a disposizione per realizzare una discarica 
+a0026_f_null
+a0027_t_Comunita', flusso di energia, ciclo dei materiali 
+a0027_f_Componente animale, componente vegetale e acqua 
+a0027_f_Componente animale, componente vegetale e componente abiotica 
+a0027_f_null
+a0028_f_La catena di solidarieta' per raccogliere alimenti per i paesi poveri 
+a0028_f_La catena di trasformazione che subisce un alimento prima di essere venduto 
+a0028_t_Il trasferimento di energia alimentare dai produttori attraverso una serie di organismi consumatori 
+a0028_f_null
+a0029_t_La conversione energetica della frazione organica dei rifiuti 
+a0029_f_Mette in sicurezza i rifiuti speciali 
+a0029_f_Ricicla i c rifiuti in alluminio 
+a0029_f_null
+a0030_f_Il ciclo che compie la carta quando viene riciclata 
+a0030_f_Il ciclo dell'energia solare sulla terra 
+a0030_t_Il percorso ciclico che compiono gli elementi chimici, anche facenti parte della materia vivente, all'interno della biosfera 
+a0030_f_null
+a0031_f_Bruciarla per ridurne il volume 
+a0031_t_Riciclarla 
+a0031_f_Buttarla insieme c agli altri rifiuti 
+a0031_f_null
+a0032_f_La trasformazione dell'energia elettrica in calore 
+a0032_f_La produzione di energia cinetica 
+a0032_t_La produzione combinata di energia elettrica e calore 
+a0032_f_null
+a0033_f_Sono tossici le colle e gli oli 
+a0033_t_Sono tutti tossici 
+a0033_f_Sono tossici solo i detersivi contenenti cloro 
+a0033_f_null
+a0034_t_Un giapponese 
+a0034_f_Un brasialiano 
+a0034_f_Un italiano 
+a0034_f_Un americano
+a0035_f_Una maggiore disponibilita' di metano 
+a0035_f_Prodotti che hanno un costo energetico maggiore 
+a0035_t_Un minor consumo c di materie prime 
+a0035_f_null
+a0036_t_Ad aumentare la frazione organica del terreno 
+a0036_f_Viene utilizzato contro i parassiti al posto degli insetticidi 
+a0036_f_Per favorire la crescita solo di alcuni tipi di vegetali 
+a0036_f_null
+a0037_f_Disidratazione 
+a0037_f_Desalinizzazione 
+a0037_t_Desertificazione 
+a0037_f_null
+a0038_t_Alterazione dell'ambiente che produce disagi o danni permanenti per la vita e che non e' in equilibrio con i cicli naturali esistenti 
+a0038_f_Alterazione di una caratteristica di un ambiente che non influenza i cicli naturali 
+a0038_f_Alterazione dei processi non biologici in un ecosistema 
+a0038_f_null
+a0039_f_Non e' possibile perche' sono altamente inquinanti 
+a0039_f_Solo se hanno determinate caratteristiche 
+a0039_t_Si, per la produzione c di calore 
+a0039_f_null
+a0040_f_Gli organismi che riescono ad abbattere interi boschi 
+a0040_t_Gli organismi che riducono la materia organica complessa a materia inorganica semplice 
+a0040_f_Gli organismi che riescono a triturare finemente la roccia 
+a0040_f_null
+a0041_t_Abbattimento esteso di boschi e foreste per motivi commerciali o agricoli 
+a0041_f_Taglio controllato di alberi per favorire la crescita di piante piu' piccole 
+a0041_f_Taglio controllato di alberi per favorire l'insediamento di nuove specie animali 
+a0041_f_null
+a0042_t_Lo spazio fisico occupato da un organismo, il ruolo funzionale nella comunita' e le sue condizioni di esistenza (temperatura, alimentazione, pH, ecc.) 
+a0042_f_Il luogo in cui un organismo vive in maniera ottimale 
+a0042_f_Il luogo esclusivo caratterizzato dalla presenza di una sola specie animale o vegetale 
+a0042_f_Nessuna delle precedenti
+a0043_t_Un torrente 
+a0043_f_Un lago 
+a0043_f_Una palude 
+a0043_f_Una pozzanghera
+a0044_t_Tipo di plastica biodegradabile in quanto derivante da materie di origine vegetale 
+a0044_f_Tipo di plastica che, per le sue caratteristiche, puo' essere ingerita dagli animali 
+a0044_f_Tipo di plastica utilizzata solo per particolari confezioni alimentari 
+a0044_f_null
+a0045_f_Gli alti costi iniziali di costruzione 
+a0045_f_La produzione di inquinanti atmosferici 
+a0045_t_La riduzione della massa dei rifiuti
+a0045_f_null
+a0046_t_La raccolta differenziata 
+a0046_f_La discarica controllata 
+a0046_f_L'incenerimento 
+a0046_f_Tutte le precedenti
+a0047_f_Sviluppare strategie per la raccolta differenziata 
+a0047_t_Sviluppare strategie per la riduzione della loro produzione 
+a0047_f_Sviluppare strategie per una migliore raccolta stradale 
+a0047_f_null
+a0048_t_Processi aerobici e anaerobici dei rifiuti smaltiti in discarica 
+a0048_f_Processi di combustione dello smaltimento con termovalorizzazione 
+a0048_f_Processi di compostaggio C industriale 
+a0048_f_null
+a0049_f_Riducono la volumetria e la massa dei rifiuti, altrimenti destinati in discarica 
+a0049_f_Sfruttano l'energia termica sprigionata durante il processo di combustione attraverso il recupero di calore e la produzione di energia elettrica 
+a0049_t_Servono per ambedue le cose 
+a0049_f_Non servono per nessuna delle due cose
+a0050_t_Lombrichi 
+a0050_f_Mosche e api 
+a0050_f_Imenotteri 
+a0050_f_Zanzare
+a0051_f_Misura le dimensioni dell'animale a cui l'impronta appartiene 
+a0051_f_Misura le dimensioni massime a cui puo' arrivare un animale 
+a0051_t_Misura la porzione di territorio di cui un individuo, una comunita', un popolo necessita per produrre tutte le risorse che consuma e per assorbire i rifiuti che produce 
+a0051_f_null
+a0052_f_Stati Uniti 
+a0052_t_Cina
+a0052_f_Italia
+a0052_f_Francia
+a0053_t_E' un indicatore ambientale capace di descrivere le pressioni cioe' il carico delle attivita' umane sulle risorse in base all'area totale degli ecosistemi terrestri e acquatici 
+a0053_f_Viene chiamata cosi' l'impronta di un animale rinvenuta in un ambiente naturale 
+a0053_f_Viene chiamata cosi' l'impronta di un animale rinvenuta in un ambiente antropizzato 
+a0053_f_null
+a0054_t_Stati Uniti 
+a0054_f_Australia
+a0054_f_Italia
+a0054_f_Germania
+a0055_f_Che produce una elevata quantita' di prodotti ecologici e sostenibili 
+a0055_t_Che consuma un elevato quantitativo di risorse 
+a0055_f_Che ha un importante presenza di fauna selvatica 
+a0055_f_Nessuna delle precedenti
+a0056_t_Tutti gli Stati del mondo 
+a0056_f_Solo gli Stati al di sotto dell'equatore 
+a0056_f_Solo gli Stati c che hanno i deserti 
+a0056_f_Solo gli Stati al di sopra dell'equatore
+a0057_f_Solo gli Stati che si trovano sul mare e che potrebbero essere interessati da un innalzamento delle acque 
+a0057_t_Solo gli Stati che si trovano sul mare e che potrebbero essere interessati da un innalzamento delle acque 
+a0057_f_Solo il Polo Nord
+a0057_f_Solo il Polo Sud
+a0058_t_L'aumento dell'effetto serra 
+a0058_f_Le piogge acide 
+a0058_f_L'erosione c delle coste 
+a0058_f_Gli uragani
+a0059_f_Il progressivo avanzare del deserto 
+a0059_f_Un processo di perdita di vegetazione causato dall'eccessivo calore del sole e dalla mancanza di pioggia 
+a0059_t_Un processo provocato da fattori climatici e dall'intervento dell'uomo che porta alla perdita di fertilita' e di produttivita' del suolo 
+a0059_f_Nessuna delle precenti
+a0060_t_I fumi 
+a0060_f_Le ceneri pesanti 
+a0060_f_Le ceneri leggere 
+a0060_f_Le polveri sottili
+a0061_t_» il forum informale dei Ministri dell'Ambiente organizzato dalla presidenza di turno del G8 (forum dei governi di otto tra i principali paesi industrializzati del mondo) 
+a0061_f_» una dichiarazione sulla tutela dell'ambiente firmata da otto Stati 
+a0061_f_» una dichiarazione sulla tutela dell'ambiente firmata da otto Regioni italiane 
+a0061_f_Nessuna delle precedenti
+a0062_f_Elio e idrogeno 
+a0062_f_Ossigeno e azoto 
+a0062_t_Sulla c Luna non c'e' aria 
+a0062_f_Azoto e idrogeno
+a0063_f_Un marchio che caratterizza un prodotto non inquinante 
+a0063_f_Un marchio che caratterizza un processo produttivo che utilizza solo risorse rinnovabili 
+a0063_t_Un'organizzazione non governativa ambientalista e pacifista fondata a Vancouver nel 1971 
+a0063_f_Nessuna delle precedenti
+a0064_f_Ossido di carbonio 
+a0064_t_Anidride carbonica 
+a0064_f_Biossido di azoto 
+a0064_f_Tetraidruro di carbonio 
+a0065_f_Una carta globale in cui sono indicate tutte le risorse rinnovabili presenti sulla Terra 
+a0065_t_Una dichiarazione di principi etici fondamentali, approvata a livello internazionale, che si propone di costruire una societa' globale nel XXI secolo giusta, sostenibile e pacifica 
+a0065_f_Una carta globale in cui sono indicate tutte le risorse sia rinnovabili sia non rinnovabili presenti sulla Terra 
+a0065_f_Nessuna delle precedenti
+a0066_f_Ossido di carbonio 
+a0066_t_Anidride carbonica 
+a0066_f_Biossido di azoto 
+a0066_f_Tetraidruro di carbonio
+a0067_t_CloroFluoroCarburi 
+a0067_f_Ossidi di metalli pesanti 
+a0067_f_Ossidi di azoto 
+a0067_f_Nessuno dei precedenti
+a0068_f_Si, perche' causa un innalzamento della temperatura 
+a0068_t_No, e' l'aumento dei gas ad effetto serra nell'atmosfera dovuto all'inquinamento che e' dannoso 
+a0068_f_Si, perche' causa danni c agli ecosistemi 
+a0068_f_Si, perche' causa un innalzamento della temperatura e causa danni agli ecosistemi
+a0069_f_Usare buste di plastica biodegradabile 
+a0069_t_Portarsi da casa borse riutilizzabili 
+a0069_f_Non riempire troppe buste di plastica 
+a0069_f_Nessuna delle precedenti
+a0070_t_L'aumento della temperatura 
+a0070_f_L'innalzamento del livello degli oceani 
+a0070_f_La morte di molte specie animali e vegetali 
+a0070_f_L'erosione delle coste
+a0071_t_Fino a 3 kg 
+a0071_f_Fino a 1 kg 
+a0071_f_Fino a 2 kg 
+a0071_f_Fino a 4 kg 
+a0072_f_La desertificazione 
+a0072_t_Gli incendi 
+a0072_f_La deforestazione 
+a0072_f_La siccita'
+a0073_f_E' raddoppiata 
+a0073_f_E' triplicata 
+a0073_f_E' aumentata di un terzo 
+a0073_f_E' diminuita di un quarto
+a0074_t_Qualcosa di cui ci disfiamo 
+a0074_f_Qualcosa che non utilizziamo 
+a0074_f_Qualcosa che non ha valore 
+a0074_f_Nessuna delle precedenti
+a0075_f_Luogo le cui caratteristiche fisiche possono permettere ad una data specie di vivere e svilupparsi 
+a0075_t_Luogo le cui caratteristiche fisiche e quelle biotiche possono permettere ad una data specie di vivere e svilupparsi 
+a0075_f_Luogo le cui caratteristiche biotiche possono permettere ad una data specie di vivere e svilupparsi 
+a0075_f_Nessuna di queste risposte
+a0076_t_Tutto cio' di cui ci disfiamo 
+a0076_f_Tutto cio' che non utilizziamo 
+a0076_f_Tutto cio' che sporchiamo 
+a0076_f_Tutto cio' che non ha valore
+a0077_t_Un residuo generato nel ciclo di produzione di un bene 
+a0077_f_Un residuo generato nel ciclo di consumo di un bene 
+a0077_f_Un residuo generato nel ciclo di utilizzo di un bene 
+a0077_f_Nessuna delle risposte presenti
+a0078_f_Radiazioni Universali 
+a0078_t_Rifiuti Urbani 
+a0078_f_Riciclo Usati 
+a0078_f_Radiazioni Urbane
+a0079_f_100 gr di rifiuti 
+a0079_f_500 gr di rifiuti 
+a0079_t_1,5 kg di rifiuti 
+a0079_f_3 kg di rifiuti
+a0080_f_100 Kg di rifiuti
+a0080_f_200 Kg di rifiuti
+a0080_t_500 Kg di rifiuti
+a0080_f_null
+a0081_f_7 kg
+a0081_f_17 kg
+a0081_t_170 kg
+a0081_f_null
+a0082_f_6
+a0082_f_60
+a0082_t_160
+a0082_f_null
+a0083_f_5
+a0083_f_15
+a0083_t_150
+a0083_f_null
+a0084_f_13
+a0084_f_50
+a0084_t_130
+a0084_f_null
+a0085_f_5
+a0085_f_10
+a0085_t_50
+a0085_f_null
+a0086_f_La maggior parte degli imballaggi non serve a proteggere il contenuto, ma e' uno strumento del mercato; i prodotti riutilizzati sono da preferirsi ai materiali riciclati
+a0086_t_La produzione di nuovi prodotti partendo da materiale riciclato invece che da materiale vergine richiede una maggiore quantita' di energia
+a0086_f_I paesi piu' poveri sono spesso usati, dai paesi piu' ricchi, come siti di smaltimento per i rifiuti tossici
+a0086_f_null
+a0087_f_Trovare le citta' europee in cui sono localizzate le discariche
+a0087_f_Cercare gli indirizzi degli addetti al ritiro dei rifiuti
+a0087_t_Capire se una sostanza, un materiale o un oggetto e' un rifiuto
+a0087_f_null
+a0088_f_Comitato Europeo Rottami
+a0088_f_Codice Europeo Regionale
+a0088_t_Catalogo Europeo Rifiuti
+a0088_f_null
+a0089_t_Un asterisco
+a0089_f_Un teschio
+a0089_f_Una croce
+a0089_f_null
+a0090_f_Un elettrodomestico per impastare
+a0090_f_Un dispositivo per migliorare le prestazioni delle auto
+a0090_t_Un automezzo per ridurre il volume dei rifiuti
+a0090_f_null
+a0091_t_Origine e pericolosita'
+a0091_f_Colore e forma 
+a0091_f_Eta' e dimensioni
+a0091_f_null
+a0092_t_Origine e pericolosita'
+a0092_f_Dimensioni e pericolosita'
+a0092_f_Origine e dimensioni
+a0092_f_null
+a0093_f_Nazionali e regionali
+a0093_t_Urbani e speciali
+a0093_f_Urbani e industriali
+a0093_f_null
+a0094_f_Internazionali e nazionali
+a0094_t_Urbani e speciali
+a0094_f_Mondiali e universali
+a0094_f_null
+a0095_f_Nazionali e regionali
+a0095_t_Urbani e speciali
+a0095_f_Casalinghi e industriali
+a0095_f_null
+a0096_f_Pericolosissimi e poco pericolosi
+a0096_t_Pericolosi e non pericolosi
+a0096_f_Letali e sicuri
+a0096_f_null
+a0097_t_Abitazioni
+a0097_f_Industria
+a0097_f_Ospedali
+a0097_f_null
+a0098_f_Industria
+a0098_t_Spazzamento delle strade
+a0098_f_Ospedali
+a0098_f_null
+a0099_t_Parchi
+a0099_f_Attivita' agricole
+a0099_f_Ospedali
+a0099_f_null
+a0100_f_Ospedali
+a0100_f_Attivita' commerciali
+a0100_t_Esumazioni ed estumulazioni
+a0100_f_null
+a0101_f_Demolizioni di case
+a0101_f_Attivita' commerciali
+a0101_t_Aree cimiteriali
+a0101_f_null
+a0102_f_Costruzioni di case
+a0102_t_Giardini pubblici
+a0102_f_Attivita' commerciali
+a0102_f_null
+a0103_f_Radiazioni Universali
+a0103_t_Rifiuti Urbani
+a0103_f_Risorse Utilizzate
+a0103_f_null
+a0104_f_Attivita' di servizio
+a0104_f_Autovetture abbandonate
+a0104_t_Spazzamento delle strade
+a0104_f_null
+a0105_t_I rifiuti che provengono da attivita' industriali
+a0105_f_I rifiuti prodotti nelle case e negli uffici
+a0105_f_I rifiuti che devono essere bruciati
+a0105_f_null
+a0106_t_Attivita' commerciali
+a0106_f_Parchi
+a0106_f_Spazzamento delle strade
+a0106_f_null
+a0107_t_Attivita' agricole
+a0107_f_Attivita' cimiteriali
+a0107_f_Abitazioni
+a0107_f_null
+a0108_f_Parchi
+a0108_t_Ospedali
+a0108_f_Cimiteri
+a0108_f_null
+a0109_f_Spazzamento delle strade
+a0109_f_Abitazioni
+a0109_t_Apparecchiature deteriorate
+a0109_f_null
+a0110_t_Costruzione di uffici
+a0110_f_Cimiteri
+a0110_f_Spazzamento delle strade
+a0110_f_null
+a0111_f_Giardini pubblici
+a0111_t_Industrie
+a0111_f_Esumazioni
+a0111_f_null
+a0112_f_Spazzamento delle strade
+a0112_f_Abitazioni
+a0112_t_Attivita' di demolizione
+a0112_f_null
+a0113_f_Spazzamento delle strade
+a0113_f_Abitazioni
+a0113_t_Attivita' di demolizione
+a0113_f_null
+a0114_t_Attivita' di smaltimento dei rifiuti
+a0114_f_Attivita' cimiteriali
+a0114_f_Domestici
+a0114_f_null
+a0115_f_Abitazioni
+a0115_t_Veicoli a motore fuori uso
+a0115_f_Spazzamento delle strade
+a0115_f_null
+a0116_t_Depurazione delle acque
+a0116_f_Parchi
+a0116_f_Spazzamento delle strade
+a0116_f_null
+a0117_t_Urbani e speciali
+a0117_f_Speciali
+a0117_f_Urbani
+a0117_f_null
+a0118_f_Colorate
+a0118_t_Esplosive
+a0118_f_Eccitanti
+a0118_f_null
+a0119_t_Infiammabili
+a0119_f_Puzzolenti
+a0119_f_Profumate
+a0119_f_null
+a0120_f_Colorate
+a0120_f_Sterili
+a0120_t_Infettive
+a0120_f_null
+a0121_f_Lenitive
+a0121_t_Irritanti
+a0121_f_Balsamiche
+a0121_f_null
+a0122_f_Coloranti
+a0122_t_Corrosive
+a0122_f_Profumate
+a0122_f_null
+a0123_t_Tossiche
+a0123_f_Piccanti
+a0123_f_Profumate
+a0123_f_null
+a0124_f_Stimolanti
+a0124_t_Cancerogene
+a0124_f_Sterili
+a0124_f_null
+a0125_f_Cambiamenti dell'umore
+a0125_t_Mutazioni genetiche
+a0125_f_Variazioni di profumo
+a0125_f_null
+a0126_f_Odori sgradevoli
+a0126_f_Gas esilaranti
+a0126_t_Gas tossici
+a0126_f_null
+a0127_t_Lampadina al neon
+a0127_f_Flacone di shampoo
+a0127_f_Giornale stampato
+a0127_f_null
+a0128_t_Lampadina al neon
+a0128_f_Flacone di shampoo
+a0128_f_Giornale stampato
+a0128_f_null
+a0129_f_Preziosi
+a0129_t_Pericolosi
+a0129_f_Non pericolosi
+a0129_f_null
+a0130_t_Contengono mercurio
+a0130_f_Possono accendersi
+a0130_f_Conducono elettricita'
+a0130_f_null
+a0131_f_Pile che funzionano ad intermittenza
+a0131_t_Pile che non funzionano piu'
+a0131_f_Pile ecologiche
+a0131_f_null
+a0132_f_Con gli altri rifiuti
+a0132_t_Negli appositi contenitori
+a0132_f_Con i metalli
+a0132_f_null
+a0133_f_Un letto
+a0133_f_Una stanza
+a0133_t_Un campo di calcio
+a0133_f_null
+a0134_f_I rifiuti che non vengono spostati
+a0134_f_I rifiuti compattati
+a0134_t_I rifiuti che non subiscono trasformazioni
+a0134_f_null
+a0135_f_Mattone
+a0135_f_Pietra
+a0135_t_Legno
+a0135_f_null
+a0136_f_Mattone
+a0136_t_Plastica
+a0136_f_Cemento
+a0136_f_null
+a0137_t_Divano
+a0137_f_Scatolone di cartone
+a0137_f_Canotto
+a0137_f_null
+a0138_t_Scrivania
+a0138_f_Giocattolo
+a0138_f_Scatolone di cartone
+a0138_f_null
+a0139_f_Scatolone di cartone
+a0139_t_Televisore rotto
+a0139_f_Telo di plastica
+a0139_f_null
+a0140_t_Scatolone di cartone
+a0140_f_Lavatrice
+a0140_f_Telo di plastica
+a0140_f_null
+a0141_f_Trasporto, recupero e controllo
+a0141_f_Trasporto, recupero, smaltimento e controllo
+a0141_t_Raccolta, trasporto, recupero, smaltimento e controllo
+a0141_f_null
+a0142_t_Riduce, Riutilizza e Ricicla rifiuti
+a0142_f_Risparmia, Rinveste, Ricicla denaro
+a0142_f_Rovista, Ritrova e Riusa vestiti
+a0142_f_null
+a0143_f_Risparmiare, Recuperare e Regalare
+a0143_t_Ridurre, Riutilizzare e Riciclare
+a0143_f_Rovistare, Rubare e Restituire
+a0143_f_null
+a0144_f_Riciclarli, prevenire la loro produzione, smaltirli e, solo in ultimo, recuperarli
+a0144_t_Prevenire la loro produzione, riciclarli, recuperarli e, solo in ultimo, smaltirli
+a0144_f_Smaltirli, recuperarli, riciclarli e, solo in ultimo, prevenire la loro produzione
+a0144_f_null
+a0145_f_Riciclare rifiuti
+a0145_t_Prevenire la produzione di rifiuti
+a0145_f_Smaltire rifiuti
+a0145_f_null
+a0146_f_Recuperare rifiuti
+a0146_f_Smaltire rifiuti
+a0146_t_Riciclare rifiuti
+a0146_f_null
+a0147_f_Recuperare rifiuti
+a0147_t_Smaltire rifiuti
+a0147_f_Riciclare rifiuti
+a0147_f_null
+a0148_f_Prevenire la produzione di rifiuti
+a0148_t_Smaltire rifiuti
+a0148_f_Riciclare rifiuti
+a0148_f_null
+a0149_t_L'insieme delle misure che riducono la quantita' e la pericolosita' dei rifiuti
+a0149_f_L'insieme delle misure che riducono le malattie provocate dai rifiuti
+a0149_f_L'insieme delle misure per predire la produzione di rifiuti
+a0149_f_null
+a0150_f_Comprare prodotti usa e getta
+a0150_t_Comprare prodotti che potrai usare piu' e piu' volte
+a0150_f_Comprare prodotti economici
+a0150_f_null
+a0151_t_La quantita' di rifiuti da smaltire
+a0151_f_Il volume di rifiuti da incenerire
+a0151_f_La pericolosita' dei rifiuti
+a0151_f_null
+a0152_t_L'operazione attraverso la quale i rifiuti sono utilizzati per sostituire altri materiali
+a0152_f_L'operazione attraverso la quale i rifiuti sono utilizzati per riparare altri materiali
+a0152_f_L'operazione attraverso la quale i rifiuti sono smaltiti
+a0152_f_null
+a0153_t_L'operazione attraverso la quale i rifiuti sono trattati per ottenere prodotti, materiali o sostanze uguali o simili a quelli di partenza
+a0153_f_L'operazione attraverso la quale i rifiuti sono trattati per ottenere prodotti, materiali o sostanze completamente diversi da quelli di partenza
+a0153_f_L'operazione attraverso la quale i rifiuti sono smaltiti illecitamente
+a0153_f_null
+a0154_f_Aumentare l'uso di materie prime
+a0154_t_Risparmiare l'uso di materie prime
+a0154_f_Mantenere costante l'uso di materie prime
+a0154_f_null
+a0155_t_Recuperare i materiali di cui sono fatti i rifiuti per produrre nuovi oggetti
+a0155_f_Ripercorrere in bicicletta una strada gia' percorsa
+a0155_f_Sottoporre i rifiuti a lavaggio
+a0155_f_null
+a0156_f_Il 10%
+a0156_f_Il 50%
+a0146_t_Il 90%
+a0156_f_null
+a0157_f_Bicchieri di carta
+a0157_f_Bottiglie di plastica
+a0157_t_Lattine di alluminio
+a0157_f_null
+a0158_f_Ammassando tutti i rifiuti in una catasta
+a0158_t_Raccogliendo, separando e raggruppando i rifiuti
+a0158_f_Mettendo i rifiuti negli appositi contenitori
+a0158_f_null
+a0159_f_I rifiuti sono spediti via terra
+a0159_f_I rifiuti sono spediti via mare
+a0159_t_I rifiuti sono spostati da un luogo ad un altro
+a0159_f_null
+a0160_f_Saper guidare un automezzo
+a0160_f_Avere una discarica
+a0160_t_Essere iscritto in un albo speciale
+a0160_f_null
+a0161_t_Solo se c'e' un accordo tra le regioni
+a0161_f_Mai
+a0161_f_Sempre
+a0161_f_null
+a0162_f_Il furto di merce esposta nei negozi
+a0162_f_L'essicazione di un merluzzo
+a0162_t_Il deposito di rifiuti
+a0162_f_null
+a0163_f_Un edificio dove si riuniscono le persone
+a0163_t_Un'area in cui raccogliere rifiuti
+a0163_f_Un ufficio di statistica
+a0163_f_null
+a0164_f_Un mucchio di rifiuti sovrapposti
+a0164_f_L'ufficio comunale che si occupa di rifiuti
+a0164_t_Uno strumento di raccolta ed elaborazione di dati sui rifiuti
+a0164_f_null
+a0165_f_Una bottiglia di plastica
+a0165_f_Una lattina di alluminio
+a0165_t_Una buccia di banana
+a0165_f_null
+a0166_t_Un torsolo di mela
+a0166_f_Una bottiglia di vetro
+a0166_f_Un contenitore in polistirolo
+a0166_f_null
+a0167_t_Una mela
+a0167_f_Una bottiglia di vetro
+a0167_f_Una lattina
+a0167_f_null
+a0168_f_Un pannolino
+a0168_t_Un fazzoletto di carta
+a0168_f_Un mozzicone di sigaretta
+a0168_f_null
+a0169_t_i rifiuti biodegradabili
+a0169_f_i rifiuti liquidi
+a0169_f_i rifiuti solidi
+a0169_f_null
+a0170_t_i rifiuti biodegradabili
+a0170_f_i rifiuti liquidi
+a0170_f_i rifiuti solidi
+a0170_f_null
+a0171_t_Che puo' essere decomposto dalla natura
+a0171_f_Che non puo' essere decomposto
+a0171_f_Che puo' essere decomposto dall'uomo
+a0171_f_null
+a0172_f_Che si rompe in pezzi
+a0172_t_Che si trasforma in modo naturale
+a0172_f_Che si puo' lavare
+a0172_f_null
+a0173_t_Quelli che si decompongono in modo naturale
+a0173_f_Quelli che derivano dai detersivi
+a0173_f_Quelli che degradano l'ambiente
+a0173_f_null
+a0174_f_6 giorni
+a0174_t_6 settimane
+a0174_f_6 anni
+a0174_f_null
+a0175_f_9 giorni
+a0175_t_9 mesi
+a0175_f_9 anni
+a0175_f_null
+a0176_f_2 settimane
+a0176_t_2 mesi
+a0176_f_2 anni
+a0176_f_null
+a0177_f_3 settimane
+a0177_t_3 mesi
+a0177_f_3 anni
+a0177_f_null
+a0178_f_1 settimana
+a0178_f_1 mese
+a0178_t_1 anno
+a0178_f_null
+a0179_f_5 settimane
+a0179_f_5 mesi
+a0179_t_5 anni
+a0179_f_null
+a0180_f_13 settimane
+a0180_f_13 mesi
+a0180_t_13 anni
+a0180_f_null
+a0181_f_da 20 a 100 settimane
+a0181_f_da 20 a 100 mesi
+a0181_t_da 20 a 100 anni
+a0181_f_null
+a0182_f_50 settimane
+a0182_f_50 mesi
+a0182_t_50 anni
+a0182_f_null
+a0183_f_50 settimane
+a0183_f_50 mesi
+a0183_t_50 anni
+a0183_f_null
+a0184_f_450 settimane
+a0184_f_450 mesi
+a0184_t_450 anni
+a0184_f_null
+a0185_f_da 100 a 1000 settimane
+a0185_f_da 100 a 1000 mesi
+a0185_t_da 100 a 1000 anni
+a0185_f_null
+a0186_t_da 100 a 1000 settimane
+a0186_f_da 100 a 1000 mesi
+a0186_f_da 100 a 1000 anni
+a0186_f_null
+a0187_t_da 100 a 1000 settimane
+a0187_f_da 100 a 1000 mesi
+a0187_f_da 100 a 1000 anni
+a0187_f_null
+a0188_f_oltre 4000 settimane
+a0188_f_oltre 4000 mesi
+a0188_t_oltre 4000 anni
+a0188_f_null
+a0189_t_la raccolta in base al tipo e alla natura dei rifiuti
+a0189_f_la raccolta in base al peso dei rifiuti
+a0189_f_la raccolta dei rifiuti in tempi diversi
+a0189_f_null
+a0190_f_la raccolta delle porte rotte
+a0190_t_la raccolta dei rifiuti effettuata presso le case e i negozi
+a0190_f_la raccolta dei video di un noto programma televisivo
+a0190_f_null
+a0191_f_Al supermercato
+a0191_f_In discarica
+a0191_t_In impianti che li trasformano in nuovi oggetti
+a0191_f_null
+a0192_f_Al supermercato
+a0192_f_In discarica
+a0192_t_In impianti che li trasformano in nuovi oggetti
+a0192_f_null
+a0193_f_La getti nel contenitore del vetro
+a0193_f_La getti nel contenitore dell'indifferenziato
+a0193_t_Getti la bottiglia nel contenitore del vetro e il tappo nel contenitore dell'alluminio
+a0193_f_null
+a0194_t_Avanzi di cucina
+a0194_f_Piatti di plastica
+a0194_f_Olio
+a0194_f_null
+a0195_f_Bottiglie di plastica
+a0195_t_Fiori recisi
+a0195_f_Stracci
+a0195_f_null
+a0196_f_Confezioni di alimenti
+a0196_f_Pannolini
+a0196_t_Fondi di caffe'
+a0196_f_null
+a0197_t_Pane ammuffito
+a0197_f_Barattoli di vetro
+a0197_f_Barattoli di alluminio
+a0197_f_null
+a0198_f_Legno trattato
+a0198_t_Gusci d'uovo
+a0198_f_Cellophane
+a0198_f_null
+a0199_t_Cenere di caminetto
+a0199_f_Bottiglie di vetro
+a0199_f_Stracci
+a0199_f_null
+a0200_f_Bicchieri di plastica
+a0200_f_Carta patinata
+a0200_t_Gusci di molluschi
+a0200_f_null
+a0201_f_Bicchieri di vetro
+a0201_t_Scarti di frutta e verdura
+a0201_f_Barattoli di vetro
+a0201_f_null
+a0202_t_Filtri del te'
+a0202_f_Confezioni del te'
+a0202_f_Carta patinata
+a0202_f_null
+a0203_t_Tovaglioli di carta sporchi
+a0203_f_Tovaglioli di carta
+a0203_f_Giornali
+a0203_f_null
+a0204_t_Quaderni
+a0204_f_Carta unta
+a0204_f_Carta carbone
+a0204_f_null
+a0205_f_Carta oleata
+a0205_t_Giornali
+a0205_f_Cellophane
+a0205_f_null
+a0206_f_Carta unta
+a0206_t_Imballaggi di cartone
+a0206_f_Carta carbone
+a0206_f_null
+a0207_f_Fazzoletti di carta sporca
+a0207_f_Carta plastificata
+a0207_t_Carta sporca di colla
+a0207_f_null
+a0208_t_Scatole della pasta
+a0208_f_Carta chimica
+a0208_f_Pergamena
+a0208_f_null
+a0209_f_Scatole della pasta
+a0209_f_Giocattoli
+a0209_t_Flaconi per detergenti
+a0209_f_null
+a0210_f_Carta
+a0210_f_Bombolette spray
+a0210_t_Bottiglie d'acqua
+a0210_f_null
+a0211_t_Custodie per cd, dvd
+a0211_f_Elettrodomestici
+a0211_f_Giocattoli
+a0211_f_null
+a0212_f_Scatole della pasta
+a0212_t_Vasetti per lo yogurt
+a0212_f_Fiori recisi
+a0212_f_null
+a0213_t_Polistirolo
+a0213_f_Giocattoli
+a0213_f_Elettrodomestici
+a0213_f_null
+a0214_t_Vasetti per lo yogurt
+a0214_f_Posate usa e getta
+a0214_f_Giocattoli
+a0214_f_null
+a0215_t_Barattolo rotto
+a0215_f_Lampadina
+a0215_f_Polistirolo
+a0215_f_null
+a0216_t_Bottiglia di vetro
+a0216_f_Specchio
+a0216_f_Cristallo
+a0216_f_null
+a0217_t_Bicchiere di ceramica
+a0217_f_Bicchiere di vetro
+a0217_f_Bicchiere di cristallo
+a0217_f_null
+a0218_t_Pannolini
+a0218_f_Bottiglie di plastica
+a0218_f_Bicchieri di vetro
+a0218_f_null
+a0219_t_Penna
+a0219_f_Fogli di carta
+a0219_f_Barattoli di alluminio
+a0219_f_null
+a0220_f_Schiacciarla e poi svuotarla
+a0220_t_Svuotarla e poi schiacciarla
+a0220_f_Svuotarla e poi riempirla
+a0220_f_null
+a0221_f_Schiacciarla e poi svuotarla
+a0221_t_Svuotarla e poi schiacciarla
+a0221_f_Svuotarla e poi riempirla
+a0221_f_null
