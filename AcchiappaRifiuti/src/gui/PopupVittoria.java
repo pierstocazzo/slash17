@@ -82,7 +82,7 @@ public class PopupVittoria extends JDialog {
 		setMinimumSize(d1);
 		setMaximumSize(d1);
 		
-		setLocationRelativeTo(AcchiappaRifiuti.getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
 		setVisible(true);
 	}
 }

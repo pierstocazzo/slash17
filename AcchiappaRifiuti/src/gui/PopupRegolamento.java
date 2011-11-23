@@ -31,8 +31,8 @@ public class PopupRegolamento extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				AcchiappaRifiuti.getPannello().requestFocusInWindow();
-				AcchiappaRifiuti.getPannello().requestFocus();
+				AcchiappaRifiuti.instance().getPannello().requestFocusInWindow();
+				AcchiappaRifiuti.instance().getPannello().requestFocus();
 				dispose();
 			}
 		});
@@ -40,8 +40,8 @@ public class PopupRegolamento extends JDialog {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				AcchiappaRifiuti.getPannello().requestFocusInWindow();
-				AcchiappaRifiuti.getPannello().requestFocus();
+				AcchiappaRifiuti.instance().getPannello().requestFocusInWindow();
+				AcchiappaRifiuti.instance().getPannello().requestFocus();
 				super.windowClosed(e);
 			}
 		});
@@ -64,7 +64,7 @@ public class PopupRegolamento extends JDialog {
 		
         pack();
         
-		setLocationRelativeTo(AcchiappaRifiuti.getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
 		setVisible(true);
 	}
 }

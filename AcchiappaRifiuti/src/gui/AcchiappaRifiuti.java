@@ -4,24 +4,32 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JApplet;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class AcchiappaRifiuti extends JApplet {
 	
 	private static final long serialVersionUID = 3779225454776476552L;
-	static JFrame framePrincipale;
 	static PannelloPricipale gioco;
 	static Container rootPane;
 	
+	static AcchiappaRifiuti instance;
+	
 	public static void main(String[] args) {
 		/** main usato per lanciare AcchiappaRifiuti come applicazione desktop */
-		gioca();
+		instance().gioca();
 	}
 	
-	public static void gioca() {
+	public static AcchiappaRifiuti instance() {
+		if (instance == null)
+			instance = new AcchiappaRifiuti();
+		return instance;
+	}
+	
+	public void gioca() {
 		gioco = new PannelloPricipale();
-		framePrincipale = new JFrame("L'Acchiappa Rifiuti!");
+		JFrame framePrincipale = new JFrame("L'Acchiappa Rifiuti!");
 		framePrincipale.add(gioco);
 		framePrincipale.setResizable(false);
 			
@@ -32,12 +40,8 @@ public class AcchiappaRifiuti extends JApplet {
 		rootPane = framePrincipale;
 	}
 	
-	public static Container getFramePrincipale() {
+	public Container getFramePrincipale() {
 		return rootPane;
-	}
-	
-	public static PannelloPricipale getPannello() {
-		return gioco;
 	}
 	
     public void init() {
@@ -59,8 +63,8 @@ public class AcchiappaRifiuti extends JApplet {
      */
     private void createGUI() {
         //Create and set up the content pane.
-        PannelloPricipale newContentPane = new PannelloPricipale();
-        setContentPane(newContentPane);     
+        gioco = new PannelloPricipale();
+        setContentPane(gioco);     
 		Dimension d = new Dimension(1150, 690);
 		this.setMinimumSize(d);
 		this.setMaximumSize(d);
@@ -69,4 +73,12 @@ public class AcchiappaRifiuti extends JApplet {
 		
 		rootPane = getRootPane();
     } 
+    
+    public void restart() {
+    	instance.createGUI();
+    }
+
+	public JComponent getPannello() {
+		return gioco;
+	}
 }

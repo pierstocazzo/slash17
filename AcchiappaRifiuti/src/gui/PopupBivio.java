@@ -77,7 +77,7 @@ public class PopupBivio extends JDialog {
 		add(new JLabel(img), BorderLayout.CENTER);
 
 		pack();
-		setLocationRelativeTo(AcchiappaRifiuti.getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
 		setVisible(true);
 	}
 }
