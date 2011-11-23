@@ -43,6 +43,9 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	/** Creates new form PannelloPricipale */
 	public PannelloPricipale() {
 		initComponents();
+		
+		GestoreTurni.newInstance();
+		
 		String s = JOptionPane.showInputDialog(null, "Quanti giocatori?");
 
 		while (!Pattern.matches("\\d+", s) || Integer.parseInt(s) < 2 || Integer.parseInt(s) > 5)

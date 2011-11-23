@@ -150,7 +150,7 @@ public class PopupDomanda extends JDialog {
 		
         pack();
         
-		setLocationRelativeTo(AcchiappaRifiuti.getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
 		setVisible(true);
 	}
 }

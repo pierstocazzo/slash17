@@ -39,6 +39,11 @@ public class GestoreTurni extends Thread {
 		}
 		return t;
 	}
+	
+	public static GestoreTurni newInstance() {
+		t = new GestoreTurni();
+		return t;
+	}
 
 	public void setGiocatori(Giocatore[] giocatori) {
 		this.giocatori = giocatori;
@@ -226,8 +231,7 @@ public class GestoreTurni extends Thread {
 		 * Vittoria
 		 */
 		new PopupVittoria(vincitore.getNome());
-//		AcchiappaRifiuti.getFramePrincipale().dispose();
-//		AcchiappaRifiuti.gioca();
+		AcchiappaRifiuti.instance().restart();
 	}
 	
 	private void waitForInput() {

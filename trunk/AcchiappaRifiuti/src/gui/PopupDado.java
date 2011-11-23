@@ -67,7 +67,7 @@ public class PopupDado extends JDialog {
 	public void display() {
 		pack();
 		
-		setLocationRelativeTo(AcchiappaRifiuti.getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
 		setVisible(true);
 	}
 }
