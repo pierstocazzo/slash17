@@ -1,5 +1,7 @@
 package vacuumCleaner;
 
+import interfaces.PopupGrafo;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +14,7 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.alg.HamiltonianCycle;
+import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableDirectedGraph;
@@ -32,12 +35,18 @@ public class Agent extends AbstractAgent {
 	private UndirectedWeightedGraph walkableGraph;
 	private Floor myWorld;
 	private UndirectedWeightedGraph tspGraph;
-	
+
 	public ArrayList<Action> calculatedAction;
+
+	/** matrice dei punteggi delle celle (in visibilità neighbours) */
+	int[][] scores;
+	int[][] visited;
+	private boolean visitedInitialized = false;
 
 	public Agent(int x, int y, VisibilityType visType, int opBound){
 		super(x, y, visType, opBound);
 		calculatedAction = new ArrayList<Action>();
+		
 	}
 
 	/**
@@ -49,7 +58,7 @@ public class Agent extends AbstractAgent {
 	}
 
 	/** 
-	 * Make the agent perceives from environment
+	 * Make the import org.jgrapht.ext.JGraphModelAdapteragent perceives from environment
 	 * @param	perception	current perception from the environment
 	 */
 	public void perceives(Perception perception){
@@ -66,7 +75,13 @@ public class Agent extends AbstractAgent {
 			}
 			System.out.println();
 		}
-
+		if(!visitedInitialized ){
+			visitedInitialized = true;
+			visited = new int[myWorld.length][myWorld.width];
+			for (int i = 0; i < myWorld.length; i++)
+				for (int k = 0; k < myWorld.width; k++)
+					visited[i][k] = 0;
+		}
 	}
 
 	/**
@@ -75,7 +90,7 @@ public class Agent extends AbstractAgent {
 	public void update(){
 		switch (visType) {
 		case MY_CELL:stupidBehaviour();break;
-		case MY_NEIGHBOURS:;intelligentBehaviour();break;
+		case MY_NEIGHBOURS:;neighboursBehaviour();break;
 		case ALL:intelligentBehaviour();break;
 		}
 	}
@@ -93,6 +108,157 @@ public class Agent extends AbstractAgent {
 					goalReached = true;
 			}
 		}
+	}
+
+	private void neighboursBehaviour() {
+		visited[x][y]++;
+		
+		if(myWorld.get(x, y) == Square.Type.DIRTY)
+			currAction = Action.Type.SUCK;
+		else {
+			scores = new int[myWorld.width][myWorld.length];
+			System.out.println("Scores: ");
+			for (int i = 0; i < myWorld.width; i++) {
+				for (int j = 0; j < myWorld.length; j++) {
+					scores[i][j] = 9 - cleanNeighbours(i,j) - isBorder(i,j) - isCorner(i,j) + knownDirty(i,j) + isDirty(i,j) - isOstacle(i,j) -isVisited(i,j);
+					System.out.print(scores[i][j] + " ");
+				}
+				System.out.println();
+			}
+			System.out.println();
+
+			currAction = findBetterAction();
+		}
+	}
+
+	private int isVisited(int i, int j) {
+		return visited[i][j];
+	}
+
+	private int isDirty(int i, int j) {
+		if (myWorld.get(i, j) == Square.Type.DIRTY)
+			return 5;
+		return 0;
+	}
+
+	private int isOstacle(int i, int j) {
+		if(myWorld.get(i, j) == Square.Type.OBSTACLE)
+			return Integer.MAX_VALUE;
+		return 0;
+	}
+
+	private Type findBetterAction() {
+		int max = Integer.MIN_VALUE;
+
+		Action a = new Action(Action.Type.NOOP);
+
+		int i = x;
+		int j = y;
+
+		if (i > 0)
+			if (scores[i-1][j] >= max) {
+				max = scores[i-1][j];
+				a = new Action(Action.Type.NORTH);
+			}
+
+		if (i < myWorld.width-1) 
+			if (scores[i+1][j] >= max) {
+				max = scores[i+1][j];
+				a = new Action(Action.Type.SOUTH);
+			}
+
+		if (j > 0)
+			if (scores[i][j-1] >= max) {
+				max = scores[i][j-1];
+				a = new Action(Action.Type.WEST);
+			}
+
+		if (j < myWorld.length-1)
+			if (scores[i][j+1] >= max) {
+				max = scores[i][j+1];
+				a = new Action(Action.Type.EAST);
+			}
+
+		return a.type;
+	}
+
+	private int knownDirty(int i, int j) {
+		int count = 0;
+		if (myWorld.get(i, j) == Square.Type.DIRTY) count++;
+
+		if (i > 0 && j > 0)
+			if (myWorld.get(i-1, j-1) == Square.Type.DIRTY) count++;
+
+		if (i > 0)
+			if (myWorld.get(i-1, j) == Square.Type.DIRTY) count++;
+
+		if (i < myWorld.width-1) 
+			if (myWorld.get(i+1, j) == Square.Type.DIRTY) count++;
+
+		if (i < myWorld.width-1 && j < myWorld.length-1)
+			if (myWorld.get(i+1, j+1) == Square.Type.DIRTY) count++;
+
+		if (j > 0)
+			if (myWorld.get(i, j-1) == Square.Type.DIRTY) count++;
+
+		if (j < myWorld.length-1)
+			if (myWorld.get(i, j+1) == Square.Type.DIRTY) count++;
+
+		if (i > 0 && j < myWorld.length-1)
+			if (myWorld.get(i-1, j+1) == Square.Type.DIRTY) count++;
+
+		if (j > 0 && i < myWorld.width-1)
+			if (myWorld.get(i+1, j-1) == Square.Type.DIRTY) count++;
+
+		return count;
+	}
+
+	private int isCorner(int i, int j) {
+		int c = 0;
+		if ((i == 0 && j == 0) || 
+				(i == 0 && j == myWorld.length-1) ||
+				(i == myWorld.width-1 && j == 0) || 
+				(i == myWorld.width-1 && j == myWorld.length-1))
+			c = 2;
+		return c;
+	}
+
+	private int isBorder(int i, int j) {
+		int c = 0;
+		if (i == 0 || i == myWorld.width-1 || j == 0 || j == myWorld.length-1)
+			c = 3;
+		return c;
+	}
+
+	private int cleanNeighbours(int i, int j) {
+		int count = 0;
+		if (myWorld.get(i, j) == Square.Type.CLEAN) count++;
+
+		if (i > 0 && j > 0)
+			if (myWorld.get(i-1, j-1) == Square.Type.CLEAN) count++;
+
+		if (i > 0)
+			if (myWorld.get(i-1, j) == Square.Type.CLEAN) count++;
+
+		if (i < myWorld.width-1) 
+			if (myWorld.get(i+1, j) == Square.Type.CLEAN) count++;
+
+		if (i < myWorld.width-1 && j < myWorld.length-1)
+			if (myWorld.get(i+1, j+1) == Square.Type.CLEAN) count++;
+
+		if (j > 0)
+			if (myWorld.get(i, j-1) == Square.Type.CLEAN) count++;
+
+		if (j < myWorld.length-1)
+			if (myWorld.get(i, j+1) == Square.Type.CLEAN) count++;
+
+		if (i > 0 && j < myWorld.length-1)
+			if (myWorld.get(i-1, j+1) == Square.Type.CLEAN) count++;
+
+		if (j > 0 && i < myWorld.width-1)
+			if (myWorld.get(i+1, j-1) == Square.Type.CLEAN) count++;
+
+		return count;
 	}
 
 	private void calculateHC() {
@@ -146,9 +312,11 @@ public class Agent extends AbstractAgent {
 			if(dirtyCells.contains(removedVertex.get(i)))
 				dirtyCells.remove(removedVertex.get(i));
 		}
-		System.out.println("Walkable Graph");
-		System.out.println(walkableGraph);
+//		System.out.println("Walkable Graph");
+//		System.out.println(walkableGraph);
 
+//		new PopupGrafo().show(walkableGraph, myWorld.length);
+		
 		//		Calculate TSp Graph which contains only dirty cells and the home cell
 		tspGraph = new UndirectedWeightedGraph();
 
@@ -243,7 +411,7 @@ public class Agent extends AbstractAgent {
 			int j1 = Integer.parseInt(cellList.get(i).split("-")[1]);
 			int i2 = Integer.parseInt(cellList.get(i+1).split("-")[0]);
 			int j2 = Integer.parseInt(cellList.get(i+1).split("-")[1]);
-			
+
 			if(i1!=i2){
 				if(i1<i2)
 					calculatedAction.add(new Action(Action.Type.SOUTH));
@@ -319,12 +487,12 @@ public class Agent extends AbstractAgent {
 	}
 
 	/**
-     * Add the current action to the agent action list
-     * @return current action of the agent
-     */
-    public Action.Type action(){
-            actionList.add(new Action(currAction));
-            return currAction;
-    }
+	 * Add the current action to the agent action list
+	 * @return current action of the agent
+	 */
+	public Action.Type action(){
+		actionList.add(new Action(currAction));
+		return currAction;
+	}
 
 }
