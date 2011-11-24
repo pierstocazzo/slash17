@@ -44,6 +44,7 @@ public class Agent extends AbstractAgent {
 	int[][] visited;
 	private boolean visitedInitialized = false;
 	private boolean activeRoolback = false;
+	private boolean goHome = false;
 
 	public Agent(int x, int y, VisibilityType visType, int opBound){
 		super(x, y, visType, opBound);
@@ -115,6 +116,34 @@ public class Agent extends AbstractAgent {
 	private void neighboursBehaviour() {
 		visited[x][y]++;
 
+//		if(goHome){
+//			if(calculatedAction.isEmpty()){
+//				goalReached = true;
+//				return;
+//			}
+//			currAction = calculatedAction.remove(calculatedAction.size()-1).type;
+//			return;
+//		}
+//
+//		if(!RemainedDirtyCells()){
+//			goHome  = true;
+//			ArrayList<String> list = new ArrayList<String>();
+//			list.add(x+"-"+y);
+//			list.add("0-0");
+//			// Convert Tour Solution in Cells's list
+//			ArrayList<String> cellList = tourSolutionToCellList(list);
+//			cellList.add("0-0");
+//			
+//			System.out.println("Return to home");
+//			for (int i = 0; i < cellList.size(); i++) {
+//				System.out.println(cellList.get(i));
+//			}
+//			// Convert Cell's list in operations's list
+//			calculatedAction = cellListTOActions(cellList);
+//
+//			return;
+//		}
+
 		if(myWorld.get(x, y) == Square.Type.DIRTY)
 			currAction = Action.Type.SUCK;
 		else {
@@ -131,6 +160,59 @@ public class Agent extends AbstractAgent {
 
 			currAction = findBetterAction();
 		}
+	}
+
+	private boolean RemainedDirtyCells() {
+		ArrayList<String> dirtyCells = new ArrayList<String>();
+		ArrayList<String> removedVertex = new ArrayList<String>();
+
+		// Create walkable cells's graph
+		walkableGraph = new UndirectedWeightedGraph();
+		for (int i = 0; i < myWorld.length; i++)
+			for (int j = 0; j < myWorld.length; j++){
+				if(myWorld.get(i, j) != Square.Type.OBSTACLE){
+					if( i-1 >= 0 && myWorld.get(i-1, j) != Square.Type.OBSTACLE){
+						String v1 = i + "-" + j;
+						String v2 = (i-1) + "-" + j;
+						walkableGraph.addWeightedEdge(v1, v2, 1);
+					}
+					if( j-1 >= 0 && myWorld.get(i, j-1) != Square.Type.OBSTACLE){
+						String v1 = i + "-" + j;
+						String v2 = i + "-" + (j-1);
+						walkableGraph.addWeightedEdge(v1, v2, 1);
+					}
+				}
+				if(myWorld.get(i, j) == Square.Type.DIRTY)
+					dirtyCells.add(i + "-" + j);
+			}
+
+		//Remove unreachable cells from home
+		GraphPath<String, DefaultWeightedEdge> path = null;
+		for (int j = 1; j < dirtyCells.size(); j++) {
+			try{
+				System.out.println("Search Path "+dirtyCells.get(0) + "," +dirtyCells.get(j));
+				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, "0-0", dirtyCells.get(j)).getPath();
+				if(path == null){
+					removedVertex.add(dirtyCells.get(j));
+					System.out.println("Prepare Delete " + dirtyCells.get(j));
+				}
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+				removedVertex.add(dirtyCells.get(j));
+				System.out.println("Prepare Delete " + dirtyCells.get(j));
+			}
+		}
+		for (int i = 0; i < removedVertex.size(); i++){
+			if(walkableGraph.containsVertex(removedVertex.get(i)))
+				walkableGraph.removeVertex(removedVertex.get(i));
+			if(dirtyCells.contains(removedVertex.get(i)))
+				dirtyCells.remove(removedVertex.get(i));
+		}
+
+		if(dirtyCells.size() == 0)
+			return false;
+		return true;
 	}
 
 	private int isVisited(int i, int j) {
@@ -365,41 +447,7 @@ public class Agent extends AbstractAgent {
 		System.out.println("Size " + list.size());
 
 		// Convert Tour Solution in Cells's list
-		ArrayList<String> cellList = new ArrayList<String>();
-		for (int i = 0; i < list.size()-1; i++) {
-			if(cellList.isEmpty() || !cellList.get(cellList.size()-1).equals(list.get(i))){
-				cellList.add(list.get(i));
-				ArrayList<DefaultWeightedEdge> edgeList = 
-						new ArrayList<DefaultWeightedEdge>(
-								new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, list.get(i), list.get(i+1)).getPathEdgeList());
-				System.out.println(edgeList);
-				String curr = list.get(i);
-				for (int j = 0; j < edgeList.size()-1; j++) {
-					DefaultEdge edge = edgeList.get(j);
-					Field sourceRef  = null, targetRef = null;
-					try {
-						sourceRef = DefaultEdge.class.getSuperclass().getDeclaredField("source");
-						targetRef = DefaultEdge.class.getSuperclass().getDeclaredField("target");
-						sourceRef.setAccessible(true);
-						targetRef.setAccessible(true);
-						String source = (String) sourceRef.get(edge);
-						String target = (String) targetRef.get(edge);
-						//System.out.println("Source "+source);
-						//System.out.println("Target "+target);
-						if(source.equals(curr)){
-							curr = target;
-							cellList.add(target);
-						}
-						else{
-							curr = source;
-							cellList.add(source);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
+		ArrayList<String> cellList = tourSolutionToCellList(list);
 		cellList.add("0-0");
 
 		System.out.println("Cells's List");
@@ -408,6 +456,11 @@ public class Agent extends AbstractAgent {
 		}
 		System.out.println();
 		// Convert Cell's list in operations's list
+		calculatedAction = cellListTOActions(cellList);
+	}
+
+	private ArrayList<Action> cellListTOActions(ArrayList<String> cellList) {
+		ArrayList<Action> calculatedAction = new ArrayList<Action>();
 		for (int i = 0; i < cellList.size()-1; i++) {
 			int i1 = Integer.parseInt(cellList.get(i).split("-")[0]);
 			int j1 = Integer.parseInt(cellList.get(i).split("-")[1]);
@@ -427,6 +480,35 @@ public class Agent extends AbstractAgent {
 					calculatedAction.add(new Action(Action.Type.WEST));
 			}
 		}
+		return calculatedAction;
+	}
+
+	private ArrayList<String> tourSolutionToCellList(ArrayList<String> list) {
+		ArrayList<String> cellList = new ArrayList<String>();
+		for (int i = 0; i < list.size()-1; i++) {
+			if(cellList.isEmpty() || !cellList.get(cellList.size()-1).equals(list.get(i))){
+				cellList.add(list.get(i));
+				ArrayList<DefaultWeightedEdge> edgeList = 
+						new ArrayList<DefaultWeightedEdge>(
+								new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, list.get(i), list.get(i+1)).getPathEdgeList());
+				System.out.println(edgeList);
+				String curr = list.get(i);
+				for (int j = 0; j < edgeList.size()-1; j++) {
+					DefaultWeightedEdge edge = edgeList.get(j);
+					String source = walkableGraph.getEdgeSource(edge);
+					String target = walkableGraph.getEdgeTarget(edge);
+					if(source.equals(curr)){
+						curr = target;
+						cellList.add(target);
+					}
+					else{
+						curr = source;
+						cellList.add(source);
+					}
+				}
+			}
+		}
+		return cellList;
 	}
 
 	/**
