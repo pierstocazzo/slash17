@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import sound.Player;
+
 /**
  * 
  * @author Sal
@@ -28,6 +30,7 @@ public class PopupDado extends JDialog {
 	public PopupDado(String message) {
 		super();
 		
+		setAlwaysOnTop(true);
 		setModal(true);
 		ClassLoader cldr = this.getClass().getClassLoader();
 		java.net.URL url   = cldr.getResource("img/lancioDado.jpg");
@@ -54,6 +57,7 @@ public class PopupDado extends JDialog {
 		dado.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Player.play(Player.LANCIADADO);
 				GestoreTurni.instance().setDadoLanciato(true);
 				dispose();
 			}

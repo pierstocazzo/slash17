@@ -38,7 +38,8 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	int numeroGiocatori;
 	boolean inputAttivo = false;
 	KeyHandler handler;
-	protected boolean dadoEnabled = false;
+	boolean dadoEnabled = false;
+	boolean singlePlayer = false;
 
 	/** Creates new form PannelloPricipale */
 	public PannelloPricipale() {
@@ -52,6 +53,9 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			s = JOptionPane.showInputDialog(null, "Quanti giocatori? Inserisci un numero tra 2 e 5!");
 
 		numeroGiocatori = Integer.parseInt(s);
+		if (numeroGiocatori == 1) 
+			setSinglePlayer(true);
+		
 		giocatori = new Giocatore[numeroGiocatori];
 		GestioneCaselle g = new GestioneCaselle();
 		g.collega();
@@ -61,7 +65,7 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			int x = 866/2-15;
 			int y = 560/2-15;
 			
-			String nome = JOptionPane.showInputDialog(null, "Qual è il nome del giocatore " + (i + 1) + "?");
+			String nome = JOptionPane.showInputDialog(null, "Qual e' il nome del giocatore " + (i + 1) + "?");
 			giocatori[i] = new Giocatore(nome, centrale);
 			
 			switch (i) {
@@ -79,6 +83,11 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			case 4:
 				y = y + 30;
 				break;
+			}
+			
+			if (singlePlayer) {
+				x = 866/2-15;
+				y = 560/2-15;
 			}
 			
 			ClassLoader cldr = this.getClass().getClassLoader();
@@ -234,4 +243,12 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	private JEditorPaneConSfondo textEditorPunteggi;
 	private gui.PanelloTabellone panelloTabellone;
 	private JButton regolamento;
+
+	public boolean isSinglePlayer() {
+		return singlePlayer;
+	}
+
+	public void setSinglePlayer(boolean singlePlayer) {
+		this.singlePlayer = singlePlayer;
+	}
 }

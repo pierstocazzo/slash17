@@ -507,7 +507,7 @@
 		<XCOR>345</XCOR>
 	 <YCOR>50</YCOR>
 		<text>imprevisti</text>
-		<down>45</down>
+		<down>46</down>
 		<up>1</up>
                 <laterale></laterale>
 	</NodoCella>
@@ -574,7 +574,7 @@
 
 <NodoCella>
 	<id>54</id>
-	<XCOR>750</XCOR>
+	<XCOR>710</XCOR>
 	 <YCOR>255</YCOR>
 	<text>centoIndif</text>
 	<down>53</down>

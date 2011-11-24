@@ -5,19 +5,22 @@
 package gui;
 
 import java.awt.event.KeyEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import sound.Player;
+
 import logica.Casella;
 import logica.CasellaDomanda;
-import logica.CasellaImprevisti;
 import logica.CasellaIsola;
-import logica.CasellaJolly;
 import logica.CasellaStart;
 import logica.Domanda;
 import logica.FactoryDomande;
+import logica.FactoryImprevisti;
+import logica.FactoryJolly;
 import logica.Giocatore;
+import logica.Imprevisto;
+import logica.Jolly;
 
 /**
  * 
@@ -32,7 +35,7 @@ public class GestoreTurni extends Thread {
 	private PannelloPricipale p;
 	private static int tastoPremuto = -100;
 	boolean dadoLanciato;
-
+	
 	public static GestoreTurni instance() {
 		if (t == null) {
 			t = new GestoreTurni();
@@ -55,8 +58,6 @@ public class GestoreTurni extends Thread {
 
 	public void setTastoPremuto(int t) {
 		tastoPremuto = t;
-		if (tastoPremuto != -100) 
-			Monitor.instance().release();
 	}
 
 	public int getTastoPremuto() {
@@ -65,18 +66,24 @@ public class GestoreTurni extends Thread {
 
 	public void run() {
 		FactoryDomande.acquisizioneDomande();
+		FactoryImprevisti.acquisizioneImprevisti();
+		FactoryJolly.acquisizioneJolly();
 		corrente = 0;
 		giocatoreCorrente = giocatori[corrente];
-	
+		
+		/** startTime in secondi */
+		long startTime = System.currentTimeMillis()*1000;
+		long time = System.currentTimeMillis()*1000 - startTime;
 		/**
 		 * main loop
 		 * cicla finche' non vince qualcuno
 		 */
 		Giocatore vincitore;
 		while ((vincitore = vincitore()) == null) {
+			
 			if (giocatoreCorrente.possoLanciare()) {
 				/**
-				 *  se il giocatore corrente ha fatto meno di 3 lanci (o non ha sbagliato domande) può lanciare
+				 *  se il giocatore corrente ha fatto meno di 3 lanci (o non ha sbagliato domande) puï¿½ lanciare
 				 */
 				String message = giocatoreCorrente.getNome() + " e' il tuo turno!\n";
 	
@@ -182,32 +189,51 @@ public class GestoreTurni extends Thread {
 				}
 	
 				/**
-				 *  Azione in base alla casella in cui è andato a finire
+				 *  Azione in base alla casella in cui ï¿½ andato a finire
 				 */
 				switch (giocatoreCorrente.getCasella().getTipo()) {
 				case Casella.DOMANDA:
 					Domanda d = FactoryDomande.dammiDomanda();
 					PopupDomanda pop = new PopupDomanda(p, d, "img/sfondoDOMANDE.jpg");
 					if (pop.rispostaCorretta()) {
+						Player.play(Player.RISPOSTACORRETTA);
 						String mess = CasellaDomanda.AssegnaPunteggio(giocatoreCorrente);
 						JOptionPane.showMessageDialog(p, mess, "Risposta esatta!", JOptionPane.INFORMATION_MESSAGE, null);
 					} else {
-						JOptionPane.showMessageDialog(p, "Risposta errata! Passa il turno al prossimo giocatore.", "Risposta errata!",
+						Player.play(Player.RISPOSTAERRATA);
+						String mess = "";
+						if (p.isSinglePlayer())
+							mess = "Risposta errata!";
+						else 
+							mess = "Risposta errata! Passa il turno al prossimo giocatore.";
+						JOptionPane.showMessageDialog(p, mess, "Risposta errata!",
 								JOptionPane.ERROR_MESSAGE, null);
 						giocatoreCorrente.setNumLanci(3);
 					}
 					break;
 				case Casella.JOLLY:
-					String[] mess = CasellaJolly.jolly(giocatoreCorrente);
-					new PopupInformazione(mess, "Un bonus per te!", "img/sfondoJOLLY.jpg");
+					Player.play(Player.JOLLY);
+					Jolly j = FactoryJolly.dammiJolly();
+					if (j.isLancioExtra()) {
+						giocatoreCorrente.setNumLanci(giocatoreCorrente.getNumLanci()-1);
+					} else {
+						giocatoreCorrente.aggiorna(j.getRifiuto(), j.getQuantita());
+					}
+					new PopupInformazione(j.getTestoPiccolo(), j.getTestoGrande(), "Jolly!", "img/sfondoJOLLY.jpg");
 					break;
 				case Casella.IMPREVISTO:
-					String[] mess1 = CasellaImprevisti.imprevisti(giocatoreCorrente);
-					new PopupInformazione(mess1, "Ops...un imprevisto!", "img/sfondoIMPREVISTI.jpg");
+					Player.play(Player.IMPREVISTO);
+					Imprevisto i = FactoryImprevisti.dammiImprevisto();
+					if (i.isPassaTurno()) {
+						giocatoreCorrente.setNumLanci(3);
+					} else {
+						giocatoreCorrente.aggiorna(i.getRifiuto(), i.getQuantita());
+					}
+					new PopupInformazione(i.getTestoPiccolo(), i.getTestoGrande(), "Ops...un imprevisto!", "img/sfondoIMPREVISTI.jpg");
 					break;
 				case Casella.ISOLA:
-					String[] mess2 = {"", CasellaIsola.isola(giocatoreCorrente)};
-					new PopupInformazione(mess2, "Isola", "img/sfondoISOLA.jpg");
+					String mess2 = CasellaIsola.isola(giocatoreCorrente);
+					new PopupInformazione("", mess2, "Isola", "img/sfondoISOLA.jpg");
 					break;
 				case Casella.CENTRALE:
 					// non fare nulla..
@@ -215,30 +241,36 @@ public class GestoreTurni extends Thread {
 				default:
 					break;
 				}
+				p.aggiornaTabellone();
 				
 			} else { /* if giocatoreCorrente.possoLanciare() == false */
 				/**
-				 * Se ha fatto più di 3 lanci (o ha sbagliato una domanda) passa il turno al prossimo giocatore
+				 * Se ha fatto piï¿½ di 3 lanci (o ha sbagliato una domanda) passa il turno al prossimo giocatore
 				 */
 				giocatoreCorrente.setNumLanci(0);
 				giocatoreCorrente.setCasellaPrecedente(null);
 				giocatoreCorrente = giocatori[++corrente % giocatori.length];
 			}
 			p.aggiornaPunteggi();
+			if (p.isSinglePlayer()) 
+				time = System.currentTimeMillis()*1000 - startTime;
 		} /** fine while */
 		
 		/**
 		 * Vittoria
 		 */
-		new PopupVittoria(vincitore.getNome());
+		Player.play(Player.VITTORIA);
+		if (p.isSinglePlayer()) {
+			new PopupClassifica(vincitore, time);
+		} else {
+			new PopupVittoria(vincitore.getNome());
+		}
 		AcchiappaRifiuti.instance().restart();
 	}
 	
 	private void waitForInput() {
 		while (tastoPremuto == -100) {
 			try {
-//				p.requestFocusInWindow();
-//				p.requestFocus();
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -263,7 +295,6 @@ public class GestoreTurni extends Thread {
 
 	public synchronized void setDadoLanciato(boolean dadoLanciato) {
 		this.dadoLanciato = dadoLanciato;
-		if (dadoLanciato) Monitor.instance().release();
 	}
 
 	public PannelloPricipale getPannello() {
