@@ -110,18 +110,4 @@ public class PopupClassifica extends JDialog {
 		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
 		setVisible(true);
 	}
-
-	private void leggiClassifica() throws Exception {
-		InputStream in = getClass().getClassLoader().getResourceAsStream("text/classifica.txt");
-		BufferedReader r = new BufferedReader(new InputStreamReader(in));
-		
-		String line;
-		int count = 0;
-		while (null != (line = r.readLine()) && count < 10) {
-			String[] item = line.split(" ");
-			classifica.add(item);
-			count++;
-		}
-		r.close();
-	}
 }
