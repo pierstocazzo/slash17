@@ -8,6 +8,13 @@ package logica;
  */
 public class Giocatore {
 
+	public static final String ORGANICA = "organica";
+	public static final String PLASTICA = "plastica";
+	public static final String INDIFFERENZIATA = "indifferenziata";
+	public static final String VETRO = "vetro";
+	public static final String CARTA = "carta";
+	public static final String METALLO = "metallo";
+	
 	/**
 	 * E' la casella su cui � posto attualmente il Giocatore. Durante il gioco
 	 * cambia ad ogni turno del Giocatore.
@@ -84,6 +91,48 @@ public class Giocatore {
 		return lancio;
 	}
 
+	public void aggiorna(String rifiuto, int quantità) {
+		if (rifiuto.equalsIgnoreCase(ORGANICA)) {
+			punt_organica += quantità;
+			if (punt_organica < 0) 
+				punt_organica = 0;
+			if (punt_organica > 150)
+				punt_organica = 150;
+		} else if (rifiuto.equalsIgnoreCase(PLASTICA)) {
+			punt_plastica += quantità;
+			if (punt_plastica < 0) 
+				punt_plastica = 0;
+			if (punt_plastica > 150)
+				punt_plastica = 150;
+		} else if (rifiuto.equalsIgnoreCase(METALLO)) {
+			punt_metallo += quantità;
+			if (punt_metallo < 0) 
+				punt_metallo = 0;
+			if (punt_metallo > 150)
+				punt_metallo = 150;
+		} else if (rifiuto.equalsIgnoreCase(CARTA)) {
+			punt_carta += quantità;
+			if (punt_carta < 0) 
+				punt_carta = 0;
+			if (punt_carta > 150)
+				punt_carta = 150;
+		} else if (rifiuto.equalsIgnoreCase(VETRO)) {
+			punt_vetro += quantità;
+			if (punt_vetro < 0) 
+				punt_vetro = 0;
+			if (punt_vetro > 150)
+				punt_vetro = 150;
+		} else if (rifiuto.equalsIgnoreCase(INDIFFERENZIATA)) {
+			punt_indifferenziata += quantità;
+			if (punt_indifferenziata < 0) 
+				punt_indifferenziata = 0;
+			if (punt_indifferenziata > 150)
+				punt_indifferenziata = 150;
+		} else {
+			System.out.println("Fuck " + rifiuto + " " + quantità);
+		}
+	}
+	
 	/*
 	 * Funzione di uscita nel caso in cui si deve passare il turno se si �
 	 * raggiunto il numero di lanci a disposizione, oppure, nel caso in cui si

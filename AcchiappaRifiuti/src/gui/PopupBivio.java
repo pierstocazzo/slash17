@@ -35,6 +35,7 @@ public class PopupBivio extends JDialog {
 		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setModal(true);
+		setAlwaysOnTop(true);
 		
 		addKeyListener(new KeyAdapter() {
 

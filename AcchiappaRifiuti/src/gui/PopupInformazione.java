@@ -25,13 +25,13 @@ public class PopupInformazione extends JDialog {
 	String text;
 	String img;
 	
-	public PopupInformazione(String[] t, String title, final String sfondo) {
+	public PopupInformazione(String testoPiccolo, String testoGrande, String title, final String sfondo) {
 		super();
 		this.text = 
 	        "<html>" +
 			"<body>" +
-			"<p align=\"center\"><font size=\"3\" color=\"white\">" + t[0] + "</font></p>" +
-			"<p align=\"center\"><font size=\"6\" color=\"white\">" + t[1] + "</font></p>" +
+			"<p align=\"center\"><font size=\"3\" color=\"white\">" + testoPiccolo + "</font></p>" +
+			"<p align=\"center\"><font size=\"6\" color=\"white\">" + testoGrande + "</font></p>" +
 			"</p>" +
 			"</body>" +
 			"</html>";
@@ -39,6 +39,7 @@ public class PopupInformazione extends JDialog {
 		this.title = title;
 
 		setModal(true);
+		setAlwaysOnTop(true);
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
