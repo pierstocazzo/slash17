@@ -35,18 +35,20 @@ public class Agent extends AbstractAgent {
 	private UndirectedWeightedGraph walkableGraph;
 	private Floor myWorld;
 	private UndirectedWeightedGraph tspGraph;
-
+	LinkedList<Action.Type> correctActionsList;
 	public ArrayList<Action> calculatedAction;
+	int previ = 0, prevj = 0;
 
 	/** matrice dei punteggi delle celle (in visibilità neighbours) */
 	int[][] scores;
 	int[][] visited;
 	private boolean visitedInitialized = false;
+	private boolean activeRoolback = false;
 
 	public Agent(int x, int y, VisibilityType visType, int opBound){
 		super(x, y, visType, opBound);
 		calculatedAction = new ArrayList<Action>();
-		
+		correctActionsList = new LinkedList<Action.Type>();
 	}
 
 	/**
@@ -71,9 +73,9 @@ public class Agent extends AbstractAgent {
 			for (int j = 0; j < myWorld.width; j++) {
 				if(perception.floor.get(i, j) != Square.Type.UNKNOWN)
 					myWorld.set(i, j, perception.floor.get(i, j));
-				System.out.print(myWorld.get(i, j));
+				//				System.out.print(myWorld.get(i, j));
 			}
-			System.out.println();
+			//			System.out.println();
 		}
 		if(!visitedInitialized ){
 			visitedInitialized = true;
@@ -89,13 +91,13 @@ public class Agent extends AbstractAgent {
 	 */
 	public void update(){
 		switch (visType) {
-		case MY_CELL:stupidBehaviour();break;
+		case MY_CELL:mycellBehaviour();break;
 		case MY_NEIGHBOURS:;neighboursBehaviour();break;
-		case ALL:intelligentBehaviour();break;
+		case ALL:allBehaviour();break;
 		}
 	}
 
-	private void intelligentBehaviour() {
+	private void allBehaviour() {
 		if(actionList.size() == 0)
 			calculateHC();
 		else{
@@ -112,7 +114,7 @@ public class Agent extends AbstractAgent {
 
 	private void neighboursBehaviour() {
 		visited[x][y]++;
-		
+
 		if(myWorld.get(x, y) == Square.Type.DIRTY)
 			currAction = Action.Type.SUCK;
 		else {
@@ -312,11 +314,11 @@ public class Agent extends AbstractAgent {
 			if(dirtyCells.contains(removedVertex.get(i)))
 				dirtyCells.remove(removedVertex.get(i));
 		}
-//		System.out.println("Walkable Graph");
-//		System.out.println(walkableGraph);
+		//		System.out.println("Walkable Graph");
+		//		System.out.println(walkableGraph);
 
-//		new PopupGrafo().show(walkableGraph, myWorld.length);
-		
+		//		new PopupGrafo().show(walkableGraph, myWorld.length);
+
 		//		Calculate TSp Graph which contains only dirty cells and the home cell
 		tspGraph = new UndirectedWeightedGraph();
 
@@ -428,20 +430,150 @@ public class Agent extends AbstractAgent {
 	}
 
 	/**
-	 * Suck the tile if is dirty and moves around randomly if it is clean
 	 */
-	public void stupidBehaviour(){
-		System.out.println("MY CELL " + x + "," + y + ": " + perception.floor.get(x,y));
-		if(perception.floor.get(x,y) == Square.Type.DIRTY)
+	public void mycellBehaviour(){
+
+		//		System.out.println("MY CELL " + x + "," + y + ": " + perception.floor.get(x,y));
+		if(perception.floor.get(x,y) == Square.Type.DIRTY){
+			correctActionsList.addLast(currAction);
 			currAction = Action.Type.SUCK;
+		}
 		else{
-			LinkedList<Action.Type> list = new LinkedList<Action.Type>();
-			list.add(Action.Type.NORTH);
-			list.add(Action.Type.SOUTH);
-			list.add(Action.Type.EAST);
-			list.add(Action.Type.WEST);
-			Collections.shuffle(list);
-			currAction = list.getFirst();
+			//			System.out.println("Position cleaned");
+			// verifica posizione cambiata rispetto a prima
+			if (positionChanged()) {
+				//				System.out.println("Position changed");
+				// se cambiata aggiorna posizione e listaAzioni
+				if(!activeRoolback && currAction != Type.SUCK)
+					correctActionsList.addLast(currAction);
+
+				activeRoolback = false;
+				refreshPosition();
+			} else {
+				//				System.out.println("Position not changed");
+				// aggiungi l'ostacolo nella mia matrice
+				addObstacleToMyKnownWorld();
+			}
+			// while ( canadd == false ) next
+			currAction = Type.NORTH;
+			while (!canDoIt(currAction)) {
+				//				System.out.println("Curr action while "+currAction);
+				currAction = next();
+				//				System.out.println("Curr action after next "+currAction);
+			}
+			// se next == noop fai l'inverso dell'ultima azione
+			if (currAction == Action.Type.NOOP)
+				backTrack();
+			System.out.println("Actions corrected");
+			for (Iterator iterator = correctActionsList.iterator(); iterator.hasNext();)
+				System.out.println((Action.Type) iterator.next());
+			System.out.println();
+		}
+	}
+
+	private void addObstacleToMyKnownWorld() {
+		System.out.println("Curr action "+currAction);
+		switch (currAction) {
+		case NORTH:
+			myWorld.set(x-1, y, Square.Type.OBSTACLE);
+			break;
+		case EAST:
+			myWorld.set(x, y+1, Square.Type.OBSTACLE);
+			break;
+		case SOUTH:
+			myWorld.set(x+1, y, Square.Type.OBSTACLE);
+			break;
+		case WEST:
+			myWorld.set(x, y-1, Square.Type.OBSTACLE);
+			break;
+		}
+	}
+
+	private void backTrack() {
+		activeRoolback = true;
+		if(correctActionsList.isEmpty()){
+			goalReached = true;
+			currAction = Type.NOOP;
+			return;
+		}
+		currAction = inverse(correctActionsList.removeLast());
+	}
+
+	private boolean positionChanged() {
+		if (previ != x || prevj != y) 
+			return true;
+		return false;
+	}
+
+	private void refreshPosition() {
+		previ = x;
+		prevj = y;
+		visited[x][y] = 1;
+	}
+
+	private boolean canDoIt(Action.Type a) {
+		switch (a) {
+		case NORTH:
+			if (x == 0)
+				return false;
+			if (myWorld.get(x-1, y) == Square.Type.OBSTACLE)
+				return false;
+			if (visited[x-1][y] > 0)
+				return false;
+			return true;
+		case EAST:
+			if (y == myWorld.length-1)
+				return false;
+			if (myWorld.get(x, y+1) == Square.Type.OBSTACLE)
+				return false;
+			if (visited[x][y+1] > 0)
+				return false;
+			return true;
+		case SOUTH:
+			if (x == myWorld.width-1)
+				return false;
+			if (myWorld.get(x+1, y) == Square.Type.OBSTACLE)
+				return false;
+			if (visited[x+1][y] > 0)
+				return false;
+			return true;
+		case WEST:
+			if (y == 0)
+				return false;
+			if (myWorld.get(x, y-1) == Square.Type.OBSTACLE)
+				return false;
+			if (visited[x][y-1] > 0)
+				return false;
+			return true;
+		}
+		return true;
+	}
+
+	private Action.Type inverse(Action.Type act) {
+		switch (act) {
+		case NORTH:
+			return Type.SOUTH;
+		case EAST:
+			return Type.WEST;
+		case SOUTH:
+			return Type.NORTH;
+		case WEST:
+			return Type.EAST;
+		default:
+			return Type.NOOP;
+		}
+	}
+
+	private Action.Type next() {
+		switch (currAction) {
+		case NORTH:
+			return Type.EAST;
+		case EAST:
+			return Type.SOUTH;
+		case SOUTH:
+			return Type.WEST;
+		default:
+			return Type.NOOP;
 		}
 	}
 

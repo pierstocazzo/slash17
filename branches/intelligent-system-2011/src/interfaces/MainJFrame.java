@@ -106,7 +106,7 @@ public class MainJFrame extends javax.swing.JFrame {
 		}
 
 		int size = 6;
-		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 200);
+		agent = new Agent(0, 0, Agent.VisibilityType.MY_CELL, 200);
 		env = new Environment(size, size, agent, Environment.Type.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
@@ -123,18 +123,18 @@ public class MainJFrame extends javax.swing.JFrame {
      * the max number of step (opBound) is not reached
      */
 	public void mainLoop(){
-		env.show();
+//		env.show();
 		while(!agent.goalReached() && !stopped){
 			env.update();
-			env.show();
+//			env.show();
 			gridPanel.update();
 			settingsPanel.update();
-			System.out.println("-------------------");
+//			System.out.println("-------------------");
 		}
 		stopped = true;
 		settingsPanel.update();
 		System.out.println("Num actions: " + agent.actionList.size());
-		agent.showActions();
+//		agent.showActions();
 		System.out.println("Performance: " + env.performanceMeasure() );
 		System.out.println("-- End --");
 	}
@@ -143,18 +143,18 @@ public class MainJFrame extends javax.swing.JFrame {
      * Execute only a loop
      */
 	public void mainLoopOnes(){
-		env.show();
+//		env.show();
 		if(!agent.goalReached()){
 			env.update();
-			env.show();
+//			env.show();
 			gridPanel.update();
 			settingsPanel.update();
-			System.out.println("-------------------");
+//			System.out.println("-------------------");
 		}
-		System.out.println("Num actions: " + agent.actionList.size());
-		agent.showActions();
-		System.out.println("Performance: " + env.performanceMeasure() );
-		System.out.println("-- End --");
+//		System.out.println("Num actions: " + agent.actionList.size());
+//		agent.showActions();
+//		System.out.println("Performance: " + env.performanceMeasure() );
+//		System.out.println("-- End --");
 	}
 	/**
 	 * Create a new configuration according of environment
