@@ -105,8 +105,8 @@ public class MainJFrame extends javax.swing.JFrame {
 			}
 		}
 
-		int size = 3;
-		agent = new Agent(0, 0, Agent.VisibilityType.ALL, 20);
+		int size = 6;
+		agent = new Agent(0, 0, Agent.VisibilityType.MY_NEIGHBOURS, 200);
 		env = new Environment(size, size, agent, Environment.Type.STATIC);
 		
 		settingsPanel = new SettingsPanel(this);
