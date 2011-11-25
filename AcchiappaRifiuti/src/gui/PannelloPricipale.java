@@ -30,6 +30,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import sound.Player;
+
 import logica.Casella;
 import logica.GestioneCaselle;
 import logica.Giocatore;
@@ -253,6 +255,7 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Player.play(Player.LANCIADADO);
 				GestoreTurni.instance().setDadoLanciato(true);
 			}
 		});
