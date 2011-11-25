@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * PanelloTabellone.java
- *
- * Created on 17-nov-2011, 18.43.56
- */
 package gui;
 
 import java.awt.Font;
@@ -31,14 +21,14 @@ public class PannelloTabellone extends javax.swing.JPanel {
 	JLabel imageLabel;
 	ArrayList<Pedina> pedine;
 	
-	public static final String DEFAULT = "img/mappe/Tabellone.png";
-	public static final String CENTRALE = "img/mappe/CENTRALE.png";
-	public static final String NE = "img/mappe/NE.png";
-	public static final String E = "img/mappe/E.png";
-	public static final String SE = "img/mappe/SE.png";
-	public static final String SO = "img/mappe/SO.png";
-	public static final String O = "img/mappe/O.png";
-	public static final String NO = "img/mappe/NO.png";
+	public static final String DEFAULT = "img/mappe/Tabellone.jpg";
+	public static final String CENTRALE = "img/mappe/tabelloneCENTRO.jpg";
+	public static final String NE = "img/mappe/tabelloneNE.jpg";
+	public static final String E = "img/mappe/tabelloneE.jpg";
+	public static final String SE = "img/mappe/tabelloneSE.jpg";
+	public static final String SO = "img/mappe/tabelloneSO.jpg";
+	public static final String O = "img/mappe/tabelloneO.jpg";
+	public static final String NO = "img/mappe/tabelloneNO.jpg";
 
 	/** Creates new form PanelloTabellone */
 	public PannelloTabellone() {

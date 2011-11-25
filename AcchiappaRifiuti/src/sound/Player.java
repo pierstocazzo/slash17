@@ -16,7 +16,7 @@ public class Player extends Thread {
  
     public static final String VITTORIA = "sound/vittoria.wav";
     public static final String MOVIMENTO = "sound/pedina.wav";
-    public static final String LANCIADADO = "sound/dice.wav";
+    public static final String LANCIADADO = "sound/dado.wav";
     public static final String RISPOSTACORRETTA = "sound/corretta_jolly.wav";
     public static final String RISPOSTAERRATA = "sound/errata_imprevisto.wav";
     public static final String IMPREVISTO = "sound/errata_imprevisto.wav";
