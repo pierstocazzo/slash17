@@ -8,7 +8,6 @@ import java.util.Enumeration;
 import javax.swing.*;
 
 import logica.Domanda;
-import logica.Risposta;
 
 public class PopupDomanda extends JDialog {
 	private static final long serialVersionUID = -8988072219139810648L;
@@ -23,17 +22,6 @@ public class PopupDomanda extends JDialog {
 	String img;
 	
 	JPanel p;
-	
-	public static void main(String[] args) {
-		Domanda d = new Domanda("Come ti chiami?");
-		d.setA(new Risposta("non lo so", 1, false));
-		d.setB(new Risposta("panunziopanunzi opanunziopan unziopanunziop anunziopanunzio", 2, false));
-		d.setC(new Risposta("Caio", 3, true));
-		d.setD(new Risposta("ohoho", 4, false));
-		d.setCorretta(new Risposta("Caio", 3, true));
-		PopupDomanda p = new PopupDomanda(null, d, "img/sfondoDOMANDE.jpg");
-		p.rispostaCorretta();
-	}
 	
 	public boolean rispostaCorretta() {
 		display();
@@ -50,7 +38,7 @@ public class PopupDomanda extends JDialog {
 	}
 	
 	public PopupDomanda(JPanel p, Domanda dom, final String sfondo) {
-		super();
+		super((Frame) AcchiappaRifiuti.instance().getFramePrincipale());
 		text =  
 	        "<html>" +
 			"<body>" +
@@ -151,7 +139,7 @@ public class PopupDomanda extends JDialog {
 		
         pack();
         
-		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getPannello());
 		setVisible(true);
 	}
 }

@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,7 +27,7 @@ public class PopupInformazione extends JDialog {
 	String img;
 	
 	public PopupInformazione(String testoPiccolo, String testoGrande, String title, final String sfondo) {
-		super();
+		super((Frame) AcchiappaRifiuti.instance().getFramePrincipale());
 		this.text = 
 	        "<html>" +
 			"<body>" +
@@ -86,7 +87,7 @@ public class PopupInformazione extends JDialog {
 		
         pack();
         
-		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
+        setLocationRelativeTo(AcchiappaRifiuti.instance().getPannello());
 		setVisible(true);
 	}
 }

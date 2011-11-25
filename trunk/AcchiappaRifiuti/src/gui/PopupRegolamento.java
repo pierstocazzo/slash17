@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -22,7 +23,7 @@ public class PopupRegolamento extends JDialog {
 	String img;
 	
 	public PopupRegolamento() {
-		super();
+		super((Frame) AcchiappaRifiuti.instance().getFramePrincipale());
 		this.img = "img/Regolamento.jpg";
 		this.title = "Regole del gioco";
 
@@ -64,7 +65,7 @@ public class PopupRegolamento extends JDialog {
 		
         pack();
         
-		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
+        setLocationRelativeTo(AcchiappaRifiuti.instance().getPannello());
 		setVisible(true);
 	}
 }
