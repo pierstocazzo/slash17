@@ -13,6 +13,7 @@ public class JEditorPaneConSfondo extends JEditorPane {
 	private static final long serialVersionUID = 7844831466551818402L;
 	
 	private Image sfondoImg;
+	private int width, height;
 
     public JEditorPaneConSfondo(Image sfondoImg) {
     	super(new HTMLEditorKit().getContentType(), null);
@@ -23,11 +24,20 @@ public class JEditorPaneConSfondo extends JEditorPane {
         ((HTMLDocument) this.getDocument()).getStyleSheet().addRule(bodyRule);
     	
     	this.sfondoImg = sfondoImg;
+    	
+    	this.width = sfondoImg.getWidth(null);
+    	this.height = sfondoImg.getHeight(null);
+    	
     	setOpaque(false);
 	}
+    
+    public void setDimension(int width, int height) {
+    	this.width = width;
+    	this.height = height;
+    }
 
 	protected void paintComponent(Graphics g) {
-        g.drawImage(sfondoImg, 0, 0, this);
+        g.drawImage(sfondoImg, 0, 0, width, height ,this);
         super.paintComponent(g);
     }
 
