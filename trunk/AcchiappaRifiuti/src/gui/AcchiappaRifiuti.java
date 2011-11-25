@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class AcchiappaRifiuti extends JApplet {
@@ -54,6 +55,7 @@ public class AcchiappaRifiuti extends JApplet {
             });
         } catch (Exception e) { 
             System.err.println("createGUI didn't complete successfully");
+            e.printStackTrace();
         }
     }
     
@@ -64,7 +66,8 @@ public class AcchiappaRifiuti extends JApplet {
     private void createGUI() {
         //Create and set up the content pane.
         gioco = new PannelloPricipale();
-        setContentPane(gioco);     
+        setContentPane(gioco);  
+        repaint();
 		Dimension d = new Dimension(1150, 690);
 		this.setMinimumSize(d);
 		this.setMaximumSize(d);
@@ -80,5 +83,15 @@ public class AcchiappaRifiuti extends JApplet {
 
 	public JComponent getPannello() {
 		return gioco;
+	}
+
+	public void finished() {
+		int r = JOptionPane.showConfirmDialog(rootPane, "Vuoi fare un'altra partita?");
+		if (r == JOptionPane.YES_OPTION) {
+			System.out.println("restart");
+			init();
+		} else {
+			// si dovrebbe chiudere...
+		}
 	}
 }

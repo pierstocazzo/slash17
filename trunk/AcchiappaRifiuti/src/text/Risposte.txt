@@ -100,7 +100,7 @@ a0024_f_Devono impegnarsi tutti allo stesso modo
 a0024_f_null
 a0025_f_Dal petrolio 
 a0025_t_Dai vegetali 
-a0025_f_Da una miscela di silice, c calcare e acqua 
+a0025_f_Da una miscela di silice, calcare e acqua 
 a0025_f_null
 a0026_t_Qualsiasi condizione che superi il limite di tolleranza in quell'ambiente 
 a0026_f_La crescita limitata delle piante in un ecosistema acquatico 

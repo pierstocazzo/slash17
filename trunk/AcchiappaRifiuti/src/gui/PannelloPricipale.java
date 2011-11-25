@@ -49,8 +49,8 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		
 		String s = JOptionPane.showInputDialog(null, "Quanti giocatori?");
 
-		while (!Pattern.matches("\\d+", s) || Integer.parseInt(s) < 2 || Integer.parseInt(s) > 5)
-			s = JOptionPane.showInputDialog(null, "Quanti giocatori? Inserisci un numero tra 2 e 5!");
+		while (!Pattern.matches("\\d+", s) || Integer.parseInt(s) < 1 || Integer.parseInt(s) > 5)
+			s = JOptionPane.showInputDialog(null, "Quanti giocatori? Inserisci un numero tra 1 e 5!");
 
 		numeroGiocatori = Integer.parseInt(s);
 		if (numeroGiocatori == 1) 
@@ -66,7 +66,6 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			int y = 560/2-15;
 			
 			String nome = JOptionPane.showInputDialog(null, "Qual e' il nome del giocatore " + (i + 1) + "?");
-			giocatori[i] = new Giocatore(nome, centrale);
 			
 			switch (i) {
 			case 0:
@@ -84,7 +83,6 @@ public class PannelloPricipale extends javax.swing.JPanel {
 				y = y + 30;
 				break;
 			}
-			
 			if (singlePlayer) {
 				x = 866/2-15;
 				y = 560/2-15;
@@ -93,7 +91,8 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			ClassLoader cldr = this.getClass().getClassLoader();
 			Pedina p = new Pedina(new ImageIcon(cldr.getResource("img/pedine/" + (i + 1) + ".png")).getImage(), x, y);
 
-			giocatori[i].setPedina(p);
+			giocatori[i] = new Giocatore(nome, centrale, p);
+			
 			panelloTabellone.addpedina(p);
 		}
 		giocatoreCorrente = 0;
@@ -139,7 +138,7 @@ public class PannelloPricipale extends javax.swing.JPanel {
 					"<font size='4'>" +
 					"<tr><td>Carta:</td><td>" + giocatori[i].getPunt_carta() + "</td></tr>" + 
 					"<tr><td>Indifferenziato:</td><td>" + giocatori[i].getPunt_indifferenziata() + "</td></tr>" + 
-					"<tr><td>Metallo:</td><td>" + giocatori[i].getPunt_indifferenziata() + "</td></tr>" +
+					"<tr><td>Metallo:</td><td>" + giocatori[i].getPunt_metallo() + "</td></tr>" +
 					"<tr><td>Vetro:</td><td>" + giocatori[i].getPunt_vetro() + "</td></tr>" +
 					"<tr><td>Plastica:</td><td>" + giocatori[i].getPunt_plastica() + "</td></tr>" +
 					"<tr><td>Organica:</td><td>" + giocatori[i].getPunt_organica() + "</td></tr>" +

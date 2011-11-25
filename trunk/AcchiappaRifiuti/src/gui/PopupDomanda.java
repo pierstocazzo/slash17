@@ -75,7 +75,7 @@ public class PopupDomanda extends JDialog {
 
 		setDomanda(dom);
 		setModal(true);
-		setAlwaysOnTop(true);
+//		setAlwaysOnTop(true);
 		group = new ButtonGroup();
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
