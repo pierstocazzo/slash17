@@ -23,20 +23,47 @@ public class PopupVittoria extends JDialog {
 	JPanel pane;
 	
 	String text;
-	Image img;
+	Image sfondo;
 	
-	public static void main(String[] args) {
-		new PopupVittoria("Antonio");
-	}
+	/* 10 minuti */
+	int tempoOro = 600;
+	/* 15 minuti */
+	int tempoArgento = 900;
+	/* 20 minuti */
+	int tempoBronzo = 1200;
 	
-	public PopupVittoria(String giocatore) {
+	public PopupVittoria(String giocatore, long time) {
 		super();
+		
+		int minuti = (int) time / 60;
+		int secondi = (int) time % 60;
+		
+		String img;
+		if (time == -1) {
+			img = "img/vittoria.jpg";
+		} else if (time < tempoOro) {
+			img = "img/oro.jpg";
+		} else if (time < tempoArgento) {
+			img = "img/argento.jpg";
+		} else if (time < tempoBronzo) {
+			img = "img/bronzo.jpg";
+		} else {
+			img = "img/nc.jpg";
+		}
+		
 		this.text = 
 	        "<html>" +
 			"<body>" +
-			"<font size=\"5\" color=\"white\">" +
-			"<p align=\"center\">Complimenti " + giocatore + " hai VINTO!</p>" +
+			"<p align=\"center\">" +
+			(time != -1 ? 
+					"<font size=\"4\" color=\"white\">" +
+					giocatore + ", hai vinto in "+minuti + "min e " + secondi + "s!" 
+					: 
+					"<font size=\"5\" color=\"white\">" +
+					"<p align=\"center\">" +
+					 "Complimenti " + giocatore + " hai VINTO!") +
 			"</font>" +
+			"</p>" +
 			"</body>" +
 			"</html>";
 
@@ -52,16 +79,20 @@ public class PopupVittoria extends JDialog {
 		});
 		
 		ClassLoader cldr = this.getClass().getClassLoader();
-		java.net.URL url   = cldr.getResource("img/vittoria.jpg");
-		img = new ImageIcon(url).getImage();
+		java.net.URL url   = cldr.getResource(img);
+		sfondo = new ImageIcon(url).getImage();
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setContentPane(new PannelloSfondo(img));
+		setContentPane(new PannelloSfondo(sfondo));
 		
 		Container content = getContentPane();
 		content.setLayout(new BorderLayout());
 		
 		JLabel empty = new JLabel();
-		Dimension d = new Dimension(img.getWidth(null)+15, 15);
+		Dimension d;
+		if (time == -1) 
+			d = new Dimension(sfondo.getWidth(null)+15, 15);
+		else 
+			d = new Dimension(sfondo.getWidth(null)+15, -15);
 		empty.setPreferredSize(d);
 		empty.setSize(d);
 		empty.setMinimumSize(d);
@@ -77,7 +108,7 @@ public class PopupVittoria extends JDialog {
 		add(pane, BorderLayout.SOUTH);
 
 		pane.add(btnOk);
-		Dimension d1 = new Dimension(img.getWidth(null)+15, img.getHeight(null)+70);
+		Dimension d1 = new Dimension(sfondo.getWidth(null)+15, sfondo.getHeight(null)+70);
 		setPreferredSize(d1);
 		setSize(d1);
 		setMinimumSize(d1);

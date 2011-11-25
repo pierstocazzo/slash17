@@ -14,14 +14,15 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  
 public class Player extends Thread { 
  
-    public static final String VITTORIA = "sound/dice.wav";
-    public static final String MOVIMENTO = "sound/dice.wav";
+    public static final String VITTORIA = "sound/vittoria.wav";
+    public static final String MOVIMENTO = "sound/pedina.wav";
     public static final String LANCIADADO = "sound/dice.wav";
-    public static final String RISPOSTACORRETTA = "sound/dice.wav";
-    public static final String RISPOSTAERRATA = "sound/dice.wav";
-    public static final String IMPREVISTO = "sound/dice.wav";
-    public static final String JOLLY = "sound/dice.wav";
-    public static final String ISOLA = "sound/dice.wav";
+    public static final String RISPOSTACORRETTA = "sound/corretta_jolly.wav";
+    public static final String RISPOSTAERRATA = "sound/errata_imprevisto.wav";
+    public static final String IMPREVISTO = "sound/errata_imprevisto.wav";
+    public static final String JOLLY = "sound/corretta_jolly.wav";
+    public static final String DOMANDA = "sound/domanda.wav";
+//    public static final String ISOLA = "sound/dice.wav";
     
 	private String filename;
  

@@ -1,25 +1,33 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 public class AcchiappaRifiuti extends JApplet {
 	
 	private static final long serialVersionUID = 3779225454776476552L;
 	static PannelloPricipale gioco;
-	static Container rootPane;
+	static JFrame rootPane;
+	JButton buttonGioca;
 	
 	static AcchiappaRifiuti instance;
 	
 	public static void main(String[] args) {
 		/** main usato per lanciare AcchiappaRifiuti come applicazione desktop */
-		instance().gioca();
+		JFrame f = new JFrame("L'Acchiappa Rifiuti!");
+		instance().createGUI(f);
+		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		f.setVisible(true);
 	}
 	
 	public static AcchiappaRifiuti instance() {
@@ -28,70 +36,49 @@ public class AcchiappaRifiuti extends JApplet {
 		return instance;
 	}
 	
-	public void gioca() {
-		gioco = new PannelloPricipale();
-		JFrame framePrincipale = new JFrame("L'Acchiappa Rifiuti!");
-		framePrincipale.add(gioco);
-		framePrincipale.setResizable(false);
-			
-		framePrincipale.pack();
-		framePrincipale.setVisible(true);
-		framePrincipale.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		rootPane = framePrincipale;
-	}
-	
 	public Container getFramePrincipale() {
 		return rootPane;
 	}
 	
+	/** chiamato quando l'applicazione viene lanciata come applet */
     public void init() {
-        //Execute a job on the event-dispatching thread; creating this applet's GUI.
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {
-                    createGUI();
-                }
-            });
-        } catch (Exception e) { 
-            System.err.println("createGUI didn't complete successfully");
-            e.printStackTrace();
-        }
+    	instance = this;
+    	createGUI(this);
     }
     
-    /**
-     * Create the GUI. For thread safety, this method should
-     * be invoked from the event-dispatching thread.
-     */
-    private void createGUI() {
-        //Create and set up the content pane.
-        gioco = new PannelloPricipale();
-        setContentPane(gioco);  
-        repaint();
-		Dimension d = new Dimension(1150, 690);
-		this.setMinimumSize(d);
-		this.setMaximumSize(d);
-		this.setPreferredSize(d);
-		this.setSize(d);
-		
-		rootPane = getRootPane();
+    private void createGUI(Container c) {
+    	c.setLayout(new BorderLayout());
+    	Image sfondo = new ImageIcon(getClass().getClassLoader().getResource("img/sfondoApplet.jpg")).getImage();
+    	c.add(new PannelloSfondo(sfondo), BorderLayout.CENTER);
+
+    	buttonGioca = new JButton("Gioca!");
+    	buttonGioca.setOpaque(false);
+    	buttonGioca.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			buttonGioca.setEnabled(false);
+    			rootPane = new FramePrincipale();
+    		}
+    	});
+    	c.add(buttonGioca, BorderLayout.SOUTH);
+    	
+    	Dimension d = new Dimension(sfondo.getWidth(null), sfondo.getHeight(null)+30);
+    	c.setMinimumSize(d);
+    	c.setMaximumSize(d);
+    	c.setPreferredSize(d);
+    	c.setSize(d);
     } 
     
-    public void restart() {
-    	instance.createGUI();
-    }
-
 	public JComponent getPannello() {
 		return gioco;
 	}
 
 	public void finished() {
-		int r = JOptionPane.showConfirmDialog(rootPane, "Vuoi fare un'altra partita?");
-		if (r == JOptionPane.YES_OPTION) {
-			System.out.println("restart");
-			init();
-		} else {
-			// si dovrebbe chiudere...
-		}
+		rootPane.dispose();
+		buttonGioca.setEnabled(true);
+	}
+	
+	public void setButtonGiocaEnabled(boolean b) {
+		buttonGioca.setEnabled(b);
 	}
 }
