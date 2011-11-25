@@ -35,7 +35,7 @@ public class Giocatore {
 	private int punt_indifferenziata;
 	private int punt_organica;
 
-	int punteggioIniziale = 150;
+	int punteggioIniziale = 0;
 	
 	/**
 	 * E' il nome del Giocatore
@@ -109,7 +109,6 @@ public class Giocatore {
 			if (punt_plastica > 150)
 				punt_plastica = 150;
 		} else if (rifiuto.equalsIgnoreCase(METALLO)) {
-			System.out.println("aggiungo " + quantita + " di metallo");
 			punt_metallo += quantita;
 			if (punt_metallo < 0) 
 				punt_metallo = 0;

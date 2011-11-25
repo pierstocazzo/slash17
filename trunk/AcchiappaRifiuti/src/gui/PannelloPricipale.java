@@ -13,7 +13,9 @@ package gui;
 import input.KeyHandler;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
@@ -23,7 +25,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import logica.Casella;
 import logica.GestioneCaselle;
@@ -119,7 +124,7 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	}
 
 	public void scriviAreaPrincipale(String s) {
-		textAreaConsole.append(s);
+		textAreaConsole.setText(textAreaConsole.getText()+"\n"+s);
 		textAreaConsole.setCaretPosition(textAreaConsole.getDocument().getLength());
 	}
 
@@ -161,12 +166,13 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		return numeroGiocatori;
 	}
 
-	public JTextArea getAreaPrincipale() {
-		return textAreaConsole;
-	}
-
 	private void initComponents() {
 		setOpaque(false);
+		
+		setMaximumSize(new java.awt.Dimension(1150, 680));
+		setMinimumSize(new java.awt.Dimension(1150, 680));
+		setPreferredSize(new java.awt.Dimension(1150, 680));
+		
 		pannelloPunteggi = new javax.swing.JPanel();
 		pannelloPunteggi.setOpaque(false);
 		scrollPanePunteggi = new javax.swing.JScrollPane();
@@ -178,16 +184,19 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		JPanel pannelloConsole = new JPanel();
 		pannelloConsole.setOpaque(false);
 		
-		panelloTabellone = new gui.PannelloTabellone();
+		panelloTabellone = new PannelloTabellone();
 		panelloTabellone.setOpaque(false);
 		
 		scrollPaneConsole = new javax.swing.JScrollPane();
-		textAreaConsole = new javax.swing.JTextArea();
+		textAreaConsole = new JTextPane();
+		textAreaConsole.setFont(new Font("RIM", Font.BOLD, 16));
+		textAreaConsole.setBackground(Color.green);
+		StyledDocument doc = textAreaConsole.getStyledDocument();
+		SimpleAttributeSet cc = new SimpleAttributeSet();
+		StyleConstants.setAlignment(cc, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), cc, false);
 
-		setMaximumSize(new java.awt.Dimension(1150, 680));
-		setMinimumSize(new java.awt.Dimension(1150, 680));
-		setPreferredSize(new java.awt.Dimension(1150, 680));
-		setRequestFocusEnabled(false);
+		textAreaConsole.setAlignmentY(CENTER_ALIGNMENT);
 
 		textEditorPunteggi.setEditable(false);
 		textEditorPunteggi.setFont(textEditorPunteggi.getFont().deriveFont(textEditorPunteggi.getFont().getStyle() | java.awt.Font.BOLD, 13));
@@ -216,9 +225,9 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		center.add(panelloTabellone, BorderLayout.NORTH);
 		center.add(pannelloConsole, BorderLayout.SOUTH);
 		
-		scrollPaneConsole.setPreferredSize(new java.awt.Dimension(770, 90));
-		scrollPaneConsole.setMinimumSize(new java.awt.Dimension(770, 90));
-		scrollPaneConsole.setMaximumSize(new java.awt.Dimension(770, 90));
+		scrollPaneConsole.setPreferredSize(new java.awt.Dimension(680, 90));
+		scrollPaneConsole.setMinimumSize(new java.awt.Dimension(680, 90));
+		scrollPaneConsole.setMaximumSize(new java.awt.Dimension(680, 90));
 		scrollPaneConsole.setViewportView(textAreaConsole);
 		pannelloConsole.add(scrollPaneConsole);
 		
@@ -234,16 +243,34 @@ public class PannelloPricipale extends javax.swing.JPanel {
 				new PopupRegolamento();
 			}
 		});
+		
+		lanciaDado = new JButton(new ImageIcon(getClass().getClassLoader().getResource("img/buttonDado.jpg")));
+		lanciaDado.setPreferredSize(new java.awt.Dimension(88, 88));
+		lanciaDado.setMinimumSize(new java.awt.Dimension(88, 88));
+		lanciaDado.setMaximumSize(new java.awt.Dimension(88, 88));
+		pannelloConsole.add(lanciaDado);
+		lanciaDado.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GestoreTurni.instance().setDadoLanciato(true);
+			}
+		});
 	}
 
-	private javax.swing.JTextArea textAreaConsole;
+	private JTextPane textAreaConsole;
 	private javax.swing.JPanel pannelloPunteggi;
 	private javax.swing.JScrollPane scrollPanePunteggi;
 	private javax.swing.JScrollPane scrollPaneConsole;
 	private JEditorPaneConSfondo textEditorPunteggi;
 	private gui.PannelloTabellone panelloTabellone;
 	private JButton regolamento;
+	private JButton lanciaDado;
 
+	public void setDadoAttivo(boolean b) {
+		lanciaDado.setEnabled(b);
+	}
+	
 	public boolean isSinglePlayer() {
 		return singlePlayer;
 	}

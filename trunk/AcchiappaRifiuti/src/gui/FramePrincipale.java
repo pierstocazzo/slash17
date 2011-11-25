@@ -9,15 +9,12 @@ public class FramePrincipale extends JFrame {
 
 	private static final long serialVersionUID = 762154615227655088L;
 
+	PannelloPricipale gioco;
+	
 	public FramePrincipale() {
 		setResizable(false);
 		
 		addWindowListener(new WindowAdapter() {
-//			@Override
-//			public void windowClosed(WindowEvent e) {
-//				AcchiappaRifiuti.instance().setButtonGiocaEnabled(true);
-//				super.windowClosed(e);
-//			}
 			@Override
 			public void windowClosing(WindowEvent e) {
 				AcchiappaRifiuti.instance().setButtonGiocaEnabled(true);
@@ -25,11 +22,13 @@ public class FramePrincipale extends JFrame {
 			}
 		});
 		
-		PannelloPricipale gioco = new PannelloPricipale();
+		gioco = new PannelloPricipale();
 		add(gioco);
 		
 		pack();
 		setVisible(true);
 	}
+
+	
 }
 	

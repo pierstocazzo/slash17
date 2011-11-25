@@ -85,11 +85,18 @@ public class GestoreTurni extends Thread {
 				/**
 				 *  se il giocatore corrente ha fatto meno di 3 lanci (o non ha sbagliato domande) pu� lanciare
 				 */
-				String message = giocatoreCorrente.getNome() + " e' il tuo turno!\n";
+				String message = giocatoreCorrente.getNome() + " e' il tuo turno. Lancia il dado!\n";
 	
 				p.scriviAreaPrincipale(message);
-				new PopupDado(message).display();
-				
+				p.setDadoAttivo(true);
+				while (!dadoLanciato) {
+					try {
+						Thread.sleep(5);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				p.setDadoAttivo(false);
 				setDadoLanciato(false);
 				int passiDisponibili = giocatoreCorrente.lancia();
 				
@@ -202,9 +209,7 @@ public class GestoreTurni extends Thread {
 						p.requestFocus();
 						
 						p.setInputAttivo(true);
-						
 						waitForInput();
-						
 						p.setInputAttivo(false);
 	
 						switch (tastoPremuto) {
@@ -311,7 +316,7 @@ public class GestoreTurni extends Thread {
 				e.printStackTrace();
 			}
 		}
-		
+		Player.play(Player.MOVIMENTO);
 	}
 
 	private Giocatore vincitore() {
