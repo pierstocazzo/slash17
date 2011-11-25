@@ -16,8 +16,7 @@ import javax.swing.JFrame;
 public class AcchiappaRifiuti extends JApplet {
 	
 	private static final long serialVersionUID = 3779225454776476552L;
-	static PannelloPricipale gioco;
-	static JFrame rootPane;
+	static FramePrincipale rootPane;
 	JButton buttonGioca;
 	
 	static AcchiappaRifiuti instance;
@@ -70,7 +69,7 @@ public class AcchiappaRifiuti extends JApplet {
     } 
     
 	public JComponent getPannello() {
-		return gioco;
+		return rootPane.gioco;
 	}
 
 	public void finished() {
