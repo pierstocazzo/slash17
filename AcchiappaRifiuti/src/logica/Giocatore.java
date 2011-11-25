@@ -28,12 +28,12 @@ public class Giocatore {
 	/**
 	 * I vari punteggi del Giocatore
 	 */
-	protected int punt_carta;
-	protected int punt_plastica;
-	protected int punt_vetro;
-	protected int punt_metallo;
-	protected int punt_indifferenziata;
-	protected int punt_organica;
+	private int punt_carta;
+	private int punt_plastica;
+	private int punt_vetro;
+	private int punt_metallo;
+	private int punt_indifferenziata;
+	private int punt_organica;
 
 	/**
 	 * E' il nome del Giocatore
@@ -66,11 +66,13 @@ public class Giocatore {
 	 * E' il costruttore della classe Giocatore
 	 * 
 	 * @param nome
+	 * @param p 
 	 * 
 	 */
-	public Giocatore(String nome, Casella c) {
-		this.nome = nome;
-		this.casella = c;
+	public Giocatore(String nome, Casella c, Pedina p) {
+		setNome(nome);
+		setPedina(p);
+		setCasella(c);
 		dado = new Dado();
 		
 		punt_carta = 0;
@@ -91,107 +93,75 @@ public class Giocatore {
 		return lancio;
 	}
 
-	public void aggiorna(String rifiuto, int quantità) {
+	public void aggiorna(String rifiuto, int quantita) {
 		if (rifiuto.equalsIgnoreCase(ORGANICA)) {
-			punt_organica += quantità;
+			punt_organica += quantita;
 			if (punt_organica < 0) 
 				punt_organica = 0;
 			if (punt_organica > 150)
 				punt_organica = 150;
 		} else if (rifiuto.equalsIgnoreCase(PLASTICA)) {
-			punt_plastica += quantità;
+			punt_plastica += quantita;
 			if (punt_plastica < 0) 
 				punt_plastica = 0;
 			if (punt_plastica > 150)
 				punt_plastica = 150;
 		} else if (rifiuto.equalsIgnoreCase(METALLO)) {
-			punt_metallo += quantità;
+			System.out.println("aggiungo " + quantita + " di metallo");
+			punt_metallo += quantita;
 			if (punt_metallo < 0) 
 				punt_metallo = 0;
 			if (punt_metallo > 150)
 				punt_metallo = 150;
 		} else if (rifiuto.equalsIgnoreCase(CARTA)) {
-			punt_carta += quantità;
+			punt_carta += quantita;
 			if (punt_carta < 0) 
 				punt_carta = 0;
 			if (punt_carta > 150)
 				punt_carta = 150;
 		} else if (rifiuto.equalsIgnoreCase(VETRO)) {
-			punt_vetro += quantità;
+			punt_vetro += quantita;
 			if (punt_vetro < 0) 
 				punt_vetro = 0;
 			if (punt_vetro > 150)
 				punt_vetro = 150;
 		} else if (rifiuto.equalsIgnoreCase(INDIFFERENZIATA)) {
-			punt_indifferenziata += quantità;
+			punt_indifferenziata += quantita;
 			if (punt_indifferenziata < 0) 
 				punt_indifferenziata = 0;
 			if (punt_indifferenziata > 150)
 				punt_indifferenziata = 150;
 		} else {
-			System.out.println("Fuck " + rifiuto + " " + quantità);
+			System.out.println("ERRORE aggiorna " + rifiuto + " " + quantita);
 		}
 	}
 	
-	/*
-	 * Funzione di uscita nel caso in cui si deve passare il turno se si �
-	 * raggiunto il numero di lanci a disposizione, oppure, nel caso in cui si
-	 * � risposto in modo errato
-	 */
 	public boolean possoLanciare() {
-
 		return this.numLanci < 3;
 	}
 
-	/*
-	 * Controllo del punteggio del giocatore
-	 */
 	public int getPunt_carta() {
 		return punt_carta;
-	}
-
-	public void setPunt_carta(int punt_carta) {
-		this.punt_carta = punt_carta;
 	}
 
 	public int getPunt_plastica() {
 		return punt_plastica;
 	}
 
-	public void setPunt_plastica(int punt_plastica) {
-		this.punt_plastica = punt_plastica;
-	}
-
 	public int getPunt_vetro() {
 		return punt_vetro;
-	}
-
-	public void setPunt_vetro(int punt_vetro) {
-		this.punt_vetro = punt_vetro;
 	}
 
 	public int getPunt_metallo() {
 		return punt_metallo;
 	}
 
-	public void setPunt_metallo(int punt_metallo) {
-		this.punt_metallo = punt_metallo;
-	}
-
 	public int getPunt_indifferenziata() {
 		return punt_indifferenziata;
 	}
 
-	public void setPunt_indifferenziata(int punt_indifferenziata) {
-		this.punt_indifferenziata = punt_indifferenziata;
-	}
-
 	public int getPunt_organica() {
 		return punt_organica;
-	}
-
-	public void setPunt_organica(int punt_organica) {
-		this.punt_organica = punt_organica;
 	}
 
 	public String getNome() {

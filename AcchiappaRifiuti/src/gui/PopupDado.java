@@ -30,7 +30,7 @@ public class PopupDado extends JDialog {
 	public PopupDado(String message) {
 		super();
 		
-		setAlwaysOnTop(true);
+//		setAlwaysOnTop(true);
 		setModal(true);
 		ClassLoader cldr = this.getClass().getClassLoader();
 		java.net.URL url   = cldr.getResource("img/lancioDado.jpg");

@@ -72,8 +72,8 @@ public class GestoreTurni extends Thread {
 		giocatoreCorrente = giocatori[corrente];
 		
 		/** startTime in secondi */
-		long startTime = System.currentTimeMillis()*1000;
-		long time = System.currentTimeMillis()*1000 - startTime;
+		long startTime = System.currentTimeMillis()/1000;
+		long time = System.currentTimeMillis()/1000 - startTime;
 		/**
 		 * main loop
 		 * cicla finche' non vince qualcuno
@@ -253,7 +253,7 @@ public class GestoreTurni extends Thread {
 			}
 			p.aggiornaPunteggi();
 			if (p.isSinglePlayer()) 
-				time = System.currentTimeMillis()*1000 - startTime;
+				time = System.currentTimeMillis()/1000 - startTime;
 		} /** fine while */
 		
 		/**
@@ -265,7 +265,7 @@ public class GestoreTurni extends Thread {
 		} else {
 			new PopupVittoria(vincitore.getNome());
 		}
-		AcchiappaRifiuti.instance().restart();
+		AcchiappaRifiuti.instance().finished();
 	}
 	
 	private void waitForInput() {

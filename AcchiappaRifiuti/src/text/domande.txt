@@ -1,6 +1,6 @@
-a0000_Cos'e' un "ecosistema"?
+a0000_Cos'e' un 'ecosistema'?
 a0001_Che cosa e' l'Ecologia?
-a0002_A chi appartiene la frase "Il mondo contiene risorse per il bisogno di tutti, ma non abbastanza per l'avidita' di ciascuno"?
+a0002_A chi appartiene la frase 'Il mondo contiene risorse per il bisogno di tutti, ma non abbastanza per l'avidita' di ciascuno'?
 a0003_La sigla VIA significa:
 a0004_Cosa si intende per biodiversita'?
 a0005_Cos'e' l'effetto serra?
@@ -13,7 +13,7 @@ a0011_Quale tra questi e' il gas che e' maggiormente responsabile dell'aumento d
 a0012_Cosa si intende per processo aerobico?
 a0013_Cosa causa l'inquinamento delle acque?
 a0014_Quale mezzo di trasporto e' piu' sostenibile dal punto di vista ambientale?
-a0015_Il logo "Ecolabel" dove si puo' trovare?
+a0015_Il logo 'Ecolabel' dove si puo' trovare?
 a0016_Negli scarichi domestici cosa ci si puo' buttare?
 a0017_Quale tra queste e' una buona pratica quando si utilizzano fogli di carta?
 a0018_Il Protocollo di Kyoto e' un accordo internazionale finalizzato a:
@@ -24,13 +24,13 @@ a0022_Che risparmio in termini di emissioni in atmosfera di anidride carbonica s
 a0023_Se ogni giorno a scuola o in ufficio si riusano dieci fogli di carta stampata scrivendo sul retro si ha un significativo risparmio di che cosa?
 a0024_Tra i Paesi Sviluppati, i Paesi Emergenti ed i Paesi Poveri, chi dovrebbe impegnarsi maggiormente nel ridurre le emissioni di anidride carbonica in atmosfera?
 a0025_Da cosa si ricava la carta?
-a0026_Che cosa si intende per "fattore limitante" in un ambiente fisico?
+a0026_Che cosa si intende per 'fattore limitante' in un ambiente fisico?
 a0027_Il funzionamento di un ecosistema dall'interazione di quali fondamentali componenti e' reso possibile?
 a0028_Quale e' la definizione di catena alimentare?
 a0029_Cosa fa un impianto di trattamento rifiuti con un digestore anaerobico?
 a0030_Cosa e' un ciclo biogeochimico?
 a0031_Quale e' il modo migliore di comportarsi con la carta vecchia e usata?
-a0032_Il termine "cogenerazione" cosa indica?
+a0032_Il termine 'cogenerazione' cosa indica?
 a0033_Colle, detersivi contenenti cloro, pitture, oli sono rifiuti:
 a0034_Chi produce un maggiore quantitativo di rifiuti tra i cittadini indicati?
 a0035_Con il riciclaggio dei rifiuti si ottiene:
@@ -63,7 +63,7 @@ a0061_Cosa e' il G8 Ambiente?
 a0062_Da quali gas e' composta l'aria della Luna principalmente?
 a0063_Cosa e' Greenpeace?
 a0064_Un essere vivente con il processo della respirazione produce un gas. Quale?
-a0065_Cosa e' la "Carta della Terra"
+a0065_Cosa e' la 'Carta della Terra'
 a0066_Quale gas assorbono le piante durante la fotosintesi?
 a0067_Come si chiamano i gas, ormai non piu' utilizzati, responsabili del buco dell'Ozono?
 a0068_L'effetto serra rappresenta un problema per il pianeta Terra?
@@ -95,26 +95,26 @@ a0093_I rifiuti sono classificati, in base all'origine, in:
 a0094_I rifiuti sono classificati, in base all'origine, in:
 a0095_I rifiuti sono classificati, in base all'origine, in:
 a0096_I rifiuti sono classificati in base alla pericolosita' in:
-a0097_Sono "urbani" i rifiuti provenienti da:
-a0098_Sono "urbani" i rifiuti provenienti da:
-a0099_Sono "urbani" i rifiuti provenienti da:
-a0100_Sono "urbani" i rifiuti provenienti da:
-a0101_Sono "urbani" i rifiuti provenienti da:
-a0102_Sono "urbani" i rifiuti provenienti da:
+a0097_Sono 'urbani' i rifiuti provenienti da:
+a0098_Sono 'urbani' i rifiuti provenienti da:
+a0099_Sono 'urbani' i rifiuti provenienti da:
+a0100_Sono 'urbani' i rifiuti provenienti da:
+a0101_Sono 'urbani' i rifiuti provenienti da:
+a0102_Sono 'urbani' i rifiuti provenienti da:
 a0103_Cosa si intende con la sigla RU?
-a0104_Sono "urbani" i rifiuti provenienti da:
+a0104_Sono 'urbani' i rifiuti provenienti da:
 a0105_Che cosa sono i rifiuti speciali?
-a0106_Sono "speciali" i rifiuti derivanti da:
-a0107_Sono "speciali" i rifiuti derivanti da:
-a0108_Sono "speciali" i rifiuti derivanti da:
-a0109_Sono "speciali" i rifiuti derivanti da:
-a0110_Sono "speciali" i rifiuti derivanti da:
-a0111_Sono "speciali" i rifiuti derivanti da:
-a0112_Sono "speciali" i rifiuti derivanti da:
-a0113_Sono "speciali" i rifiuti derivanti da:
-a0114_Sono "speciali" i rifiuti derivanti da:
-a0115_Sono "speciali" i rifiuti derivanti da:
-a0116_Sono "speciali" i rifiuti derivanti da:
+a0106_Sono 'speciali' i rifiuti derivanti da:
+a0107_Sono 'speciali' i rifiuti derivanti da:
+a0108_Sono 'speciali' i rifiuti derivanti da:
+a0109_Sono 'speciali' i rifiuti derivanti da:
+a0110_Sono 'speciali' i rifiuti derivanti da:
+a0111_Sono 'speciali' i rifiuti derivanti da:
+a0112_Sono 'speciali' i rifiuti derivanti da:
+a0113_Sono 'speciali' i rifiuti derivanti da:
+a0114_Sono 'speciali' i rifiuti derivanti da:
+a0115_Sono 'speciali' i rifiuti derivanti da:
+a0116_Sono 'speciali' i rifiuti derivanti da:
 a0117_Possono essere pericolosi i rifiuti:
 a0118_Sono pericolosi i rifiuti che contengono sostanze:
 a0119_Sono pericolosi i rifiuti che contengono sostanze:
@@ -139,9 +139,9 @@ a0137_Quale tra questi rifiuti e' ingombrante?
 a0138_Quale fra questi oggetti e' un rifiuto ingombrante?
 a0139_Quale fra questi oggetti e' un rifiuto ingombrante?
 a0140_Quale fra questi rifiuti e' organico?
-a0141_Si definisce "gestione" dei rifiuti il complesso delle seguenti attivita':
-a0142_Quando una persona segue la regola delle "3 R" vuol dire che:
-a0143_Quali sono le "3 R" che hanno a che fare con l'ambiente?
+a0141_Si definisce 'gestione' dei rifiuti il complesso delle seguenti attivita':
+a0142_Quando una persona segue la regola delle '3 R' vuol dire che:
+a0143_Quali sono le '3 R' che hanno a che fare con l'ambiente?
 a0144_Cosa bisogna fare con i rifiuti?
 a0145_Quale, tra le seguenti, e' la soluzione migliore?
 a0146_Quale, tra le seguenti, e' la soluzione migliore?
@@ -157,10 +157,10 @@ a0155_Cosa significa riciclare?
 a0156_Quale percentuale di rifiuti domestici e' potenzialmente riciclabile?
 a0157_Le lattine di alluminio riciclate sono utilizzate per fabbricare:
 a0158_La raccolta dei rifiuti avviene:
-a0159_Si ha "trasporto di rifiuti" quando:
+a0159_Si ha 'trasporto di rifiuti' quando:
 a0160_Per essere un trasportatore di rifiuti devi:
 a0161_I rifiuti urbani non pericolosi possono essere trasportati in regioni diverse da quelle dove gli stessi sono prodotti:
-a0162_Con il termine "stoccaggio" si indica:
+a0162_Con il termine 'stoccaggio' si indica:
 a0163_Il centro di raccolta e':
 a0164_Cos'e' il Catasto rifiuti?
 a0165_Quale di questi oggetti si degrada per primo?
@@ -188,7 +188,7 @@ a0186_Quanto tempo occorre perche' la natura distrugga una busta o sacchetto di 
 a0187_Quanto tempo occorre perche' la natura distrugga un piatto e bicchiere di plastica?
 a0188_Quanto tempo occorre perche' la natura distrugga una bottiglia di vetro?
 a0189_Cos'e' la raccolta differenziata dei rifiuti?
-a0190_Cos'e' la raccolta "porta a porta"?
+a0190_Cos'e' la raccolta 'porta a porta'?
 a0191_Dove vengono portati i rifiuti raccolti in maniera differenziata?
 a0192_Dove vengono portati i rifiuti raccolti in maniera differenziata?
 a0193_Se devi gettare una bottiglia di vetro con tappo in alluminio:

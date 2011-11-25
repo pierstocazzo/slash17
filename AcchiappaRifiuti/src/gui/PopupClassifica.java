@@ -5,9 +5,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -43,12 +40,10 @@ public class PopupClassifica extends JDialog {
 	int tempoBronzo = 1200;
 	
 	
-	public static void main(String[] args) {
-		new PopupClassifica(new Giocatore("Salvo", null), 20);
-	}
-	
 	public PopupClassifica(Giocatore vincitore, long time) {
 		super();
+		
+		System.out.println(time);
 		
 		if (time < tempoOro) {
 			text = "Complimenti "+vincitore.getNome()+", sei un vero esperto della raccolta differenziata, continua così!";
