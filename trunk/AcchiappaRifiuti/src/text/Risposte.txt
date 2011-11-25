@@ -20,7 +20,7 @@ a0004_t_La presenza nello stesso ecosistema di differenti specie vegetali e anim
 a0004_f_null
 a0005_t_E' un fenomeno naturale di regolazione dell'equilibrio termico della Terra 
 a0005_f_Il termine che indica lo scioglimento dei ghiacciai 
-a0005_f_» l'aumento della temperatura del mare sulla Terra 
+a0005_f_E' l'aumento della temperatura del mare sulla Terra 
 a0005_f_null
 a0006_t_All'aumento della temperatura sulla Terra 
 a0006_f_All'aumento della attivita' dei vulcani sulla Terra 
@@ -116,7 +116,7 @@ a0028_t_Il trasferimento di energia alimentare dai produttori attraverso una ser
 a0028_f_null
 a0029_t_La conversione energetica della frazione organica dei rifiuti 
 a0029_f_Mette in sicurezza i rifiuti speciali 
-a0029_f_Ricicla i c rifiuti in alluminio 
+a0029_f_Ricicla i rifiuti in alluminio 
 a0029_f_null
 a0030_f_Il ciclo che compie la carta quando viene riciclata 
 a0030_f_Il ciclo dell'energia solare sulla terra 
@@ -124,7 +124,7 @@ a0030_t_Il percorso ciclico che compiono gli elementi chimici, anche facenti par
 a0030_f_null
 a0031_f_Bruciarla per ridurne il volume 
 a0031_t_Riciclarla 
-a0031_f_Buttarla insieme c agli altri rifiuti 
+a0031_f_Buttarla insieme agli altri rifiuti 
 a0031_f_null
 a0032_f_La trasformazione dell'energia elettrica in calore 
 a0032_f_La produzione di energia cinetica 
@@ -140,7 +140,7 @@ a0034_f_Un italiano
 a0034_f_Un americano
 a0035_f_Una maggiore disponibilita' di metano 
 a0035_f_Prodotti che hanno un costo energetico maggiore 
-a0035_t_Un minor consumo c di materie prime 
+a0035_t_Un minor consumo di materie prime 
 a0035_f_null
 a0036_t_Ad aumentare la frazione organica del terreno 
 a0036_f_Viene utilizzato contro i parassiti al posto degli insetticidi 
@@ -156,7 +156,7 @@ a0038_f_Alterazione dei processi non biologici in un ecosistema
 a0038_f_null
 a0039_f_Non e' possibile perche' sono altamente inquinanti 
 a0039_f_Solo se hanno determinate caratteristiche 
-a0039_t_Si, per la produzione c di calore 
+a0039_t_Si, per la produzione di calore 
 a0039_f_null
 a0040_f_Gli organismi che riescono ad abbattere interi boschi 
 a0040_t_Gli organismi che riducono la materia organica complessa a materia inorganica semplice 
@@ -192,7 +192,7 @@ a0047_f_Sviluppare strategie per una migliore raccolta stradale
 a0047_f_null
 a0048_t_Processi aerobici e anaerobici dei rifiuti smaltiti in discarica 
 a0048_f_Processi di combustione dello smaltimento con termovalorizzazione 
-a0048_f_Processi di compostaggio C industriale 
+a0048_f_Processi di compostaggio industriale 
 a0048_f_null
 a0049_f_Riducono la volumetria e la massa dei rifiuti, altrimenti destinati in discarica 
 a0049_f_Sfruttano l'energia termica sprigionata durante il processo di combustione attraverso il recupero di calore e la produzione di energia elettrica 
@@ -224,7 +224,7 @@ a0055_f_Che ha un importante presenza di fauna selvatica
 a0055_f_Nessuna delle precedenti
 a0056_t_Tutti gli Stati del mondo 
 a0056_f_Solo gli Stati al di sotto dell'equatore 
-a0056_f_Solo gli Stati c che hanno i deserti 
+a0056_f_Solo gli Stati che hanno i deserti 
 a0056_f_Solo gli Stati al di sopra dell'equatore
 a0057_f_Solo gli Stati che si trovano sul mare e che potrebbero essere interessati da un innalzamento delle acque 
 a0057_t_Solo gli Stati che si trovano sul mare e che potrebbero essere interessati da un innalzamento delle acque 
@@ -232,7 +232,7 @@ a0057_f_Solo il Polo Nord
 a0057_f_Solo il Polo Sud
 a0058_t_L'aumento dell'effetto serra 
 a0058_f_Le piogge acide 
-a0058_f_L'erosione c delle coste 
+a0058_f_L'erosione delle coste 
 a0058_f_Gli uragani
 a0059_f_Il progressivo avanzare del deserto 
 a0059_f_Un processo di perdita di vegetazione causato dall'eccessivo calore del sole e dalla mancanza di pioggia 
@@ -242,13 +242,13 @@ a0060_t_I fumi
 a0060_f_Le ceneri pesanti 
 a0060_f_Le ceneri leggere 
 a0060_f_Le polveri sottili
-a0061_t_» il forum informale dei Ministri dell'Ambiente organizzato dalla presidenza di turno del G8 (forum dei governi di otto tra i principali paesi industrializzati del mondo) 
-a0061_f_» una dichiarazione sulla tutela dell'ambiente firmata da otto Stati 
-a0061_f_» una dichiarazione sulla tutela dell'ambiente firmata da otto Regioni italiane 
+a0061_t_E' il forum informale dei Ministri dell'Ambiente organizzato dalla presidenza di turno del G8 (forum dei governi di otto tra i principali paesi industrializzati del mondo) 
+a0061_f_E' una dichiarazione sulla tutela dell'ambiente firmata da otto Stati 
+a0061_f_E' una dichiarazione sulla tutela dell'ambiente firmata da otto Regioni italiane 
 a0061_f_Nessuna delle precedenti
 a0062_f_Elio e idrogeno 
 a0062_f_Ossigeno e azoto 
-a0062_t_Sulla c Luna non c'e' aria 
+a0062_t_Sulla Luna non c'e' aria 
 a0062_f_Azoto e idrogeno
 a0063_f_Un marchio che caratterizza un prodotto non inquinante 
 a0063_f_Un marchio che caratterizza un processo produttivo che utilizza solo risorse rinnovabili 
@@ -272,7 +272,7 @@ a0067_f_Ossidi di azoto
 a0067_f_Nessuno dei precedenti
 a0068_f_Si, perche' causa un innalzamento della temperatura 
 a0068_t_No, e' l'aumento dei gas ad effetto serra nell'atmosfera dovuto all'inquinamento che e' dannoso 
-a0068_f_Si, perche' causa danni c agli ecosistemi 
+a0068_f_Si, perche' causa danni agli ecosistemi 
 a0068_f_Si, perche' causa un innalzamento della temperatura e causa danni agli ecosistemi
 a0069_f_Usare buste di plastica biodegradabile 
 a0069_t_Portarsi da casa borse riutilizzabili 
