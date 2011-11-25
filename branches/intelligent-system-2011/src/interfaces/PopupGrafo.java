@@ -1,20 +1,18 @@
 package interfaces;
 
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.geom.Rectangle2D;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
-import org.jgraph.*;
-import org.jgraph.graph.*;
-
-import org.jgrapht.*;
-import org.jgrapht.ext.*;
-import org.jgrapht.graph.*;
-
-// resolve ambiguity
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.ListenableGraph;
+import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultListenableGraph;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedMultigraph;
 
 import demo.UndirectedWeightedGraph;
 
