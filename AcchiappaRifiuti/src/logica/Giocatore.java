@@ -35,6 +35,8 @@ public class Giocatore {
 	private int punt_indifferenziata;
 	private int punt_organica;
 
+	int punteggioIniziale = 150;
+	
 	/**
 	 * E' il nome del Giocatore
 	 */
@@ -75,12 +77,12 @@ public class Giocatore {
 		setCasella(c);
 		dado = new Dado();
 		
-		punt_carta = 0;
-		punt_plastica = 0;
-		punt_vetro = 0;
-		punt_metallo = 0;
-		punt_indifferenziata = 0;
-		punt_organica = 0;
+		punt_carta = punteggioIniziale;
+		punt_plastica = punteggioIniziale;
+		punt_vetro = punteggioIniziale;
+		punt_metallo = punteggioIniziale;
+		punt_indifferenziata = punteggioIniziale;
+		punt_organica = punteggioIniziale;
 	}
 
 	/*

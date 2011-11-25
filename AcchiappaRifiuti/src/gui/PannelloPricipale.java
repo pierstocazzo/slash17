@@ -178,8 +178,9 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		JPanel pannelloConsole = new JPanel();
 		pannelloConsole.setOpaque(false);
 		
-		panelloTabellone = new gui.PanelloTabellone();
+		panelloTabellone = new gui.PannelloTabellone();
 		panelloTabellone.setOpaque(false);
+		
 		scrollPaneConsole = new javax.swing.JScrollPane();
 		textAreaConsole = new javax.swing.JTextArea();
 
@@ -240,7 +241,7 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	private javax.swing.JScrollPane scrollPanePunteggi;
 	private javax.swing.JScrollPane scrollPaneConsole;
 	private JEditorPaneConSfondo textEditorPunteggi;
-	private gui.PanelloTabellone panelloTabellone;
+	private gui.PannelloTabellone panelloTabellone;
 	private JButton regolamento;
 
 	public boolean isSinglePlayer() {
@@ -249,5 +250,9 @@ public class PannelloPricipale extends javax.swing.JPanel {
 
 	public void setSinglePlayer(boolean singlePlayer) {
 		this.singlePlayer = singlePlayer;
+	}
+
+	public void setSfondo(String image) {
+		panelloTabellone.setImage(image);
 	}
 }

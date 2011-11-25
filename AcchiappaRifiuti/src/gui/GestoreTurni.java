@@ -5,10 +5,9 @@
 package gui;
 
 import java.awt.event.KeyEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
-import sound.Player;
 
 import logica.Casella;
 import logica.CasellaDomanda;
@@ -21,6 +20,7 @@ import logica.FactoryJolly;
 import logica.Giocatore;
 import logica.Imprevisto;
 import logica.Jolly;
+import sound.Player;
 
 /**
  * 
@@ -109,9 +109,17 @@ public class GestoreTurni extends Thread {
 						 * centrale
 						 */
 						CasellaStart cs = (CasellaStart) giocatoreCorrente.getCasella();
+						
+						p.setSfondo(PannelloTabellone.CENTRALE);
+						
+						p.requestFocusInWindow();
+						p.requestFocus();
+						p.setInputAttivo(true);
+						waitForInput();
+						p.setInputAttivo(false);
 	
-						new PopupBivio(giocatoreCorrente.getCasella().getId()).display();
-	
+						p.setSfondo(PannelloTabellone.DEFAULT);
+						
 						switch (tastoPremuto) {
 						case KeyEvent.VK_E:
 							giocatoreCorrente.setCasella(cs.getNordest());
@@ -141,8 +149,34 @@ public class GestoreTurni extends Thread {
 						/**
 						 * se il giocatore si trova in una casella bivio
 						 */
-						new PopupBivio(giocatoreCorrente.getCasella().getId()).display();
+						String img;
+						String casella = giocatoreCorrente.getCasella().getId();
+						if (casella.equals("6")) {
+							img = PannelloTabellone.NE;
+						} else if (casella.equals("13")) {
+							img = PannelloTabellone.E;
+						} else if (casella.equals("20")) {
+							img = PannelloTabellone.SE;
+						} else if (casella.equals("29")) {
+							img = PannelloTabellone.SO;
+						} else if (casella.equals("36")) {
+							img = PannelloTabellone.O;
+						} else if (casella.equals("43")) {
+							img = PannelloTabellone.NO;
+						} else {
+							img = PannelloTabellone.DEFAULT;
+						}
+						
+						p.setSfondo(img);
+						
+						p.requestFocusInWindow();
+						p.requestFocus();
+						p.setInputAttivo(true);
+						waitForInput();
+						p.setInputAttivo(false);
 	
+						p.setSfondo(PannelloTabellone.DEFAULT);
+						
 						switch (tastoPremuto) {
 						case KeyEvent.VK_D:
 							giocatoreCorrente.setCasella(giocatoreCorrente.getCasella().sensoOrario());
@@ -193,6 +227,7 @@ public class GestoreTurni extends Thread {
 				 */
 				switch (giocatoreCorrente.getCasella().getTipo()) {
 				case Casella.DOMANDA:
+					Player.play(Player.DOMANDA);
 					Domanda d = FactoryDomande.dammiDomanda();
 					PopupDomanda pop = new PopupDomanda(p, d, "img/sfondoDOMANDE.jpg");
 					if (pop.rispostaCorretta()) {
@@ -261,9 +296,9 @@ public class GestoreTurni extends Thread {
 		 */
 		Player.play(Player.VITTORIA);
 		if (p.isSinglePlayer()) {
-			new PopupClassifica(vincitore, time);
+			new PopupVittoria(vincitore.getNome(), time);
 		} else {
-			new PopupVittoria(vincitore.getNome());
+			new PopupVittoria(vincitore.getNome(), -1);
 		}
 		AcchiappaRifiuti.instance().finished();
 	}
@@ -276,6 +311,7 @@ public class GestoreTurni extends Thread {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	private Giocatore vincitore() {
