@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +34,7 @@ public class PopupVittoria extends JDialog {
 	int tempoBronzo = 1200;
 	
 	public PopupVittoria(String giocatore, long time) {
-		super();
+		super((Frame) AcchiappaRifiuti.instance().getFramePrincipale());
 		
 		int minuti = (int) time / 60;
 		int secondi = (int) time % 60;
@@ -114,7 +115,7 @@ public class PopupVittoria extends JDialog {
 		setMinimumSize(d1);
 		setMaximumSize(d1);
 		
-		setLocationRelativeTo(AcchiappaRifiuti.instance().getFramePrincipale());
+		setLocationRelativeTo(AcchiappaRifiuti.instance().getPannello());
 		setVisible(true);
 	}
 }

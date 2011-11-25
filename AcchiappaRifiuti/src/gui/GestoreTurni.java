@@ -235,6 +235,7 @@ public class GestoreTurni extends Thread {
 					Player.play(Player.DOMANDA);
 					Domanda d = FactoryDomande.dammiDomanda();
 					PopupDomanda pop = new PopupDomanda(p, d, "img/sfondoDOMANDE.jpg");
+					
 					if (pop.rispostaCorretta()) {
 						Player.play(Player.RISPOSTACORRETTA);
 						String mess = CasellaDomanda.AssegnaPunteggio(giocatoreCorrente);
