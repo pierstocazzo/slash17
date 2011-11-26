@@ -106,8 +106,12 @@ public class Agent extends AbstractAgent {
 			else {
 				if(!calculatedAction.isEmpty())
 					currAction = calculatedAction.remove(0).type;
-				else
+				else{
 					goalReached = true;
+					this.myWorld = new Floor(perception.floor.length,
+							perception.floor.width,
+							Square.Type.UNKNOWN);
+				}
 			}
 		}
 	}
@@ -119,18 +123,22 @@ public class Agent extends AbstractAgent {
 			if(calculatedAction.isEmpty()){
 				goalReached = true;
 				goHome = false;
+				visitedInitialized = false;
 				scores = new int[myWorld.width][myWorld.length];
 				System.out.println("Scores: ");
 				for (int i = 0; i < myWorld.width; i++)
 					for (int j = 0; j < myWorld.length; j++)
 						scores[i][j] = 0;
+				this.myWorld = new Floor(perception.floor.length,
+						perception.floor.width,
+						Square.Type.UNKNOWN);
 				return;
 			}
 			currAction = calculatedAction.remove(0).type;
 			return;
 		}
 
-		if(!RemainedCells()){
+		if(!RemainedCells(Square.Type.DIRTY) && !RemainedCells(Square.Type.UNKNOWN)){
 			goHome  = true;
 			ArrayList<String> list = new ArrayList<String>();
 			list.add(x+"-"+y);
@@ -139,7 +147,7 @@ public class Agent extends AbstractAgent {
 			// Convert Tour Solution in Cells's list
 			ArrayList<String> cellList = tourSolutionToCellList(list);
 			cellList.add("0-0");
-			
+
 			System.out.println("Return to home");
 			for (int i = 0; i < cellList.size(); i++) {
 				System.out.println(cellList.get(i));
@@ -168,8 +176,9 @@ public class Agent extends AbstractAgent {
 		}
 	}
 
-	private boolean RemainedCells() {
-		ArrayList<String> unknowCells = new ArrayList<String>();
+	private boolean RemainedCells(Square.Type type) {
+		System.out.println("Check remained " + type);
+		ArrayList<String> searchedCells = new ArrayList<String>();
 		ArrayList<String> removedVertex = new ArrayList<String>();
 
 		// Create walkable cells's graph
@@ -188,35 +197,42 @@ public class Agent extends AbstractAgent {
 						walkableGraph.addWeightedEdge(v1, v2, 1);
 					}
 				}
-				if(myWorld.get(i, j) == Square.Type.UNKNOWN)
-					unknowCells.add(i + "-" + j);
+				if(myWorld.get(i, j) == type){
+					System.out.println("Add to searched " + i + "-" + j);
+					searchedCells.add(i + "-" + j);
+				}
 			}
 
 		//Remove unreachable cells from home
 		GraphPath<String, DefaultWeightedEdge> path = null;
-		for (int j = 1; j < unknowCells.size(); j++) {
+		for (int j = 0; j < searchedCells.size(); j++) {
 			try{
-				System.out.println("Search Path to " +unknowCells.get(j));
-				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, "0-0", unknowCells.get(j)).getPath();
+				System.out.println("Search Path to " +searchedCells.get(j));
+				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, "0-0", searchedCells.get(j)).getPath();
 				if(path == null){
-					removedVertex.add(unknowCells.get(j));
-					System.out.println("Prepare Delete " + unknowCells.get(j));
+					removedVertex.add(searchedCells.get(j));
+					System.out.println("Prepare Delete " + searchedCells.get(j));
 				}
 			}
 			catch (Exception e) {
 				System.out.println(e.getMessage());
-				removedVertex.add(unknowCells.get(j));
-				System.out.println("Prepare Delete " + unknowCells.get(j));
+				removedVertex.add(searchedCells.get(j));
+				System.out.println("Prepare Delete " + searchedCells.get(j));
 			}
 		}
 		for (int i = 0; i < removedVertex.size(); i++){
 			if(walkableGraph.containsVertex(removedVertex.get(i)))
 				walkableGraph.removeVertex(removedVertex.get(i));
-			if(unknowCells.contains(removedVertex.get(i)))
-				unknowCells.remove(removedVertex.get(i));
+			if(searchedCells.contains(removedVertex.get(i))){
+				System.out.println("Delete " + removedVertex.get(i) );
+				searchedCells.remove(removedVertex.get(i));
+			}
 		}
-
-		if(unknowCells.size() > 0 || myWorld.dirtySquares() > 0)
+		System.out.println("Serached cells " + searchedCells.size());
+		for (int i = 0; i < searchedCells.size(); i++){
+			System.out.println("Remains " + searchedCells.get(i));
+		}
+		if(searchedCells.size() > 0)
 			return true;
 		return false;
 	}
@@ -521,6 +537,45 @@ public class Agent extends AbstractAgent {
 	 */
 	public void mycellBehaviour(){
 
+		if(goHome){
+			if(calculatedAction.isEmpty()){
+				goalReached = true;
+				goHome = false;
+				visitedInitialized = false;
+				scores = new int[myWorld.width][myWorld.length];
+				System.out.println("Scores: ");
+				for (int i = 0; i < myWorld.width; i++)
+					for (int j = 0; j < myWorld.length; j++)
+						scores[i][j] = 0;
+				this.myWorld = new Floor(perception.floor.length,
+						perception.floor.width,
+						Square.Type.UNKNOWN);
+				return;
+			}
+			currAction = calculatedAction.remove(0).type;
+			return;
+		}
+
+		if(!RemainedCells(Square.Type.DIRTY) && !RemainedCells(Square.Type.UNKNOWN)){
+			goHome  = true;
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(x+"-"+y);
+			list.add("0-0");
+			System.out.println("My pos " +x + ","+y);
+			// Convert Tour Solution in Cells's list
+			ArrayList<String> cellList = tourSolutionToCellList(list);
+			cellList.add("0-0");
+
+			System.out.println("Return to home");
+			for (int i = 0; i < cellList.size(); i++) {
+				System.out.println(cellList.get(i));
+			}
+			// Convert Cell's list in operations's list
+			calculatedAction = cellListTOActions(cellList);
+			System.out.println("Calculated Actions");
+			return;
+		}
+		
 		//		System.out.println("MY CELL " + x + "," + y + ": " + perception.floor.get(x,y));
 		if(perception.floor.get(x,y) == Square.Type.DIRTY){
 			correctActionsList.addLast(currAction);
@@ -552,10 +607,10 @@ public class Agent extends AbstractAgent {
 			// se next == noop fai l'inverso dell'ultima azione
 			if (currAction == Action.Type.NOOP)
 				backTrack();
-			System.out.println("Actions corrected");
-			for (Iterator iterator = correctActionsList.iterator(); iterator.hasNext();)
-				System.out.println((Action.Type) iterator.next());
-			System.out.println();
+//			System.out.println("Actions corrected");
+//			for (Iterator iterator = correctActionsList.iterator(); iterator.hasNext();)
+//				System.out.println((Action.Type) iterator.next());
+//			System.out.println();
 		}
 	}
 
@@ -581,6 +636,7 @@ public class Agent extends AbstractAgent {
 		activeRoolback = true;
 		if(correctActionsList.isEmpty()){
 			goalReached = true;
+			visitedInitialized = false;
 			currAction = Type.NOOP;
 			return;
 		}
