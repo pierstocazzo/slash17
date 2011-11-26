@@ -102,6 +102,10 @@ public class FactoryDomande {
 				if (correct) {
 					domande.get(i).setCorretta((new Risposta(risp, i, correct)));
 				}
+				
+				if (domande.get(i).getCorretta() == null) {
+					System.out.println("domanda " + i);
+				}
 			}
 			fbr.close();
 		} catch (Exception e) {

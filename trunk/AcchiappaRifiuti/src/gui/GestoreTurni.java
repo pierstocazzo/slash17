@@ -48,6 +48,10 @@ public class GestoreTurni extends Thread {
 		return t;
 	}
 
+	public Giocatore getGiocatoreCorrente() {
+		return giocatoreCorrente;
+	}
+	
 	public void setGiocatori(Giocatore[] giocatori) {
 		this.giocatori = giocatori;
 	}

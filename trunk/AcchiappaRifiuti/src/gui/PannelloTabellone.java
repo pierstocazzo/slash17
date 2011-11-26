@@ -19,6 +19,8 @@ public class PannelloTabellone extends JPanel {
 	Image sfondo;
 	Image over;
 	
+	HashMap<Casella, int[]> hash;
+	
 	ArrayList<Giocatore> giocatori;
 	
 	public static final String DEFAULT = "img/mappe/Tabellone.jpg";
@@ -47,42 +49,56 @@ public class PannelloTabellone extends JPanel {
 		g.drawImage(sfondo, 5, 0, null);
 		g.drawImage(over, 5, 0, null);
 		
-		HashMap<Casella, int[]> hash = new HashMap<Casella, int[]>();
+		int iCorrente = 0;
+		
+		hash = new HashMap<Casella, int[]>();
 		
 		for (int i = 0; i < giocatori.size(); i++) {
-			Image immp = giocatori.get(i).getPedina().getImmaginePersonale();
-			Casella c = giocatori.get(i).getCasella();
-			
-			int x = Integer.parseInt(c.getX());
-			int y = Integer.parseInt(c.getY())-20;
-			
-			if (c.getTipo() == Casella.CENTRALE) {
-				switch (i) {
-				case 0:
-					x = x - 30;
-					break;
-				case 1:
-					y = y - 30;
-					break;
-				case 2:
-					break;
-				case 3:
-					x = x + 30;
-					break;
-				case 4:
-					y = y + 30;
-					break;
-				}
-			} else if (hash.containsKey(c)) {
-				x = hash.get(c)[0] + 7;
-				y = hash.get(c)[1] + 3;
+			if (giocatori.get(i) == GestoreTurni.instance().getGiocatoreCorrente()) {
+				iCorrente = i;
+				continue;
 			}
 			
-			int[] val = {x,y};
-			hash.put(c, val);
-			
-			g.drawImage(immp, x, y, immp.getWidth(null), immp.getHeight(null), null);
+			draw(g, giocatori.get(i), i);
 		}
+		
+		// stampa il giocatore corrente alla fine in modo da apparire sempre in primo piano...
+		draw(g, GestoreTurni.instance().getGiocatoreCorrente(), iCorrente);
+	}
+	
+	private void draw(Graphics g, Giocatore gioc, int i) {
+		Image immp = gioc.getPedina().getImmaginePersonale();
+		Casella c = gioc.getCasella();
+		
+		int x = Integer.parseInt(c.getX());
+		int y = Integer.parseInt(c.getY())-20;
+		
+		if (c.getTipo() == Casella.CENTRALE) {
+			switch (i) {
+			case 0:
+				x = x - 30;
+				break;
+			case 1:
+				y = y - 30;
+				break;
+			case 2:
+				break;
+			case 3:
+				x = x + 30;
+				break;
+			case 4:
+				y = y + 30;
+				break;
+			}
+		} else if (hash.containsKey(c)) {
+			x = hash.get(c)[0] + 7;
+			y = hash.get(c)[1] + 3;
+		}
+		
+		int[] val = {x,y};
+		hash.put(c, val);
+		
+		g.drawImage(immp, x, y, immp.getWidth(null), immp.getHeight(null), null);
 	}
 	
 	public void setImage(String image) {
