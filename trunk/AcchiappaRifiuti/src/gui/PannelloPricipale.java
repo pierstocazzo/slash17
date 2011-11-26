@@ -107,7 +107,10 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	}
 
 	public void scriviAreaPrincipale(String s) {
-		textAreaConsole.setText(textAreaConsole.getText()+"\n"+s);
+//		textAreaConsole.setText("Riga 1\n" +
+//				"Riga 2\n" +
+//				"Riga 3\n");
+		textAreaConsole.setText(textAreaConsole.getText()+s);
 		textAreaConsole.setCaretPosition(textAreaConsole.getDocument().getLength());
 	}
 
