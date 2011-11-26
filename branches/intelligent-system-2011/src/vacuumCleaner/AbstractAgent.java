@@ -21,7 +21,7 @@ public abstract class AbstractAgent {
 	public int energy;
 	public VisibilityType visType;
 	int squaresCleanedByMe = 0;
-	boolean goalReached = false;
+	public boolean goalReached = false;
 	Action.Type currAction;
 	public ArrayList<Action> actionList;
 	
