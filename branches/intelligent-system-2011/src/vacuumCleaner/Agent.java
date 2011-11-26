@@ -115,33 +115,34 @@ public class Agent extends AbstractAgent {
 	private void neighboursBehaviour() {
 		visited[x][y]++;
 
-//		if(goHome){
-//			if(calculatedAction.isEmpty()){
-//				goalReached = true;
-//				return;
-//			}
-//			currAction = calculatedAction.remove(calculatedAction.size()-1).type;
-//			return;
-//		}
-//
-//		if(!RemainedDirtyCells()){
-//			goHome  = true;
-//			ArrayList<String> list = new ArrayList<String>();
-//			list.add(x+"-"+y);
-//			list.add("0-0");
-//			// Convert Tour Solution in Cells's list
-//			ArrayList<String> cellList = tourSolutionToCellList(list);
-//			cellList.add("0-0");
-//			
-//			System.out.println("Return to home");
-//			for (int i = 0; i < cellList.size(); i++) {
-//				System.out.println(cellList.get(i));
-//			}
-//			// Convert Cell's list in operations's list
-//			calculatedAction = cellListTOActions(cellList);
-//
-//			return;
-//		}
+		if(goHome){
+			if(calculatedAction.isEmpty()){
+				goalReached = true;
+				return;
+			}
+			currAction = calculatedAction.remove(0).type;
+			return;
+		}
+
+		if(!RemainedCells(Square.Type.UNKNOWN)){
+			goHome  = true;
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(x+"-"+y);
+			list.add("0-0");
+			System.out.println("My pos " +x + ","+y);
+			// Convert Tour Solution in Cells's list
+			ArrayList<String> cellList = tourSolutionToCellList(list);
+			cellList.add("0-0");
+			
+			System.out.println("Return to home");
+			for (int i = 0; i < cellList.size(); i++) {
+				System.out.println(cellList.get(i));
+			}
+			// Convert Cell's list in operations's list
+			calculatedAction = cellListTOActions(cellList);
+			System.out.println("Calculated Actions");
+			return;
+		}
 
 		if(myWorld.get(x, y) == Square.Type.DIRTY)
 			currAction = Action.Type.SUCK;
@@ -161,7 +162,7 @@ public class Agent extends AbstractAgent {
 		}
 	}
 
-	private boolean RemainedDirtyCells() {
+	private boolean RemainedCells(Square.Type sqType) {
 		ArrayList<String> dirtyCells = new ArrayList<String>();
 		ArrayList<String> removedVertex = new ArrayList<String>();
 
@@ -181,7 +182,7 @@ public class Agent extends AbstractAgent {
 						walkableGraph.addWeightedEdge(v1, v2, 1);
 					}
 				}
-				if(myWorld.get(i, j) == Square.Type.DIRTY)
+				if(myWorld.get(i, j) == sqType)
 					dirtyCells.add(i + "-" + j);
 			}
 
@@ -189,7 +190,7 @@ public class Agent extends AbstractAgent {
 		GraphPath<String, DefaultWeightedEdge> path = null;
 		for (int j = 1; j < dirtyCells.size(); j++) {
 			try{
-				System.out.println("Search Path "+dirtyCells.get(0) + "," +dirtyCells.get(j));
+				System.out.println("Search Path to " +dirtyCells.get(j));
 				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, "0-0", dirtyCells.get(j)).getPath();
 				if(path == null){
 					removedVertex.add(dirtyCells.get(j));
@@ -209,9 +210,9 @@ public class Agent extends AbstractAgent {
 				dirtyCells.remove(removedVertex.get(i));
 		}
 
-		if(dirtyCells.size() == 0)
-			return false;
-		return true;
+		if(dirtyCells.size() > 0)
+			return true;
+		return false;
 	}
 
 	private int isVisited(int i, int j) {

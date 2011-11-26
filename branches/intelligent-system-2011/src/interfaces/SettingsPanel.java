@@ -319,6 +319,7 @@ public class SettingsPanel extends JPanel {
 						public void actionPerformed(ActionEvent arg0) {
 							mainFrame.agent.x = 0;
 							mainFrame.agent.y = 0;
+							mainFrame.agent.actionList.clear();
 							mainFrame.agent.goalReached = false;
 							mainFrame.gridPanel.update();
 							mainFrame.pack();
