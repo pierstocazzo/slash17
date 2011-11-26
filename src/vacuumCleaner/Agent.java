@@ -118,13 +118,19 @@ public class Agent extends AbstractAgent {
 		if(goHome){
 			if(calculatedAction.isEmpty()){
 				goalReached = true;
+				goHome = false;
+				scores = new int[myWorld.width][myWorld.length];
+				System.out.println("Scores: ");
+				for (int i = 0; i < myWorld.width; i++)
+					for (int j = 0; j < myWorld.length; j++)
+						scores[i][j] = 0;
 				return;
 			}
 			currAction = calculatedAction.remove(0).type;
 			return;
 		}
 
-		if(!RemainedCells(Square.Type.UNKNOWN)){
+		if(!RemainedCells()){
 			goHome  = true;
 			ArrayList<String> list = new ArrayList<String>();
 			list.add(x+"-"+y);
@@ -162,8 +168,8 @@ public class Agent extends AbstractAgent {
 		}
 	}
 
-	private boolean RemainedCells(Square.Type sqType) {
-		ArrayList<String> dirtyCells = new ArrayList<String>();
+	private boolean RemainedCells() {
+		ArrayList<String> unknowCells = new ArrayList<String>();
 		ArrayList<String> removedVertex = new ArrayList<String>();
 
 		// Create walkable cells's graph
@@ -182,35 +188,35 @@ public class Agent extends AbstractAgent {
 						walkableGraph.addWeightedEdge(v1, v2, 1);
 					}
 				}
-				if(myWorld.get(i, j) == sqType)
-					dirtyCells.add(i + "-" + j);
+				if(myWorld.get(i, j) == Square.Type.UNKNOWN)
+					unknowCells.add(i + "-" + j);
 			}
 
 		//Remove unreachable cells from home
 		GraphPath<String, DefaultWeightedEdge> path = null;
-		for (int j = 1; j < dirtyCells.size(); j++) {
+		for (int j = 1; j < unknowCells.size(); j++) {
 			try{
-				System.out.println("Search Path to " +dirtyCells.get(j));
-				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, "0-0", dirtyCells.get(j)).getPath();
+				System.out.println("Search Path to " +unknowCells.get(j));
+				path = new DijkstraShortestPath<String, DefaultWeightedEdge>(walkableGraph, "0-0", unknowCells.get(j)).getPath();
 				if(path == null){
-					removedVertex.add(dirtyCells.get(j));
-					System.out.println("Prepare Delete " + dirtyCells.get(j));
+					removedVertex.add(unknowCells.get(j));
+					System.out.println("Prepare Delete " + unknowCells.get(j));
 				}
 			}
 			catch (Exception e) {
 				System.out.println(e.getMessage());
-				removedVertex.add(dirtyCells.get(j));
-				System.out.println("Prepare Delete " + dirtyCells.get(j));
+				removedVertex.add(unknowCells.get(j));
+				System.out.println("Prepare Delete " + unknowCells.get(j));
 			}
 		}
 		for (int i = 0; i < removedVertex.size(); i++){
 			if(walkableGraph.containsVertex(removedVertex.get(i)))
 				walkableGraph.removeVertex(removedVertex.get(i));
-			if(dirtyCells.contains(removedVertex.get(i)))
-				dirtyCells.remove(removedVertex.get(i));
+			if(unknowCells.contains(removedVertex.get(i)))
+				unknowCells.remove(removedVertex.get(i));
 		}
 
-		if(dirtyCells.size() > 0)
+		if(unknowCells.size() > 0 || myWorld.dirtySquares() > 0)
 			return true;
 		return false;
 	}
