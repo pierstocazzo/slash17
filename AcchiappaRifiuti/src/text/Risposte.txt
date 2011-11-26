@@ -292,7 +292,7 @@ a0072_f_La deforestazione
 a0072_f_La siccita'
 a0073_f_E' raddoppiata 
 a0073_f_E' triplicata 
-a0073_f_E' aumentata di un terzo 
+a0073_t_E' aumentata di un terzo 
 a0073_f_E' diminuita di un quarto
 a0074_t_Qualcosa di cui ci disfiamo 
 a0074_f_Qualcosa che non utilizziamo 
