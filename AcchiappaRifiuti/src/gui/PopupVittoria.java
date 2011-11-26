@@ -70,7 +70,6 @@ public class PopupVittoria extends JDialog {
 
 		setTitle(giocatore + " hai VINTO!");
 		setModal(true);
-		setAlwaysOnTop(true);
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
