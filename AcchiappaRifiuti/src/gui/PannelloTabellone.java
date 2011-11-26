@@ -24,13 +24,13 @@ public class PannelloTabellone extends JPanel {
 	ArrayList<Giocatore> giocatori;
 	
 	public static final String DEFAULT = "img/mappe/Tabellone.jpg";
-	public static final String CENTRALE = "img/mappe/tabelloneCENTRO.PNG";
-	public static final String NE = "img/mappe/tabelloneNE.PNG";
-	public static final String E = "img/mappe/tabelloneE.PNG";
-	public static final String SE = "img/mappe/tabelloneSE.PNG";
-	public static final String SO = "img/mappe/tabelloneSO.PNG";
-	public static final String O = "img/mappe/tabelloneO.PNG";
-	public static final String NO = "img/mappe/tabelloneNO.PNG";
+	public static final String CENTRALE = "img/mappe/tabelloneCENTRO.png";
+	public static final String NE = "img/mappe/tabelloneNE.png";
+	public static final String E = "img/mappe/tabelloneE.png";
+	public static final String SE = "img/mappe/tabelloneSE.png";
+	public static final String SO = "img/mappe/tabelloneSO.png";
+	public static final String O = "img/mappe/tabelloneO.png";
+	public static final String NO = "img/mappe/tabelloneNO.png";
 
 	/** Creates new form PanelloTabellone */
 	public PannelloTabellone() {
