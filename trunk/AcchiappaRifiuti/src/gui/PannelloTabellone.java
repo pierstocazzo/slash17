@@ -54,7 +54,7 @@ public class PannelloTabellone extends JPanel {
 			Casella c = giocatori.get(i).getCasella();
 			
 			int x = Integer.parseInt(c.getX());
-			int y = Integer.parseInt(c.getY());
+			int y = Integer.parseInt(c.getY())-20;
 			
 			if (c.getTipo() == Casella.CENTRALE) {
 				switch (i) {
