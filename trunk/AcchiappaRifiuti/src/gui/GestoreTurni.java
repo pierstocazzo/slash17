@@ -104,7 +104,7 @@ public class GestoreTurni extends Thread {
 				setDadoLanciato(false);
 				int passiDisponibili = giocatoreCorrente.lancia();
 				
-				message = giocatoreCorrente.getNome() + " hai fatto " + passiDisponibili + ", muovi la pedina. \n" +
+				message = giocatoreCorrente.getNome() + " hai fatto " + passiDisponibili + ", muovi la pedina.\n" +
 						"Ti rimangono " + (3 - giocatoreCorrente.getNumLanci()) + " lanci\n\n";
 				JOptionPane.showMessageDialog(p, message, "Lancio dado", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getClassLoader().getResource("img/dado.gif")));
 	
@@ -277,6 +277,7 @@ public class GestoreTurni extends Thread {
 					new PopupInformazione(i.getTestoPiccolo(), i.getTestoGrande(), "Ops...un imprevisto!", "img/sfondoIMPREVISTI.jpg");
 					break;
 				case Casella.ISOLA:
+					Player.play(Player.ISOLA);
 					String mess2 = CasellaIsola.isola(giocatoreCorrente);
 					new PopupInformazione("", mess2, "Isola", "img/sfondoISOLA.jpg");
 					break;

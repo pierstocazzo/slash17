@@ -107,11 +107,9 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	}
 
 	public void scriviAreaPrincipale(String s) {
-//		textAreaConsole.setText("Riga 1\n" +
-//				"Riga 2\n" +
-//				"Riga 3\n");
-		textAreaConsole.setText(textAreaConsole.getText()+s);
-		textAreaConsole.setCaretPosition(textAreaConsole.getDocument().getLength());
+		textPaneConsole.setText(textPaneConsole.getText()+s);
+		textPaneConsole.setCaretPosition(textPaneConsole.getDocument().getLength());
+		textPaneConsole.repaint();
 	}
 
 	public void aggiornaTabellone() {
@@ -175,7 +173,6 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		textEditorPunteggi.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		textEditorPunteggi.setNumeroGiocatori(numeroGiocatori);
 		textEditorPunteggi.setEditable(false);
-		textEditorPunteggi.setFont(textEditorPunteggi.getFont().deriveFont(textEditorPunteggi.getFont().getStyle() | java.awt.Font.BOLD, 13));
 		Dimension sizePunteggi = new Dimension(252,654);
 		scrollPanePunteggi.setMaximumSize(sizePunteggi);
 		scrollPanePunteggi.setMinimumSize(sizePunteggi);
@@ -204,46 +201,35 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		/**** fine pannello tabellone ****/
 		
 		/**** inizio pannello console ****/
-		pannelloConsole = new JPanel();
-		pannelloConsole.setOpaque(false);
+		pannelloSud = new JPanel();
+		pannelloSud.setOpaque(false);
 		Dimension sizePannelloConsole = new Dimension(871, 100);
-		pannelloConsole.setPreferredSize(sizePannelloConsole);
-		pannelloConsole.setMinimumSize(sizePannelloConsole);
-		pannelloConsole.setMaximumSize(sizePannelloConsole);
+		pannelloSud.setPreferredSize(sizePannelloConsole);
+		pannelloSud.setMinimumSize(sizePannelloConsole);
+		pannelloSud.setMaximumSize(sizePannelloConsole);
 		
-		textAreaConsole = new JTextPane();
-		textAreaConsole.setFocusable(false);
-		textAreaConsole.setFont(new Font("RIM", Font.BOLD, 16));
-		textAreaConsole.setBackground(Color.green);
-		StyledDocument doc = textAreaConsole.getStyledDocument();
+		textPaneConsole = new JTextPane();
+		textPaneConsole.setFocusable(false);
+		textPaneConsole.setEditable(false);
+		textPaneConsole.setFont(new Font("RIM", Font.BOLD, 16));
+		textPaneConsole.setBackground(new Color(151, 193, 31));
+		StyledDocument doc = textPaneConsole.getStyledDocument();
 		SimpleAttributeSet cc = new SimpleAttributeSet();
 		StyleConstants.setAlignment(cc, StyleConstants.ALIGN_CENTER);
 		doc.setParagraphAttributes(0, doc.getLength(), cc, false);
 		
 		scrollPaneConsole = new JScrollPane();
+		scrollPaneConsole.setOpaque(false);
 		scrollPaneConsole.setFocusable(false);
 		Dimension sizeConsole = new Dimension(676, 90);
 		scrollPaneConsole.setPreferredSize(sizeConsole);
 		scrollPaneConsole.setMinimumSize(sizeConsole);
 		scrollPaneConsole.setMaximumSize(sizeConsole);
-		scrollPaneConsole.setViewportView(textAreaConsole);
-		pannelloConsole.add(scrollPaneConsole);
-		
+		scrollPaneConsole.setViewportView(textPaneConsole);
+		pannelloSud.add(scrollPaneConsole);
 		
 		/**** inizio pulsanti ****/
 		Dimension sizeButton = new Dimension(90, 90);
-		
-		regolamento = new JButton(new ImageIcon(getClass().getClassLoader().getResource("img/buttonRegolamento.jpg")));
-		regolamento.setPreferredSize(sizeButton);
-		regolamento.setMinimumSize(sizeButton);
-		regolamento.setMaximumSize(sizeButton);
-		regolamento.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new PopupRegolamento();
-			}
-		});
-		pannelloConsole.add(regolamento);
 		
 		lanciaDado = new JButton(new ImageIcon(getClass().getClassLoader().getResource("img/buttonDado.jpg")));
 		lanciaDado.setPreferredSize(sizeButton);
@@ -256,10 +242,23 @@ public class PannelloPricipale extends javax.swing.JPanel {
 				GestoreTurni.instance().setDadoLanciato(true);
 			}
 		});
-		pannelloConsole.add(lanciaDado);
+		pannelloSud.add(lanciaDado);
+		
+		regolamento = new JButton(new ImageIcon(getClass().getClassLoader().getResource("img/buttonRegolamento.jpg")));
+		regolamento.setPreferredSize(sizeButton);
+		regolamento.setMinimumSize(sizeButton);
+		regolamento.setMaximumSize(sizeButton);
+		regolamento.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new PopupRegolamento();
+			}
+		});
+		pannelloSud.add(regolamento);
+		
 		/**** fine pulsanti ****/
 		
-		pannelloCentrale.add(pannelloConsole, BorderLayout.SOUTH);
+		pannelloCentrale.add(pannelloSud, BorderLayout.SOUTH);
 		/**** fine pannello console ****/
 		
 		add(pannelloCentrale, BorderLayout.CENTER);
@@ -267,10 +266,10 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		/**** fine pannello principale ****/
 	}
 
-	private JTextPane textAreaConsole;
+	private JTextPane textPaneConsole;
 	private JPanel pannelloPunteggi;
 	private JPanel pannelloCentrale;
-	private JPanel pannelloConsole;
+	private JPanel pannelloSud;
 	private JScrollPane scrollPanePunteggi;
 	private JScrollPane scrollPaneConsole;
 	private JEditorPaneConSfondo textEditorPunteggi;
