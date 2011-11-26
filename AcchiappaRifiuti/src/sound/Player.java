@@ -22,7 +22,7 @@ public class Player extends Thread {
     public static final String IMPREVISTO = "sound/errata_imprevisto.wav";
     public static final String JOLLY = "sound/corretta_jolly.wav";
     public static final String DOMANDA = "sound/domanda.wav";
-//    public static final String ISOLA = "sound/dice.wav";
+    public static final String ISOLA = "sound/isola.wav";
     
 	private String filename;
  
