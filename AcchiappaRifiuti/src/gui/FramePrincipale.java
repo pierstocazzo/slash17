@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -22,13 +23,16 @@ public class FramePrincipale extends JFrame {
 			}
 		});
 		
+		Dimension sizePrincipale = new Dimension(1148, 694);
+		setMaximumSize(sizePrincipale);
+		setMinimumSize(sizePrincipale);
+		setPreferredSize(sizePrincipale); 
+		
 		gioco = new PannelloPricipale();
 		add(gioco);
 		
-		pack();
+//		pack();
 		setVisible(true);
 	}
-
-	
 }
 	
