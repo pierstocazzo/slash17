@@ -124,8 +124,11 @@ public class MainJFrame extends javax.swing.JFrame {
      * the max number of step (opBound) is not reached
      */
 	public void mainLoop(){
-		agent.actionList.clear();
 		env.show();
+		agent.actionList.clear();
+		System.out.println("goal reached " + agent.goalReached());
+		System.out.println("stopped " + stopped);
+		System.out.println("energy " + agent.energy);
 		while(!agent.goalReached() && !stopped && agent.energy>0){
 			agent.energy--;
 			env.update();

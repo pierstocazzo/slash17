@@ -14,6 +14,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -88,6 +89,8 @@ public class SettingsPanel extends JPanel {
 	private JLabel currTypeEnvValueLabel;
 
 	private JButton resetButton;
+
+	private JLabel goalReachedLabel;
 
 	/**
 	 * 
@@ -316,6 +319,7 @@ public class SettingsPanel extends JPanel {
 						public void actionPerformed(ActionEvent arg0) {
 							mainFrame.agent.x = 0;
 							mainFrame.agent.y = 0;
+							mainFrame.agent.goalReached = false;
 							mainFrame.gridPanel.update();
 							mainFrame.pack();
 						}
@@ -371,7 +375,7 @@ public class SettingsPanel extends JPanel {
 				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
 				Border marginInside = new EmptyBorder(10,10,10,10);
 				statusPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
-				statusPanel.setLayout(new GridLayout(5,1));
+				statusPanel.setLayout(new GridLayout(6,1));
 				add(statusPanel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
 				JPanel pmPanel = new JPanel();
@@ -414,6 +418,13 @@ public class SettingsPanel extends JPanel {
 					currVisibilityPanel.add(currVisibilityLabel);
 					currVisibilityPanel.add(currVisibilityValueLabel);
 				}
+				JPanel goalPanel = new JPanel();
+				statusPanel.add(goalPanel);
+				{
+					goalReachedLabel = new JLabel("GOAL NOT REACHED");
+					goalReachedLabel.setForeground(Color.RED);
+					goalPanel.add(goalReachedLabel);
+				}
 			}
 		}
 	}
@@ -450,5 +461,13 @@ public class SettingsPanel extends JPanel {
 		stepsValueLabel.setText("" + mainFrame.agent.actionList.size());
 		currEnergyValueLabel.setText("" + mainFrame.agent.energy);
 		currVisibilityValueLabel.setText("" + mainFrame.agent.visType);
+		if(mainFrame.agent.goalReached){
+			goalReachedLabel.setForeground(Color.GREEN);
+			goalReachedLabel.setText("GOAL REACHED");
+		}
+		else{
+			goalReachedLabel.setForeground(Color.RED);
+			goalReachedLabel.setText("GOAL NOT REACHED");
+		}
 	}
 }
