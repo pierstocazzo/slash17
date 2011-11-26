@@ -18,7 +18,7 @@ public abstract class AbstractAgent {
 	Perception perception;
 	public int x;
 	public int y;
-	public int opBound;
+	public int energy;
 	public VisibilityType visType;
 	int squaresCleanedByMe = 0;
 	boolean goalReached = false;
@@ -29,7 +29,7 @@ public abstract class AbstractAgent {
 		this.x = x;
 		this.y = y;
 		this.visType = visType;
-		this.opBound = opBound;
+		this.energy = opBound;
 		currAction = Action.Type.NOOP;
 		actionList = new ArrayList<Action>();
 	}
@@ -38,7 +38,7 @@ public abstract class AbstractAgent {
 	 * @return true if the agent has reached the goal
 	 */
 	public abstract boolean goalReached();
-
+	
 	/**
 	 * Make the agent perceives from environment
 	 * @param perception current perception from the environment

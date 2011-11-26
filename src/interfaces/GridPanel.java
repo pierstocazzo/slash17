@@ -21,7 +21,6 @@ public class GridPanel extends JPanel {
 	private JLabel[][] labelMatrix;
 	public static ImageIcon dirtIcon, obstacleIcon, tileIcon, vacuumIcon;
 	public int labelSize;
-	public static int iconSize = 60;
 	static Environment env;
 	
 	static Square.Type currType;
@@ -49,10 +48,10 @@ public class GridPanel extends JPanel {
 		add(flowPanel);
 		flowPanel.setLayout(new GridLayout(env.floor.length, env.floor.width));
 		
-		dirtIcon = new ImageIcon(new ImageIcon("img/dirt.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
-		obstacleIcon = new ImageIcon(new ImageIcon("img/obstacle.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
-		tileIcon = new ImageIcon(new ImageIcon("img/tile.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
-		vacuumIcon = new ImageIcon(new ImageIcon("img/vacuum.jpeg").getImage().getScaledInstance(iconSize,iconSize,iconSize));
+		dirtIcon = ImageLoader.dirtIcon;
+		obstacleIcon = ImageLoader.obstacleIcon;
+		tileIcon = ImageLoader.tileIcon;
+		vacuumIcon = ImageLoader.vacuumIcon;
 		
 		labelMatrix = new JLabel[env.floor.length][env.floor.width];
 		
@@ -66,7 +65,7 @@ public class GridPanel extends JPanel {
 				constraints.gridx = i;
 				constraints.gridy = j;
 				final JLabel label = new JLabel();
-				label.setPreferredSize(new Dimension(iconSize,iconSize));
+				label.setPreferredSize(new Dimension(ImageLoader.iconSize,ImageLoader.iconSize));
 				label.addMouseListener(new ClickHandler(label,i,j));
 				labelMatrix[i][j] = label;
 				flowPanel.add(label, constraints);

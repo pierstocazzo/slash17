@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,18 +21,23 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.ColorUIResource;
 
 import vacuumCleaner.AbstractAgent.VisibilityType;
 import vacuumCleaner.Environment;
+import vacuumCleaner.Square;
 import vacuumCleaner.Environment.Type;
+import vacuumCleaner.Floor;
 
 public class SettingsPanel extends JPanel {
 
@@ -40,17 +46,17 @@ public class SettingsPanel extends JPanel {
 	public MainJFrame mainFrame;
 
 	private JPanel dimensionPanel;
-	private JTextField sizeField;
+	private JSpinner sizeField;
 	private JLabel sizeLabel;
 
 	private JPanel generationPanel;
-	private JTextField dirtField;
+	private JSpinner dirtField;
 	private JLabel dirtLabel;
-	private JTextField obstaclesField;
+	private JSpinner obstaclesField;
 	private JLabel obstaclesLabel;
 
 	private JPanel agentPanel;
-	private JTextField agentEnergyField;
+	private JSpinner agentEnergyField;
 	private JLabel agentEnergylabel;
 	private JLabel agentVisibilityLabel;
 	private JComboBox agentVisibilityCombobox;
@@ -76,6 +82,12 @@ public class SettingsPanel extends JPanel {
 	ImageIcon playIcon, stopIcon, nextIcon;
 
 	private JButton onesButton;
+	private JLabel currVisibilityLabel;
+	private JLabel currVisibilityValueLabel;
+	private JLabel currTypeEnvLabel;
+	private JLabel currTypeEnvValueLabel;
+
+	private JButton resetButton;
 
 	/**
 	 * 
@@ -85,33 +97,15 @@ public class SettingsPanel extends JPanel {
 		{
 			this.mainFrame = mainFrame;
 
-			playIcon = new ImageIcon( new ImageIcon("img/play.png").getImage().getScaledInstance(30,30,30));
-			stopIcon = new ImageIcon( new ImageIcon("img/stop.png").getImage().getScaledInstance(30,30,30));
-			nextIcon = new ImageIcon( new ImageIcon("img/next.png").getImage().getScaledInstance(30,30,30));
+			playIcon = ImageLoader.playIcon;
+			stopIcon = ImageLoader.stopIcon;
+			nextIcon = ImageLoader.nextIcon;
 
 			GridBagLayout jPanel2Layout = new GridBagLayout();
 			jPanel2Layout.rowWeights = new double[] {0.1, 0.1, 0.1, 0.1};
 			jPanel2Layout.rowHeights = new int[] {1,1,1,1};
 			jPanel2Layout.columnWeights = new double[] {0.1};
 			jPanel2Layout.columnWidths = new int[] {1};
-
-			DocumentListener refreshListener = (new DocumentListener() {
-
-				@Override
-				public void removeUpdate(DocumentEvent arg0) {
-					refreshButton.setBackground(Color.YELLOW);
-				}
-
-				@Override
-				public void insertUpdate(DocumentEvent arg0) {
-					refreshButton.setBackground(Color.YELLOW);
-				}
-
-				@Override
-				public void changedUpdate(DocumentEvent arg0) {
-					refreshButton.setBackground(Color.YELLOW);
-				}
-			});
 
 			setLayout(jPanel2Layout);
 			{
@@ -128,11 +122,33 @@ public class SettingsPanel extends JPanel {
 				sizeLabel = new JLabel();
 				dimensionPanel.add(sizeLabel);
 				sizeLabel.setText("Size");
-				sizeField = new JTextField();
+				sizeField = new JSpinner();
 				dimensionPanel.add(sizeField);
-				sizeField.setText("" + mainFrame.env.floor.length);
-				sizeField.setPreferredSize(new Dimension(30, 30));
-				sizeField.getDocument().addDocumentListener(refreshListener);
+				sizeField.setValue(mainFrame.env.floor.length);
+				sizeField.setPreferredSize(new Dimension(40, 30));
+				sizeField.addChangeListener(new ChangeListener() {
+
+					@Override
+					public void stateChanged(ChangeEvent arg0) {
+						int size = (Integer) sizeField.getValue();
+						if(size < min_dim ){
+							size = min_dim;
+							sizeField.setValue(min_dim);
+							JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
+						}
+						if(size > max_dim ){
+							size = max_dim;
+							sizeField.setValue(max_dim);
+							JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
+						}
+						mainFrame.env.floor = new Floor(size, size, Square.Type.CLEAN);
+						mainFrame.env.floor.initialDirt = 0;
+						mainFrame.getContentPane().remove(mainFrame.gridPanel);
+						mainFrame.gridPanel = new GridPanel(mainFrame.env);
+						mainFrame.getContentPane().add(mainFrame.gridPanel, BorderLayout.EAST);
+						mainFrame.pack();
+					}
+				});
 
 				envTypeLabel = new JLabel("Type");
 
@@ -145,7 +161,8 @@ public class SettingsPanel extends JPanel {
 
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
-						refreshButton.setBackground(Color.YELLOW);
+						mainFrame.env.type = (Type) envTypeCombobox.getSelectedItem();
+						update();
 					}
 				});
 
@@ -167,23 +184,55 @@ public class SettingsPanel extends JPanel {
 					/*number of obstacles*/
 					obstaclesLabel = new JLabel();
 					obstaclesLabel.setText("Obstacles");
-					obstaclesField = new JTextField();
-					obstaclesField.setText("7");
-					obstaclesField.setPreferredSize(new Dimension(30, 30));
-					obstaclesField.getDocument().addDocumentListener(refreshListener);
+					obstaclesField = new JSpinner();
+					obstaclesField.setValue(0);
+					obstaclesField.setPreferredSize(new Dimension(40, 30));
+					obstaclesField.addChangeListener(new ChangeListener() {
+
+						@Override
+						public void stateChanged(ChangeEvent arg0) {
+							refreshButton.setBackground(Color.YELLOW);
+						}
+					});
 
 					/*number of dirty tiles*/
 					dirtLabel = new JLabel();
 					dirtLabel.setText("Dirt");
-					dirtField = new JTextField();
-					dirtField.setText("15");
-					dirtField.setPreferredSize(new Dimension(30, 30));
-					dirtField.getDocument().addDocumentListener(refreshListener);
+					dirtField = new JSpinner();
+					dirtField.setValue(0);
+					dirtField.setPreferredSize(new Dimension(40, 30));
+					dirtField.addChangeListener(new ChangeListener() {
+
+						@Override
+						public void stateChanged(ChangeEvent arg0) {
+							refreshButton.setBackground(Color.YELLOW);
+						}
+					});
 
 					generationPanel.add(obstaclesLabel);
 					generationPanel.add(obstaclesField);
 					generationPanel.add(dirtLabel);
 					generationPanel.add(dirtField);
+					/*Refresh current configuration*/
+					refreshButton = new JButton();
+					generationPanel.add(refreshButton);
+					refreshButton.setText("Refresh");
+					refreshButton.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							refreshButton.setBackground(new ColorUIResource(238,238,238));
+							int numDirtySquares = (Integer) dirtField.getValue();
+							int numObstacles = (Integer) obstaclesField.getValue();
+							mainFrame.env.floor.clear();
+							mainFrame.env.floor.generateObject(numDirtySquares, numObstacles);
+							mainFrame.env.floor.set(0, 0, Square.Type.CLEAN);
+							mainFrame.env.floor.initialDirt = numDirtySquares;
+							mainFrame.getContentPane().remove(mainFrame.gridPanel);
+							mainFrame.gridPanel = new GridPanel(mainFrame.env);
+							mainFrame.getContentPane().add(mainFrame.gridPanel, BorderLayout.EAST);
+							mainFrame.pack();
+						}
+					});
 				}
 			}
 			{
@@ -203,9 +252,23 @@ public class SettingsPanel extends JPanel {
 
 				agentEnergylabel = new JLabel("Energy");
 				agentEnergyPanel.add(agentEnergylabel);
-				agentEnergyField = new JTextField("" + mainFrame.agent.opBound);
-				agentEnergyField.setPreferredSize(new Dimension(30, 30));
-				agentEnergyField.getDocument().addDocumentListener(refreshListener);
+				agentEnergyField = new JSpinner();
+				agentEnergyField.setValue(mainFrame.agent.energy);
+				agentEnergyField.setPreferredSize(new Dimension(60, 30));
+				agentEnergyField.addChangeListener(new ChangeListener() {
+
+					@Override
+					public void stateChanged(ChangeEvent arg0) {
+						mainFrame.agent.actionList.clear();
+						int energy = (Integer) SettingsPanel.this.agentEnergyField.getValue();
+						if(energy < 0){
+							energy = 0;
+							SettingsPanel.this.agentEnergyField.setValue(0);
+						}
+						mainFrame.agent.energy = energy;
+						update();
+					}
+				});
 				agentEnergyPanel.add(agentEnergyField);
 
 				JPanel agentVisibilityPanel = new JPanel();
@@ -224,8 +287,8 @@ public class SettingsPanel extends JPanel {
 
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
-						refreshButton.setText("Refresh*");
-						refreshButton.setBackground(Color.YELLOW);
+						mainFrame.agent.visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
+						update();
 					}
 				});
 
@@ -244,33 +307,17 @@ public class SettingsPanel extends JPanel {
 
 				add(commandPanel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 				{   
-					/*Refresh current configuration*/
-					refreshButton = new JButton();
-					commandPanel.add(refreshButton);
-					refreshButton.setText("Refresh");
-					refreshButton.addActionListener(new ActionListener() {
+					/*Start simulation of agent*/
+					resetButton = new JButton();
+					commandPanel.add(resetButton);
+					resetButton.setText("Reset");
+					resetButton.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							int size = Integer.parseInt(sizeField.getText());
-							int dirt = Integer.parseInt(dirtField.getText());
-							int obstacles = Integer.parseInt(obstaclesField.getText());
-							int energy = Integer.parseInt(agentEnergyField.getText());
-							Environment.Type envType =  (Type) envTypeCombobox.getSelectedItem();
-							VisibilityType visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
-							if(size < min_dim ){
-								size = min_dim;
-								sizeField.setText("" + min_dim);
-								JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
-							}
-							if(size > max_dim ){
-								size = max_dim;
-								sizeField.setText("" + max_dim);
-								JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
-							}
-							mainFrame.newConfig(size, dirt, obstacles, envType, visType, energy);
-							update();
-							refreshButton.setText("Refresh");
-							refreshButton.setBackground(new ColorUIResource(238,238,238));
+							mainFrame.agent.x = 0;
+							mainFrame.agent.y = 0;
+							mainFrame.gridPanel.update();
+							mainFrame.pack();
 						}
 					});
 					/*Start simulation of agent*/
@@ -283,6 +330,7 @@ public class SettingsPanel extends JPanel {
 							System.out.println("Clicked " + mainFrame.stopped);
 							if(mainFrame.stopped){
 								mainFrame.stopped = false;
+								System.out.println("Start thread");
 								class myThread implements Runnable{
 									public void run() {
 										mainFrame.mainLoop();
@@ -323,10 +371,18 @@ public class SettingsPanel extends JPanel {
 				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
 				Border marginInside = new EmptyBorder(10,10,10,10);
 				statusPanel.setBorder(new CompoundBorder(upperBorder, marginInside));
-				statusPanel.setLayout(new GridLayout(3,1));
+				statusPanel.setLayout(new GridLayout(5,1));
 				add(statusPanel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
 				JPanel pmPanel = new JPanel();
+				JPanel currTypeEnvPanel = new JPanel();
+				statusPanel.add(currTypeEnvPanel);
+				{
+					currTypeEnvLabel = new JLabel("Environment's type:");
+					currTypeEnvValueLabel = new JLabel("" + mainFrame.env.type);
+					currTypeEnvPanel.add(currTypeEnvLabel);
+					currTypeEnvPanel.add(currTypeEnvValueLabel);
+				}
 				statusPanel.add(pmPanel);
 				{
 					pmLabel = new JLabel("Performance Measure:");
@@ -346,21 +402,53 @@ public class SettingsPanel extends JPanel {
 				statusPanel.add(currEnergyPanel);
 				{
 					currEnergyLabel = new JLabel("Agent's energy:");
-					currEnergyValueLabel = new JLabel("" + (mainFrame.agent.opBound - mainFrame.agent.actionList.size()));
+					currEnergyValueLabel = new JLabel("" + (mainFrame.agent.energy - mainFrame.agent.actionList.size()));
 					currEnergyPanel.add(currEnergyLabel);
 					currEnergyPanel.add(currEnergyValueLabel);
 				}
+				JPanel currVisibilityPanel = new JPanel();
+				statusPanel.add(currVisibilityPanel);
+				{
+					currVisibilityLabel = new JLabel("Agent's visibility:");
+					currVisibilityValueLabel = new JLabel("" + mainFrame.agent.visType);
+					currVisibilityPanel.add(currVisibilityLabel);
+					currVisibilityPanel.add(currVisibilityValueLabel);
+				}
 			}
 		}
+	}
+	protected void refreshConfi() {
+		int size = (Integer) sizeField.getValue();
+		int dirt = (Integer) dirtField.getValue();
+		int obstacles = (Integer) obstaclesField.getValue();
+		int energy = (Integer) agentEnergyField.getValue();
+		Environment.Type envType =  (Type) envTypeCombobox.getSelectedItem();
+		VisibilityType visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
+		if(size < min_dim ){
+			size = min_dim;
+			sizeField.setValue(min_dim);
+			JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
+		}
+		if(size > max_dim ){
+			size = max_dim;
+			sizeField.setValue(max_dim);
+			JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
+		}
+		mainFrame.newConfig(size, envType, visType, energy);
+		update();
+		refreshButton.setText("Refresh");
+		
 	}
 	public void update() {
 		if(mainFrame.stopped)
 			controlButton.setIcon(playIcon);
 		else
 			controlButton.setIcon(stopIcon);
-		
+
+		currTypeEnvValueLabel.setText("" + mainFrame.env.type);
 		pmValueLabel.setText("" + mainFrame.env.performanceMeasure());
 		stepsValueLabel.setText("" + mainFrame.agent.actionList.size());
-		currEnergyValueLabel.setText("" + (mainFrame.agent.opBound - mainFrame.agent.actionList.size()));
+		currEnergyValueLabel.setText("" + mainFrame.agent.energy);
+		currVisibilityValueLabel.setText("" + mainFrame.agent.visType);
 	}
 }
