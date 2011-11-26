@@ -80,7 +80,6 @@ public class Pedina {
 	public void setPosizione(int x, int y) {
 		this.x = x;
 		this.y = y;
-
 	}
 
 	public void disegna() {

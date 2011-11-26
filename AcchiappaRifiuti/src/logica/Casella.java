@@ -60,13 +60,13 @@ public class Casella {
 	}
 
 	public int getTipo() {
-		if (this.nome.matches("imprevisti"))
+		if (this.nome.contains("imprevisti"))
 			return IMPREVISTO;
-		else if (this.nome.matches("jolly"))
+		else if (this.nome.contains("jolly"))
 			return JOLLY;
-		else if (this.nome.matches("isola.*"))
+		else if (this.nome.contains("isola"))
 			return ISOLA;
-		else if (this.nome.matches("start"))
+		else if (this.nome.contains("start"))
 			return CENTRALE;
 		else
 			return DOMANDA;
