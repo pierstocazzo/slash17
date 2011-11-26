@@ -40,7 +40,6 @@ public class PopupInformazione extends JDialog {
 		this.title = title;
 
 		setModal(true);
-//		setAlwaysOnTop(true);
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
