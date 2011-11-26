@@ -74,7 +74,7 @@ public class Giocatore {
 	public Giocatore(String nome, Casella c, Pedina p) {
 		setNome(nome);
 		setPedina(p);
-		setCasella(c);
+		casella = c;
 		dado = new Dado();
 		
 		punt_carta = punteggioIniziale;

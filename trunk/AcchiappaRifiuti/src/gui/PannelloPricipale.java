@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -50,18 +51,19 @@ public class PannelloPricipale extends javax.swing.JPanel {
 
 	/** Creates new form PannelloPricipale */
 	public PannelloPricipale() {
-		initComponents();
-		
 		GestoreTurni.newInstance();
 		
 		String s = JOptionPane.showInputDialog(null, "Quanti giocatori?");
-
 		while (!Pattern.matches("\\d+", s) || Integer.parseInt(s) < 1 || Integer.parseInt(s) > 5)
 			s = JOptionPane.showInputDialog(null, "Quanti giocatori? Inserisci un numero tra 1 e 5!");
 
 		numeroGiocatori = Integer.parseInt(s);
 		if (numeroGiocatori == 1) 
-			setSinglePlayer(true);
+			singlePlayer = true;
+		else
+			singlePlayer = false;
+		
+		creaInterfaccia();
 		
 		giocatori = new Giocatore[numeroGiocatori];
 		GestioneCaselle g = new GestioneCaselle();
@@ -74,36 +76,15 @@ public class PannelloPricipale extends javax.swing.JPanel {
 			
 			String nome = JOptionPane.showInputDialog(null, "Qual e' il nome del giocatore " + (i + 1) + "?");
 			
-			switch (i) {
-			case 0:
-				x = x - 30;
-				break;
-			case 1:
-				y = y - 30;
-				break;
-			case 2:
-				break;
-			case 3:
-				x = x + 30;
-				break;
-			case 4:
-				y = y + 30;
-				break;
-			}
-			if (singlePlayer) {
-				x = 866/2-15;
-				y = 560/2-15;
-			}
-			
 			ClassLoader cldr = this.getClass().getClassLoader();
 			Pedina p = new Pedina(new ImageIcon(cldr.getResource("img/pedine/" + (i + 1) + ".png")).getImage(), x, y);
 
 			giocatori[i] = new Giocatore(nome, centrale, p);
 			
-			panelloTabellone.addpedina(p);
+			pannelloTabellone.addGiocatore(giocatori[i]);
 		}
 		giocatoreCorrente = 0;
-
+		
 		aggiornaPunteggi();
 
 		handler = new KeyHandler(this);
@@ -131,7 +112,7 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	}
 
 	public void aggiornaTabellone() {
-		panelloTabellone.repaint();
+		pannelloTabellone.repaint();
 	}
 
 	public void aggiornaPunteggi() {
@@ -168,105 +149,129 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		return numeroGiocatori;
 	}
 
-	private void initComponents() {
+	private void creaInterfaccia() {
+		/**** inizio pannello principale ****/
 		setOpaque(false);
+		setLayout(new BorderLayout());
+		Dimension sizePrincipale = new Dimension(1138, 664);
+		setMaximumSize(sizePrincipale);
+		setMinimumSize(sizePrincipale);
+		setPreferredSize(sizePrincipale); 
 		
-		setMaximumSize(new java.awt.Dimension(1150, 680));
-		setMinimumSize(new java.awt.Dimension(1150, 680));
-		setPreferredSize(new java.awt.Dimension(1150, 680));
-		
-		pannelloPunteggi = new javax.swing.JPanel();
+		/**** inizio pannello punteggi ****/
+		pannelloPunteggi = new JPanel();
+		pannelloPunteggi.setFocusable(false);
 		pannelloPunteggi.setOpaque(false);
-		scrollPanePunteggi = new javax.swing.JScrollPane();
+		pannelloPunteggi.setBorder(BorderFactory.createEmptyBorder());
+		
+		scrollPanePunteggi = new JScrollPane();
+		scrollPanePunteggi.setFocusable(false);
+		
 		textEditorPunteggi = new JEditorPaneConSfondo(new ImageIcon(getClass().getClassLoader().getResource("img/pannelloLaterale.jpg")).getImage()); 
-		textEditorPunteggi.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 0));
+		textEditorPunteggi.setFocusable(false);
+		textEditorPunteggi.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+		textEditorPunteggi.setNumeroGiocatori(numeroGiocatori);
+		textEditorPunteggi.setEditable(false);
+		textEditorPunteggi.setFont(textEditorPunteggi.getFont().deriveFont(textEditorPunteggi.getFont().getStyle() | java.awt.Font.BOLD, 13));
+		Dimension sizePunteggi = new Dimension(252,654);
+		scrollPanePunteggi.setMaximumSize(sizePunteggi);
+		scrollPanePunteggi.setMinimumSize(sizePunteggi);
+		scrollPanePunteggi.setPreferredSize(sizePunteggi);
+		scrollPanePunteggi.setViewportView(textEditorPunteggi);
+		pannelloPunteggi.add(scrollPanePunteggi);
 		
-		JPanel center = new JPanel();
-		center.setOpaque(false);
-		JPanel pannelloConsole = new JPanel();
+		add(pannelloPunteggi, BorderLayout.WEST);
+		/**** fine pannello punteggi ****/
+		
+		/**** inizio pannello centrale ****/
+		pannelloCentrale = new JPanel();
+		pannelloCentrale.setOpaque(false);
+		pannelloCentrale.setLayout(new BorderLayout());
+		pannelloCentrale.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+		Dimension sizeCentrale = new Dimension(867, 649);
+		pannelloCentrale.setPreferredSize(sizeCentrale);
+		pannelloCentrale.setMinimumSize(sizeCentrale);
+		pannelloCentrale.setMaximumSize(sizeCentrale);
+		
+		/**** inizio pannello tabellone ****/
+		pannelloTabellone = new PannelloTabellone();
+		pannelloTabellone.setOpaque(false);
+		pannelloTabellone.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+		pannelloCentrale.add(pannelloTabellone, BorderLayout.NORTH);
+		/**** fine pannello tabellone ****/
+		
+		/**** inizio pannello console ****/
+		pannelloConsole = new JPanel();
 		pannelloConsole.setOpaque(false);
+		Dimension sizePannelloConsole = new Dimension(871, 100);
+		pannelloConsole.setPreferredSize(sizePannelloConsole);
+		pannelloConsole.setMinimumSize(sizePannelloConsole);
+		pannelloConsole.setMaximumSize(sizePannelloConsole);
 		
-		panelloTabellone = new PannelloTabellone();
-		panelloTabellone.setOpaque(false);
-		
-		scrollPaneConsole = new javax.swing.JScrollPane();
 		textAreaConsole = new JTextPane();
+		textAreaConsole.setFocusable(false);
 		textAreaConsole.setFont(new Font("RIM", Font.BOLD, 16));
 		textAreaConsole.setBackground(Color.green);
 		StyledDocument doc = textAreaConsole.getStyledDocument();
 		SimpleAttributeSet cc = new SimpleAttributeSet();
 		StyleConstants.setAlignment(cc, StyleConstants.ALIGN_CENTER);
 		doc.setParagraphAttributes(0, doc.getLength(), cc, false);
-
-		textAreaConsole.setAlignmentY(CENTER_ALIGNMENT);
-
-		textEditorPunteggi.setEditable(false);
-		textEditorPunteggi.setFont(textEditorPunteggi.getFont().deriveFont(textEditorPunteggi.getFont().getStyle() | java.awt.Font.BOLD, 13));
-		Dimension size = new Dimension(252,670);
-		scrollPanePunteggi.setMaximumSize(size);
-		scrollPanePunteggi.setMinimumSize(size);
-		scrollPanePunteggi.setPreferredSize(size);
-		scrollPanePunteggi.setViewportView(textEditorPunteggi);
-		pannelloPunteggi.add(scrollPanePunteggi);
-
+		
+		scrollPaneConsole = new JScrollPane();
 		scrollPaneConsole.setFocusable(false);
-		textAreaConsole.setFocusable(false);
-		pannelloPunteggi.setFocusable(false);
-		scrollPanePunteggi.setFocusable(false);
-		textEditorPunteggi.setFocusable(false);
-		
-		setLayout(new BorderLayout());
-		add(pannelloPunteggi, BorderLayout.WEST);
-		add(center, BorderLayout.CENTER);
-		
-		center.setLayout(new BorderLayout());
-		center.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		center.setPreferredSize(new java.awt.Dimension(866, 659));
-		center.setMinimumSize(new java.awt.Dimension(866, 659));
-		center.setMaximumSize(new java.awt.Dimension(866, 659));
-		center.add(panelloTabellone, BorderLayout.NORTH);
-		center.add(pannelloConsole, BorderLayout.SOUTH);
-		
-		scrollPaneConsole.setPreferredSize(new java.awt.Dimension(680, 90));
-		scrollPaneConsole.setMinimumSize(new java.awt.Dimension(680, 90));
-		scrollPaneConsole.setMaximumSize(new java.awt.Dimension(680, 90));
+		Dimension sizeConsole = new Dimension(676, 90);
+		scrollPaneConsole.setPreferredSize(sizeConsole);
+		scrollPaneConsole.setMinimumSize(sizeConsole);
+		scrollPaneConsole.setMaximumSize(sizeConsole);
 		scrollPaneConsole.setViewportView(textAreaConsole);
 		pannelloConsole.add(scrollPaneConsole);
 		
+		
+		/**** inizio pulsanti ****/
+		Dimension sizeButton = new Dimension(90, 90);
+		
 		regolamento = new JButton(new ImageIcon(getClass().getClassLoader().getResource("img/buttonRegolamento.jpg")));
-		regolamento.setPreferredSize(new java.awt.Dimension(88, 88));
-		regolamento.setMinimumSize(new java.awt.Dimension(88, 88));
-		regolamento.setMaximumSize(new java.awt.Dimension(88, 88));
-		pannelloConsole.add(regolamento);
+		regolamento.setPreferredSize(sizeButton);
+		regolamento.setMinimumSize(sizeButton);
+		regolamento.setMaximumSize(sizeButton);
 		regolamento.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new PopupRegolamento();
 			}
 		});
+		pannelloConsole.add(regolamento);
 		
 		lanciaDado = new JButton(new ImageIcon(getClass().getClassLoader().getResource("img/buttonDado.jpg")));
-		lanciaDado.setPreferredSize(new java.awt.Dimension(88, 88));
-		lanciaDado.setMinimumSize(new java.awt.Dimension(88, 88));
-		lanciaDado.setMaximumSize(new java.awt.Dimension(88, 88));
-		pannelloConsole.add(lanciaDado);
+		lanciaDado.setPreferredSize(sizeButton);
+		lanciaDado.setMinimumSize(sizeButton);
+		lanciaDado.setMaximumSize(sizeButton);
 		lanciaDado.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Player.play(Player.LANCIADADO);
 				GestoreTurni.instance().setDadoLanciato(true);
 			}
 		});
+		pannelloConsole.add(lanciaDado);
+		/**** fine pulsanti ****/
+		
+		pannelloCentrale.add(pannelloConsole, BorderLayout.SOUTH);
+		/**** fine pannello console ****/
+		
+		add(pannelloCentrale, BorderLayout.CENTER);
+		/**** fine pannello centrale ****/
+		/**** fine pannello principale ****/
 	}
 
 	private JTextPane textAreaConsole;
-	private javax.swing.JPanel pannelloPunteggi;
-	private javax.swing.JScrollPane scrollPanePunteggi;
-	private javax.swing.JScrollPane scrollPaneConsole;
+	private JPanel pannelloPunteggi;
+	private JPanel pannelloCentrale;
+	private JPanel pannelloConsole;
+	private JScrollPane scrollPanePunteggi;
+	private JScrollPane scrollPaneConsole;
 	private JEditorPaneConSfondo textEditorPunteggi;
-	private gui.PannelloTabellone panelloTabellone;
+	private PannelloTabellone pannelloTabellone;
 	private JButton regolamento;
 	private JButton lanciaDado;
 
@@ -283,6 +288,6 @@ public class PannelloPricipale extends javax.swing.JPanel {
 	}
 
 	public void setSfondo(String image) {
-		panelloTabellone.setImage(image);
+		pannelloTabellone.setImage(image);
 	}
 }
