@@ -63,6 +63,7 @@ public class PopupDomanda extends JDialog {
 
 		setDomanda(dom);
 		setModal(true);
+		setResizable(false);
 		group = new ButtonGroup();
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
