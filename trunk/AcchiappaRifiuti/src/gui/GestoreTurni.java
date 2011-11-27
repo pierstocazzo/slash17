@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import logica.Casella;
 import logica.CasellaDomanda;
 import logica.CasellaIsola;
@@ -104,10 +103,12 @@ public class GestoreTurni extends Thread {
 				setDadoLanciato(false);
 				int passiDisponibili = giocatoreCorrente.lancia();
 				
-				message = giocatoreCorrente.getNome() + " hai fatto " + passiDisponibili + ", muovi la pedina.\n" +
+				ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("img/dado/"+passiDisponibili+".gif"));
+				new PopupDado(giocatoreCorrente.getNome(), icon);
+				
+				
+				message = giocatoreCorrente.getNome() + " hai ottenuto "+passiDisponibili+", muovi la pedina!\n" +
 						"Ti rimangono " + (3 - giocatoreCorrente.getNumLanci()) + " lanci\n\n";
-				JOptionPane.showMessageDialog(p, message, "Lancio dado", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getClassLoader().getResource("img/dado.gif")));
-	
 				p.scriviAreaPrincipale(message);
 	
 				/**

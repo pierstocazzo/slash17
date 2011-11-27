@@ -28,6 +28,7 @@ public class PopupRegolamento extends JDialog {
 		this.title = "Regole del gioco";
 
 		setModal(true);
+		setResizable(false);
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
