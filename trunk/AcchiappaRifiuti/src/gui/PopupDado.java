@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,13 +20,18 @@ public class PopupDado extends JDialog {
 	private static final long serialVersionUID = 5824048206691380401L;
 	ImageIcon icon;
 	
-	public PopupDado(String giocatore, ImageIcon icon) {
+	public PopupDado(String giocatore, String icon) {
 		super((Frame) AcchiappaRifiuti.instance().getFramePrincipale(), true);
+		
+		setContentPane(new PannelloSfondo(new ImageIcon(getClass().getClassLoader().getResource("img/lancioDado.png")).getImage()));
+		getContentPane().setLayout(new BorderLayout());
+		
 		JLabel fancyLabel = new JLabel(
 				"<html><body>" +
-				"<font size=3><p align=center>"+giocatore+" muovi la pedina di tante caselle quanti sono i numeri ottenuti col dado!</p></font>" +
+				"<font size=3 color=white><p align=center>"+giocatore+" muovi la pedina!</p></font>" +
 				"</body></html>", JLabel.CENTER);
-		fancyLabel.setIcon(icon);
+		
+		fancyLabel.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().createImage(getClass().getClassLoader().getResource(icon))));
 		fancyLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		fancyLabel.setVerticalAlignment(SwingConstants.CENTER);
 		fancyLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -34,7 +40,7 @@ public class PopupDado extends JDialog {
 		fancyLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
 		fancyLabel.setBackground(Color.WHITE);
 		
-		setTitle("Lancia il dado!");
+		setTitle("Lancio del dado!");
 		add(fancyLabel, BorderLayout.NORTH);
 		
 		JButton ok = new JButton("Ok");
@@ -45,7 +51,7 @@ public class PopupDado extends JDialog {
 			}
 		});
 		
-		Dimension size = new Dimension(280, 230);
+		Dimension size = new Dimension(250, 200);
 		setPreferredSize(size);
 		setMinimumSize(size);
 		setMaximumSize(size);
