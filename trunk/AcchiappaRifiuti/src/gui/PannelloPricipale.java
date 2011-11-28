@@ -13,7 +13,6 @@ package gui;
 import input.KeyHandler;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -212,7 +211,6 @@ public class PannelloPricipale extends javax.swing.JPanel {
 		textPaneConsole.setFocusable(false);
 		textPaneConsole.setEditable(false);
 		textPaneConsole.setFont(new Font("RIM", Font.BOLD, 16));
-		textPaneConsole.setBackground(new Color(151, 193, 31));
 		StyledDocument doc = textPaneConsole.getStyledDocument();
 		SimpleAttributeSet cc = new SimpleAttributeSet();
 		StyleConstants.setAlignment(cc, StyleConstants.ALIGN_CENTER);
