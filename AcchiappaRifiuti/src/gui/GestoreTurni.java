@@ -6,7 +6,6 @@ package gui;
 
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logica.Casella;
 import logica.CasellaDomanda;
@@ -103,8 +102,7 @@ public class GestoreTurni extends Thread {
 				setDadoLanciato(false);
 				int passiDisponibili = giocatoreCorrente.lancia();
 				
-				ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("img/dado/"+passiDisponibili+".gif"));
-				new PopupDado(giocatoreCorrente.getNome(), icon);
+				new PopupDado(giocatoreCorrente.getNome(), "img/dado/"+passiDisponibili+".gif");
 				
 				
 				message = giocatoreCorrente.getNome() + " hai ottenuto "+passiDisponibili+", muovi la pedina!\n" +
