@@ -26,10 +26,10 @@ public class Dado {
 	/**
 	 * Esegue un lancio del Dado e restituisce il valore
 	 */
-	public int tiraDado() {
-		Random rand = new Random();
-		valore = rand.nextInt(5) + 1;
-		return valore;
-	}
+public int tiraDado() {
+	Random rand = new Random();
+	valore = rand.nextInt(6) + 1;
+	return valore;
+}
 
 }

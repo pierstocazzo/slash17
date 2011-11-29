@@ -98,6 +98,5 @@ public class CasellaDomanda {
 		}
 
 		return "-1_assegnaPunteggio(Giocatore g)";
-
-	} 
+	}
 }
