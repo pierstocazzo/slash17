@@ -34,7 +34,7 @@ public class PopupVittoria extends JDialog {
 	int tempoBronzo = 1200;
 	
 	public static void main(String[] args) {
-		new PopupVittoria("Salvatore", -1);
+		new PopupVittoria("Salvatore", 560);
 	}
 	
 	public PopupVittoria(String giocatore, long time) {
@@ -97,7 +97,7 @@ public class PopupVittoria extends JDialog {
 		if (time == -1) 
 			d = new Dimension(sfondo.getWidth(null), 15);
 		else 
-			d = new Dimension(sfondo.getWidth(null), -15);
+			d = new Dimension(sfondo.getWidth(null), -20);
 		empty.setPreferredSize(d);
 		empty.setSize(d);
 		empty.setMinimumSize(d);
