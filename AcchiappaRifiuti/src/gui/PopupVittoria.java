@@ -33,6 +33,10 @@ public class PopupVittoria extends JDialog {
 	/* 20 minuti */
 	int tempoBronzo = 1200;
 	
+	public static void main(String[] args) {
+		new PopupVittoria("Salvatore", -1);
+	}
+	
 	public PopupVittoria(String giocatore, long time) {
 		super((Frame) AcchiappaRifiuti.instance().getFramePrincipale());
 		
@@ -91,9 +95,9 @@ public class PopupVittoria extends JDialog {
 		JLabel empty = new JLabel();
 		Dimension d;
 		if (time == -1) 
-			d = new Dimension(sfondo.getWidth(null)+15, 15);
+			d = new Dimension(sfondo.getWidth(null), 15);
 		else 
-			d = new Dimension(sfondo.getWidth(null)+15, -15);
+			d = new Dimension(sfondo.getWidth(null), -15);
 		empty.setPreferredSize(d);
 		empty.setSize(d);
 		empty.setMinimumSize(d);
@@ -109,13 +113,13 @@ public class PopupVittoria extends JDialog {
 		add(pane, BorderLayout.SOUTH);
 
 		pane.add(btnOk);
-		Dimension d1 = new Dimension(sfondo.getWidth(null)+15, sfondo.getHeight(null)+70);
+		Dimension d1 = new Dimension(sfondo.getWidth(null), sfondo.getHeight(null)+70);
 		setPreferredSize(d1);
 		setSize(d1);
 		setMinimumSize(d1);
 		setMaximumSize(d1);
 		
-		setLocationRelativeTo(AcchiappaRifiuti.instance().getPannello());
+//		setLocationRelativeTo(AcchiappaRifiuti.instance().getPannello());
 		setVisible(true);
 	}
 }
