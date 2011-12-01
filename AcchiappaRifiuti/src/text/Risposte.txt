@@ -1,4 +1,4 @@
-a0000_t_L'insieme degli esseri viventi e dell'ambiente fisico in cui essi vivono con le loro relazioni 
+﻿a0000_t_L'insieme degli esseri viventi e dell'ambiente fisico in cui essi vivono con le loro relazioni 
 a0000_f_Una disciplina economica applicata all'ambiente 
 a0000_f_La scienza che studia la natura 
 a0000_f_null
@@ -20,7 +20,7 @@ a0004_t_La presenza nello stesso ecosistema di differenti specie vegetali e anim
 a0004_f_null
 a0005_t_E' un fenomeno naturale di regolazione dell'equilibrio termico della Terra 
 a0005_f_Il termine che indica lo scioglimento dei ghiacciai 
-a0005_f_E' l'aumento della temperatura del mare sulla Terra 
+a0005_f_» l'aumento della temperatura del mare sulla Terra 
 a0005_f_null
 a0006_t_All'aumento della temperatura sulla Terra 
 a0006_f_All'aumento della attivita' dei vulcani sulla Terra 
@@ -135,7 +135,7 @@ a0033_t_Sono tutti tossici
 a0033_f_Sono tossici solo i detersivi contenenti cloro 
 a0033_f_null
 a0034_t_Un giapponese 
-a0034_f_Un brasialiano 
+a0034_f_Un brasiliano 
 a0034_f_Un italiano 
 a0034_f_Un americano
 a0035_f_Una maggiore disponibilita' di metano 
@@ -242,9 +242,9 @@ a0060_t_I fumi
 a0060_f_Le ceneri pesanti 
 a0060_f_Le ceneri leggere 
 a0060_f_Le polveri sottili
-a0061_t_E' il forum informale dei Ministri dell'Ambiente organizzato dalla presidenza di turno del G8 (forum dei governi di otto tra i principali paesi industrializzati del mondo) 
-a0061_f_E' una dichiarazione sulla tutela dell'ambiente firmata da otto Stati 
-a0061_f_E' una dichiarazione sulla tutela dell'ambiente firmata da otto Regioni italiane 
+a0061_t_» il forum informale dei Ministri dell'Ambiente organizzato dalla presidenza di turno del G8 (forum dei governi di otto tra i principali paesi industrializzati del mondo) 
+a0061_f_» una dichiarazione sulla tutela dell'ambiente firmata da otto Stati 
+a0061_f_» una dichiarazione sulla tutela dell'ambiente firmata da otto Regioni italiane 
 a0061_f_Nessuna delle precedenti
 a0062_f_Elio e idrogeno 
 a0062_f_Ossigeno e azoto 
@@ -292,7 +292,7 @@ a0072_f_La deforestazione
 a0072_f_La siccita'
 a0073_f_E' raddoppiata 
 a0073_f_E' triplicata 
-a0073_t_E' aumentata di un terzo 
+a0073_f_E' aumentata di un terzo 
 a0073_f_E' diminuita di un quarto
 a0074_t_Qualcosa di cui ci disfiamo 
 a0074_f_Qualcosa che non utilizziamo 
