@@ -219,7 +219,7 @@ public class SettingsPanel extends JPanel {
 					/*Refresh current configuration*/
 					refreshButton = new JButton();
 					generationPanel.add(refreshButton);
-					refreshButton.setText("Refresh");
+					refreshButton.setText("Generate");
 					refreshButton.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
@@ -320,8 +320,10 @@ public class SettingsPanel extends JPanel {
 							mainFrame.agent.x = 0;
 							mainFrame.agent.y = 0;
 							mainFrame.agent.actionList.clear();
+							mainFrame.agent.energy = (Integer) SettingsPanel.this.agentEnergyField.getValue();
 							mainFrame.agent.goalReached = false;
 							mainFrame.gridPanel.update();
+							mainFrame.settingsPanel.update();
 							mainFrame.pack();
 						}
 					});
@@ -428,28 +430,6 @@ public class SettingsPanel extends JPanel {
 				}
 			}
 		}
-	}
-	protected void refreshConfi() {
-		int size = (Integer) sizeField.getValue();
-		int dirt = (Integer) dirtField.getValue();
-		int obstacles = (Integer) obstaclesField.getValue();
-		int energy = (Integer) agentEnergyField.getValue();
-		Environment.Type envType =  (Type) envTypeCombobox.getSelectedItem();
-		VisibilityType visType = (VisibilityType) agentVisibilityCombobox.getSelectedItem();
-		if(size < min_dim ){
-			size = min_dim;
-			sizeField.setValue(min_dim);
-			JOptionPane.showMessageDialog(null,"Minimun allowed size is " + min_dim, "Warning", JOptionPane.WARNING_MESSAGE);	
-		}
-		if(size > max_dim ){
-			size = max_dim;
-			sizeField.setValue(max_dim);
-			JOptionPane.showMessageDialog(null,"Maximun allowed size is " + max_dim, "Warning", JOptionPane.WARNING_MESSAGE);
-		}
-		mainFrame.newConfig(size, envType, visType, energy);
-		update();
-		refreshButton.setText("Refresh");
-		
 	}
 	public void update() {
 		if(mainFrame.stopped)
