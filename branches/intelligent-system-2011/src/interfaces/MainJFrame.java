@@ -28,7 +28,7 @@ public class MainJFrame extends javax.swing.JFrame {
 	private JMenuItem	openMenuItem;
 	
 	public GridPanel gridPanel;
-	private SettingsPanel settingsPanel;
+	public SettingsPanel settingsPanel;
 	
 	int size = 6;
 	
