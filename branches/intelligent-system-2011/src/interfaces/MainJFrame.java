@@ -150,7 +150,8 @@ public class MainJFrame extends javax.swing.JFrame {
      */
 	public void mainLoopOnes(){
 		env.show();
-		if(!agent.goalReached()){
+		if(!agent.goalReached() && agent.energy>0){
+			agent.energy--;
 			env.update();
 			env.show();
 			gridPanel.update();

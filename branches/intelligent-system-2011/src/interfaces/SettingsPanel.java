@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.lang.reflect.Constructor;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
@@ -35,6 +36,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.ColorUIResource;
 
 import vacuumCleaner.AbstractAgent.VisibilityType;
+import vacuumCleaner.AbstractAgent;
 import vacuumCleaner.Environment;
 import vacuumCleaner.Square;
 import vacuumCleaner.Environment.Type;
@@ -317,11 +319,27 @@ public class SettingsPanel extends JPanel {
 					resetButton.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							mainFrame.agent.x = 0;
-							mainFrame.agent.y = 0;
-							mainFrame.agent.actionList.clear();
-							mainFrame.agent.energy = (Integer) SettingsPanel.this.agentEnergyField.getValue();
-							mainFrame.agent.goalReached = false;
+//							mainFrame.agent.x = 0;
+//							mainFrame.agent.y = 0;
+//							mainFrame.agent.actionList.clear();
+//							mainFrame.agent.energy = (Integer) SettingsPanel.this.agentEnergyField.getValue();
+//							mainFrame.agent.goalReached = false;
+							
+							Class[] argsConstructor = new Class[] { int.class, int.class, VisibilityType.class, int.class };
+						    Integer x = new Integer(0);
+						    Integer y = new Integer(0);
+						    VisibilityType visType = (VisibilityType) SettingsPanel.this.agentVisibilityCombobox.getSelectedItem();
+						    Integer energy = new Integer((Integer) SettingsPanel.this.agentEnergyField.getValue());
+						    Object[] intArgs = new Object[] { x, y, visType, energy };
+							try {
+								Constructor constructor = mainFrame.agent.getClass().getConstructor(argsConstructor);
+								mainFrame.agent = (AbstractAgent) constructor.newInstance(intArgs);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						    
+							mainFrame.env.agent = mainFrame.agent;
+							
 							mainFrame.gridPanel.update();
 							mainFrame.settingsPanel.update();
 							mainFrame.pack();
