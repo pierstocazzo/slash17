@@ -175,7 +175,7 @@ public class SettingsPanel extends JPanel {
 			{
 				/*setting input fields*/
 				generationPanel = new JPanel();
-				generationPanel.setPreferredSize(new Dimension(350,110));
+				generationPanel.setPreferredSize(new Dimension(380,110));
 				Border marginOutside = new EmptyBorder(10,10,10,10);        
 				TitledBorder title = BorderFactory.createTitledBorder("Build Settings");
 				CompoundBorder upperBorder = new CompoundBorder(marginOutside, title);
