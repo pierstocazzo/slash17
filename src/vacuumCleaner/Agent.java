@@ -55,6 +55,7 @@ public class Agent extends AbstractAgent {
 	/**
 	 * @return true if the agent has reached the goal
 	 */
+	@Override
 	public boolean goalReached(){
 		return goalReached;
 	}
@@ -536,7 +537,7 @@ public class Agent extends AbstractAgent {
 	/**
 	 */
 	public void mycellBehaviour(){
-
+		System.out.println("Goal reached " + goalReached);
 		if(goHome){
 			if(calculatedAction.isEmpty()){
 				goalReached = true;
