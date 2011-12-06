@@ -51,4 +51,21 @@ class Serializzatore<T> extends Frame {
 			e.printStackTrace();
 		}
 	}
+	
+	public T caricaFile(String filename) {
+		try {
+			if (filename != null) {
+				FileInputStream fis = new FileInputStream(filename);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				T object = (T) ois.readObject();
+				fis.close();
+				return object;
+			}
+		} catch (IOException a) {
+			System.out.println("Errore lettura dell'oggetto");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Classe non riconosciuta!!!");
+		}
+		return null;
+	}
 }

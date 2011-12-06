@@ -85,6 +85,7 @@ public class Environment {
 	public void update() {
 		agent.perceives(getPerceptions());
 		agent.update();
+		agent.energy--;
 		getAction(agent.action());
 		System.out.println("Action received: " + currAction);
 		

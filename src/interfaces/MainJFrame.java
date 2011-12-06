@@ -130,7 +130,6 @@ public class MainJFrame extends javax.swing.JFrame {
 		System.out.println("stopped " + stopped);
 		System.out.println("energy " + agent.energy);
 		while(!agent.goalReached() && !stopped && agent.energy>0){
-			agent.energy--;
 			env.update();
 			env.show();
 			gridPanel.update();
@@ -151,7 +150,6 @@ public class MainJFrame extends javax.swing.JFrame {
 	public void mainLoopOnes(){
 		env.show();
 		if(!agent.goalReached() && agent.energy>0){
-			agent.energy--;
 			env.update();
 			env.show();
 			gridPanel.update();
