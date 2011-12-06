@@ -1,27 +1,15 @@
 package vacuumCleaner;
 
-import interfaces.PopupGrafo;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.jgrapht.GraphPath;
-import org.jgrapht.ListenableGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.alg.HamiltonianCycle;
-import org.jgrapht.ext.JGraphModelAdapter;
-import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.ListenableDirectedGraph;
-import org.jgrapht.graph.ListenableUndirectedGraph;
 
 import vacuumCleaner.Action.Type;
-
 import demo.UndirectedWeightedGraph;
 
 
