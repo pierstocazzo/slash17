@@ -7,6 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import vacuumCleaner.AbstractAgent;
 import vacuumCleaner.AbstractAgent.VisibilityType;
 import vacuumCleaner.Agent;
@@ -30,9 +32,17 @@ public class Batch {
 		VisibilityType[] visibilita = {VisibilityType.ALL, 
 				VisibilityType.MY_NEIGHBOURS,
 				VisibilityType.MY_CELL};
+		
+		String nomeGruppo = null;
+		while(nomeGruppo == null)
+			nomeGruppo = JOptionPane.showInputDialog("Nome del gruppo");
+		
+		String energia = null;
+		while(energia == null)
+			energia = JOptionPane.showInputDialog("Energia di partenza");
 
 		Batch batch = new Batch();
-		batch.newConfig(5, Type.STATIC, VisibilityType.ALL, 200);
+		batch.newConfig(5, Type.STATIC, VisibilityType.ALL, Integer.parseInt(energia));
 		Floor floor = null;
 
 		Class classEnv = batch.env.getClass();
@@ -44,6 +54,22 @@ public class Batch {
 			Method loadFloor1 = classSerializzatore.getMethod("caricaFile", String.class);
 
 			File folder = new File("instances");
+			
+			if(!folder.exists()) {
+				JOptionPane.showMessageDialog(null, "La cartella instances non esiste");
+				return;
+			}
+			boolean vuota = true;
+			for(int i = 0; i < folder.listFiles().length; i++)
+				if(folder.listFiles()[i].isFile()) {
+					vuota = false;
+					i = folder.listFiles().length;
+				}
+			if(vuota) {
+				JOptionPane.showMessageDialog(null, "La cartella instances e' vuota");
+				return;
+			}
+			
 			File[] listaIstanze = folder.listFiles();
 
 			for (VisibilityType v : visibilita) {
@@ -59,6 +85,7 @@ public class Batch {
 						floor = (Floor) f.get(batch.env);
 						floor = (Floor) loadFloor1.invoke(batch.ser, s.getAbsolutePath());
 						f.set(batch.env, floor);
+						floor.initialDirt = floor.dirtySquares();
 						showEnv.invoke(batch.env);
 
 						boolean eccezione = false;
@@ -85,11 +112,11 @@ public class Batch {
 						}
 						item.num_step = batch.agent.actionList.size(); 
 						itemcsv.add(item);
-						batch.newConfig(5, Type.STATIC, v, 200);
+						batch.newConfig(5, Type.STATIC, v, Integer.parseInt(energia));
 					}
 				}
 			}
-			generaCsv(itemcsv);
+			generaCsv(nomeGruppo, itemcsv);
 		} catch (SecurityException e2) {
 			e2.printStackTrace();
 		} catch (NoSuchMethodException e2) {
@@ -103,11 +130,10 @@ public class Batch {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		System.exit(0);
 	}
 
-	private static void generaCsv(ArrayList<ItemCsv> itemCsv) {
-		CsvWriter writer = new CsvWriter("csv.csv");
+	private static void generaCsv(String nome, ArrayList<ItemCsv> itemCsv) {
+		CsvWriter writer = new CsvWriter(nome + ".csv");
 		try {
 
 			for (ItemCsv csv : itemCsv) {
