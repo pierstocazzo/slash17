@@ -6,21 +6,21 @@ actions:
 always:
 	inertial at(O,R,P).
 	
-	executable move(ciccio,left) if at(ciccio,R,P), P>1.
+	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos).
 	caused -at(O,R,P) after move(O,left), at(O,R,P).
-	caused at(O,R,NewPos) after move(O,left), at(O,R,OldPos), OldPos = NewPos + 1.
+	caused at(O,R,NewPos) after move(O,left), at(O,R,OldPos), near(NewPos,OldPos).
 	
-	executable move(ciccio,right) if at(ciccio,R,P), P<8.
+	executable move(ciccio,right) if at(ciccio,_,OldPos), near(OldPos,NewPos).
 	caused -at(O,R,P) after move(O,right), at(O,R,P).
-	caused at(O,R,NewPos) after move(O,right), at(O,R,OldPos), NewPos = OldPos + 1.
+	caused at(O,R,NewPos) after move(O,right), at(O,R,OldPos), near(OldPos,NewPos).
 	
 	executable move(ciccio,up) if at(ciccio,R,P), doorUp(R,P).
 	caused -at(O,R,P) after move(O,up), at(O,R,P).
-	caused at(O,NewRoom,P) after move(O,up), at(O,OldRoom,P), OldRoom = NewRoom + 1.
+	caused at(O,NewRoom,P) after move(O,up), at(O,OldRoom,P), topRoom(NewRoom,OldRoom).
 	
 	executable move(ciccio,down) if at(ciccio,R,P), doorDown(R,P).
 	caused -at(O,R,P) after move(O,down), at(O,R,P).
-	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), NewRoom = OldRoom + 1.
+	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), bottomRoom(NewRoom,OldRoom).
 	
 noConcurrency.
 
