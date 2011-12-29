@@ -1,17 +1,18 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 public class SettingsPanel extends JPanel implements ActionListener {
@@ -86,8 +87,30 @@ public class SettingsPanel extends JPanel implements ActionListener {
 	    
 	    /** inizio: k e maxTime */
         JPanel kTimeSelector = new JPanel(new GridLayout(2, 1));
-        kTimeSelector.setBorder(BorderFactory.createTitledBorder("Parametro k e turni disponibili"));
         
+        JPanel kPanel = new JPanel();
+        kPanel.setBorder(BorderFactory.createTitledBorder("Parametro k"));
+        kTimeSelector.add(kPanel);
+        JLabel l = new JLabel("K:");
+        kPanel.add(l);
+        JSpinner spinnerK = new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));
+        l.setLabelFor(spinnerK);
+        kPanel.add(spinnerK);
+        spinnerK.setEditor(new JSpinner.NumberEditor(spinnerK, "#"));
+        JButton setK = new JButton("set");
+        kPanel.add(setK);
+        
+        JPanel timePanel = new JPanel();
+        timePanel.setBorder(BorderFactory.createTitledBorder("Tempo disponibile"));
+        kTimeSelector.add(timePanel);
+        JLabel l1 = new JLabel("T:");
+        timePanel.add(l1);
+        JSpinner spinnerT = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
+        l1.setLabelFor(spinnerT);
+        timePanel.add(spinnerT);
+        spinnerT.setEditor(new JSpinner.NumberEditor(spinnerT, "#"));
+        JButton setTime = new JButton("set");
+        timePanel.add(setTime);
         
         add(kTimeSelector);
 	    /** fine: k e maxTime */
