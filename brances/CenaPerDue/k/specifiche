@@ -1,0 +1,114 @@
+------------------------------------------------------
+Ciccio Pasticcio e Renata Limbranata: una cena per due
+------------------------------------------------------
+
+Ciccio Pasticcio vuole fare una sorpresa alla sua cara mogliettina, 
+Renata Limbranata, che non è in casa. Prima che Renata torni, Ciccio 
+vuole riuscire a preparare una cenetta, mettersi in smoking, e 
+aspettare Renata alla porta per regalarle un mazzo di fiori.
+
+Più nel dettaglio:
+
+l'ambiente può essere rappresentato nel seguente modo:
+
+ - - - - -
+| |M| | | |	KITCHEN oggetto: Meal
+ - - @ - - 
+| | | |S| |	BEDROOM oggetto: Smoking
+ @ - - - - 
+| |T| | | |	LIVING/DINING ROOM oggetto: Table
+ - - - @ - 
+|C| | | |F|	HALL oggetto: Flowers
+ - @ - - - 
+   D		DOOR (entrance)
+
+
+Ogni riga rappresenta una stanza della casa. Ogni stanza (riga) e' 
+composta da piu' caselle. Ciccio si puo' muovere orizzontalmente in 
+ogni stanza. Ciascuna stanza comunica con quella superiore o quella 
+inferiore (adiacenti) tramite una porta in una specifica posizione, 
+che varia, in generale, per ogni coppia di stanze adiacenti. Si puo' 
+quindi passare (verticalmente) da una stanza all'altra solo se si e' 
+sulla casella corrispondente alla porta (le porte sono rappresentate
+nella figura con il simbolo "@"). In ogni stanza e' presente un oggetto 
+in una specifica casella.
+
+L'obiettivo di Ciccio consiste nell'organizzazione della "serata 
+perfetta", che richiede il raggiungimento dei seguenti obiettivi:
+  1. preparare la cena
+  2. mettersi in smoking
+  3. portare la cena sul tavolo
+  4. prendere i fiori
+  5. aspettare Renata di fronte alla porta di ingresso.
+
+La cosa e' complicata dal fatto che Ciccio ha un tempo limitato 
+prima che Renata torni a casa; inoltre, il suo dispettosissimo gatto 
+Gigino Granfelino a volte "rompe" le scatole, spostando gli oggetti. In 
+particolare, si noti che FIORI e SMOKING possono mutare posizione durante 
+la preparazione. Il TAVOLO non si sposta mai, mentre la CENA si sposta
+solo ad opera di Ciccio.
+
+Ci sono 4 stanze, ciascuna composta da 8 caselle; la posizione 
+delle stanze nello "stack" che compone la casa e' CASUALE; la 
+posizione degli oggetti nelle stanze e' CASUALE. La posizione iniziale 
+di Ciccio e' CASUALE.
+
+La misura di prestazione e' semplicemente inversamente proporzionale
+al numero di turni impiegati prima di finire davanti alla porta.
+Penalita' e' assegnata se all'arrivo di renata non si e' davanti
+alla porta, cosi' come penalita' e' assegnata per ogni goal che al suo 
+arrivo non e' stato raggiunto. I (sotto)goal sono cosi' indicati: 
+ 1. MEAL_READY
+ 2. SUIT_UP
+ 3. TABLE_READY
+ 4. FLOWERS_TAKEN
+ 5. ENTRANCE
+ogni goal 'j' deve essere raggiunto prima del goal 'i', per ogni 
+coppia i,j tale che j<i. L'unica eccezione riguarda FLOWER_TAKEN,
+che non e' necessario ottenere prima di ENTRANCE.
+
+
+NOTE:
+ - per preparare la cena, e' sufficiente arrivare sulla casella
+   corrispondente. Dopo la preparazione, la cena resta nella sua 
+   casella, ma risulta "pronta".
+ - per indossare lo smoking, e' sufficiente arrivare sulla casella
+   corrispondente. Si noti che lo smoking non e' indossato se si 
+   finisce sulla casella che lo contiene ma la cena non e' ancora 
+   pronta.
+ - per portare la cena sul tavolo, e' necessario tornare sulla
+   casella dove essa aspetta "pronta" e prenderla; non puo' essere
+   presa se non si ha indosso lo smoking. una volta "presa",
+   la cena si sposta concordemente a ciccio: la cena e' portata sul
+   tavolo solo se ciccio (vestito di smoking) arriva con essa sulla
+   casella del tavolo stesso. Una volta giunti al tavolo, la cena 
+   "scompare" dalla rappresentazione e il tavolo si considera 
+   "pronto".
+ - per raccogliere i fiori e' necessario andare sulla casella 
+   corrispondente con lo smoking indosso e il tavolo pronto.
+ - per aspettare Renata correttamente, si devono avere i fiori 
+   (che si muovono assieme a Ciccio, una volta presi, come
+   accadeva con la cena pronta prima che finisse sul tavolo)
+   e sostare sulla casella adiacente alla porta di ingresso.
+
+Implementare i seguenti casi:
+ - A: statico 
+    - 1 istante (turno) per fare un'azione
+ - B: dinamico 1
+   - 1 istante (turno) per fare un'azione
+   - ogni k passi un oggetto a caso si muove, ma solo verso una 
+     casella a caso nella stessa stanza.
+ - C: dinamico 2
+   - 1 istante (turno) per fare un'azione
+   - si muovono tutti gli oggetti (o un sottinsieme) ogni k passi, 
+     ma solo verso caselle a caso nella stessa stanza.
+ - D: dinamico 3
+   - come "C", ma gli oggetti possono muoversi verso qualunque 
+     casella, anche in altre stanze rispetto a quella in cui si 
+     trovano al principio.
+
+Da interfaccia utente deve sempre essere possibile cambiare la
+situazione: impostare, quindi, i casi A-B-C-D, oltre che il valore 
+di "K", la velocita' della simulazione grafica, e il numero di turni,
+a partire da quello corrente, entro cui arrivera' Renata. Inoltre,
+deve essere possibile spostare a piacimento gli oggetti mobili.
