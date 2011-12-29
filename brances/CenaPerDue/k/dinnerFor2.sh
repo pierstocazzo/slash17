@@ -1,1 +1,1 @@
-~/dlv init.dl dinner.plan -FP -N=10 -planlength=3
+~/dlv init.dl dinner.plan -FP -N=15 -planlength=15 -v

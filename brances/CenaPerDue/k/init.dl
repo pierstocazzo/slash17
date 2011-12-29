@@ -17,6 +17,13 @@ doorDown(4,7).
 
 doorUp(S,P) :- doorDown(S1,P), S=S1+1.
 
+topRoom(1,2).
+topRoom(2,3).
+topRoom(3,4).
+topRoom(4,5).
+
+bottomRoom(L,H) :- topRoom(H,L).
+
 object(ciccio).
 object(suite).
 object(table).

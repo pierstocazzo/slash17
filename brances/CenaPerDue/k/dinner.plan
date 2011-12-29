@@ -4,20 +4,28 @@ actions:
 	move(O,D) requires object(O), direction(D) costs time.
 
 always:
-	executable move(ciccio,left) if at(ciccio,R,P), P>1.
-	executable move(ciccio,right) if at(ciccio,R,P), P<8.
 	inertial at(O,R,P).
+	
+	executable move(ciccio,left) if at(ciccio,R,P), P>1.
+	caused -at(O,R,P) after move(O,left), at(O,R,P).
+	caused at(O,R,NewPos) after move(O,left), at(O,R,OldPos), OldPos = NewPos + 1.
+	
+	executable move(ciccio,right) if at(ciccio,R,P), P<8.
 	caused -at(O,R,P) after move(O,right), at(O,R,P).
-	caused -at(O,R,P) after move(O,left), is(O,R,P).
-	caused at(O,R,NewPos) after move(O,left), at(O,R,OldPos), OldPos = NewPos + 1, #int(OldPos), #int(NewPos).
-	caused at(O,R,NewPos) after move(O,right), at(O,R,OldPos), NewPos = OldPos + 1, #int(OldPos), #int(NewPos).
-
+	caused at(O,R,NewPos) after move(O,right), at(O,R,OldPos), NewPos = OldPos + 1.
+	
+	executable move(ciccio,up) if at(ciccio,R,P), doorUp(R,P).
+	caused -at(O,R,P) after move(O,up), at(O,R,P).
+	caused at(O,NewRoom,P) after move(O,up), at(O,OldRoom,P), OldRoom = NewRoom + 1.
+	
+	executable move(ciccio,down) if at(ciccio,R,P), doorDown(R,P).
+	caused -at(O,R,P) after move(O,down), at(O,R,P).
+	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), NewRoom = OldRoom + 1.
+	
 noConcurrency.
 
-securePlan.
-
 initially:
-	at(ciccio,5,1).
+	at(ciccio,1,8).
 	
 goal:
-	at(ciccio,5,3) ?
+	at(ciccio,3,1) ?
