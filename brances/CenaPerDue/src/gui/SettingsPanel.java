@@ -107,9 +107,9 @@ public class SettingsPanel extends JPanel {
 		/** fine: selezione tipo di ambiente */
 
 
-		/** inizio: selezione velocit� di simulazione */
+		/** inizio: selezione velocita' di simulazione */
 		JPanel speedSelector = new JPanel(new GridLayout(2, 1));
-		speedSelector.setBorder(BorderFactory.createTitledBorder("Velocit� simulazione"));
+		speedSelector.setBorder(BorderFactory.createTitledBorder("Velocita' simulazione"));
 
 		speedLabel = new JLabel("Attuale: " + mainFrame.env.getSpeed(), JLabel.CENTER);
 		final JSlider speedSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 5, 1);
@@ -124,7 +124,6 @@ public class SettingsPanel extends JPanel {
 
 		speedSlider.setSnapToTicks(true);
 		speedSlider.setMajorTickSpacing(1);
-		speedSlider.setMinorTickSpacing(1);
 		speedSlider.setPaintTicks(true);
 		speedSlider.setPaintLabels(true);
 		speedSlider.setBorder(BorderFactory.createEmptyBorder(0,0,10,0));
@@ -133,7 +132,7 @@ public class SettingsPanel extends JPanel {
 		speedSelector.add(speedSlider);
 
 		add(speedSelector);
-		/** fine: selezione velocit� di simulazione */
+		/** fine: selezione velocita' di simulazione */
 
 
 		/** inizio: k e maxTime */
@@ -217,7 +216,7 @@ public class SettingsPanel extends JPanel {
 		/** update tipo di ambiente corrente */
 		tipoCorrente.setText("Attuale: " + mainFrame.env.getType());
 
-		/** update velocit� simulazione corrente */
+		/** update velocita' simulazione corrente */
 		speedLabel.setText("Attuale: " + mainFrame.env.getSpeed());
 	}
 }
