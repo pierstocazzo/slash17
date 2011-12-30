@@ -1,17 +1,14 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
 	mealReady.
-	tableReady.
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
 	prepareMeal costs 1.
-	prepareTable costs 1.
 
 always:
 	inertial at(O,R,P).
 	inertial mealReady.
-	inertial tableReady.
 	
 	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos).
 	caused -at(O,R,P) after move(O,left), at(O,R,P).
@@ -33,13 +30,10 @@ always:
 	caused mealReady after prepareMeal.
 	caused -at(dinner,R,P) after prepareMeal, at(dinner,R,P).
 	
-	executable prepareTable if at(ciccio,R,P), at(table,R,P), mealReady.
-	caused tableReady after prepareTable.
-	
 noConcurrency.
 
 initially:
-	at(ciccio,4,1). at(dinner,3,1). at(table,3,5).
+	at(ciccio,4,1). at(dinner,3,1).
 	
 goal:
-	at(ciccio,3,1), tableReady ? (17)
+	at(ciccio,4,1), mealReady ? (11)

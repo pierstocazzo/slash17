@@ -1,0 +1,1 @@
+./dlv init.dl 2prepareTable.plan -FP -v -stats
