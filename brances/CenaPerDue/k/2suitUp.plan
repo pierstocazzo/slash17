@@ -1,6 +1,5 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
-	mealReady.
 	suitUp.
 
 actions:
@@ -9,7 +8,6 @@ actions:
 
 always:
 	inertial at(O,R,P).
-	inertial mealReady.
 	inertial suitUp.
 	
 	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos).
@@ -28,14 +26,14 @@ always:
 	caused -at(O,R,P) after move(O,down), at(O,R,P).
 	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), bottomRoom(NewRoom,OldRoom).
 	
-	executable dress if at(ciccio,R,P), at(suit,R,P), mealReady.
+	executable dress if at(ciccio,R,P), at(suit,R,P), not suitUp.
 	caused suitUp after dress.
 	caused -at(suit,R,P) after dress, at(suit,R,P).
 	
 noConcurrency.
 
 initially:
-	at(ciccio,4,1). at(suit,4,5). mealReady. 
+	at(ciccio,4,1). at(suit,2,3).
 	
 goal:
-	at(ciccio,4,5), suitUp ? (12)
+	at(ciccio,2,3) ? (11)
