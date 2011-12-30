@@ -7,7 +7,7 @@ public class Env {
 	boolean table_ready = false;
 	boolean flower_taken = false;
 	boolean entrance = false;
-	
+
 	public final static char TILE = ' ';
 	public final static char MEAL = 'M';
 	public final static char SUIT = 'S';
@@ -15,23 +15,23 @@ public class Env {
 	public final static char FLOWERS = 'F';
 	public final static char DOOR = 'D';
 	public final static char GRASS = 'G';
-	
+
 	char matrix[][];
-	
+
 	Ciccio ciccio;
-	
+
 	/** dopo quanti turni spostare le cose */
 	int k = 0;
 
 	/** turni utili prima che renata arrivi */
 	int maxTime = 20;
-	
-	/** velocità simulazione */
+
+	/** velocita' simulazione */
 	int speed = 1;
-	
+
 	/** tipo di ambiente (A,B,C,D) */
 	char type = 'A';
-	
+
 	public Env() {
 		matrix = new char[5][8];
 		envGeneration();
@@ -40,20 +40,18 @@ public class Env {
 
 	private void envGeneration() {
 		//TODO
-		for (int i=0; i<4; i++) {
-			for (int j=0; j<8; j++) {
+		for (int i=0; i<4; i++)
+			for (int j=0; j<8; j++)
 				matrix[i][j] = TILE;
-			}
-		}
-		for (int j=0; j<8; j++) {
+		for (int j=0; j<8; j++)
 			matrix[4][j] = GRASS;
-		}
+
 		matrix[0][3] = SUIT;
 		matrix[1][0] = MEAL;
 		matrix[2][4] = FLOWERS;
 		matrix[3][2] = TABLE;
 	}
-	
+
 	public char get(int i, int j) {
 		return matrix[i][j];
 	}

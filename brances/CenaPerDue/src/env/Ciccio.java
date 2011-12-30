@@ -4,11 +4,11 @@ public class Ciccio {
 
 	/** posizione */
 	int i, j;
-	
+
 	boolean withFlowers = false;
 	boolean withSmoking = false;
 	boolean withMeal = false;
-	
+
 	public Ciccio(int i, int j) {
 		this.i = i;
 		this.j = j;

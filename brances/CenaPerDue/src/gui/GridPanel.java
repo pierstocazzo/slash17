@@ -15,24 +15,24 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel[][] labelMatrix;
 	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, 
-		ciccioIcon, flowerIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
+				ciccioIcon, flowerIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
 	public static int iconWidth = 60, iconHeigth = 120;
-	
+
 	Env env;
-	
+
 	public GridPanel (Env env){
 		this.env = env;
 		init();
 		update();
 	}
-	
+
 	void init() {
 		setLayout(new FlowLayout());
-		
+
 		JPanel flowPanel = new JPanel();
 		add(flowPanel);
 		flowPanel.setLayout(new GridLayout(5, 8));
-		
+
 		tileIcon = new ImageIcon(new ImageIcon("img/tile.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		mealIcon = new ImageIcon(new ImageIcon("img/meal.png")
@@ -51,9 +51,9 @@ public class GridPanel extends JPanel {
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		suitUpIcon = new ImageIcon(new ImageIcon("img/suit_up.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
-		
+
 		labelMatrix = new JLabel[5][8];
-		
+
 		for(int i=0; i<5; i++)
 			for(int j=0; j<8; j++){
 				GridBagConstraints constraints = new GridBagConstraints();
@@ -66,12 +66,12 @@ public class GridPanel extends JPanel {
 				flowPanel.add(label, constraints);
 			}
 	}
-	
+
 	public void update() {
 		for(int i=0; i<5; i++)
 			for(int j=0; j<8; j++){
 				ImageIcon icon = null;
-				
+
 				// disegna i vari elementi
 				switch (env.get(i, j)) {
 				case Env.MEAL:
@@ -95,7 +95,7 @@ public class GridPanel extends JPanel {
 				default:
 					icon = null;	
 				}
-				
+
 				// disegna ciccio, eventualmente con i fiori e/o con l'abito
 				if (env.player_i() == i && env.player_j() == j) {
 					if (env.isFlower_taken())
@@ -105,7 +105,7 @@ public class GridPanel extends JPanel {
 					else
 						icon = ciccioIcon;
 				}
-				
+
 				labelMatrix[i][j].setIcon(icon);
 			}
 		try {
