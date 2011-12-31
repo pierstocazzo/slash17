@@ -32,6 +32,8 @@ always:
 	
 noConcurrency.
 
+securePlan.
+
 initially:
 	at(ciccio,4,1). at(dinner,1,2).
 	

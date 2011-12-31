@@ -1,14 +1,25 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
+	mealReady.
+	tableReady.
 	suitUp.
+	flowersTaken.
+	waitRenata.
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
-	dress costs 1.
+	prepareMeal costs 1.
+	prepareTable costs 1.
+	takeFlowers costs 1.
+	stopCiccio costs 1.
 
 always:
 	inertial at(O,R,P).
+	inertial mealReady.
+	inertial tableReady.
 	inertial suitUp.
+	inertial flowersTaken.
+	inertial waitRenata.
 	
 	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos).
 	caused -at(O,R,P) after move(O,left), at(O,R,P).
@@ -26,16 +37,15 @@ always:
 	caused -at(O,R,P) after move(O,down), at(O,R,P).
 	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), bottomRoom(NewRoom,OldRoom).
 	
-	executable dress if at(ciccio,R,P), at(smoking,R,P), not suitUp.
-	caused suitUp after dress.
-	caused -at(smoking,R,P) after dress, at(smoking,R,P).
+	executable stopCiccio if at(ciccio,4,P), doorDown(4,P), mealReady, suitUp, tableReady, flowersTaken, not waitRenata.
+	caused waitRenata after stopCiccio.
 	
 noConcurrency.
 
 securePlan.
 
 initially:
-	at(ciccio,4,1). at(smoking,2,3).
+	at(ciccio,2,4). mealReady. suitUp. tableReady. flowersTaken.
 	
 goal:
-	at(ciccio,2,3), suitUp ? (11)
+	waitRenata ? (12)

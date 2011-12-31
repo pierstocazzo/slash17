@@ -1,0 +1,1 @@
+./dlv init.dl 5waitRenata.plan -FP -v -stats

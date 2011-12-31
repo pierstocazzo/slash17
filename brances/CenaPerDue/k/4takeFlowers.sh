@@ -1,0 +1,1 @@
+./dlv init.dl 4takeFlowers.plan -FP -v -stats
