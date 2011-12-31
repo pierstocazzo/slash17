@@ -36,6 +36,7 @@ always:
 	
 	executable takeFlowers if at(ciccio,R,P), at(flowers,R,P), mealReady, suitUp, tableReady, not flowersTaken.
 	caused flowersTaken after takeFlowers.
+	caused -at(flowers,R,P) after flowersTaken, at(flowers,R,P).
 	
 noConcurrency.
 

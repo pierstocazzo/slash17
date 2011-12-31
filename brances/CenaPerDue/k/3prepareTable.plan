@@ -31,7 +31,7 @@ always:
 	caused -at(O,R,P) after move(O,down), at(O,R,P).
 	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), bottomRoom(NewRoom,OldRoom).
 	
-	executable prepareTable if at(ciccio,R,P), at(table,R,P), mealReady, suitUp.
+	executable prepareTable if at(ciccio,R,P), at(table,R,P), mealReady, suitUp, not tableReady.
 	caused tableReady after prepareTable.
 	
 noConcurrency.
