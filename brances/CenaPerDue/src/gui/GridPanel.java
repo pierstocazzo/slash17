@@ -31,7 +31,7 @@ public class GridPanel extends JPanel {
 
 		JPanel flowPanel = new JPanel();
 		add(flowPanel);
-		flowPanel.setLayout(new GridLayout(5, 8));
+		flowPanel.setLayout(new GridLayout(env.rooms, env.posForRoom));
 
 		tileIcon = new ImageIcon(new ImageIcon("img/tile.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
@@ -52,10 +52,10 @@ public class GridPanel extends JPanel {
 		suitUpIcon = new ImageIcon(new ImageIcon("img/suit_up.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 
-		labelMatrix = new JLabel[5][8];
+		labelMatrix = new JLabel[env.rooms][env.posForRoom];
 
-		for(int i=0; i<5; i++)
-			for(int j=0; j<8; j++){
+		for(int i=0; i<env.rooms; i++)
+			for(int j=0; j<env.posForRoom; j++){
 				GridBagConstraints constraints = new GridBagConstraints();
 				constraints.fill = GridBagConstraints.BOTH;
 				constraints.gridx = i;
@@ -68,8 +68,8 @@ public class GridPanel extends JPanel {
 	}
 
 	public void update() {
-		for(int i=0; i<5; i++)
-			for(int j=0; j<8; j++){
+		for(int i=0; i<env.rooms; i++)
+			for(int j=0; j<env.posForRoom; j++){
 				ImageIcon icon = null;
 
 				// disegna i vari elementi

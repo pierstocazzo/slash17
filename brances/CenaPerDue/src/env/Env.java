@@ -34,14 +34,19 @@ public class Env {
 	/** tipo di ambiente (A,B,C,D) */
 	char type = 'A';
 
-	int posForRoom = 8;
+	public int posForRoom;
 
-	int rooms = 5;
+	public int rooms;
+	
+	int doorsPosition[];
 
 	Random rg = new Random();
 
-	public Env() {
+	public Env(int rooms, int posForRooms) {
+		this.rooms = rooms;
+		this.posForRoom = posForRooms;
 		matrix = new char[rooms][posForRoom];
+		doorsPosition = new int[rooms-1];
 		envGeneration();
 		int r = Math.abs(rg.nextInt()) % (rooms-1);
 		int p = Math.abs(rg.nextInt()) % posForRoom;
@@ -96,6 +101,12 @@ public class Env {
 			p = Math.abs(rg.nextInt()) % posForRoom;
 		}
 		matrix[r][p] = TABLE;
+		
+		//generazione porte
+		for(int i=0; i<rooms-1; i++){
+			doorsPosition[i] = Math.abs(rg.nextInt()) % posForRoom;
+//			System.out.println("Pos doors " + i + " = " + doorsPosition[i]);
+		}
 	}
 
 	public char get(int i, int j) {

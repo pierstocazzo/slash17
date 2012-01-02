@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
 	Env env;
 
 	public MainFrame() {
-		env = new Env();
+		env = new Env(5,8);
 	}
 
 	public void startGui() {
