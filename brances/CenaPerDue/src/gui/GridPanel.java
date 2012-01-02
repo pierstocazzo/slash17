@@ -80,10 +80,11 @@ public class GridPanel extends JPanel {
 				JPanel cellPanel = new JPanel();
 				cellPanel.setLayout(new BorderLayout());
 				cellPanel.add(label,BorderLayout.NORTH);
-				if(i<env.rooms-1 && env.doorsPosition[i] == j)
-					cellPanel.add(new JLabel(doorIcon), BorderLayout.SOUTH);
-				else
-					cellPanel.add(new JLabel(wallIcon), BorderLayout.SOUTH);
+				if(i != env.rooms-1)
+					if(i<env.rooms-1 && env.doorsPosition[i] == j)
+						cellPanel.add(new JLabel(doorIcon), BorderLayout.SOUTH);
+					else
+						cellPanel.add(new JLabel(wallIcon), BorderLayout.SOUTH);
 				flowPanel.add(cellPanel, constraints);
 			}
 	}
