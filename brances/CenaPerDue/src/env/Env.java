@@ -1,5 +1,7 @@
 package env;
 
+import java.util.Random;
+
 public class Env {
 
 	boolean meal_ready = false;
@@ -32,24 +34,68 @@ public class Env {
 	/** tipo di ambiente (A,B,C,D) */
 	char type = 'A';
 
+	int posForRoom = 8;
+
+	int rooms = 5;
+
+	Random rg = new Random();
+
 	public Env() {
-		matrix = new char[5][8];
+		matrix = new char[rooms][posForRoom];
 		envGeneration();
-		ciccio = new Ciccio(0, 0);
+		int r = Math.abs(rg.nextInt()) % (rooms-1);
+		int p = Math.abs(rg.nextInt()) % posForRoom;
+		while(matrix[r][p] != TILE){
+			r = Math.abs(rg.nextInt()) % (rooms-1);
+			p = Math.abs(rg.nextInt()) % posForRoom;
+		}
+		ciccio = new Ciccio(r,p);
 	}
 
 	private void envGeneration() {
-		//TODO
-		for (int i=0; i<4; i++)
-			for (int j=0; j<8; j++)
+		// Inizializzazione
+		for (int i=0; i<rooms-1; i++)
+			for (int j=0; j<posForRoom; j++)
 				matrix[i][j] = TILE;
-		for (int j=0; j<8; j++)
-			matrix[4][j] = GRASS;
-
-		matrix[0][3] = SUIT;
-		matrix[1][0] = MEAL;
-		matrix[2][4] = FLOWERS;
-		matrix[3][2] = TABLE;
+		// erba
+		for (int j=0; j<posForRoom; j++)
+			matrix[rooms-1][j] = GRASS;
+		
+		// generazione posizione suit univoca
+		int r = Math.abs(rg.nextInt()) % (rooms-1);
+		int p = Math.abs(rg.nextInt()) % posForRoom;
+		while(matrix[r][p] != TILE){
+			r = Math.abs(rg.nextInt()) % (rooms-1);
+			p = Math.abs(rg.nextInt()) % posForRoom;
+		}
+		matrix[r][p] = SUIT;
+		
+		// generazione posizione cena univoca
+		r = Math.abs(rg.nextInt()) % (rooms-1);
+		p = Math.abs(rg.nextInt()) % posForRoom;
+		while(matrix[r][p] != TILE){
+			r = Math.abs(rg.nextInt()) % (rooms-1);
+			p = Math.abs(rg.nextInt()) % posForRoom;
+		}
+		matrix[r][p] = MEAL;
+		
+		// generazione posizione fiori univoca
+		r = Math.abs(rg.nextInt()) % (rooms-1);
+		p = Math.abs(rg.nextInt()) % posForRoom;
+		while(matrix[r][p] != TILE){
+			r = Math.abs(rg.nextInt()) % (rooms-1);
+			p = Math.abs(rg.nextInt()) % posForRoom;
+		}
+		matrix[r][p] = FLOWERS;
+		
+		// generazione posizione tavolo univoca
+		r = Math.abs(rg.nextInt()) % (rooms-1);
+		p = Math.abs(rg.nextInt()) % posForRoom;
+		while(matrix[r][p] != TILE){
+			r = Math.abs(rg.nextInt()) % (rooms-1);
+			p = Math.abs(rg.nextInt()) % posForRoom;
+		}
+		matrix[r][p] = TABLE;
 	}
 
 	public char get(int i, int j) {
