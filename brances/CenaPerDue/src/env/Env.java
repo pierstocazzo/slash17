@@ -38,7 +38,7 @@ public class Env {
 
 	public int rooms;
 	
-	int doorsPosition[];
+	public int doorsPosition[];
 
 	Random rg = new Random();
 

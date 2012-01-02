@@ -1,10 +1,19 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -15,7 +24,7 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel[][] labelMatrix;
 	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, 
-				ciccioIcon, flowerIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
+				ciccioIcon, flowerIcon, wallIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
 	public static int iconWidth = 60, iconHeigth = 120;
 
 	Env env;
@@ -51,7 +60,12 @@ public class GridPanel extends JPanel {
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		suitUpIcon = new ImageIcon(new ImageIcon("img/suit_up.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
-
+		wallIcon = new ImageIcon(new ImageIcon("img/wall.jpg")
+		.getImage().getScaledInstance(iconWidth, iconHeigth/10, 100));
+		doorIcon = new ImageIcon(new ImageIcon("img/door.jpg")
+		.getImage().getScaledInstance(iconWidth, iconHeigth/10, 100));
+		
+		
 		labelMatrix = new JLabel[env.rooms][env.posForRoom];
 
 		for(int i=0; i<env.rooms; i++)
@@ -63,7 +77,14 @@ public class GridPanel extends JPanel {
 				final JLabel label = new JLabel();
 				label.setPreferredSize(new Dimension(iconWidth,iconHeigth));
 				labelMatrix[i][j] = label;
-				flowPanel.add(label, constraints);
+				JPanel cellPanel = new JPanel();
+				cellPanel.setLayout(new BorderLayout());
+				cellPanel.add(label,BorderLayout.NORTH);
+				if(i<env.rooms-1 && env.doorsPosition[i] == j)
+					cellPanel.add(new JLabel(doorIcon), BorderLayout.SOUTH);
+				else
+					cellPanel.add(new JLabel(wallIcon), BorderLayout.SOUTH);
+				flowPanel.add(cellPanel, constraints);
 			}
 	}
 
