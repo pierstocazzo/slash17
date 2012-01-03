@@ -1,1 +1,1 @@
-./dlv init.dl 5waitRenata.plan -FP -v -stats
+./dlv init.dl 5waitRenata.plan -silent -FP -FPsec

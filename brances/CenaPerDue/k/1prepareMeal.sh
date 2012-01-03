@@ -1,1 +1,1 @@
-./dlv init.dl 1prepareMeal.plan -FP -v -stats
+./dlv init.dl 1prepareMeal.plan -silent -FP -FPsec

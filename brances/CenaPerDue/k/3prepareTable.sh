@@ -1,1 +1,1 @@
-./dlv init.dl 3prepareTable.plan -FP -v -stats
+./dlv init.dl 3prepareTable.plan -silent -FP -FPsec

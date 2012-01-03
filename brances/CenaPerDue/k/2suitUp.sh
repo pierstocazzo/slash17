@@ -1,1 +1,1 @@
-./dlv init.dl 2suitUp.plan -FP -v -stats
+./dlv init.dl 2suitUp.plan -silent -FP -FPsec
