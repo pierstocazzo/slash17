@@ -120,9 +120,9 @@ public class GridPanel extends JPanel {
 
 				// disegna ciccio, eventualmente con i fiori e/o con l'abito
 				if (env.player_i() == i && env.player_j() == j) {
-					if (env.isFlower_taken())
+					if (env.isFlowerTaken())
 						icon = flowerTakenIcon;
-					else if (env.isSuit_up())
+					else if (env.isSuitUp())
 						icon = suitUpIcon;
 					else
 						icon = ciccioIcon;

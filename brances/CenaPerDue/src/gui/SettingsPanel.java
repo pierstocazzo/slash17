@@ -184,19 +184,19 @@ public class SettingsPanel extends JPanel {
 		JPanel infoPanel = new JPanel(new GridLayout(5, 1));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Stato"));
 
-		mealReady = new JLabel("Meal Ready: " + env.isMeal_ready());
+		mealReady = new JLabel("Meal Ready: " + env.isMealReady());
 		infoPanel.add(mealReady);
 
-		suitUp = new JLabel("Suit Up: " + env.isSuit_up());
+		suitUp = new JLabel("Suit Up: " + env.isSuitUp());
 		infoPanel.add(suitUp);
 
-		tableReady = new JLabel("Table Ready: " + env.isTable_ready());
+		tableReady = new JLabel("Table Ready: " + env.isTableReady());
 		infoPanel.add(tableReady);
 
-		flowerTaken = new JLabel("Flowers Taken: " + env.isFlower_taken());
+		flowerTaken = new JLabel("Flowers Taken: " + env.isFlowerTaken());
 		infoPanel.add(flowerTaken);
 
-		entrance = new JLabel("Entrance: " + env.isEntrance());
+		entrance = new JLabel("Entrance: " + env.isWaitRenata());
 		infoPanel.add(entrance);
 
 		add(infoPanel);
@@ -207,11 +207,11 @@ public class SettingsPanel extends JPanel {
 
 	public void update() {
 		/** update pannello stato */
-		mealReady.setText("Meal Ready: " + env.isMeal_ready());
-		suitUp.setText("Suit Up: " + env.isSuit_up());
-		tableReady.setText("Table Ready: " + env.isTable_ready());
-		flowerTaken.setText("Flowers Taken: " + env.isFlower_taken());
-		entrance.setText("Entrance: " + env.isEntrance());
+		mealReady.setText("Meal Ready: " + env.isMealReady());
+		suitUp.setText("Suit Up: " + env.isSuitUp());
+		tableReady.setText("Table Ready: " + env.isTableReady());
+		flowerTaken.setText("Flowers Taken: " + env.isFlowerTaken());
+		entrance.setText("Entrance: " + env.isWaitRenata());
 
 		/** update tipo di ambiente corrente */
 		tipoCorrente.setText("Attuale: " + mainFrame.env.getType());

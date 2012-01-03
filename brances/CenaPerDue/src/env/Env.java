@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class Env {
 
-	boolean meal_ready = false;
-	boolean suit_up = false;
-	boolean table_ready = false;
-	boolean flower_taken = false;
-	boolean entrance = false;
+	boolean mealReady = false;
+	boolean suitUp = false;
+	boolean tableReady = false;
+	boolean flowerTaken = false;
+	boolean waitRenata = false;
 
 	public final static char TILE = ' ';
 	public final static char MEAL = 'M';
@@ -18,7 +18,7 @@ public class Env {
 	public final static char DOOR = 'D';
 	public final static char GRASS = 'G';
 
-	char matrix[][];
+	public char matrix[][];
 
 	Ciccio ciccio;
 
@@ -113,44 +113,44 @@ public class Env {
 		return matrix[i][j];
 	}
 
-	public boolean isMeal_ready() {
-		return meal_ready;
+	public boolean isMealReady() {
+		return mealReady;
 	}
 
-	public void setMeal_ready(boolean meal_ready) {
-		this.meal_ready = meal_ready;
+	public void setMealReady(boolean mealReady) {
+		this.mealReady = mealReady;
 	}
 
-	public boolean isSuit_up() {
-		return suit_up;
+	public boolean isSuitUp() {
+		return suitUp;
 	}
 
-	public void setSuit_up(boolean suit_up) {
-		this.suit_up = suit_up;
+	public void setSuitUp(boolean suitUp) {
+		this.suitUp = suitUp;
 	}
 
-	public boolean isTable_ready() {
-		return table_ready;
+	public boolean isTableReady() {
+		return tableReady;
 	}
 
-	public void setTable_ready(boolean table_ready) {
-		this.table_ready = table_ready;
+	public void setTableReady(boolean tableReady) {
+		this.tableReady = tableReady;
 	}
 
-	public boolean isFlower_taken() {
-		return flower_taken;
+	public boolean isFlowerTaken() {
+		return flowerTaken;
 	}
 
-	public void setFlower_taken(boolean flower_taken) {
-		this.flower_taken = flower_taken;
+	public void setFlowerTaken(boolean flowerTaken) {
+		this.flowerTaken = flowerTaken;
 	}
 
-	public boolean isEntrance() {
-		return entrance;
+	public boolean isWaitRenata() {
+		return waitRenata;
 	}
 
-	public void setEntrance(boolean entrance) {
-		this.entrance = entrance;
+	public void setWaitRenata(boolean waitRenata) {
+		this.waitRenata = waitRenata;
 	}
 
 	public int player_i() {

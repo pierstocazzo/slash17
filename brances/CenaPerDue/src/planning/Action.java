@@ -1,0 +1,14 @@
+package planning;
+
+public enum Action {
+	MOVE_UP,
+	MOVE_DOWN,
+	MOVE_RIGHT,
+	MOVE_LEFT,
+	PREPARE_MEAL,
+	DRESS,
+	SUIT_UP,
+	PREPARE_TABLE,
+	TAKE_FLOWERS,
+	WAIT_RENATA
+}
