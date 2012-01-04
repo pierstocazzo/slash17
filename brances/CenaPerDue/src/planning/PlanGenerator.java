@@ -7,17 +7,15 @@ public class PlanGenerator {
 	Plan plan;
 	
 	Env env;
-	Ciccio ciccio;
 	
-	public PlanGenerator(Env env, Ciccio ciccio){
+	public PlanGenerator(Env env){
 		this.plan = new Plan();
 		this.env = env;
-		this.ciccio = ciccio;
 	}
 	
 	public void generatePlan(){
 		if(!env.isMealReady()){
-			//generate plan
+			generatePlanPrepareMeal();
 			return;
 		}
 		if(!env.isSuitUp()){
@@ -36,5 +34,15 @@ public class PlanGenerator {
 			//generate plan
 			return;
 		}
+	}
+
+	private void generatePlanPrepareMeal() {
+		String ciccioAtom = "at(ciccio," + env.player_i() + "," + env.player_j() + ")";
+		String dinnerAtom = "";
+		for(int i=0; i<env.rooms; i++)
+			for (int j = 0; j < env.posForRoom; j++) 
+				dinnerAtom = "at(dinner," + i + "," + j + ")";
+		System.out.println("Ciccio: " + ciccioAtom);
+		System.out.println("Dinner: " + dinnerAtom);
 	}
 }

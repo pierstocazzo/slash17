@@ -36,4 +36,10 @@ public class MainFrame extends JFrame {
 
 		setVisible(true);
 	}
+	
+	public void mainLoop() {
+		for (int i = 0; i < 5; i++) {
+			env.update();
+		}
+	}
 }

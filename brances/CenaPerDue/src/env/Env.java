@@ -2,6 +2,8 @@ package env;
 
 import java.util.Random;
 
+import planning.PlanGenerator;
+
 public class Env {
 
 	boolean mealReady = false;
@@ -191,5 +193,10 @@ public class Env {
 
 	public void setType(char type) {
 		this.type = type;
+	}
+
+	public void update() {
+		PlanGenerator pg = new PlanGenerator(this);
+		pg.generatePlan();
 	}
 }
