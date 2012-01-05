@@ -1,1 +1,0 @@
-./dlv init.dl 4takeFlowers.plan -silent -FP -FPsec

@@ -1,0 +1,1 @@
+../dlv init.dl 3prepareTable.plan -silent -FP -FPsec
