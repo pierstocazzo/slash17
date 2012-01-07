@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
@@ -8,12 +10,15 @@ import env.Env;
 
 public class MainFrame extends JFrame {
 
-	private static final long serialVersionUID = -8026416994513756565L;
+	static final long serialVersionUID = -8026416994513756565L;
 
-	private SettingsPanel settingsPanel;
-	private GridPanel gridPanel;
+	SettingsPanel settingsPanel;
+	GridPanel gridPanel;
 
 	Env env;
+
+	boolean pausa = true;
+	boolean finished = false;
 
 	public MainFrame() {
 		env = new Env(5,8);
@@ -24,6 +29,14 @@ public class MainFrame extends JFrame {
 		setTitle("Una Cena per Due");
 		setResizable(false);
 
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				setFinished(true);
+				super.windowClosing(e);
+			}
+		});
+		
 		setLayout(new BorderLayout());
 
 		settingsPanel = new SettingsPanel(this);
@@ -38,8 +51,31 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void mainLoop() {
-		for (int i = 0; i < 5; i++) {
-			env.update();
+		while (!finished) {
+			if (!pausa)
+				env.update();
+			try {
+				Thread.sleep(1000/env.getSpeed());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	public boolean isPausa() {
+		return pausa;
+	}
+
+	public void setPausa(boolean isPausa) {
+		this.pausa = isPausa;
+		settingsPanel.enableStart(isPausa);
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 }

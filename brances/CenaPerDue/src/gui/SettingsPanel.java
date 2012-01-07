@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,8 @@ public class SettingsPanel extends JPanel {
 	private JLabel tipoCorrente;
 
 	private JLabel speedLabel;
+	
+	JButton start, pause;
 
 	public SettingsPanel(final MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -181,6 +184,7 @@ public class SettingsPanel extends JPanel {
 
 
 		/** inizio: info */
+		JPanel infoNstart = new JPanel(new BorderLayout());
 		JPanel infoPanel = new JPanel(new GridLayout(5, 1));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Stato"));
 
@@ -199,7 +203,29 @@ public class SettingsPanel extends JPanel {
 		entrance = new JLabel("Entrance: " + env.isWaitRenata());
 		infoPanel.add(entrance);
 
-		add(infoPanel);
+		infoNstart.add(infoPanel, BorderLayout.CENTER);
+		
+		
+		JPanel p = new JPanel();
+		start = new JButton("Start");
+		start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.setPausa(false);
+			}
+		});
+		pause = new JButton("Pausa");
+		pause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.setPausa(true);
+			}
+		});
+		p.add(start);
+		p.add(pause);
+		infoNstart.add(p, BorderLayout.SOUTH);
+		
+		add(infoNstart);
 		/** fine: info */
 
 		setVisible(true);
@@ -218,5 +244,9 @@ public class SettingsPanel extends JPanel {
 
 		/** update velocita' simulazione corrente */
 		speedLabel.setText("Attuale: " + mainFrame.env.getSpeed());
+	}
+
+	public void enableStart(boolean b) {
+		start.setEnabled(b);
 	}
 }
