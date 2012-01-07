@@ -46,14 +46,26 @@ public class PlanGenerator {
 	}
 
 	private void generatePlanPrepareMeal() {
+		//init.dl
+		String init = readFileAsString("k/input/init.dl");
+		System.out.println("init file\n\n" + init);
+		
+		for (int i = 0; i < env.rooms-1; i++) 
+			init = init.concat("doorDown(" + (i+1) + "," + (env.doorsPosition[i]+1) + ").\n");
+		System.out.println("after init file\n\n" + init);
+		createFileFromString("k/init.dl", init);
+		
+		//va reso piu' efficiente
+		// possiamo provare se esiste un piano di 1 azione,
+		// se non esiste proviamo con lunghezza 2 e così via fino ad un massimo ragionevole
+		
+		//prepareMeal.plan
 		String ciccioAtom = "at(ciccio," + (env.player_i()+1) + "," + (env.player_j()+1) + ")";
 		String dinnerAtom = "";
 		for(int i=0; i<env.rooms; i++)
 			for (int j = 0; j < env.posForRoom; j++) 
 				if(env.matrix[i][j] == Env.MEAL)
 					dinnerAtom = "at(dinner," + (i+1) + "," + (j+1) + ")";
-//		System.out.println("Ciccio: " + ciccioAtom);
-//		System.out.println("Dinner: " + dinnerAtom);
 
 		String planDesc = readFileAsString("k/input/1prepareMeal.plan");
 
@@ -108,7 +120,7 @@ public class PlanGenerator {
 	private static void createFileFromString(String filePath, String fileContent) {
 		try{
 			// Create file 
-			FileWriter fstream = new FileWriter("k/1prepareMeal.plan");
+			FileWriter fstream = new FileWriter(filePath);
 			BufferedWriter out = new BufferedWriter(fstream);
 			out.write(fileContent);
 			//Close the output stream

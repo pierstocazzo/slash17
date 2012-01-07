@@ -40,7 +40,3 @@ topRoom(4,5).
 bottomRoom(L,H) :- topRoom(H,L).
 
 doorUp(S,P) :- doorDown(S1,P), S=S1+1.
-doorDown(1,7).
-doorDown(2,1).
-doorDown(3,4).
-doorDown(4,4).
