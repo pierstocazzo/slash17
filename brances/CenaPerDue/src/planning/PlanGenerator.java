@@ -62,9 +62,10 @@ public class PlanGenerator {
 
 		createFileFromString("k/1prepareMeal.plan", planDesc);
 
-		String cmd = "k/dlv -silent -FP -FPsec k/init.dl k/1prepareMeal.plan -planlenght=10";
+		String cmd = "./k/dlv -FP -FPsec -silent ./k/init.dl ./k/1prepareMeal.plan -planlength=10";
+
 		// dlv init.dl 1prepareMeal.plan -silent -FP -FPsec
-		
+		System.out.println("COMMAND: " + cmd);
 		String out = executeCommand(cmd);
 		System.out.println(out);
 	}
