@@ -35,7 +35,7 @@ noConcurrency.
 securePlan.
 
 initially:
-	at(ciccio,4,6). at(dinner,1,7).
+	at(ciccio,2,5). at(dinner,1,2).
 
 goal:
 	mealReady ?

@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 
 	Env env;
 
-	boolean pausa = true;
+	boolean pausa = false;
 	boolean finished = false;
 
 	public MainFrame() {

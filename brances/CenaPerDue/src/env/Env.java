@@ -196,6 +196,7 @@ public class Env {
 	}
 
 	public void update() {
+		System.out.println("Plan generation");
 		PlanGenerator pg = new PlanGenerator(this);
 		pg.generatePlan();
 	}
