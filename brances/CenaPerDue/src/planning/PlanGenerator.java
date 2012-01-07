@@ -4,12 +4,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
-import java.util.ResourceBundle;
-
-import env.Ciccio;
 import env.Env;
 
 public class PlanGenerator {
@@ -18,44 +14,59 @@ public class PlanGenerator {
 	Env env;
 
 	public PlanGenerator(Env env){
-		this.plan = new Plan();
 		this.env = env;
 	}
 
-	public void generatePlan(){
+	public String generatePlan(){
 		if(!env.isMealReady()){
-			generatePlanPrepareMeal();
-			return;
+			return generatePlanForMealReady();
 		}
 		if(!env.isSuitUp()){
-			//generate plan
-			return;
+			return generatePlanForSuitUp();
 		}
 		if(!env.isTableReady()){
-			//generate plan
-			return;
+			return generatePlanForTableReady();
 		}
 		if(!env.isFlowerTaken()){
-			//generate plan
-			return;
+			return generatePlanForFlowerTaken();
 		}
 		if(!env.isWaitRenata()){
-			//generate plan
-			return;
+			return generatePlanForWaitRenata();
 		}
+		return null;
 	}
 
-	private void generatePlanPrepareMeal() {
+	private String generatePlanForWaitRenata() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String generatePlanForFlowerTaken() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String generatePlanForTableReady() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String generatePlanForSuitUp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String generatePlanForMealReady() {
 		//init.dl
 		String init = readFileAsString("k/input/init.dl");
-		System.out.println("init file\n\n" + init);
+		//System.out.println("init file\n\n" + init);
 		
 		for (int i = 0; i < env.rooms-1; i++) 
 			init = init.concat("doorDown(" + (i+1) + "," + (env.doorsPosition[i]+1) + ").\n");
-		System.out.println("after init file\n\n" + init);
+		//System.out.println("after init file\n\n" + init);
 		createFileFromString("k/init.dl", init);
 		
-		//va reso piu' efficiente
+		// va reso piu' efficiente
 		// possiamo provare se esiste un piano di 1 azione,
 		// se non esiste proviamo con lunghezza 2 e così via fino ad un massimo ragionevole
 		
@@ -77,9 +88,11 @@ public class PlanGenerator {
 		String cmd = "./k/dlv -FP -FPsec -silent ./k/init.dl ./k/1prepareMeal.plan -planlength=10";
 
 		// dlv init.dl 1prepareMeal.plan -silent -FP -FPsec
-		System.out.println("COMMAND: " + cmd);
+		//System.out.println("COMMAND: " + cmd);
 		String out = executeCommand(cmd);
-		System.out.println(out);
+		//System.out.println(out);
+		
+		return out;
 	}
 
 	private String executeCommand(String cmd) {
@@ -92,14 +105,14 @@ public class PlanGenerator {
 					InputStreamReader(p.getInputStream()));
 			String inputLine;
 			while ((inputLine = in.readLine()) != null) {
-				System.out.println(inputLine);
+				//System.out.println(inputLine);
 				res += inputLine;
 			}
 			in.close();
 
 		}//try
 		catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
 		}
 		return res;
 	}

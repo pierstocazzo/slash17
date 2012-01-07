@@ -5,11 +5,38 @@ import java.util.LinkedList;
 public class Plan {
 	LinkedList<Action> actions;
 
-	public Plan() {
+	public Plan(String out) {
+		//TODO creare la lista di azioni a partire dall'output di k
 		actions = new LinkedList<Action>();
+		// out = PLAN: move(ciccio,right):1; move(ciccio,down):2; move(ciccio,left):3; move(ciccio,down):4; move(ciccio,right):5; move(ciccio,right):6; prepareMeal:1; (no action); (no action); (no action)  COST: 22PLAN: move(ciccio,right):1; move(ciccio,down):2; move(ciccio,left):3; move(ciccio,down):4; move(ciccio,right):5; move(ciccio,right):6; (no action); prepareMeal:1; (no action); (no action)
+		String[] ss = out.split("COST:")[0].split(" ");
+		for (int i = 0; i < ss.length; i++) {
+			System.out.println(ss[i]);
+			if (ss[i].contains("move")) {
+				String mov = ss[i].split(",")[1].split("\\)")[0];
+				System.out.println("move " + mov);
+				if (mov.equals("left"))
+					actions.add(Action.MOVE_LEFT);
+				else if (mov.equals("right"))
+					actions.add(Action.MOVE_RIGHT);
+				else if (mov.equals("up"))
+					actions.add(Action.MOVE_UP);
+				else if (mov.equals("down"))
+					actions.add(Action.MOVE_DOWN);
+			} else if (ss[i].contains("prepareMeal")) {
+				actions.add(Action.PREPARE_MEAL);
+				System.out.println("prepare meal...");
+			}
+			//TODO continuare tutti i casi
+		}
+		
 	}
 
 	public LinkedList<Action> getActions() {
 		return actions;
+	}
+
+	public boolean isEmpty() {
+		return actions.isEmpty();
 	}
 }

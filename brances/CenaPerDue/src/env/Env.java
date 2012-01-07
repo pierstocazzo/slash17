@@ -2,6 +2,8 @@ package env;
 
 import java.util.Random;
 
+import planning.Action;
+import planning.Plan;
 import planning.PlanGenerator;
 
 public class Env {
@@ -43,6 +45,8 @@ public class Env {
 	public int doorsPosition[];
 
 	Random rg = new Random();
+	
+	Plan currentPlan;
 
 	public Env(int rooms, int posForRooms) {
 		this.rooms = rooms;
@@ -194,10 +198,58 @@ public class Env {
 	public void setType(char type) {
 		this.type = type;
 	}
+	
+	private void execute(Action a) {
+		switch (a) {
+		case MOVE_RIGHT:
+			ciccio.setJ(ciccio.j+1);
+			break;
+		case MOVE_LEFT:
+			ciccio.setJ(ciccio.j-1);
+			break;
+		case MOVE_DOWN:
+			ciccio.setI(ciccio.i+1);
+			break;
+		case MOVE_UP:
+			ciccio.setI(ciccio.i-1);
+			break;
+		case PREPARE_MEAL:
+			setMealReady(true);
+			ciccio.setWithMeal(true);
+			break;
+		case DRESS:
+			setSuitUp(true);
+			ciccio.setWithSmoking(true);
+			break;
+		case PREPARE_TABLE:
+			setTableReady(true);
+			break;
+		case TAKE_FLOWERS:
+			setFlowerTaken(true);
+			ciccio.setWithFlowers(true);
+			break;
+		case WAIT_RENATA:
+			setWaitRenata(true);
+			break;
+
+		default:
+			break;
+		}
+	}
 
 	public void update() {
-		System.out.println("Plan generation");
-		PlanGenerator pg = new PlanGenerator(this);
-		pg.generatePlan();
+		// effettuiamo la prossima azione del piano, se non è vuoto
+		if (currentPlan != null && !currentPlan.isEmpty()) {
+			Action a = currentPlan.getActions().pop();
+			System.out.println(a);
+			execute(a);
+			
+		} else { // altrimenti creiamolo
+			PlanGenerator pg = new PlanGenerator(this);
+			String out = pg.generatePlan();
+			System.out.println(out);
+			if (out != null && !out.isEmpty())
+				currentPlan = new Plan(out);
+		}
 	}
 }

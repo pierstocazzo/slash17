@@ -43,6 +43,9 @@ public class SettingsPanel extends JPanel {
 	private JLabel speedLabel;
 	
 	JButton start, pause;
+	
+	ImageIcon trueIcon = new ImageIcon("img/true.png");
+	ImageIcon falseIcon = new ImageIcon("img/false.png");
 
 	public SettingsPanel(final MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -189,23 +192,23 @@ public class SettingsPanel extends JPanel {
 		JPanel infoPanel = new JPanel(new GridLayout(5, 1));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Stato"));
 
-		mealReady = new JLabel("Meal Ready: ", new ImageIcon("img/"+env.isMealReady()+".png"), SwingConstants.CENTER);
+		mealReady = new JLabel("Meal Ready: ", falseIcon, SwingConstants.CENTER);
 		mealReady.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(mealReady);
 
-		suitUp = new JLabel("Suit Up: ", new ImageIcon("img/"+env.isSuitUp()+".png"), SwingConstants.CENTER);
+		suitUp = new JLabel("Suit Up: ", falseIcon, SwingConstants.CENTER);
 		suitUp.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(suitUp);
 
-		tableReady = new JLabel("Table Ready: ", new ImageIcon("img/"+env.isTableReady()+".png"), SwingConstants.CENTER);
+		tableReady = new JLabel("Table Ready: ", falseIcon, SwingConstants.CENTER);
 		tableReady.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(tableReady);
 
-		flowerTaken = new JLabel("Flowers Taken: ", new ImageIcon("img/"+env.isFlowerTaken()+".png"), SwingConstants.CENTER);
+		flowerTaken = new JLabel("Flowers Taken: ", falseIcon, SwingConstants.CENTER);
 		flowerTaken.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(flowerTaken);
 
-		entrance = new JLabel("Entrance: ", new ImageIcon("img/"+env.isWaitRenata()+".png"), SwingConstants.CENTER);
+		entrance = new JLabel("Entrance: ", falseIcon, SwingConstants.CENTER);
 		entrance.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(entrance);
 
@@ -239,11 +242,11 @@ public class SettingsPanel extends JPanel {
 
 	public void update() {
 		/** update pannello stato */
-		mealReady.setText("Meal Ready: " + env.isMealReady());
-		suitUp.setText("Suit Up: " + env.isSuitUp());
-		tableReady.setText("Table Ready: " + env.isTableReady());
-		flowerTaken.setText("Flowers Taken: " + env.isFlowerTaken());
-		entrance.setText("Entrance: " + env.isWaitRenata());
+		mealReady.setIcon(env.isMealReady() ? trueIcon : falseIcon);
+		suitUp.setIcon(env.isSuitUp() ? trueIcon : falseIcon);
+		tableReady.setIcon(env.isTableReady() ? trueIcon : falseIcon);
+		flowerTaken.setIcon(env.isFlowerTaken() ? trueIcon : falseIcon);
+		entrance.setIcon(env.isWaitRenata() ? trueIcon : falseIcon);
 
 		/** update tipo di ambiente corrente */
 		tipoCorrente.setText("Attuale: " + mainFrame.env.getType());

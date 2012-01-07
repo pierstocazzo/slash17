@@ -54,6 +54,7 @@ public class MainFrame extends JFrame {
 		while (!finished) {
 			if (!pausa) {
 				env.update();
+				settingsPanel.update();
 				gridPanel.update();
 			}
 			try {
