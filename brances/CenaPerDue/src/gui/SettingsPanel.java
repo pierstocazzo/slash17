@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -188,19 +189,24 @@ public class SettingsPanel extends JPanel {
 		JPanel infoPanel = new JPanel(new GridLayout(5, 1));
 		infoPanel.setBorder(BorderFactory.createTitledBorder("Stato"));
 
-		mealReady = new JLabel("Meal Ready: " + env.isMealReady());
+		mealReady = new JLabel("Meal Ready: ", new ImageIcon("img/"+env.isMealReady()+".png"), SwingConstants.CENTER);
+		mealReady.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(mealReady);
 
-		suitUp = new JLabel("Suit Up: " + env.isSuitUp());
+		suitUp = new JLabel("Suit Up: ", new ImageIcon("img/"+env.isSuitUp()+".png"), SwingConstants.CENTER);
+		suitUp.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(suitUp);
 
-		tableReady = new JLabel("Table Ready: " + env.isTableReady());
+		tableReady = new JLabel("Table Ready: ", new ImageIcon("img/"+env.isTableReady()+".png"), SwingConstants.CENTER);
+		tableReady.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(tableReady);
 
-		flowerTaken = new JLabel("Flowers Taken: " + env.isFlowerTaken());
+		flowerTaken = new JLabel("Flowers Taken: ", new ImageIcon("img/"+env.isFlowerTaken()+".png"), SwingConstants.CENTER);
+		flowerTaken.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(flowerTaken);
 
-		entrance = new JLabel("Entrance: " + env.isWaitRenata());
+		entrance = new JLabel("Entrance: ", new ImageIcon("img/"+env.isWaitRenata()+".png"), SwingConstants.CENTER);
+		entrance.setHorizontalTextPosition(SwingConstants.LEFT);
 		infoPanel.add(entrance);
 
 		infoNstart.add(infoPanel, BorderLayout.CENTER);
