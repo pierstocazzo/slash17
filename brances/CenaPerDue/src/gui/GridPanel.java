@@ -82,10 +82,9 @@ public class GridPanel extends JPanel {
 	}
 
 	public void update() {
-		for(int i=0; i<env.rooms; i++)
-			for(int j=0; j<env.posForRoom; j++){
+		for(int i=0; i<env.rooms; i++) {
+			for(int j=0; j<env.posForRoom; j++) {
 				ImageIcon icon = null;
-
 				// disegna i vari elementi
 				switch (env.get(i, j)) {
 				case Env.MEAL:
@@ -122,10 +121,6 @@ public class GridPanel extends JPanel {
 
 				labelMatrix[i][j].setIcon(icon);
 			}
-		try {
-			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 }

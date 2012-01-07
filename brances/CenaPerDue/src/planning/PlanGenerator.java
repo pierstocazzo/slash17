@@ -1,6 +1,5 @@
 package planning;
 
-import env.Ciccio;
 import env.Env;
 
 public class PlanGenerator {

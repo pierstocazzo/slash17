@@ -52,8 +52,10 @@ public class MainFrame extends JFrame {
 	
 	public void mainLoop() {
 		while (!finished) {
-			if (!pausa)
+			if (!pausa) {
 				env.update();
+				gridPanel.update();
+			}
 			try {
 				Thread.sleep(1000/env.getSpeed());
 			} catch (InterruptedException e) {
