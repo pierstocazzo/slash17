@@ -86,10 +86,10 @@ public class PlanGenerator {
 		createFileFromString("k/1prepareMeal.plan", planDesc);
 
 		String cmd = "", out = "";
-		int depth = 0, bound = env.posForRoom*(env.rooms-1);
+		int depth = 1, bound = env.posForRoom*(env.rooms-1);
 		boolean planFound = false;
 		
-		while(!planFound && depth<bound){
+		while(!planFound && depth<=bound){
 			cmd = "./k/dlv -FP -FPsec -silent ./k/init.dl ./k/1prepareMeal.plan -planlength=" + depth;
 			//System.out.println("COMMAND: " + cmd);
 			out = executeCommand(cmd);

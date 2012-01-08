@@ -1,15 +1,3 @@
-%  1 2 3 4 5 6 7 8
-% | |D| | | | | | | kitchen
-%      @
-% | | | |S| | | | | bed-room
-%            @
-% |F| | | |T| | | | dining-room
-%      @
-% |C| | | | | | | | entry
-%              @
-% | | | | | | | | | outside
-%  1 2 3 4 5 6 7 8
-
 near(1,2).
 near(2,3).
 near(3,4).
@@ -40,7 +28,7 @@ topRoom(4,5).
 bottomRoom(L,H) :- topRoom(H,L).
 
 doorUp(S,P) :- doorDown(S1,P), S=S1+1.
-doorDown(1,6).
-doorDown(2,4).
-doorDown(3,5).
+doorDown(1,3).
+doorDown(2,2).
+doorDown(3,2).
 doorDown(4,8).

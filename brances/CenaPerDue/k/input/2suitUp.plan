@@ -5,7 +5,7 @@ fluents:
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
-	dress costs 1.
+	dress costs time.
 
 always:
 	inertial at(O,R,P).

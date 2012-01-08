@@ -6,8 +6,8 @@ fluents:
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
-	prepareMeal costs 1.
-	prepareTable costs 1.
+	prepareMeal costs time.
+	prepareTable costs time.
 
 always:
 	inertial at(O,R,P).

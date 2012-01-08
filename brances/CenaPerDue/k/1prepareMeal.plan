@@ -4,7 +4,7 @@ fluents:
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
-	prepareMeal costs 1.
+	prepareMeal costs time.
 
 always:
 	inertial at(O,R,P).
@@ -35,7 +35,7 @@ noConcurrency.
 securePlan.
 
 initially:
-	at(ciccio,3,4). at(dinner,1,4).
+	at(ciccio,2,6). at(dinner,4,7).
 
 goal:
 	mealReady ?

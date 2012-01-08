@@ -11,7 +11,7 @@ public class Plan {
 		// out = PLAN: move(ciccio,right):1; move(ciccio,down):2; move(ciccio,left):3; move(ciccio,down):4; move(ciccio,right):5; move(ciccio,right):6; prepareMeal:1; (no action); (no action); (no action)  COST: 22PLAN: move(ciccio,right):1; move(ciccio,down):2; move(ciccio,left):3; move(ciccio,down):4; move(ciccio,right):5; move(ciccio,right):6; (no action); prepareMeal:1; (no action); (no action)
 		String[] ss = out.split("COST:")[0].split(" ");
 		for (int i = 0; i < ss.length; i++) {
-			System.out.println(ss[i]);
+//			System.out.println(ss[i]);
 			if (ss[i].contains("move")) {
 				String mov = ss[i].split(",")[1].split("\\)")[0];
 				System.out.println("move " + mov);
