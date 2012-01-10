@@ -41,7 +41,6 @@ public class PlanGenerator {
 			return executeTemplatePlan(tableReady);
 		}
 		if(!env.isFlowerTaken()){
-			System.out.println("create oak");
 			return executeTemplatePlan(flowersTaken);
 		}
 		if(!env.isWaitRenata()){

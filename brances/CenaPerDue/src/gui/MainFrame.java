@@ -18,7 +18,6 @@ public class MainFrame extends JFrame {
 	Env env;
 
 	boolean pausa = true;
-	boolean finished = false;
 
 	public MainFrame() {
 		env = new Env(5,8);
@@ -72,13 +71,5 @@ public class MainFrame extends JFrame {
 	public void setPausa(boolean isPausa) {
 		this.pausa = isPausa;
 		settingsPanel.enableStart(isPausa);
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setFinished(boolean finished) {
-		this.finished = finished;
 	}
 }

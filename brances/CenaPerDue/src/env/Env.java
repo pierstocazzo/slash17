@@ -51,13 +51,22 @@ public class Env {
 	Random rg = new Random();
 	
 	Plan currentPlan;
+	
+	boolean occupate[];
 
 	public Env(int rooms, int posForRooms) {
 		this.rooms = rooms;
 		this.posForRoom = posForRooms;
 		matrix = new char[rooms][posForRoom];
 		doorsPosition = new int[rooms-1];
+		
+		occupate = new boolean[rooms];
+		for (int i = 0; i < occupate.length; i++) {
+			occupate[i] = false;
+		}
+		
 		envGeneration();
+		
 		int r = Math.abs(rg.nextInt()) % (rooms-1);
 		int p = Math.abs(rg.nextInt()) % posForRoom;
 		while(matrix[r][p] != TILE){
@@ -79,38 +88,42 @@ public class Env {
 		// generazione posizione suit univoca
 		int r = Math.abs(rg.nextInt()) % (rooms-1);
 		int p = Math.abs(rg.nextInt()) % posForRoom;
-		while(matrix[r][p] != TILE){
+		while(matrix[r][p] != TILE || occupate[r]){
 			r = Math.abs(rg.nextInt()) % (rooms-1);
 			p = Math.abs(rg.nextInt()) % posForRoom;
 		}
 		matrix[r][p] = SUIT;
+		occupate[r] = true;
 		
 		// generazione posizione cena univoca
 		r = Math.abs(rg.nextInt()) % (rooms-1);
 		p = Math.abs(rg.nextInt()) % posForRoom;
-		while(matrix[r][p] != TILE){
+		while(matrix[r][p] != TILE || occupate[r]){
 			r = Math.abs(rg.nextInt()) % (rooms-1);
 			p = Math.abs(rg.nextInt()) % posForRoom;
 		}
 		matrix[r][p] = MEAL;
+		occupate[r] = true;
 		
 		// generazione posizione fiori univoca
 		r = Math.abs(rg.nextInt()) % (rooms-1);
 		p = Math.abs(rg.nextInt()) % posForRoom;
-		while(matrix[r][p] != TILE){
+		while(matrix[r][p] != TILE || occupate[r]){
 			r = Math.abs(rg.nextInt()) % (rooms-1);
 			p = Math.abs(rg.nextInt()) % posForRoom;
 		}
 		matrix[r][p] = FLOWERS;
+		occupate[r] = true;
 		
 		// generazione posizione tavolo univoca
 		r = Math.abs(rg.nextInt()) % (rooms-1);
 		p = Math.abs(rg.nextInt()) % posForRoom;
-		while(matrix[r][p] != TILE){
+		while(matrix[r][p] != TILE || occupate[r]){
 			r = Math.abs(rg.nextInt()) % (rooms-1);
 			p = Math.abs(rg.nextInt()) % posForRoom;
 		}
 		matrix[r][p] = TABLE;
+		occupate[r] = true;
 		
 		//generazione porte
 		for(int i=0; i<rooms-1; i++){
@@ -262,7 +275,8 @@ public class Env {
 	}
 
 	public void update() {
-		// effettuiamo la prossima azione del piano, se non è vuoto
+		// effettuiamo la prossima azione del piano, se non è vuoto 
+		// e se il nostro obiettivo non ha cambiato posizione
 		if (currentPlan != null && !currentPlan.isEmpty()) {
 			Action a = currentPlan.getActions().pop();
 			System.out.println(a);
