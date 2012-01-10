@@ -16,6 +16,7 @@ public class PlanGenerator {
 	// goals
 	String mealReady = "mealReady";
 	String suitUp = "suitUp";
+	String mealTaken = "mealTaken";
 	String tableReady = "tableReady";
 	String flowersTaken = "flowersTaken";
 	String waitRenata = "waitRenata";
@@ -33,10 +34,14 @@ public class PlanGenerator {
 		if(!env.isSuitUp()){
 			return executeTemplatePlan(suitUp);
 		}
+		if(!env.isMealTaken()){
+			return executeTemplatePlan(mealTaken);
+		}
 		if(!env.isTableReady()){
 			return executeTemplatePlan(tableReady);
 		}
 		if(!env.isFlowerTaken()){
+			System.out.println("create oak");
 			return executeTemplatePlan(flowersTaken);
 		}
 		if(!env.isWaitRenata()){
@@ -53,8 +58,10 @@ public class PlanGenerator {
 			fileName = "1prepareMeal.plan";
 		else if (goal == suitUp)
 			fileName = "2suitUp.plan";
+		else if (goal == mealTaken)
+			fileName = "31takeDinner.plan";
 		else if (goal == tableReady)
-			fileName = "3prepareTable.plan";
+			fileName = "32prepareTable.plan";
 		else if (goal == flowersTaken)
 			fileName = "4takeFlowers.plan";
 		else if (goal == waitRenata)
@@ -116,6 +123,8 @@ public class PlanGenerator {
 			initially += "tableReady.\n";
 		if (env.isWaitRenata())
 			initially += "waitRenata.\n";
+		if (env.isMealTaken())
+			initially += "mealTaken.\n";
 				
 		return initially;
 	}

@@ -9,5 +9,6 @@ public enum Action {
 	SUIT_UP,
 	PREPARE_TABLE,
 	TAKE_FLOWERS,
-	WAIT_RENATA
+	WAIT_RENATA,
+	TAKE_MEAL
 }

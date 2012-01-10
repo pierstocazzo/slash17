@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				setFinished(true);
+				env.setFinished(true);
 				super.windowClosing(e);
 			}
 		});
@@ -51,7 +51,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void mainLoop() {
-		while (!finished) {
+		while (!env.isFinished()) {
 			if (!pausa) {
 				env.update();
 				settingsPanel.update();

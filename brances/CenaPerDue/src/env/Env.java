@@ -13,6 +13,9 @@ public class Env {
 	boolean tableReady = false;
 	boolean flowerTaken = false;
 	boolean waitRenata = false;
+	boolean mealTaken = false;
+	
+	boolean finished = false;
 
 	public final static char TILE = ' ';
 	public final static char MEAL = 'M';
@@ -135,6 +138,14 @@ public class Env {
 	public void setSuitUp(boolean suitUp) {
 		this.suitUp = suitUp;
 	}
+	
+	public boolean isMealTaken() {
+		return mealTaken;
+	}
+	
+	public void setMealTaken(boolean mealTaken) {
+		this.mealTaken = mealTaken;
+	}
 
 	public boolean isTableReady() {
 		return tableReady;
@@ -219,10 +230,16 @@ public class Env {
 			ciccio.setWithMeal(true);
 			break;
 		case SUIT_UP:
-			System.out.println("dressinngggggg");
+			
 			setSuitUp(true);
 			ciccio.setWithSmoking(true);
 			remove(SUIT);
+			break;
+		case TAKE_MEAL:
+			System.out.println("taking mealllll");
+			setMealTaken(true);
+			remove(MEAL);
+			ciccio.setWithMeal(true);
 			break;
 		case PREPARE_TABLE:
 			setTableReady(true);
@@ -260,9 +277,20 @@ public class Env {
 		} else { // altrimenti creiamolo
 			PlanGenerator pg = new PlanGenerator(this);
 			String out = pg.executePlan();
-			System.out.println(out);
-			if (out != null && !out.isEmpty())
+			if(out == null)
+				finished = true;
+			if (out != null && !out.isEmpty()){
+				System.out.println(out);
 				currentPlan = new Plan(out);
+			}
 		}
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean b) {
+		this.finished = b;
 	}
 }

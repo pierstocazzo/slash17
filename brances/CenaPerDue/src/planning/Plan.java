@@ -38,6 +38,9 @@ public class Plan {
 			} else if (ss[i].contains("stopCiccio")) {
 				actions.add(Action.WAIT_RENATA);
 				System.out.println("waiting renata...");
+			} else if (ss[i].contains("takeMeal")) {
+				actions.add(Action.TAKE_MEAL);
+				System.out.println("taking meal...");
 			}
 		}
 		

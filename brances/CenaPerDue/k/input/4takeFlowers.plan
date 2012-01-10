@@ -4,6 +4,7 @@ fluents:
 	tableReady.
 	suitUp.
 	flowersTaken.
+	mealTaken.
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
@@ -17,6 +18,7 @@ always:
 	inertial tableReady.
 	inertial suitUp.
 	inertial flowersTaken.
+	inertial mealTaken.
 	
 	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos).
 	caused -at(O,R,P) after move(O,left), at(O,R,P).
@@ -34,11 +36,12 @@ always:
 	caused -at(O,R,P) after move(O,down), at(O,R,P).
 	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), bottomRoom(NewRoom,OldRoom).
 	
-	executable takeFlowers if at(ciccio,R,P), at(flowers,R,P), mealReady, suitUp, tableReady, not flowersTaken.
+	executable takeFlowers if at(ciccio,R,P), at(flowers,R,P), mealReady, suitUp, tableReady, mealTaken, not flowersTaken.
 	caused flowersTaken after takeFlowers.
 	caused -at(flowers,R,P) after flowersTaken, at(flowers,R,P).
 	
 noConcurrency.
 
 securePlan.
+
 
