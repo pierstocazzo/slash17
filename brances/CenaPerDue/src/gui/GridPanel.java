@@ -127,10 +127,10 @@ public class GridPanel extends JPanel {
 				if (env.player_i() == i && env.player_j() == j) {
 					if (env.isFlowerTaken())
 						icon = flowerTakenIcon;
+					else if (env.isMealTaken() && !env.isTableReady())
+						icon = withMealIcon;
 					else if (env.isSuitUp())
 						icon = suitUpIcon;
-					else if (env.isMealTaken())
-						icon = withMealIcon;
 					else
 						icon = ciccioIcon;
 				}

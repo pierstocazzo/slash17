@@ -37,11 +37,11 @@ noConcurrency.
 securePlan.
 
 initially:
-	at(ciccio,3,8).
+	at(ciccio,2,8).
+at(smoking,1,2).
+at(table,1,4).
 at(flowers,1,5).
-at(smoking,3,4).
-at(table,3,5).
-at(dinner,3,8).
+at(dinner,2,8).
 mealReady.
 
 
