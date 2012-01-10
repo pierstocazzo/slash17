@@ -227,26 +227,20 @@ public class Env {
 			break;
 		case PREPARE_MEAL:
 			setMealReady(true);
-			ciccio.setWithMeal(true);
 			break;
 		case SUIT_UP:
-			
 			setSuitUp(true);
-			ciccio.setWithSmoking(true);
 			remove(SUIT);
 			break;
 		case TAKE_MEAL:
-			System.out.println("taking mealllll");
 			setMealTaken(true);
 			remove(MEAL);
-			ciccio.setWithMeal(true);
 			break;
 		case PREPARE_TABLE:
 			setTableReady(true);
 			break;
 		case TAKE_FLOWERS:
 			setFlowerTaken(true);
-			ciccio.setWithFlowers(true);
 			remove(FLOWERS);
 			break;
 		case WAIT_RENATA:

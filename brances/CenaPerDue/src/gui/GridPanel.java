@@ -5,11 +5,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.omg.CosNaming.IstringHelper;
 
 import env.Env;
 
@@ -17,7 +16,7 @@ public class GridPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel[][] labelMatrix;
-	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, tableReadyIcon,
+	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, tableReadyIcon, withMealIcon, mealReadyIcon,
 				ciccioIcon, flowerIcon, wallIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
 	public static int iconWidth = 60, iconHeigth = 120;
 
@@ -60,6 +59,10 @@ public class GridPanel extends JPanel {
 		.getImage().getScaledInstance(iconWidth, iconHeigth/10, 100));
 		tableReadyIcon = new ImageIcon(new ImageIcon("img/table_ready.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
+		withMealIcon = new ImageIcon(new ImageIcon("img/withMeal.png")
+		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
+		mealReadyIcon = new ImageIcon(new ImageIcon("img/meal_ready.png")
+		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		
 		
 		labelMatrix = new JLabel[env.rooms][env.posForRoom];
@@ -92,7 +95,10 @@ public class GridPanel extends JPanel {
 				// disegna i vari elementi
 				switch (env.get(i, j)) {
 				case Env.MEAL:
-					icon = mealIcon;
+					if (env.isMealReady())
+						icon = mealReadyIcon;
+					else
+						icon = mealIcon;
 					break;
 				case Env.FLOWERS:
 					icon = flowerIcon;
@@ -123,6 +129,8 @@ public class GridPanel extends JPanel {
 						icon = flowerTakenIcon;
 					else if (env.isSuitUp())
 						icon = suitUpIcon;
+					else if (env.isMealTaken())
+						icon = withMealIcon;
 					else
 						icon = ciccioIcon;
 				}
