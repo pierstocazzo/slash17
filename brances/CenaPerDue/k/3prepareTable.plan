@@ -38,3 +38,15 @@ noConcurrency.
 
 securePlan.
 
+initially:
+	at(ciccio,4,4).
+at(dinner,1,6).
+at(table,2,2).
+at(flowers,4,7).
+mealReady.
+suitUp.
+
+
+goal:
+	tableReady ?
+

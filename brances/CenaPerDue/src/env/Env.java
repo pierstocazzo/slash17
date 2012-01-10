@@ -21,6 +21,7 @@ public class Env {
 	public final static char FLOWERS = 'F';
 	public final static char DOOR = 'D';
 	public final static char GRASS = 'G';
+	
 
 	public char matrix[][];
 
@@ -217,9 +218,11 @@ public class Env {
 			setMealReady(true);
 			ciccio.setWithMeal(true);
 			break;
-		case DRESS:
+		case SUIT_UP:
+			System.out.println("dressinngggggg");
 			setSuitUp(true);
 			ciccio.setWithSmoking(true);
+			remove(SUIT);
 			break;
 		case PREPARE_TABLE:
 			setTableReady(true);
@@ -227,6 +230,7 @@ public class Env {
 		case TAKE_FLOWERS:
 			setFlowerTaken(true);
 			ciccio.setWithFlowers(true);
+			remove(FLOWERS);
 			break;
 		case WAIT_RENATA:
 			setWaitRenata(true);
@@ -234,6 +238,15 @@ public class Env {
 
 		default:
 			break;
+		}
+	}
+
+	private void remove(char o) {
+		for (int i = 0; i < rooms; i++) {
+			for (int j = 0; j < posForRoom; j++) {
+				if (matrix[i][j] == o)
+					matrix[i][j] = TILE;
+			}
 		}
 	}
 
@@ -246,7 +259,7 @@ public class Env {
 			
 		} else { // altrimenti creiamolo
 			PlanGenerator pg = new PlanGenerator(this);
-			String out = pg.generatePlan();
+			String out = pg.executePlan();
 			System.out.println(out);
 			if (out != null && !out.isEmpty())
 				currentPlan = new Plan(out);

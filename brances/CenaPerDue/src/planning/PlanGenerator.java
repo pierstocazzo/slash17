@@ -12,93 +12,112 @@ public class PlanGenerator {
 	Plan plan;
 
 	Env env;
+	
+	// goals
+	String mealReady = "mealReady";
+	String suitUp = "suitUp";
+	String tableReady = "tableReady";
+	String flowersTaken = "flowersTaken";
+	String waitRenata = "waitRenata";
 
 	public PlanGenerator(Env env){
 		this.env = env;
 	}
 
-	public String generatePlan(){
+	public String executePlan(){
+		createInitDL();
+		
 		if(!env.isMealReady()){
-			return generatePlanForMealReady();
+			return executeTemplatePlan(mealReady);
 		}
 		if(!env.isSuitUp()){
-			return generatePlanForSuitUp();
+			return executeTemplatePlan(suitUp);
 		}
 		if(!env.isTableReady()){
-			return generatePlanForTableReady();
+			return executeTemplatePlan(tableReady);
 		}
 		if(!env.isFlowerTaken()){
-			return generatePlanForFlowerTaken();
+			return executeTemplatePlan(flowersTaken);
 		}
 		if(!env.isWaitRenata()){
-			return generatePlanForWaitRenata();
+			return executeTemplatePlan(waitRenata);
 		}
 		return null;
 	}
+	
+	private String executeTemplatePlan(String goal) {
+		String initially = createInitiallyString();
 
-	private String generatePlanForWaitRenata() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String generatePlanForFlowerTaken() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String generatePlanForTableReady() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String generatePlanForSuitUp() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String generatePlanForMealReady() {
-		//init.dl
-		String init = readFileAsString("k/input/init.dl");
-		//System.out.println("init file\n\n" + init);
+		String fileName = "";
+		if (goal == mealReady)
+			fileName = "1prepareMeal.plan";
+		else if (goal == suitUp)
+			fileName = "2suitUp.plan";
+		else if (goal == tableReady)
+			fileName = "3prepareTable.plan";
+		else if (goal == flowersTaken)
+			fileName = "4takeFlowers.plan";
+		else if (goal == waitRenata)
+			fileName = "5waitRenata.plan";
 		
-		for (int i = 0; i < env.rooms-1; i++) 
-			init = init.concat("doorDown(" + (i+1) + "," + (env.doorsPosition[i]+1) + ").\n");
-		//System.out.println("after init file\n\n" + init);
-		createFileFromString("k/init.dl", init);
-		
-		// va reso piu' efficiente
-		// possiamo provare se esiste un piano di 1 azione,
-		// se non esiste proviamo con lunghezza 2 e così via fino ad un massimo ragionevole
-		
-		//prepareMeal.plan
-		String ciccioAtom = "at(ciccio," + (env.player_i()+1) + "," + (env.player_j()+1) + ")";
-		String dinnerAtom = "";
-		for(int i=0; i<env.rooms; i++)
-			for (int j = 0; j < env.posForRoom; j++) 
-				if(env.matrix[i][j] == Env.MEAL)
-					dinnerAtom = "at(dinner," + (i+1) + "," + (j+1) + ")";
+		String planDesc = readFileAsString("k/input/" + fileName);
 
-		String planDesc = readFileAsString("k/input/1prepareMeal.plan");
+		planDesc = planDesc.concat("initially:" + "\n\t" + initially + "\n\n");
+		planDesc = planDesc.concat("goal:" +"\n\t" + goal + " ?" +"\n\n");
 
-		planDesc = planDesc.concat("initially:" + "\n\t" + ciccioAtom + ". " + dinnerAtom + ".\n\n");
-		planDesc = planDesc.concat("goal:" +"\n\t" + "mealReady ?" +"\n\n");
-
-		createFileFromString("k/1prepareMeal.plan", planDesc);
+		createFileFromString("k/" + fileName, planDesc);
 
 		String cmd = "", out = "";
 		int depth = 1, bound = env.posForRoom*(env.rooms-1);
 		boolean planFound = false;
 		
 		while(!planFound && depth<=bound){
-			cmd = "./k/dlv -FP -FPsec -silent ./k/init.dl ./k/1prepareMeal.plan -planlength=" + depth;
-			//System.out.println("COMMAND: " + cmd);
+			cmd = "./k/dlv -FP -FPsec -silent ./k/init.dl ./k/" + fileName + " -planlength=" + depth;
 			out = executeCommand(cmd);
-//			System.out.println(i + "---" + out + "---");
 			if(!out.isEmpty())
 				planFound = true;
 			depth++;
 		}
+		
 		return out;
+	}
+
+	private void createInitDL() {
+		String init = readFileAsString("k/input/init.dl");
+		//System.out.println("init file\n\n" + init);
+		for (int i = 0; i < env.rooms-1; i++) 
+			init = init.concat("doorDown(" + (i+1) + "," + (env.doorsPosition[i]+1) + ").\n");
+	
+		//System.out.println("after init file\n\n" + init);
+		createFileFromString("k/init.dl", init);
+	}
+
+	private String createInitiallyString() {
+		String initially = "at(ciccio," + (env.player_i()+1) + "," + (env.player_j()+1) + ").\n";
+		for(int i=0; i<env.rooms; i++) {
+			for (int j = 0; j < env.posForRoom; j++) {
+				if(env.matrix[i][j] == Env.MEAL)
+					initially += "at(dinner," + (i+1) + "," + (j+1) + ").\n";
+				if(env.matrix[i][j] == Env.FLOWERS)
+					initially += "at(flowers," + (i+1) + "," + (j+1) + ").\n";
+				if(env.matrix[i][j] == Env.SUIT)
+					initially += "at(smoking," + (i+1) + "," + (j+1) + ").\n";
+				if(env.matrix[i][j] == Env.TABLE)
+					initially += "at(table," + (i+1) + "," + (j+1) + ").\n";
+			}
+		}
+		if (env.isMealReady())
+			initially += "mealReady.\n";
+		if (env.isFlowerTaken())
+			initially += "flowersTaken.\n";
+		if (env.isSuitUp())
+			initially += "suitUp.\n";
+		if (env.isTableReady())
+			initially += "tableReady.\n";
+		if (env.isWaitRenata())
+			initially += "waitRenata.\n";
+				
+		return initially;
 	}
 
 	private String executeCommand(String cmd) {

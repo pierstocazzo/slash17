@@ -9,13 +9,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.omg.CosNaming.IstringHelper;
+
 import env.Env;
 
 public class GridPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel[][] labelMatrix;
-	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, 
+	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, tableReadyIcon,
 				ciccioIcon, flowerIcon, wallIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
 	public static int iconWidth = 60, iconHeigth = 120;
 
@@ -56,6 +58,8 @@ public class GridPanel extends JPanel {
 		.getImage().getScaledInstance(iconWidth, iconHeigth/10, 100));
 		doorIcon = new ImageIcon(new ImageIcon("img/door.jpg")
 		.getImage().getScaledInstance(iconWidth, iconHeigth/10, 100));
+		tableReadyIcon = new ImageIcon(new ImageIcon("img/table_ready.png")
+		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		
 		
 		labelMatrix = new JLabel[env.rooms][env.posForRoom];
@@ -97,7 +101,10 @@ public class GridPanel extends JPanel {
 					icon = grassIcon;
 					break;
 				case Env.TABLE:
-					icon = tableIcon;
+					if (env.isTableReady())
+						icon = tableReadyIcon;
+					else 
+						icon = tableIcon;
 					break;
 				case Env.SUIT:
 					icon = suitIcon;
@@ -105,6 +112,7 @@ public class GridPanel extends JPanel {
 				case Env.TILE:
 					icon = tileIcon;
 					break;
+				
 				default:
 					icon = null;	
 				}

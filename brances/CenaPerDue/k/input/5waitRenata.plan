@@ -44,8 +44,3 @@ noConcurrency.
 
 securePlan.
 
-initially:
-	at(ciccio,2,4). mealReady. suitUp. tableReady. flowersTaken.
-	
-goal:
-	waitRenata ? (12)

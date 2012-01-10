@@ -25,9 +25,20 @@ public class Plan {
 					actions.add(Action.MOVE_DOWN);
 			} else if (ss[i].contains("prepareMeal")) {
 				actions.add(Action.PREPARE_MEAL);
-				System.out.println("prepare meal...");
+				System.out.println("preparing meal...");
+			} else if (ss[i].contains("dress")) {
+				actions.add(Action.SUIT_UP);
+				System.out.println("dressing...");
+			} else if (ss[i].contains("prepareTable")) {
+				actions.add(Action.PREPARE_TABLE);
+				System.out.println("preparing table...");
+			} else if (ss[i].contains("takeFlowers")) {
+				actions.add(Action.TAKE_FLOWERS);
+				System.out.println("taking flowers...");
+			} else if (ss[i].contains("stopCiccio")) {
+				actions.add(Action.WAIT_RENATA);
+				System.out.println("waiting renata...");
 			}
-			//TODO continuare tutti i casi
 		}
 		
 	}

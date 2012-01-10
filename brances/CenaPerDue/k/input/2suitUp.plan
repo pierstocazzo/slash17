@@ -36,8 +36,3 @@ noConcurrency.
 
 securePlan.
 
-initially:
-	at(ciccio,4,1). at(smoking,2,3). mealReady.
-	
-goal:
-	at(ciccio,2,3), suitUp ? (11)
