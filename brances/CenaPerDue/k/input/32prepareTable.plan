@@ -1,5 +1,6 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
+	lastAction(A) requires direction(R).
 	mealReady.
 	tableReady.
 	suitUp.
@@ -13,30 +14,34 @@ actions:
 
 always:
 	inertial at(O,R,P).
+	inertial lastAction(A).
 	inertial mealReady.
 	inertial tableReady.
 	inertial suitUp.
 	inertial mealTaken.
 	
-	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos).
+	executable move(ciccio,left) if at(ciccio,_,OldPos), near(NewPos,OldPos), not lastAction(right).
 	caused -at(O,R,P) after move(O,left), at(O,R,P).
 	caused at(O,R,NewPos) after move(O,left), at(O,R,OldPos), near(NewPos,OldPos).
 	
-	executable move(ciccio,right) if at(ciccio,_,OldPos), near(OldPos,NewPos).
+	executable move(ciccio,right) if at(ciccio,_,OldPos), near(OldPos,NewPos), not lastAction(left).
 	caused -at(O,R,P) after move(O,right), at(O,R,P).
 	caused at(O,R,NewPos) after move(O,right), at(O,R,OldPos), near(OldPos,NewPos).
 	
-	executable move(ciccio,up) if at(ciccio,R,P), doorUp(R,P).
+	executable move(ciccio,up) if at(ciccio,R,P), doorUp(R,P), not lastAction(down).
 	caused -at(O,R,P) after move(O,up), at(O,R,P).
 	caused at(O,NewRoom,P) after move(O,up), at(O,OldRoom,P), topRoom(NewRoom,OldRoom).
 	
-	executable move(ciccio,down) if at(ciccio,R,P), doorDown(R,P).
+	executable move(ciccio,down) if at(ciccio,R,P), doorDown(R,P), not lastAction(up).
 	caused -at(O,R,P) after move(O,down), at(O,R,P).
 	caused at(O,NewRoom,P) after move(O,down), at(O,OldRoom,P), bottomRoom(NewRoom,OldRoom).
 	
 	executable prepareTable if at(ciccio,R,P), at(table,R,P), mealReady, suitUp, mealTaken, not tableReady.
 	caused tableReady after prepareTable.
-	
+
+	caused -lastAction(A) after move(ciccio,A1), direction(A), A1!=A.
+	caused lastAction(A) after move(ciccio,A).
+
 noConcurrency.
 
 securePlan.
