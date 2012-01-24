@@ -46,8 +46,9 @@ public class JMovieFrame extends JFrame {
 	Frame frame;
 	
 	public static void main(String[] args) {		 
-		JMovieFrame mF = new JMovieFrame();
-		mF.showGUI();
+//		JMovieFrame mF = new JMovieFrame();
+//		mF.showGUI();
+		FilmUPWrapper.query("hulk");
 	}
 	
 	public JMovieFrame() {
