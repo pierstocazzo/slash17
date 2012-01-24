@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/htmlparser.jar" sourcepath="C:/Users/Sal/Desktop/htmlparser1_6_20060610/htmlparser1_6/src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
