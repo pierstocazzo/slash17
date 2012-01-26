@@ -228,8 +228,9 @@ public class ProjectHandler {
 						new FileInputStream(file)); 
 				Lab lab = (Lab) in.readObject();
 				Lab.setInstance(lab);
-				Lab.getInstance().getProject().setDirectory(file.getParentFile().getPath());
-				GuiManager.getInstance().setProject(Lab.getInstance().getProject());
+				final AbstractProject project = Lab.getInstance().getProject();
+				project.setDirectory(file.getParent());
+				GuiManager.getInstance().setProject(project);
 				in.close();
 			} catch (Exception e) {
 				e.printStackTrace();
