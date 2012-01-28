@@ -20,6 +20,11 @@ public class PlanGenerator {
 	String tableReady = "tableReady";
 	String flowersTaken = "flowersTaken";
 	String waitRenata = "waitRenata";
+	
+	public int mealRoom, mealPos;
+	public int smokingRoom, smokingPos;
+	public int tableRoom, tablePos;
+	public int flowersRoom, flowersPos;
 
 	public PlanGenerator(Env env){
 		this.env = env;
@@ -27,20 +32,27 @@ public class PlanGenerator {
 
 	public String executePlan(){
 		createInitDL();
+		System.out.println("Update targets Info");
+		updateTargetsInfo();
 		
 		if(!env.isMealReady()){
+			System.out.println("Template Plan mealReady");
 			return executeTemplatePlan(mealReady);
 		}
 		if(!env.isSuitUp()){
+			System.out.println("Template Plan suitUp");
 			return executeTemplatePlan(suitUp);
 		}
 		if(!env.isMealTaken()){
+			System.out.println("Template Plan mealTaken");
 			return executeTemplatePlan(mealTaken);
 		}
 		if(!env.isTableReady()){
+			System.out.println("Template Plan tableReady");
 			return executeTemplatePlan(tableReady);
 		}
 		if(!env.isFlowerTaken()){
+			System.out.println("Template Plan flowersReady");
 			return executeTemplatePlan(flowersTaken);
 		}
 		if(!env.isWaitRenata()){
@@ -49,6 +61,23 @@ public class PlanGenerator {
 		return null;
 	}
 	
+	private void updateTargetsInfo() {
+		if(!env.isMealTaken()){
+			mealRoom = env.roomOfObject('M');
+			mealPos = env.posOfObject('M');
+		}
+		if(!env.isSuitUp()){
+			smokingRoom = env.roomOfObject('S');
+			smokingPos = env.posOfObject('S');
+		}
+		tableRoom = env.roomOfObject('T');
+		tablePos = env.posOfObject('T');
+		if(!env.isFlowerTaken()){
+			flowersRoom = env.roomOfObject('F');
+			flowersPos = env.posOfObject('F');
+		}
+	}
+
 	private String executeTemplatePlan(String goal) {
 		String initially = createInitiallyString();
 

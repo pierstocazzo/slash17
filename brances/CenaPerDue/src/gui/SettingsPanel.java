@@ -42,6 +42,8 @@ public class SettingsPanel extends JPanel {
 
 	private JLabel speedLabel;
 	
+	private JPanel kPanel;
+	
 	JButton start, pause;
 	
 	ImageIcon trueIcon = new ImageIcon("img/true.png");
@@ -145,43 +147,48 @@ public class SettingsPanel extends JPanel {
 		/** inizio: k e maxTime */
 		JPanel kTimeSelector = new JPanel(new GridLayout(2, 1));
 
-		JPanel kPanel = new JPanel();
+		kPanel = new JPanel();
 		kPanel.setBorder(BorderFactory.createTitledBorder("Parametro k"));
 		kTimeSelector.add(kPanel);
-		JLabel l = new JLabel("K:");
-		kPanel.add(l);
+		JLabel labelK = new JLabel("K:");
+		kPanel.add(labelK);
+		
 		final JSpinner spinnerK = new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));
-		l.setLabelFor(spinnerK);
-		kPanel.add(spinnerK);
-		spinnerK.setEditor(new JSpinner.NumberEditor(spinnerK, "#"));
-		JButton setK = new JButton("set");
-		setK.addActionListener(new ActionListener() {
+		int val = 1;
+		spinnerK.setValue(val);
+		env.setK(val);
+		labelK.setLabelFor(spinnerK);
+		spinnerK.addChangeListener(new ChangeListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void stateChanged(ChangeEvent arg0) {
 				int val = (Integer) spinnerK.getValue();
+				System.out.println("Set K " +  val);
 				env.setK(val);
 			}
 		});
-		kPanel.add(setK);
+		kPanel.add(spinnerK);
+		spinnerK.setEditor(new JSpinner.NumberEditor(spinnerK, "#"));
 
 		JPanel timePanel = new JPanel();
 		timePanel.setBorder(BorderFactory.createTitledBorder("Tempo disponibile"));
 		kTimeSelector.add(timePanel);
-		JLabel l1 = new JLabel("T:");
-		timePanel.add(l1);
+		
+		JLabel labelT = new JLabel("T:");
+		timePanel.add(labelT);
 		final JSpinner spinnerT = new JSpinner(new SpinnerNumberModel(30, 1, 100, 1));
-		l1.setLabelFor(spinnerT);
+		labelT.setLabelFor(spinnerT);
 		timePanel.add(spinnerT);
 		spinnerT.setEditor(new JSpinner.NumberEditor(spinnerT, "#"));
-		JButton setTime = new JButton("set");
-		setTime.addActionListener(new ActionListener() {
+		spinnerT.addChangeListener(new ChangeListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void stateChanged(ChangeEvent e) {
 				int val = (Integer) spinnerT.getValue();
 				env.setMaxTime(val);
+				System.out.println("Set T " + val);
 			}
 		});
-		timePanel.add(setTime);
 
 		add(kTimeSelector);
 		/** fine: k e maxTime */

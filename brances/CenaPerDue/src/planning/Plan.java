@@ -44,4 +44,8 @@ public class Plan {
 	public boolean isEmpty() {
 		return actions.isEmpty();
 	}
+	
+	public void reset(){
+		actions.clear();
+	}
 }

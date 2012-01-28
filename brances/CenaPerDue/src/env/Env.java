@@ -1,5 +1,9 @@
 package env;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import planning.Action;
@@ -11,10 +15,10 @@ public class Env {
 	boolean mealReady = false;
 	boolean suitUp = false;
 	boolean tableReady = false;
-	boolean flowerTaken = false;
+	boolean flowersTaken = false;
 	boolean waitRenata = false;
 	boolean mealTaken = false;
-	
+
 	boolean finished = false;
 
 	public final static char TILE = ' ';
@@ -24,11 +28,13 @@ public class Env {
 	public final static char FLOWERS = 'F';
 	public final static char DOOR = 'D';
 	public final static char GRASS = 'G';
-	
+
 
 	public char matrix[][];
 
 	Ciccio ciccio;
+
+	int counter = 0;
 
 	/** dopo quanti turni spostare le cose */
 	int k = 0;
@@ -45,13 +51,15 @@ public class Env {
 	public int posForRoom;
 
 	public int rooms;
-	
+
 	public int doorsPosition[];
 
 	Random rg = new Random();
+
+	PlanGenerator pg;
 	
 	Plan currentPlan;
-	
+
 	boolean occupate[];
 
 	public Env(int rooms, int posForRooms) {
@@ -59,14 +67,14 @@ public class Env {
 		this.posForRoom = posForRooms;
 		matrix = new char[rooms][posForRoom];
 		doorsPosition = new int[rooms-1];
-		
+
 		occupate = new boolean[rooms];
 		for (int i = 0; i < occupate.length; i++) {
 			occupate[i] = false;
 		}
-		
+
 		envGeneration();
-		
+
 		int r = Math.abs(rg.nextInt()) % (rooms-1);
 		int p = Math.abs(rg.nextInt()) % posForRoom;
 		while(matrix[r][p] != TILE){
@@ -84,7 +92,7 @@ public class Env {
 		// erba
 		for (int j=0; j<posForRoom; j++)
 			matrix[rooms-1][j] = GRASS;
-		
+
 		// generazione posizione suit univoca
 		int r = Math.abs(rg.nextInt()) % (rooms-1);
 		int p = Math.abs(rg.nextInt()) % posForRoom;
@@ -94,7 +102,7 @@ public class Env {
 		}
 		matrix[r][p] = SUIT;
 		occupate[r] = true;
-		
+
 		// generazione posizione cena univoca
 		r = Math.abs(rg.nextInt()) % (rooms-1);
 		p = Math.abs(rg.nextInt()) % posForRoom;
@@ -104,7 +112,7 @@ public class Env {
 		}
 		matrix[r][p] = MEAL;
 		occupate[r] = true;
-		
+
 		// generazione posizione fiori univoca
 		r = Math.abs(rg.nextInt()) % (rooms-1);
 		p = Math.abs(rg.nextInt()) % posForRoom;
@@ -114,7 +122,7 @@ public class Env {
 		}
 		matrix[r][p] = FLOWERS;
 		occupate[r] = true;
-		
+
 		// generazione posizione tavolo univoca
 		r = Math.abs(rg.nextInt()) % (rooms-1);
 		p = Math.abs(rg.nextInt()) % posForRoom;
@@ -124,11 +132,11 @@ public class Env {
 		}
 		matrix[r][p] = TABLE;
 		occupate[r] = true;
-		
+
 		//generazione porte
 		for(int i=0; i<rooms-1; i++){
 			doorsPosition[i] = Math.abs(rg.nextInt()) % posForRoom;
-//			System.out.println("Pos doors " + i + " = " + doorsPosition[i]);
+			//			System.out.println("Pos doors " + i + " = " + doorsPosition[i]);
 		}
 	}
 
@@ -151,11 +159,11 @@ public class Env {
 	public void setSuitUp(boolean suitUp) {
 		this.suitUp = suitUp;
 	}
-	
+
 	public boolean isMealTaken() {
 		return mealTaken;
 	}
-	
+
 	public void setMealTaken(boolean mealTaken) {
 		this.mealTaken = mealTaken;
 	}
@@ -169,11 +177,11 @@ public class Env {
 	}
 
 	public boolean isFlowerTaken() {
-		return flowerTaken;
+		return flowersTaken;
 	}
 
 	public void setFlowerTaken(boolean flowerTaken) {
-		this.flowerTaken = flowerTaken;
+		this.flowersTaken = flowerTaken;
 	}
 
 	public boolean isWaitRenata() {
@@ -223,8 +231,9 @@ public class Env {
 	public void setType(char type) {
 		this.type = type;
 	}
-	
+
 	private void execute(Action a) {
+		typeEnvUpdate();
 		switch (a) {
 		case MOVE_RIGHT:
 			ciccio.setJ(ciccio.j+1);
@@ -265,6 +274,93 @@ public class Env {
 		}
 	}
 
+	private void typeEnvUpdate() {
+		counter++;
+		switch (type) {
+		case 'B' : updateB();break;
+		case 'C' : updateC();break;
+		case 'D' : updateD();break;
+		}
+	}
+
+	private void updateB() {
+		if(counter % k == 0){
+			char obj = chooseRandomObject();
+			System.out.println("Sposto " + obj);
+			// Sposto nella stessa stanza
+			int room = roomOfObject(obj);
+			int pos = posOfObject(obj);
+			System.out.println("Obj " + room + "," + pos);
+			int newPos = genRandomPosition(room,pos);
+			System.out.println("OldPos " + pos);
+			System.out.println("NewPos " + newPos);
+			matrix[room][pos] = Env.TILE;
+			matrix[room][newPos] = obj;
+		}
+	}
+
+	private int genRandomPosition(int room, int pos) {
+		// generazione posizione fiori univoca
+		int p = Math.abs(rg.nextInt()) % posForRoom;
+		while(matrix[room][p] != TILE )
+			p = Math.abs(rg.nextInt()) % posForRoom;
+		return p;
+	}
+
+	public int posOfObject(char obj) {
+		for (int i=0; i<rooms-1; i++)
+			for (int j=0; j<posForRoom; j++)
+				if( matrix[i][j] == obj )
+					return j;
+		System.err.println("Oggetto senza posizione " + obj);
+		System.exit(1);
+		return 0;
+	}
+
+	public int roomOfObject(char obj) {
+		for (int i=0; i<rooms-1; i++)
+			for (int j=0; j<posForRoom; j++)
+				if( matrix[i][j] == obj )
+					return i;
+		System.err.println("Oggetto senza stanza " + obj);
+		System.exit(1);
+		return 0;
+	}
+
+	private void updateC() {
+		// TODO Sposto ogni oggetto nella sua stanza
+	}
+
+	private void updateD() {
+		// TODO Sposto ogni oggetto in tutte le stanze 
+	}
+
+	private char chooseRandomObject() {
+		// M S T F
+		String[] list = new String("MSTF").split("");
+		ArrayList<String> typeList = new ArrayList<String>(Arrays.asList(list));
+		typeList.remove(0);
+
+		// Verifico se un oggetto casuale è spostabile
+		while (typeList.size() > 0){
+			System.out.println("LIST " + typeList + ".");
+			Collections.shuffle(typeList);
+			char current = typeList.get(0).charAt(0);
+			if(current == 'T')
+				return current;
+			if(current == 'F' && !flowersTaken)
+				return current;
+			if(current == 'M' && !mealTaken)
+				return current;
+			if(current == 'S' && !suitUp)
+				return current;
+			typeList.remove(0);
+		}
+		System.err.println("Nessun oggetto è spostabile");
+		System.exit(0);
+		return 'E';
+	}
+
 	private void remove(char o) {
 		for (int i = 0; i < rooms; i++) {
 			for (int j = 0; j < posForRoom; j++) {
@@ -278,13 +374,22 @@ public class Env {
 		// effettuiamo la prossima azione del piano, se non è vuoto 
 		// e se il nostro obiettivo non ha cambiato posizione
 		if (currentPlan != null && !currentPlan.isEmpty()) {
+			if(!myPlanIsStillValid()){
+				currentPlan.reset();
+				currentPlan = null;
+				System.out.println("Old Plan isn't still valid");
+				return;
+			}
 			Action a = currentPlan.getActions().pop();
 			System.out.println(a);
 			execute(a);
-			
+
 		} else { // altrimenti creiamolo
-			PlanGenerator pg = new PlanGenerator(this);
+			System.out.println("Creating new Plan");
+			pg = new PlanGenerator(this);
+			System.out.println("Create plan generator");
 			String out = pg.executePlan();
+			System.out.println("Executed dlv");
 			if(out == null)
 				finished = true;
 			if (out != null && !out.isEmpty()){
@@ -292,6 +397,42 @@ public class Env {
 				currentPlan = new Plan(out);
 			}
 		}
+	}
+
+	private boolean myPlanIsStillValid() {
+		// Check meal plan
+		if (!mealReady){
+			System.out.println("Check if mealReady plan is valid");
+			if(roomOfObject('M') == pg.mealRoom && posOfObject('M') == pg.mealPos)
+				return true;
+			return false;
+		}
+		// Check suitUp plan
+		else if (!suitUp){
+			System.out.println("Check if suitUp plan is valid");
+			if(roomOfObject('S') == pg.smokingRoom && posOfObject('S') == pg.smokingPos)
+				return true;
+			return false;
+		}
+		else if (!mealTaken){
+			System.out.println("Check if mealTaken plan is valid");
+			if(roomOfObject('M') == pg.mealRoom && posOfObject('M') == pg.mealPos)
+				return true;
+			return false;
+		}
+		else if (!tableReady){
+			System.out.println("Check if tableReady plan is valid");
+			if(roomOfObject('T') == pg.tableRoom && posOfObject('T') == pg.tablePos)
+				return true;
+			return false;
+		}
+		else if (!flowersTaken){
+			if(roomOfObject('F') == pg.flowersRoom && posOfObject('F') == pg.flowersPos)
+				return true;
+			return false;
+		}
+		else 
+			return true;
 	}
 
 	public boolean isFinished() {
