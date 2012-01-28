@@ -328,7 +328,34 @@ public class Env {
 	}
 
 	private void updateC() {
-		// TODO Sposto ogni oggetto nella sua stanza
+		// Sposto ogni oggetto nella sua stanza
+		String[] list = new String("MSTF").split("");
+		ArrayList<String> typeList = new ArrayList<String>(Arrays.asList(list));
+		typeList.remove(0);
+		
+		Random r = new Random();
+		
+		for( String o : typeList ){
+			if(r.nextInt() % 2 == 0){
+				char obj = o.charAt(0);
+				if(isMealTaken() && obj == 'M')
+					continue;
+				if(isSuitUp() && obj == 'S')
+					continue;
+				if(isFlowerTaken() && obj == 'F')
+					continue;
+				System.out.println("Sposto " + obj);
+				// Sposto nella stessa stanza
+				int room = roomOfObject(obj);
+				int pos = posOfObject(obj);
+				System.out.println("Obj " + room + "," + pos);
+				int newPos = genRandomPosition(room,pos);
+				System.out.println("OldPos " + pos);
+				System.out.println("NewPos " + newPos);
+				matrix[room][pos] = Env.TILE;
+				matrix[room][newPos] = obj;
+			}
+		}
 	}
 
 	private void updateD() {
