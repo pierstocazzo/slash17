@@ -106,11 +106,8 @@ public class PopupAggiungiFilm extends JDialog {
 		String titolo = title.getText();
 		String regista = director.getText();
 		String anno = year.getText();
-		int annoIntero = -1;
-		if (!anno.isEmpty())
-			annoIntero = Integer.parseInt(anno);
 		if (!titolo.isEmpty() && !titolo.equals("Inserisci il titolo"))
-			return new Film(titolo, regista, annoIntero);
+			return new Film(titolo, regista, anno);
 		return null;
 	}
 }

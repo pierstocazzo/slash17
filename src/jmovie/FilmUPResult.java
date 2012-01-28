@@ -2,7 +2,7 @@ package jmovie;
 
 public class FilmUPResult {
 	String titolo;
-	String regista;
+	String regia;
 	String anno;
 	String url;
 	
@@ -14,7 +14,7 @@ public class FilmUPResult {
 
 	public FilmUPResult(String titolo, String regista, String anno, String url) {
 		this.titolo = titolo;
-		this.regista = regista;
+		this.regia = regista;
 		this.anno = anno;
 		this.url = url;
 	}
@@ -28,11 +28,11 @@ public class FilmUPResult {
 	}
 
 	public String getRegista() {
-		return regista;
+		return regia;
 	}
 
 	public void setRegista(String regista) {
-		this.regista = regista;
+		this.regia = regista;
 	}
 
 	public String getAnno() {
@@ -53,6 +53,6 @@ public class FilmUPResult {
 	
 	@Override
 	public String toString() {
-		return titolo + " - " + regista + " - " + anno;
+		return titolo + " - " + regia + " - " + anno;
 	}
 }
