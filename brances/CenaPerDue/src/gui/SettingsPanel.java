@@ -66,10 +66,10 @@ public class SettingsPanel extends JPanel {
 		tipoCorrente.setHorizontalAlignment(SwingConstants.CENTER);
 		typeSelector.add(tipoCorrente);
 
-		JRadioButton A = new JRadioButton("A: statico");
-		JRadioButton B = new JRadioButton("B: dinamico 1");
-		JRadioButton C = new JRadioButton("C: dinamico 2");
-		JRadioButton D = new JRadioButton("D: dinamico 3");
+		JRadioButton A = new JRadioButton("A: Statico");
+		JRadioButton B = new JRadioButton("B: Dyn. Un oggetto nella sua stanza");
+		JRadioButton C = new JRadioButton("C: Dyn. Molti oggetti nelle proprie stanze");
+		JRadioButton D = new JRadioButton("D: Dyn. Tutti si muovono verso tutto");
 		A.setSelected(true);
 
 		ButtonGroup group = new ButtonGroup();

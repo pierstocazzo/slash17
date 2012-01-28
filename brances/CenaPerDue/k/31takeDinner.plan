@@ -47,10 +47,10 @@ securePlan.
 
 
 initially:
-	at(ciccio,2,7).
-at(flowers,1,1).
-at(dinner,2,7).
-at(table,4,8).
+	at(ciccio,2,3).
+at(dinner,2,4).
+at(flowers,3,1).
+at(table,4,6).
 mealReady.
 suitUp.
 

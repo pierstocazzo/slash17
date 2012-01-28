@@ -57,7 +57,7 @@ public class Env {
 	Random rg = new Random();
 
 	PlanGenerator pg;
-	
+
 	Plan currentPlan;
 
 	boolean occupate[];
@@ -327,14 +327,50 @@ public class Env {
 		return 0;
 	}
 
-	private void updateC() {
+	private void updateD() {
 		// Sposto ogni oggetto nella sua stanza
 		String[] list = new String("MSTF").split("");
 		ArrayList<String> typeList = new ArrayList<String>(Arrays.asList(list));
 		typeList.remove(0);
-		
+
+		for( String o : typeList ){
+			if(rg.nextInt() % 2 == 0){
+				char obj = o.charAt(0);
+				if(isMealTaken() && obj == 'M')
+					continue;
+				if(isSuitUp() && obj == 'S')
+					continue;
+				if(isFlowerTaken() && obj == 'F')
+					continue;
+				System.out.println("Sposto " + obj);
+				// Sposto in una posizione a caso
+				int p = Math.abs(rg.nextInt()) % posForRoom;
+				int r = Math.abs(rg.nextInt()) % (rooms-1);
+				while(matrix[r][p] != TILE ){
+					p = Math.abs(rg.nextInt()) % posForRoom;
+					r = Math.abs(rg.nextInt()) % (rooms-1);
+				}
+				
+				int pos = posOfObject(obj);
+				int room = roomOfObject(obj);
+				System.out.println("OldPos " + pos);
+				System.out.println("OldRoom " + room);
+				System.out.println("NewPos " + p);
+				System.out.println("NewPos " + r);
+				matrix[room][pos] = Env.TILE;
+				matrix[r][p] = obj;
+			}
+		}
+	}
+
+	private void updateC() {
+		// TODO Sposto ogni oggetto in tutte le stanze
+		String[] list = new String("MSTF").split("");
+		ArrayList<String> typeList = new ArrayList<String>(Arrays.asList(list));
+		typeList.remove(0);
+
 		Random r = new Random();
-		
+
 		for( String o : typeList ){
 			if(r.nextInt() % 2 == 0){
 				char obj = o.charAt(0);
@@ -356,10 +392,6 @@ public class Env {
 				matrix[room][newPos] = obj;
 			}
 		}
-	}
-
-	private void updateD() {
-		// TODO Sposto ogni oggetto in tutte le stanze 
 	}
 
 	private char chooseRandomObject() {
