@@ -106,7 +106,7 @@ public class JMovieFrame extends JFrame {
 	public static void main(String[] args) {		 
 		 JMovieFrame mF = new JMovieFrame();
 		 mF.showGUI();
-		// FilmUPWrapper.query("hulk");
+//		 FilmUPWrapper.query("spiderman");
 //		new JMovieFrame().importFilmUpDB("MyFilm.mdb");
 	}
 	
@@ -587,7 +587,6 @@ public class JMovieFrame extends JFrame {
 		
 		final ArrayList<FilmUPResult> list = FilmUPWrapper.query(titolo);
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i) + " - URL: " + list.get(i).getUrl());
 			listModel.addElement(list.get(i).toString());
 		}
 		final JList jlist = new JList(listModel);
@@ -694,8 +693,8 @@ public class JMovieFrame extends JFrame {
 		table.setRowMargin(5);
 		table.setRowHeight(35);
 		table.getColumnModel().setColumnMargin(5);
-		table.getColumnModel().getColumn(0).setPreferredWidth(30);
-		table.getColumnModel().getColumn(0).setMaxWidth(30);
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
 		table.getColumnModel().getColumn(0).setMinWidth(30);
 		table.getColumnModel().getColumn(1).setPreferredWidth(400);
 		table.getColumnModel().getColumn(1).setMinWidth(400);
