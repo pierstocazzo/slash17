@@ -297,7 +297,7 @@ public class JMovieFrame extends JFrame {
 		String credits = "<html><center><b><font size=6>jMovieDB</font></b></center><br>" +
 			"Released under GNU General Public License version 3. " +
 			"<a href=http://www.gnu.org/licenses/gpl-3.0-standalone.html>GPLv3</a><br><br>" +
-			"Copyright © 2012 <i>Loria Salvatore</i><br>" +
+			"Copyright ï¿½ 2012 <i>Loria Salvatore</i><br>" +
 			"Visit <a href=http://slash17.googlecode.com>http://slash17.googlecode.com</a></html>";
 
 		JEditorPane editorPane = new JEditorPane("text/html", credits);
@@ -333,7 +333,7 @@ public class JMovieFrame extends JFrame {
 		JDialog d = new JDialog(frame);
 		d.setTitle("Licence");
 		d.setContentPane(new JPanel(new BorderLayout()));
-		JLabel title = new JLabel("jNetEdit Licence", JLabel.CENTER);
+		JLabel title = new JLabel("jMovie Licence", JLabel.CENTER);
 		title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
 		title.setFont(new Font("Times New Roman", Font.BOLD, 24));
 		d.add(title, BorderLayout.NORTH);
