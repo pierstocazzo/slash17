@@ -3,7 +3,7 @@
 
 === Install ===
 
-Download the zip *[http://slash17.googlecode.com/files/jNetEdit-v0.2.2.zip jNetEdit.zip]*:<br>
+Download the zip *[http://code.google.com/p/slash17/downloads/list jNetEdit.zip]*:<br>
 URL: _http://code.google.com/p/slash17/downloads/list_
 
 Extract it in your directory: <br>
