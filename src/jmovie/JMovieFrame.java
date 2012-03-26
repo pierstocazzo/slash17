@@ -662,31 +662,34 @@ public class JMovieFrame extends JFrame {
 		});
 		
 		
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-		Comparator<Object> comparator = new Comparator<Object>() {
-			@Override
-			public int compare(Object o1, Object o2) {
-				if (o1 instanceof Integer && o2 instanceof Integer)
-					return ((Integer) o1).compareTo((Integer) o2);
-				else if (o1 instanceof String && o2 instanceof String)
-					return ((String) o1).compareTo((String) o2);
-				else if (o1 instanceof String && o2 instanceof Integer) {
-					Integer i1 = new Integer((String) o1);
-					Integer i2 = (Integer) o2;
-					return i1.compareTo(i2);
-				} else if (o1 instanceof Integer && o2 instanceof String) {
-					Integer i1 = (Integer) o1;
-					Integer i2 = new Integer((String) o2);
-					return i1.compareTo(i2);
-				} else 
-					return -1;
-					
-			}
-		};
-		sorter.setComparator(0, comparator);
-		sorter.setComparator(3, comparator);
+//		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+//		Comparator<Object> comparator = new Comparator<Object>() {
+//			@Override
+//			public int compare(Object o1, Object o2) {
+//				if (o1 instanceof Integer && o2 instanceof Integer)
+//					return ((Integer) o1).compareTo((Integer) o2);
+//				else if (o1 instanceof String && o2 instanceof String)
+//					return ((String) o1).compareTo((String) o2);
+//				else if (o1 instanceof String && o2 instanceof Integer) {
+//					Integer i1 = new Integer((String) o1);
+//					Integer i2 = (Integer) o2;
+//					return i1.compareTo(i2);
+//				} else if (o1 instanceof Integer && o2 instanceof String) {
+//					Integer i1 = (Integer) o1;
+//					Integer i2 = new Integer((String) o2);
+//					return i1.compareTo(i2);
+//				} else 
+//					return -1;
+//					
+//			}
+//		};
 		
-		table.setRowSorter(sorter);
+//		sorter.setComparator(0, comparator);
+//		sorter.setComparator(1, comparator);
+		
+//		table.setRowSorter(sorter);
+		
+		table.setRowSorter(new TableRowSorter<TableModel>(model));
 		
 		table.setModel(model);
 		
