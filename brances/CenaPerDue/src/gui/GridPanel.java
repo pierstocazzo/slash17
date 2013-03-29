@@ -17,7 +17,7 @@ public class GridPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel[][] labelMatrix;
 	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, tableReadyIcon, withMealIcon, mealReadyIcon,
-				ciccioIcon, flowerIcon, wallIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon;
+				ciccioIcon, flowerIcon, wallIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon, renataIcon;
 	public static int iconWidth = 60, iconHeigth = 120;
 
 	Env env;
@@ -63,7 +63,8 @@ public class GridPanel extends JPanel {
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		mealReadyIcon = new ImageIcon(new ImageIcon("img/meal_ready.png")
 		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
-		
+		renataIcon = new ImageIcon(new ImageIcon("img/renata.png")
+		.getImage().getScaledInstance(iconWidth, iconHeigth, 100));
 		
 		labelMatrix = new JLabel[env.rooms][env.posForRoom];
 
@@ -117,6 +118,9 @@ public class GridPanel extends JPanel {
 					break;
 				case Env.TILE:
 					icon = tileIcon;
+					break;
+				case Env.RENATA:
+					icon = renataIcon;
 					break;
 				
 				default:

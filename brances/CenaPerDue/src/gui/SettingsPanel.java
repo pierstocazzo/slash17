@@ -42,7 +42,13 @@ public class SettingsPanel extends JPanel {
 
 	private JLabel speedLabel;
 	
-	private JPanel kPanel;
+	private JPanel parameterPanel;
+	
+	private JPanel infoPanel;
+	
+	private JLabel currentT;
+	
+	private JLabel currentPerformanceMeasure;
 	
 	JButton start, pause;
 	
@@ -147,11 +153,11 @@ public class SettingsPanel extends JPanel {
 		/** inizio: k e maxTime */
 		JPanel kTimeSelector = new JPanel(new GridLayout(2, 1));
 
-		kPanel = new JPanel();
-		kPanel.setBorder(BorderFactory.createTitledBorder("Parametro k"));
-		kTimeSelector.add(kPanel);
+		parameterPanel = new JPanel();
+		parameterPanel.setBorder(BorderFactory.createTitledBorder("Parametro K"));
+		kTimeSelector.add(parameterPanel);
 		JLabel labelK = new JLabel("K:");
-		kPanel.add(labelK);
+		parameterPanel.add(labelK);
 		
 		final JSpinner spinnerK = new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));
 		int val = 1;
@@ -167,7 +173,7 @@ public class SettingsPanel extends JPanel {
 				env.setK(val);
 			}
 		});
-		kPanel.add(spinnerK);
+		parameterPanel.add(spinnerK);
 		spinnerK.setEditor(new JSpinner.NumberEditor(spinnerK, "#"));
 
 		JPanel timePanel = new JPanel();
@@ -181,7 +187,6 @@ public class SettingsPanel extends JPanel {
 		timePanel.add(spinnerT);
 		spinnerT.setEditor(new JSpinner.NumberEditor(spinnerT, "#"));
 		spinnerT.addChangeListener(new ChangeListener() {
-			
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				int val = (Integer) spinnerT.getValue();
@@ -189,37 +194,44 @@ public class SettingsPanel extends JPanel {
 				System.out.println("Set T " + val);
 			}
 		});
-
+		kTimeSelector.add(timePanel);
 		add(kTimeSelector);
 		/** fine: k e maxTime */
 
-
-		/** inizio: info */
+		/** inizio: stato */
 		JPanel infoNstart = new JPanel(new BorderLayout());
-		JPanel infoPanel = new JPanel(new GridLayout(5, 1));
-		infoPanel.setBorder(BorderFactory.createTitledBorder("Stato"));
+		JPanel statusPanel = new JPanel(new GridLayout(7, 1));
+		statusPanel.setBorder(BorderFactory.createTitledBorder("Stato"));
 
+		currentT = new JLabel("Current T: ", SwingConstants.CENTER);
+		currentT.setHorizontalTextPosition(SwingConstants.LEFT);
+		statusPanel.add(currentT);
+		
+		currentPerformanceMeasure = new JLabel("Performance measure: ", SwingConstants.CENTER);
+		currentPerformanceMeasure.setHorizontalTextPosition(SwingConstants.LEFT);
+		statusPanel.add(currentPerformanceMeasure);
+		
 		mealReady = new JLabel("Meal Ready: ", falseIcon, SwingConstants.CENTER);
 		mealReady.setHorizontalTextPosition(SwingConstants.LEFT);
-		infoPanel.add(mealReady);
+		statusPanel.add(mealReady);
 
 		suitUp = new JLabel("Suit Up: ", falseIcon, SwingConstants.CENTER);
 		suitUp.setHorizontalTextPosition(SwingConstants.LEFT);
-		infoPanel.add(suitUp);
+		statusPanel.add(suitUp);
 
 		tableReady = new JLabel("Table Ready: ", falseIcon, SwingConstants.CENTER);
 		tableReady.setHorizontalTextPosition(SwingConstants.LEFT);
-		infoPanel.add(tableReady);
+		statusPanel.add(tableReady);
 
 		flowerTaken = new JLabel("Flowers Taken: ", falseIcon, SwingConstants.CENTER);
 		flowerTaken.setHorizontalTextPosition(SwingConstants.LEFT);
-		infoPanel.add(flowerTaken);
+		statusPanel.add(flowerTaken);
 
 		entrance = new JLabel("Entrance: ", falseIcon, SwingConstants.CENTER);
 		entrance.setHorizontalTextPosition(SwingConstants.LEFT);
-		infoPanel.add(entrance);
+		statusPanel.add(entrance);
 
-		infoNstart.add(infoPanel, BorderLayout.CENTER);
+		infoNstart.add(statusPanel, BorderLayout.CENTER);
 		
 		
 		JPanel p = new JPanel();
@@ -254,7 +266,8 @@ public class SettingsPanel extends JPanel {
 		tableReady.setIcon(env.isTableReady() ? trueIcon : falseIcon);
 		flowerTaken.setIcon(env.isFlowerTaken() ? trueIcon : falseIcon);
 		entrance.setIcon(env.isWaitRenata() ? trueIcon : falseIcon);
-
+		currentT.setText("Current T: " + env.getCurrentT());
+		currentPerformanceMeasure.setText("Performance measure: " + env.getPM());
 		/** update tipo di ambiente corrente */
 		tipoCorrente.setText("Attuale: " + mainFrame.env.getType());
 

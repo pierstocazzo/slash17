@@ -28,7 +28,7 @@ topRoom(4,5).
 bottomRoom(L,H) :- topRoom(H,L).
 
 doorUp(S,P) :- doorDown(S1,P), S=S1+1.
-doorDown(1,3).
-doorDown(2,3).
-doorDown(3,1).
-doorDown(4,8).
+doorDown(1,2).
+doorDown(2,6).
+doorDown(3,7).
+doorDown(4,5).

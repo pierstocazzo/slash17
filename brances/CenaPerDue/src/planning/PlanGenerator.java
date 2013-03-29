@@ -107,7 +107,7 @@ public class PlanGenerator {
 		boolean planFound = false;
 		
 		while(!planFound && depth<=bound){
-			cmd = "./k/dlv -FP -FPsec -silent ./k/init.dl ./k/" + fileName + " -planlength=" + depth;
+			cmd = "./k/dlv.exe -FP -FPsec -silent ./k/init.dl ./k/" + fileName + " -planlength=" + depth;
 			out = executeCommand(cmd);
 			if(!out.isEmpty())
 				planFound = true;

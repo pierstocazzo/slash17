@@ -62,6 +62,7 @@ public class MainFrame extends JFrame {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	public boolean isPausa() {

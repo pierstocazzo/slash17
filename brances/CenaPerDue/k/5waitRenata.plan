@@ -52,8 +52,8 @@ noConcurrency.
 securePlan.
 
 initially:
-	at(ciccio,2,7).
-at(table,4,1).
+	at(ciccio,3,7).
+at(table,2,5).
 mealReady.
 flowersTaken.
 suitUp.
