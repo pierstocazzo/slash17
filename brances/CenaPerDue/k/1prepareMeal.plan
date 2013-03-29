@@ -1,7 +1,7 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
 	mealReady.
-	lastAction(A) requires direction(R).
+	lastAction(A) requires direction(A).
 
 actions:
 	move(O,D) requires object(O), direction(D) costs time.
@@ -40,11 +40,11 @@ noConcurrency.
 securePlan.
 
 initially:
-	at(ciccio,4,2).
-at(dinner,1,2).
-at(table,2,3).
-at(smoking,3,7).
-at(flowers,4,5).
+	at(ciccio,2,5).
+at(smoking,1,7).
+at(flowers,2,2).
+at(dinner,3,8).
+at(table,4,5).
 
 
 goal:

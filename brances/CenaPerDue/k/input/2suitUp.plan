@@ -1,6 +1,6 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
-	lastAction(A) requires direction(R).
+	lastAction(A) requires direction(A).
 	suitUp.
 	mealReady.
 

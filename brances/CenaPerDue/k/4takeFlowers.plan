@@ -1,6 +1,6 @@
 fluents:
 	at(O,R,P) requires object(O), room(R), position(P).
-	lastAction(A) requires direction(R).
+	lastAction(A) requires direction(A).
 	mealReady.
 	tableReady.
 	suitUp.
@@ -51,9 +51,9 @@ securePlan.
 
 
 initially:
-	at(ciccio,2,3).
-at(table,2,3).
-at(flowers,4,3).
+	at(ciccio,4,5).
+at(flowers,1,1).
+at(table,4,5).
 mealReady.
 suitUp.
 tableReady.
