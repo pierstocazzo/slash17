@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,15 +17,20 @@ import env.Env;
 public class GridPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JLabel[][] labelMatrix;
+	public JLabel[][] labelMatrix;
 	public static ImageIcon tileIcon, tableIcon, mealIcon, suitIcon, tableReadyIcon, withMealIcon, mealReadyIcon,
 				ciccioIcon, flowerIcon, wallIcon, doorIcon, grassIcon, flowerTakenIcon, suitUpIcon, renataIcon;
 	public static int iconWidth = 60, iconHeigth = 120;
 
 	Env env;
+	
+	MainFrame mainFrame;
 
-	public GridPanel (Env env){
+	private Integer selectedCellI, selectedCellJ;
+	
+	public GridPanel (MainFrame mainFrame, Env env){
 		this.env = env;
+		this.mainFrame = mainFrame;
 		init();
 		update();
 	}
@@ -76,15 +83,20 @@ public class GridPanel extends JPanel {
 				constraints.gridy = j;
 				final JLabel label = new JLabel();
 				label.setPreferredSize(new Dimension(iconWidth,iconHeigth));
+				label.addMouseListener(new MyMouseAdapter(this, i, j));
 				labelMatrix[i][j] = label;
 				JPanel cellPanel = new JPanel();
 				cellPanel.setLayout(new BorderLayout());
 				cellPanel.add(label,BorderLayout.NORTH);
-				if(i != env.rooms-1)
+				if(i != env.rooms-1) {
+					JLabel cellLabel = new JLabel();
 					if(i<env.rooms-1 && env.doorsPosition[i] == j)
-						cellPanel.add(new JLabel(doorIcon), BorderLayout.SOUTH);
+						cellLabel.setIcon(doorIcon);
 					else
-						cellPanel.add(new JLabel(wallIcon), BorderLayout.SOUTH);
+						cellLabel.setIcon(wallIcon);
+						
+					cellPanel.add(cellLabel, BorderLayout.SOUTH);
+				}
 				flowPanel.add(cellPanel, constraints);
 			}
 	}
@@ -142,5 +154,25 @@ public class GridPanel extends JPanel {
 				labelMatrix[i][j].setIcon(icon);
 			}
 		}
+	}
+
+	public Integer getSelectedCellI() {
+		return selectedCellI;
+	}
+
+	public void setSelectedCellI(Integer selectedCellI) {
+		this.selectedCellI = selectedCellI;
+	}
+
+	public Integer getSelectedCellJ() {
+		return selectedCellJ;
+	}
+
+	public void setSelectedCellJ(Integer selectedCellJ) {
+		this.selectedCellJ = selectedCellJ;
+	}
+	
+	public boolean isPause() {
+		return mainFrame.pausa;
 	}
 }

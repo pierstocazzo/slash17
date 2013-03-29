@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
 		settingsPanel = new SettingsPanel(this);
 		getContentPane().add(settingsPanel, BorderLayout.WEST);
 
-		gridPanel = new GridPanel(env);
+		gridPanel = new GridPanel(this, env);
 		getContentPane().add(gridPanel, BorderLayout.EAST);
 
 		pack();

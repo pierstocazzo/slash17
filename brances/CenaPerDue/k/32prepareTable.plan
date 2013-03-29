@@ -48,9 +48,9 @@ securePlan.
 
 
 initially:
-	at(ciccio,4,2).
-at(table,2,5).
-at(flowers,3,7).
+	at(ciccio,1,2).
+at(table,2,3).
+at(flowers,4,3).
 mealReady.
 suitUp.
 mealTaken.
